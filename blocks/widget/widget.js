@@ -5,7 +5,7 @@ export default function init(element) {
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
   widgetContainer.className = 'dc-wrapper';
-  widget.appendChild(widgetContainer)
+  widget.appendChild(widgetContainer);
 
   const dcScript = document.createElement('script');
   dcScript.id = 'adobe_dc_sdk_launcher';
@@ -18,7 +18,7 @@ export default function init(element) {
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
 
-  widget.appendChild(dcScript)
+  widget.appendChild(dcScript);
 
   // setTimeout ( () => {
   //   widget.appendChild(dcScript)
