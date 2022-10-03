@@ -28,7 +28,6 @@
          var jsonResponse = JSON.parse(req.responseText);
         console.log(jsonResponse.data[0].Source);
         if (location === jsonResponse.data[0].Source) {
-          alert(browserName);
           if (browserName === "Chrome") {
             window.location.href = jsonResponse.data[0].IE11
           }
