@@ -1,9 +1,19 @@
+.widget {
+background-color: #fc6767;
+}
 .dc-wrapper {
   width: 100%;
   max-width: 1100px;
-  height: 400px;
+  height: auto;
   margin: auto;
-  padding: 120px 0 0 ;
+  padding: 0 0 0 ;
+  position: relative;
+  top: 60px;
+}
+
+.dc-wrapper .react-spectrum-provider {
+  position: relative;
+  z-index:10;
 }
 
 #VERB {
