@@ -9,3 +9,10 @@
 .col[data-align="center"] {
   text-align: center;
 }
+
+.accordion dt {
+  border: none !important;
+}
+.accordion dt:last-of-type {
+  border: none !important;
+}
