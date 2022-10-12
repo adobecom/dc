@@ -6,3 +6,6 @@
  * 
  *
  */
+.col[data-align="center"] {
+  text-align: center;
+}
