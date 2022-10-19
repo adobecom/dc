@@ -7,12 +7,11 @@
  *
  */
 .col[data-align="center"] {
-  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
 }
 
-.accordion dt {
-  border: none !important;
-}
-.accordion dt:last-of-type {
-  border: none !important;
+.hlx-ReviewWrapper {
+  justify-content: center;
 }
