@@ -6,3 +6,38 @@
  * 
  *
  */
+.col[data-align="center"] {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.hlx-ReviewWrapper {
+  justify-content: center;
+}
+
+.footer .footer-nav-grid .footer-nav-item li.footer-nav-item-link picture {
+  width: 24px;
+  max-width: 23px;
+  min-height: auto;
+  float: left;
+}
+
+.footer .footer-nav-grid .footer-nav-item li.footer-nav-item-link picture > * {
+  vertical-align: bottom;
+}
+
+.footer .footer-nav-grid .footer-nav-item .footer-nav-item-link {
+  padding-top: 15px;
+  padding-left: 8px;
+}
+
+.footer .footer-nav-grid .footer-nav-item .footer-nav-item-title {
+  font-size: 1rem;
+}
+
+.footer .footer-nav-grid .footer-nav-item .footer-nav-item-link a {
+  font-size: 1rem;
+  font-weight: 500;
+  padding-left: 35px;
+}
