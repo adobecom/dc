@@ -1,6 +1,8 @@
 export default function init(element) {
   const widget = element;
   widget.querySelector('div').id = 'VERB';
+  widget.querySelectorAll('div')[2].classList.add('hide')
+
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
@@ -18,7 +20,7 @@ export default function init(element) {
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
 
-  widget.appendChild(dcScript)
+  widget.appendChild(dcScript);
 
 
   // DC Personalization
@@ -48,5 +50,18 @@ export default function init(element) {
         window.doccloudPersonalization = doccloudPersonalization;
       });
     }
+
+    // Redirect Usage
+    redDir()
   }, 200)
+
+  // Redirect
+  const fallBack = 'https://acrobat.adobe.com/link/acrobat/jpg-to-pdf?x_api_client_id=adobe_com&x_api_client_location=jpg_to_pdf';
+  const redDir = () => {
+    const signInBtn = document.querySelectorAll('.gnav-signin');
+    if (!signInBtn) {
+      console.log('redir.....');
+      window.location = widget.querySelectorAll('div')[2].textContent.trim() || testRedirURL;
+    }
+  }
 }
