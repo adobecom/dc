@@ -1,0 +1,13 @@
+.personal > div {
+  display: none;
+}
+
+.personal > div > div:nth-child(1) {
+  display: none;
+}
+
+
+[data-tag] {
+  background-color: beige;
+  display: block !important;
+}
