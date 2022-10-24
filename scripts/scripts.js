@@ -22,7 +22,7 @@ const LIBS = 'https://milo.adobe.com/libs';
 const CONFIG = {
   // codeRoot: '',
   // contentRoot: '',
-  // imsClientId: 'college',
+  imsClientId: 'acrobatmilo',
   locales: {
     '': { ietf: 'en-US', tk: 'hah7vzn.css' },
     de: { ietf: 'de-DE', tk: 'hah7vzn.css' },
