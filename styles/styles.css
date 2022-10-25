@@ -15,29 +15,30 @@
 .hlx-ReviewWrapper {
   justify-content: center;
 }
-
-.footer .footer-nav-grid .footer-nav-item li.footer-nav-item-link picture {
-  width: 24px;
-  max-width: 23px;
-  min-height: auto;
-  float: left;
+.verb-subfooter {
+  padding-bottom: 50px;
 }
-
-.footer .footer-nav-grid .footer-nav-item li.footer-nav-item-link picture > * {
-  vertical-align: bottom;
+.verb-subfooter h3 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  padding-top: 48px;
 }
-
-.footer .footer-nav-grid .footer-nav-item .footer-nav-item-link {
+.verb-subfooter ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.verb-subfooter ul li {
   padding-top: 15px;
-  padding-left: 8px;
 }
-
-.footer .footer-nav-grid .footer-nav-item .footer-nav-item-title {
-  font-size: 1rem;
-}
-
-.footer .footer-nav-grid .footer-nav-item .footer-nav-item-link a {
-  font-size: 1rem;
+.verb-subfooter ul li a {
+  font-size: 16px;
   font-weight: 500;
-  padding-left: 35px;
+  color: #4b4b4b;
+  vertical-align: top;
+  padding-left: 10px;
 }
+.footer {
+  background-color: #fbfbfb;
+}
+
