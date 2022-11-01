@@ -16,6 +16,6 @@ background-color: #fc6767;
   z-index:10;
 }
 
-#VERB {
+#VERB, .hide {
   display: none;
 }
