@@ -42,4 +42,32 @@
 .footer {
   background-color: #fbfbfb;
 }
-
+.how-to .text ol {
+  padding-left: 0;
+  list-style: none;
+  counter-reset: custom-counter;
+}
+.how-to .text ol li {
+  list-style-type: none;
+  counter-increment: custom-counter;
+  margin: 1rem;
+  padding-left: 1.5rem;
+}
+.how-to .text ol li::marker {
+  display: none;
+}
+.how-to .text ol li::before {
+  content: counter(custom-counter);
+  background: rgba(13,102,208,.13);
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: .6875rem;
+  font-style: italic;
+  border-radius: 50%;
+  display: inline-block;
+  line-height: 1.5rem;
+  text-align: center;
+  margin-right: 0.75rem;
+  margin-left: -35px;
+  margin-top: 10px;
+}
