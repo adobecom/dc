@@ -11,7 +11,6 @@
   display: flex;
   flex-direction: row;
 }
-
 .hlx-ReviewWrapper {
   justify-content: center;
 }
@@ -71,3 +70,74 @@
   margin-left: -35px;
   margin-top: 10px;
 }
+
+/* browser extension modal */
+@keyframes modalSlideIn-frictionlessBrowserExtension {
+  from { left: -50rem !important; }
+  to { left: 0; }
+}
+.dialog-modal.extension-modal.backdrop-off {
+  width: 30rem;
+  max-height: 188px;
+  top: revert;
+  right: revert;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  overflow: hidden;
+  box-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 4% / 10%), 0 0 0 1px hsl(0deg 0% 4% / 2%);
+}
+.browser-extension {
+  padding: 20px;
+  font-size: 16px;
+  animation-name: modalSlideIn-frictionlessBrowserExtension;
+  transition: opacity 125ms ease-in-out,background-color 125ms ease-in-out,backdrop-filter 125ms ease-in-out,-webkit-backdrop-filter 125ms ease-in-out,transform 125ms ease-in-out;
+  animation-duration: 2s;
+}
+.browser-extension p {
+  margin-top: 0;
+  margin-right: 20px;
+}
+.browser-extension > .row {
+  display: flex;
+  margin-bottom: 0;
+  gap: 0px;
+}
+.browser-extension picture {
+  width: initial;
+  vertical-align: middle;
+  display: flex;
+  padding: 20px 10px 0px 10px;
+}
+.browser-extension picture img {
+  width: 100%;
+  max-width: 150px;
+  padding: 10px;
+  display: block;
+}
+.browser-extension .row .col-1 {
+  width: 70%;
+}
+.browser-extension .row .col-1 a {
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 16px;
+  min-height: 32px;
+  height: auto;
+  min-width: 72px;
+  padding: 3px 14px 5px;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: transparent;
+  border-color: #505050;
+  color: #505050;
+}
+.browser-extension .row .col-1 a:hover {
+  background-color: #505050;
+  color: #ffffff;
+  text-decoration: none;
+}
+.browser-extension .row .col-2 {
+  width: 30%;
+  border-left: solid 2px #EAEAEA;
+}
+

@@ -1,7 +1,10 @@
 export default function init(element) {
   const widget = element;
   widget.querySelector('div').id = 'VERB';
-  widget.querySelectorAll('div')[2].classList.add('hide');
+
+  // ADD IF FOR REDIR
+  // widget.querySelectorAll('div')[2].classList.add('hide');
+
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
