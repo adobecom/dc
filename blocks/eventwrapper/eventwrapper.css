@@ -15,3 +15,15 @@
 body:not([data-current-event]) [data-event-name=onload] {
   display: block
 }
+
+.eventwrapper.onload {
+  min-height: 2866px;
+}
+
+.fragment {
+  min-height: 1400px;
+}
+
+.gnav {
+  min-height: 97px;
+}

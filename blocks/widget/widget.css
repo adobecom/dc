@@ -1,5 +1,6 @@
 .widget {
 background-color: #fc6767;
+min-height: 332px;
 }
 .dc-wrapper {
   width: 100%;
