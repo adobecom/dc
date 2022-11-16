@@ -10,7 +10,13 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs } from './utils.js';
+import { setLibs, redirectLegacyBrowsers } from './utils.js';
+
+// if there is a DC widget on the page check for legacy browser and redirect
+// to EOL Browser page if needed.
+if (document.querySelector('.widget')) {
+  redirectLegacyBrowsers();
+}
 
 // Add project-wide styles here.
 const STYLES = '';
