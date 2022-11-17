@@ -86,38 +86,38 @@
   overflow: hidden;
   box-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 4% / 10%), 0 0 0 1px hsl(0deg 0% 4% / 2%);
 }
-.browser-extension {
+#extension-modal .fragment .section .columns.browser-extension {
   padding: 20px;
   font-size: 16px;
   animation-name: modalSlideIn-frictionlessBrowserExtension;
   transition: opacity 125ms ease-in-out,background-color 125ms ease-in-out,backdrop-filter 125ms ease-in-out,-webkit-backdrop-filter 125ms ease-in-out,transform 125ms ease-in-out;
   animation-duration: 2s;
 }
-.browser-extension p {
+#extension-modal .fragment .section .columns.browser-extension p {
   margin-top: 0;
   margin-right: 20px;
 }
-.browser-extension > .row {
+#extension-modal .fragment .section .columns.browser-extension > .row {
   display: flex;
   margin-bottom: 0;
   gap: 0px;
 }
-.browser-extension picture {
+#extension-modal .fragment .section .columns.browser-extension picture {
   width: initial;
   vertical-align: middle;
   display: flex;
   padding: 20px 10px 0px 10px;
 }
-.browser-extension picture img {
+#extension-modal .fragment .section .columns.browser-extension picture img {
   width: 100%;
   max-width: 150px;
   padding: 10px;
   display: block;
 }
-.browser-extension .row .col-1 {
+#extension-modal .fragment .section .columns.browser-extension .row .col-1 {
   width: 70%;
 }
-.browser-extension .row .col-1 a {
+#extension-modal .fragment .section .columns.browser-extension .row .col-1 a {
   border-width: 2px;
   border-style: solid;
   border-radius: 16px;
@@ -131,12 +131,12 @@
   border-color: #505050;
   color: #505050;
 }
-.browser-extension .row .col-1 a:hover {
+#extension-modal .fragment .section .columns.browser-extension .row .col-1 a:hover {
   background-color: #505050;
   color: #ffffff;
   text-decoration: none;
 }
-.browser-extension .row .col-2 {
+#extension-modal .fragment .section .columns.browser-extension .row .col-2 {
   width: 30%;
   border-left: solid 2px #EAEAEA;
 }
