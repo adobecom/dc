@@ -13,7 +13,7 @@ export default function init(element) {
 
   const dcScript = document.createElement('script');
   dcScript.id = 'adobe_dc_sdk_launcher';
-  dcScript.setAttribute('src', 'https://dc.dev.dexilab.acrobat.com/dc-hosted/2.22.8_1.118.2/dc-app-launcher.js');
+  dcScript.setAttribute('src', 'https://dev.acrobat.adobe.com/dc-hosted/2.35.2_1.157.1/dc-app-launcher.js');
   dcScript.dataset.dropzone_id = 'CID';
   dcScript.dataset.locale = 'en-us';
   dcScript.dataset.server_env = 'dev';

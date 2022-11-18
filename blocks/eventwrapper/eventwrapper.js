@@ -53,9 +53,13 @@ export default function init(element) {
   }
   const CONVERTER = document.querySelector('#adobe_dc_sdk_launcher');
   const VERB = CONVERTER.dataset.verb;
-  window.dc_hosted.addEventListener((e, jobData) => handleEvents(e, jobData, CONVERTER, VERB));
+  
+
+  setTimeout ( () => {
+    window.dc_hosted.addEventListener((e, jobData) => handleEvents(e, jobData, CONVERTER, VERB));
 
 
+  }, 300)
 
 
   //set data attributes

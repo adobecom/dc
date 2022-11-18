@@ -1,0 +1,21 @@
+.personalizationShowAll [data-tag='default'] {
+  background-color: #66bb16;
+}
+
+.personalizationShowAll [data-tag='2nd conversion'] {
+  background-color: #f4f41a;
+}
+
+.personalizationShowAll [data-tag='upsell'] {
+  background-color: #f44336;
+}
+.personalization > div,
+.personalization > div > div:nth-child(1) {
+  display: none;
+}
+
+[data-tag='default'],
+[data-tag='2nd conversion'],
+[data-tag='upsell'] {
+  display: block !important;
+}
