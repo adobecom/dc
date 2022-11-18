@@ -1,13 +1,16 @@
 .personalizationShowAll [data-tag='default'] {
   background-color: #66bb16;
+  padding: 5px;
 }
 
 .personalizationShowAll [data-tag='2nd conversion'] {
   background-color: #f4f41a;
+  padding: 5px;
 }
 
 .personalizationShowAll [data-tag='upsell'] {
   background-color: #f44336;
+  padding: 5px;
 }
 .personalization > div,
 .personalization > div > div:nth-child(1) {
