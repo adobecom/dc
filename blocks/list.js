@@ -1,7 +1,7 @@
 const blocks = [
   'widget',
   'eventwrapper',
-  'personal'
+  'personalization'
 ];
 
 export default blocks;
