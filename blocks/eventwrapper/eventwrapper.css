@@ -1,5 +1,12 @@
 [data-event-name] {
-  display: none
+  /* display: none; */
+  -webkit-transition: max-height 1s;
+  -moz-transition: max-height 1s;
+  -ms-transition: max-height 1s;
+  -o-transition: max-height 1s;
+  transition: max-height 1s;
+  max-height: 0;
+  overflow: hidden;
 }
 
 [data-current-event=cancel] [data-event-name=cancel],
@@ -13,17 +20,17 @@
 [data-current-event=uploadcomplete] [data-event-name=uploadcomplete],
 [data-current-event=upsell] [data-event-name=upsell],
 body:not([data-current-event]) [data-event-name=onload] {
-  display: block
+  /* display: block; */
+  max-height: 20000px;
 }
 
-.eventwrapper.onload {
-  min-height: 2866px;
+.eventsShowAll .eventwrapper {
+  padding: 5px;
+  background-color: #ccd9ff;
 }
 
-.fragment {
-  min-height: 1400px;
-}
-
-.gnav {
-  min-height: 97px;
+.eventsShowAll .eventwrapper.complete,
+.eventsShowAll .eventwrapper.preview {
+  padding: 5px;
+  background-color: #acbff8;
 }
