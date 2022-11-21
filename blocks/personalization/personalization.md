@@ -1,15 +1,15 @@
 # Personalization
 
-Allows for content variation depeding on DC Widget usage. The accepted options are: default, 2nd Conversion or upsell.
+Allows for content variation depeding on DC Widget usage. The accepted options are: `default`, `2nd conversion` and `upsell`.
 
 ## Block Configuration 
 Each row in this block is meant to repersent an UX. We currently only support: `defualt`, `2nd conversion` and `upsell`.  Only use rows needed for design.
 
-| personalization |                      |
-|-----------------|----------------------|
-| default         | Fragment or content  |
-| 2nd Conversion  | Fragment or content  |
-| upsell          | Fragment or content  |
+| personalization   |                      |
+|-------------------|----------------------|
+| `default`         | Fragment or content  |
+| `2nd Conversion`  | Fragment or content  |
+| `upsell`          | Fragment or content  |
 
 *Note: Several fragments can be stacked in the same cell.*
 
