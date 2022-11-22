@@ -62,9 +62,9 @@ export default function init(element) {
   const CONVERTER = document.querySelector('#adobe_dc_sdk_launcher');
   const VERB = CONVERTER.dataset.verb;
 
-  setTimeout(() => {
+  window.addEventListener('DC_Hosted:Ready', () => {
     window.dc_hosted.addEventListener((e, jobData) => handleEvents(e, jobData, CONVERTER, VERB));
-  }, 1000);
+  });
 
   // set data attributes
   wrapper.dataset.eventName = wrapper.classList[1];
