@@ -11,13 +11,32 @@
  */
 
 import { setLibs } from './utils.js';
-import {redirectLegacyBrowsers} from './legacyBrowser.js';
+import { redirectLegacyBrowsers } from './legacyBrowser.js';
 
 // if there is a DC widget on the page check for legacy browser and redirect
 // to EOL Browser page if needed.
 if (document.querySelector('.widget')) {
   redirectLegacyBrowsers();
 }
+
+// IMS Ready
+const imsReady = setInterval(() => {
+  if (window.adobeIMS && window.adobeIMS.initialized) {
+    clearInterval(imsReady);
+    const imsIsReady = new CustomEvent('IMS:Ready');
+    window.dispatchEvent(imsIsReady);
+  }
+}, 1000);
+
+// DC Hosted Ready
+const dcHostedReady = setInterval(() => {
+  if (window.dc_hosted) {
+    console.log('DC is ready');
+    clearInterval(dcHostedReady);
+    const imsIsReady = new CustomEvent('DC_Hosted:Ready');
+    window.dispatchEvent(imsIsReady);
+  }
+}, 1000);
 
 // Add project-wide styles here.
 const STYLES = '';
