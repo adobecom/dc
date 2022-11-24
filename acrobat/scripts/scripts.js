@@ -46,8 +46,8 @@ const LIBS = 'https://milo.adobe.com/libs';
 
 // Add any config options.
 const CONFIG = {
-  // codeRoot: '',
-  // contentRoot: '',
+  codeRoot: '/acrobat',
+  contentRoot: '/acrobat',
   imsClientId: 'acrobatmilo',
   locales: {
     '': { ietf: 'en-US', tk: 'hah7vzn.css' },
