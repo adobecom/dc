@@ -6,5 +6,5 @@ First row is for selecting what type for widget will load. For example Word-to-P
 
 | Widget            |
 | ----------------- |
-| `word-to-prf`     |
+| `word-to-pdf`     |
 | Link to redirect  |
