@@ -38,6 +38,10 @@
   vertical-align: top;
   padding-left: 10px;
 }
+.section.hide {
+  display: none;
+  padding: 0;
+}
 .footer {
   background-color: #fbfbfb;
 }

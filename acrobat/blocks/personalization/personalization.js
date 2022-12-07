@@ -41,7 +41,7 @@ export default function init(element) {
   const SECOND_CONVERSION = '2nd conversion';
   const UPSELL = 'upsell';
 
-  // Widget did not load or preview
+  // DC Converter Widget did not load or preview
   if (!window.doccloudPersonalization) {
     frags.forEach((ele) => {
       const tag = ele.firstElementChild.textContent.trim();

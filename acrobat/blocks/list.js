@@ -1,7 +1,8 @@
 const blocks = [
-  'widget',
+  'dc-converter-widget',
   'eventwrapper',
-  'personalization'
+  'personalization',
+  'verb-subfooters',
 ];
 
 export default blocks;
