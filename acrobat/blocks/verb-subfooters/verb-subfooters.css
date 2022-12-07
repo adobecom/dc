@@ -1,0 +1,22 @@
+.verb-subfooters {
+  max-height: 0;
+  padding: 0;
+}
+
+/* Moblie */
+.mobile-verb-footer {
+  -webkit-transition: max-height 1s;
+  -moz-transition: max-height 1s;
+  -ms-transition: max-height 1s;
+  -o-transition: max-height 1s;
+  transition: max-height 1s;
+  max-height: 0;
+  overflow: hidden;
+  position: initial !important;
+}
+
+.mobile-verb-footer-show {
+  max-height: 20000px;
+  position: initial !important;
+
+}

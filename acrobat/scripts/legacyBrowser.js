@@ -1,6 +1,6 @@
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 
-// Check if browser version is compatible with DC Widget
+// Check if browser version is compatible with DC Converter Widget
 export function browserDetection() {
   // Uses Bowser Library (https://lancedikson.github.io/bowser/docs/Parser.html)
   const parser = bowser.getParser(window.navigator.userAgent);
