@@ -12,6 +12,7 @@
 
 import { setLibs } from './utils.js';
 import { redirectLegacyBrowsers } from './legacyBrowser.js';
+import { lanaLogging } from './lanaLogging.js';
 
 // if there is a DC widget on the page check for legacy browser and redirect
 // to EOL Browser page if needed.
@@ -87,4 +88,6 @@ const { loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/uti
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
   loadDelayed();
+  const DC_CONVERTER_WIDGET = document.querySelectorAll('.dc-converter-widget');
+  lanaLogging(DC_CONVERTER_WIDGET);
 }());
