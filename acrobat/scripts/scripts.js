@@ -11,13 +11,6 @@
  */
 
 import { setLibs } from './utils.js';
-import { redirectLegacyBrowsers } from './legacyBrowser.js';
-
-// if there is a DC widget on the page check for legacy browser and redirect
-// to EOL Browser page if needed.
-if (document.querySelector('.widget')) {
-  redirectLegacyBrowsers();
-}
 
 // IMS Ready
 const imsReady = setInterval(() => {
