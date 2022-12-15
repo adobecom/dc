@@ -1,7 +1,10 @@
 export default function init(el) {
   const mobileVerbFooter = document.querySelectorAll('.tablet');
   const desktopVerbFooter = document.querySelectorAll('.verb-subfooter');
-  if (mobileVerbFooter) {
+
+  console.log(mobileVerbFooter);
+  if (mobileVerbFooter.length > 0) {
+    console.log('sga');
     mobileVerbFooter[0].parentElement.classList.add('mobile-verb-footer');
   }
 
@@ -14,7 +17,7 @@ export default function init(el) {
   //   });
   // });
 
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+  if (mobileVerbFooter.length > 0 && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
   // true for mobile device
     mobileVerbFooter[0].parentElement.classList.add('mobile-verb-footer-show');
     desktopVerbFooter[0].parentElement.classList.add('hide');
