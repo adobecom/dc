@@ -40,7 +40,7 @@
 }
  
 @media (min-width: 37.5rem) {
-  .accordion-container.mobile {
+  .accordion-container.verb-subfooter-moblie {
     display: none;
   }
 }
@@ -50,7 +50,7 @@
     display: none;
   }
 }
-.accordion-container.mobile .accordion-trigger {
+.accordion-container.verb-subfooter-moblie .accordion-trigger {
   color: #747474;
   -ms-flex-align: center;
   -ms-flex-pack: start;
@@ -80,37 +80,37 @@
   padding: 0;
 }
 
-.accordion-container.mobile .accordion dt.is-open,
-.accordion-container.mobile .accordion dd.is-open, 
-.accordion-container.mobile .accordion dt.has-focus, 
-.accordion-container.mobile .accordion dd.has-focus {
+.accordion-container.verb-subfooter-moblie .accordion dt.is-open,
+.accordion-container.verb-subfooter-moblie .accordion dd.is-open, 
+.accordion-container.verb-subfooter-moblie .accordion dt.has-focus, 
+.accordion-container.verb-subfooter-moblie .accordion dd.has-focus {
   border-left: none;
 }
 
-.accordion-container.mobile .accordion dt.is-open,
-.accordion-container.mobile .accordion dd.is-open {
+.accordion-container.verb-subfooter-moblie .accordion dt.is-open,
+.accordion-container.verb-subfooter-moblie .accordion dd.is-open {
   padding: 0;
 }
 
-.accordion-container.mobile .accordion ul {
+.accordion-container.verb-subfooter-moblie .accordion ul {
   padding-left: 20px;
 }
 
-.accordion-container.mobile .accordion li {
+.accordion-container.verb-subfooter-moblie .accordion li {
   list-style-type: none;
   padding: 8px 0;
 }
 
-.accordion-container.mobile .accordion li a {
+.accordion-container.verb-subfooter-moblie .accordion li a {
   color: #000;
 }
 
-.accordion-container.mobile picture {
+.accordion-container.verb-subfooter-moblie picture {
   vertical-align: middle;
   padding-right: 10px;
 }
 
-.accordion-container.mobile  dd.is-open.has-focus {
+.accordion-container.verb-subfooter-moblie  dd.is-open.has-focus {
   background-color: transparent;
 }
 
