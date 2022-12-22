@@ -81,7 +81,7 @@ const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}
     }
   }, 1000);
 
-  // DC Hosted Ready
+  // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
     if (window.dc_hosted) {
       clearInterval(dcHostedReady);
