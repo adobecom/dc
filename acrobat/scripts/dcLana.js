@@ -1,6 +1,6 @@
 export default function lanaLogging() {
   const lanaOptions = {
-    sampleRate: 100,//for testing, later will be modified back to 1.
+    sampleRate: 1,
   };
   // DC Converter Logging
   window.addEventListener('DC_Hosted:Ready', () => {
