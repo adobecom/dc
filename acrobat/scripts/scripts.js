@@ -70,7 +70,6 @@ const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}
   await loadArea();
   loadDelayed();
   loadLana({ clientId: 'dxdc' });
-  console.log("test log to check build problem: reverted soon");
   lanaLogging();
 
   // IMS Ready
