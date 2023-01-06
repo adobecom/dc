@@ -40,6 +40,9 @@ const defaultSrc = [
 const font = [
   '"self',
   'use.typekit.net',
-]
+];
+
+// TRY This
+// use variables for the different domians
 
 export default { connect, defaultSrc, font };
