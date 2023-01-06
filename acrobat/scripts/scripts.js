@@ -13,6 +13,9 @@
 import { setLibs } from './utils.js';
 import { redirectLegacyBrowsers } from './legacyBrowser.js';
 import lanaLogging from './dcLana.js';
+import ContentSecurityPolicy from './contentSecurityPolicy/csp.js';
+
+ContentSecurityPolicy();
 
 // if there is a DC widget on the page check for legacy browser and redirect
 // to EOL Browser page if needed.

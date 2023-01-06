@@ -11,7 +11,6 @@ export default function init(element) {
   let upsell;
 
   window.addEventListener('Personalization:Ready', () => {
-    console.log('hosted is ready');
     const params = new Proxy(new URLSearchParams(window.location.search),{
       get: (searchParams, prop) => searchParams.get(prop),
     });
@@ -29,10 +28,8 @@ export default function init(element) {
     });
 
     if (document.querySelectorAll('#adobe_dc_sdk_launcher').length > 0 && window.doccloudPersonalization) {
-      console.log('Right here');
       const pageType = getPageType();
       const upsellType = getUpsellType();
-      console.log(pageType);
       // Conditons
       secondConversion = doccloudPersonalization[pageType].can_process && doccloudPersonalization[pageType].has_processed;
       upsell = doccloudPersonalization.isUpsellDisplayed[upsellType] ||
