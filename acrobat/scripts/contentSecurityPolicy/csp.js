@@ -20,7 +20,7 @@ if (window.location.hostname === 'stage--acrobat--adobecom.hlx.page') {
 }
 
 export default function ContentSecurityPolicy() {
-  const theCSP = `connect-src ${ENV.connect.join(' ')} default-src ${ENV.defaultSrc.join(' ')} font-src ${ENV.font.join(' ')}`;
+  const theCSP = `connect-src ${ENV.connect.join(' ')} default-src ${ENV.defaultSrc.join(' ')}`;
 
   // temp
   console.log(`This is the ${NAME} CSP!!`);
