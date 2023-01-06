@@ -17,6 +17,14 @@ import ContentSecurityPolicy from './contentSecurityPolicy/csp.js';
 
 ContentSecurityPolicy();
 
+// CLS Scripts
+const head = document.querySelector('head');
+const clsPopIn = document.createElement('link');
+clsPopIn.id = 'CLS_POPIN';
+clsPopIn.setAttribute('rel', 'stylesheet');
+clsPopIn.setAttribute('href', '/acrobat/styles/cls.css');
+head.appendChild(clsPopIn);
+
 // if there is a DC widget on the page check for legacy browser and redirect
 // to EOL Browser page if needed.
 if (document.querySelector('.widget')) {
