@@ -3,12 +3,13 @@ export default function init(element) {
   let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.35.3_1.160.1/dc-app-launcher.js';
 
   if (window.location.hostname === 'main--acrobat--adobecom.hlx.page'
+    || window.location.hostname === 'main--acrobat--adobecom.hlx.live'
     || window.location.hostname === 'adobe.com') {
     WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.35.2_1.159.3/dc-app-launcher.js';
   }
 
   if (window.location.hostname === 'stage--acrobat--adobecom.hlx.page') {
-    WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.35.3_1.160.1/dc-app-launcher.js';
+    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.35.3_1.160.1/dc-app-launcher.js';
   }
 
   widget.querySelector('div').id = 'VERB';
