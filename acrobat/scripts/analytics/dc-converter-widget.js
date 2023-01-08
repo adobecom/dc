@@ -1,6 +1,6 @@
 export default function init(element) {
   console.log(element);
-  console.log('ALLOY');
+  console.log('DC Converter ALLOY');
 
   // Figure out how to setp LH
   const lh = 'SOME DEFAULT VALUE';
