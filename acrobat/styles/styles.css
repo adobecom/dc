@@ -221,3 +221,23 @@
   border-left: solid 2px #EAEAEA;
 }
 
+/* CLS */
+.dc-converter-widget {
+  min-height: 0 !important;
+  -webkit-transition: min-height 1s;
+  -moz-transition: min-height 1s;
+  -ms-transition: min-height 1s;
+  -o-transition: min-height 1s;
+  transition: min-height 1s;
+  /* overflow: hidden; */
+}
+
+.eventwrapper.onload {
+  min-height: 0 !important;
+  -webkit-transition: min-height 1s;
+  -moz-transition: min-height 1s;
+  -ms-transition: min-height 1s;
+  -o-transition: min-height 1s;
+  transition: min-height 1s;
+  /* overflow: hidden; */
+}

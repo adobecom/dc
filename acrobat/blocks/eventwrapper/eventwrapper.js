@@ -1,3 +1,7 @@
+import converterAnalytics from '../../scripts/analytics/dc-converter-widget.js';
+
+//TODO: Only have run one time
+
 const UPLOAD_START = 'file-upload-start';
 const PROCESS_START = 'processing-start';
 const UPLOAD_COMPLETE = 'file-upload-complete';
@@ -29,6 +33,8 @@ export default function init(element) {
   }
 
   const handleEvents = (e, jobData, converter, verb) => {
+    if (e === PROCESS_START) converterAnalytics();
+
     switch (e) {
       case PROCESS_START:
         setCurrentEvent('start');

@@ -77,7 +77,11 @@ export default function init(element) {
         reviewBlock.forEach((reviewEle) => {
           reviewEle.classList.add('hide');
         });
-        document.querySelector('#CLS_POPIN').remove();
+
+        const clsPopIn = document.querySelector('#CLS_POPIN')
+        if (clsPopIn) {
+          clsPopIn.remove();
+        }
       }
     });
   });
