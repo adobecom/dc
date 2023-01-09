@@ -5,17 +5,17 @@
 
 @media (max-width: 37.5rem) {
   .eventwrapper.onload {
-    min-height: 1983px !important;
+    min-height: 3562px !important;
   }
 }
 
 
 @media (min-width: 37.5rem) {
   .eventwrapper.onload {
-    min-height: 3562px !important;
+    min-height: 1983px !important;
   }
 }
 
-picture {
+/* picture {
   display: none;
-}
+} */
