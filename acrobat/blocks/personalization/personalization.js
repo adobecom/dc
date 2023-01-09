@@ -78,7 +78,7 @@ export default function init(element) {
           reviewEle.classList.add('hide');
         });
 
-        const clsPopIn = document.querySelector('#CLS_POPIN')
+        const clsPopIn = document.querySelector('#CLS_POPIN');
         if (clsPopIn) {
           clsPopIn.remove();
         }
