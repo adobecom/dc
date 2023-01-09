@@ -3,6 +3,19 @@
   min-height: 570px !important;
 }
 
-.eventwrapper.onload {
-  min-height: 1983px !important;
+@media (max-width: 37.5rem) {
+  .eventwrapper.onload {
+    min-height: 1983px !important;
+  }
+}
+
+
+@media (min-width: 37.5rem) {
+  .eventwrapper.onload {
+    min-height: 3562px !important;
+  }
+}
+
+picture {
+  display: none;
 }
