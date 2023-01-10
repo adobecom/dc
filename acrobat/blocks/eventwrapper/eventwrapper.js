@@ -66,11 +66,12 @@ export default function init(element) {
   };
 
   const CONVERTER = document.querySelector('#adobe_dc_sdk_launcher');
-  const VERB = CONVERTER.dataset.verb;
+  // const VERB = CONVERTER.dataset.verb;
+  const VERB = 'pdf-to-ppt';
 
-  window.addEventListener('DC_Hosted:Ready', () => {
-    window.dc_hosted.addEventListener((e, jobData) => handleEvents(e, jobData, CONVERTER, VERB));
-  });
+  // window.addEventListener('DC_Hosted:Ready', () => {
+  //   window.dc_hosted.addEventListener((e, jobData) => handleEvents(e, jobData, CONVERTER, VERB));
+  // });
 
   // set data attributes
   wrapper.dataset.eventName = wrapper.classList[1];

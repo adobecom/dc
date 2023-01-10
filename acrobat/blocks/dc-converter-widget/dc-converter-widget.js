@@ -65,7 +65,14 @@ export default function init(element) {
   dcScript.dataset.location = WIDGET_ENV;
   // also grab generate cache html and css
 
-  widget.appendChild(dcScript);
+  element.addEventListener('mouseenter', () => {
+    widget.appendChild(dcScript);
+    const inlinedCode = document.createElement('script');
+    inlinedCode.setAttribute('src', '/acrobat/scripts/devWidget.js');
+    widget.appendChild(inlinedCode);
+    console.log('load on demand');
+  });
+  // widget.appendChild(dcScript);
 
   const inlinedCode = document.createElement('script');
   inlinedCode.setAttribute('src', '/acrobat/scripts/devWidget.js');
