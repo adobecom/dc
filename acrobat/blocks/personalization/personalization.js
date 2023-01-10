@@ -10,7 +10,7 @@ export default function init(element) {
   let secondConversion;
   let upsell;
 
-  window.addEventListener('Personalization:Ready', () => {
+  // window.addEventListener('Personalization:Ready', () => {
     const params = new Proxy(new URLSearchParams(window.location.search),{
       get: (searchParams, prop) => searchParams.get(prop),
     });
@@ -84,5 +84,5 @@ export default function init(element) {
         }
       }
     });
-  });
+  // });
 }
