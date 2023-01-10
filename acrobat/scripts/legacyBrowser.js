@@ -1,6 +1,6 @@
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 
-// Check if browser version is compatible with DC Converter Widget
+// Check if browser version is compatible with minimal milo / DC widget requirements
 export function browserDetection() {
   // Uses Bowser Library (https://lancedikson.github.io/bowser/docs/Parser.html)
   const parser = bowser.getParser(window.navigator.userAgent);
@@ -9,19 +9,24 @@ export function browserDetection() {
 
   if (!browserName) return null;
   let majorVersion = null;
+  let minorVersion = null;
 
   if (version) {
     const versionElements = version.split('.');
     if (versionElements.length >= 1) {
       majorVersion = parseInt(versionElements[0], 10);
+      minorVersion = parseInt(versionElements[1], 10);
     }
   }
 
+  console.log(`Version: ${majorVersion}.${minorVersion}`)
+  // IE is not supported
   if (/Internet Explorer/i.test(browserName)) return 'IE';
 
   if (/Microsoft Edge/i.test(browserName)) {
     // if we cannot determine major version, we should not redirect to be on the safe side
-    if (!majorVersion || majorVersion >= 79) {
+    // EDGE: DC Widget >= 79, Milo >= 85
+    if (!majorVersion || majorVersion >= 85) {
       return 'EDGE-CHROMIUM';
     }
     return 'EDGE-LEGACY';
@@ -33,7 +38,8 @@ export function browserDetection() {
 
   if (/Safari/i.test(browserName)) {
     // if we cannot determine major version, we should not redirect to be on the safe side
-    return (!majorVersion || majorVersion >= 13) ? 'SAFARI' : 'SAFARI-LEGACY';
+    // Safari: DC Widget > 12, Milo >= 13.1
+    return (!majorVersion || (majorVersion >= 13 && minorVersion >= 1)) ? 'SAFARI' : 'SAFARI-LEGACY';
   }
   return null;
 }
