@@ -53,7 +53,7 @@ export default function init(element) {
 
   const dcScript = document.createElement('script');
   dcScript.id = 'adobe_dc_sdk_launcher';
-  // dcScript.setAttribute('src', WIDGET_ENV);
+  dcScript.setAttribute('src', WIDGET_ENV);
   dcScript.dataset.dropzone_id = 'CID';
   dcScript.dataset.locale = 'en-us';
   dcScript.dataset.server_env = 'dev';
@@ -61,22 +61,26 @@ export default function init(element) {
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
-  dcScript.dataset.insertSnippet = 'true';
-  dcScript.dataset.location = WIDGET_ENV;
+  // dcScript.dataset.insertSnippet = 'true';
+  // dcScript.dataset.location = WIDGET_ENV;
   // also grab generate cache html and css
 
+  let count = 0;
   element.addEventListener('mouseenter', () => {
-    widget.appendChild(dcScript);
-    const inlinedCode = document.createElement('script');
-    inlinedCode.setAttribute('src', '/acrobat/scripts/devWidget.js');
-    widget.appendChild(inlinedCode);
-    console.log('load on demand');
+    if (count < 1) {
+      count = 1;
+      widget.appendChild(dcScript);
+      // const inlinedCode = document.createElement('script');
+      // inlinedCode.setAttribute('src', '/acrobat/scripts/devWidget.js');
+      // widget.appendChild(inlinedCode);
+      console.log('load on demand');
+    }
   });
   // widget.appendChild(dcScript);
 
-  const inlinedCode = document.createElement('script');
-  inlinedCode.setAttribute('src', '/acrobat/scripts/devWidget.js');
-  widget.appendChild(inlinedCode);
+  // const inlinedCode = document.createElement('script');
+  // inlinedCode.setAttribute('src', '/acrobat/scripts/devWidget.js');
+  // widget.appendChild(inlinedCode);
 
   // DC Personalization
   window.addEventListener('DC_Hosted:Ready', () => {
