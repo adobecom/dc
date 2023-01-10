@@ -3,8 +3,10 @@ background-color: #fc6767;
 min-height: 332px;
 }
 .dc-wrapper {
-  width: 100%;
-  max-width: 1100px;
+  /* width: 100%;
+  max-width: 1100px; */
+  width: 75%;
+  max-width: 75%;
   height: auto;
   margin: auto;
   padding: 0 0 0 ;
@@ -21,8 +23,26 @@ min-height: 332px;
   display: none;
 }
 
-@media (max-width: 37.5rem) {
-  .dc-wrapper {
-    padding: 0 15px 0;
+.dc-wrapper {
+  overflow: hidden;
+  top: 60px;
+  left:0;
+  right:0;
+  margin-left:auto;
+  margin-right:auto;
+  position: absolute;
 }
+
+/* fake widget */
+.fake-dc-wrapper {
+  width: 75%;
+  max-width: 75%;
+  margin: auto;
+  top: 60px;
+  left:0;
+  right:0;
+  margin-left:auto;
+  margin-right:auto;
+  position: relative;
+  z-index: 1;
 }
