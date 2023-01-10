@@ -38,6 +38,10 @@ export default function init(element) {
     switch (e) {
       case PROCESS_START:
         setCurrentEvent('start');
+        const clsPopIn = document.querySelector('#CLS_POPIN');
+        if (clsPopIn) {
+          clsPopIn.remove();
+        }
         break;
       case UPLOAD_START:
         setCurrentEvent('upload');
@@ -66,12 +70,12 @@ export default function init(element) {
   };
 
   const CONVERTER = document.querySelector('#adobe_dc_sdk_launcher');
-  // const VERB = CONVERTER.dataset.verb;
-  const VERB = 'pdf-to-ppt';
+  const VERB = CONVERTER.dataset.verb;
+  // const VERB = 'pdf-to-ppt';
 
-  // window.addEventListener('DC_Hosted:Ready', () => {
-  //   window.dc_hosted.addEventListener((e, jobData) => handleEvents(e, jobData, CONVERTER, VERB));
-  // });
+  window.addEventListener('DC_Hosted:Ready', () => {
+    window.dc_hosted.addEventListener((e, jobData) => handleEvents(e, jobData, CONVERTER, VERB));
+  });
 
   // set data attributes
   wrapper.dataset.eventName = wrapper.classList[1];
