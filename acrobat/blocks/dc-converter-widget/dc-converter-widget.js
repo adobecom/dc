@@ -84,7 +84,7 @@ export default function init(element) {
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
 
- widget.appendChild(dcScript);
+  widget.appendChild(dcScript);
 
   // DC Personalization
   window.addEventListener('DC_Hosted:Ready', () => {
