@@ -27,7 +27,7 @@ head.appendChild(clsPopIn);
 
 // if there is a DC widget on the page check for legacy browser and redirect
 // to EOL Browser page if needed.
-if (document.querySelector('.widget')) {
+if (document.querySelector('.dc-converter-widget')) {
   redirectLegacyBrowsers();
 }
 
