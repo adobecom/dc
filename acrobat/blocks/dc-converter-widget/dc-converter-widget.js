@@ -13,6 +13,7 @@ export default function init(element) {
   }
 
   widget.querySelector('div').id = 'VERB';
+  const VERB = widget.querySelector('div').innerText.trim().toLowerCase();
 
   // Redir URL
   if (widget.querySelectorAll('div')[2]) {
@@ -26,6 +27,27 @@ export default function init(element) {
       window.location = widget.querySelectorAll('div')[2].textContent.trim() || fallBack;
     }
   };
+
+  // Static
+  const fakeWidgetContainer = document.createElement('div');
+  fakeWidgetContainer.id = 'fake';
+  fakeWidgetContainer.className = 'fake-dc-wrapper';
+  widget.appendChild(fakeWidgetContainer);
+
+  (async () => {
+    // TODO: Make dynamic
+    const response = await fetch('https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.160.1/pdf-to-ppt-en-us.html');
+    // eslint-disable-next-line default-case
+    switch (response.status) {
+      case 200:
+        // eslint-disable-next-line no-case-declarations
+        const template = await response.text();
+        fakeWidgetContainer.innerHTML = template;
+        break;
+      case 404:
+        break;
+    }
+  })();
 
   window.addEventListener('IMS:Ready', () => {
     // Redirect Usage
@@ -57,30 +79,12 @@ export default function init(element) {
   dcScript.dataset.dropzone_id = 'CID';
   dcScript.dataset.locale = 'en-us';
   dcScript.dataset.server_env = 'dev';
-  dcScript.dataset.verb = document.querySelector('#VERB').innerText.trim().toLowerCase();
+  dcScript.dataset.verb = VERB;
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
-  // dcScript.dataset.insertSnippet = 'true';
-  // dcScript.dataset.location = WIDGET_ENV;
-  // also grab generate cache html and css
 
-  let count = 0;
-  element.addEventListener('mouseenter', () => {
-    if (count < 1) {
-      count = 1;
-      widget.appendChild(dcScript);
-      // const inlinedCode = document.createElement('script');
-      // inlinedCode.setAttribute('src', '/acrobat/scripts/devWidget.js');
-      // widget.appendChild(inlinedCode);
-      console.log('load on demand');
-    }
-  });
-  // widget.appendChild(dcScript);
-
-  // const inlinedCode = document.createElement('script');
-  // inlinedCode.setAttribute('src', '/acrobat/scripts/devWidget.js');
-  // widget.appendChild(inlinedCode);
+ widget.appendChild(dcScript);
 
   // DC Personalization
   window.addEventListener('DC_Hosted:Ready', () => {
@@ -109,6 +113,7 @@ export default function init(element) {
       window.doccloudPersonalization = doccloudPersonalization;
       // Personalization Ready Event
       const personalizationIsReady = new CustomEvent('Personalization:Ready');
+
       window.dispatchEvent(personalizationIsReady);
     });
   });

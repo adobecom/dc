@@ -221,6 +221,10 @@
   border-left: solid 2px #EAEAEA;
 }
 
+.breadcrumbs ul {
+  padding: 5px 0 !important;
+}
+
 /* CLS */
 .dc-converter-widget {
   min-height: 0 !important;

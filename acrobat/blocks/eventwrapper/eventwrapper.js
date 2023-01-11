@@ -16,7 +16,6 @@ const PREVIEW_GEN = 'preview-generating';
 export default function init(element) {
   const wrapper = element;
   const setCurrentEvent = (event) => {
-    console.log('this is set ' + event);
     if (document.querySelectorAll(`[data-event-name="${event}"]`).length > 0) {
       document.body.dataset.currentEvent = event;
     }
@@ -38,6 +37,11 @@ export default function init(element) {
     switch (e) {
       case PROCESS_START:
         setCurrentEvent('start');
+        // eslint-disable-next-line no-case-declarations
+        const clsPopIn = document.querySelector('#CLS_POPIN');
+        if (clsPopIn) {
+          clsPopIn.remove();
+        }
         break;
       case UPLOAD_START:
         setCurrentEvent('upload');
@@ -65,13 +69,11 @@ export default function init(element) {
     }
   };
 
-  const CONVERTER = document.querySelector('#adobe_dc_sdk_launcher');
-  // const VERB = CONVERTER.dataset.verb;
-  const VERB = 'pdf-to-ppt';
-
-  // window.addEventListener('DC_Hosted:Ready', () => {
-  //   window.dc_hosted.addEventListener((e, jobData) => handleEvents(e, jobData, CONVERTER, VERB));
-  // });
+  window.addEventListener('DC_Hosted:Ready', () => {
+    // const CONVERTER = document.querySelector('#adobe_dc_sdk_launcher');
+    // const VERB = CONVERTER.dataset.verb;
+    window.dc_hosted.addEventListener((e, jobData) => handleEvents(e, jobData));
+  });
 
   // set data attributes
   wrapper.dataset.eventName = wrapper.classList[1];
