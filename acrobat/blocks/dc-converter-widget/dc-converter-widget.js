@@ -13,6 +13,7 @@ export default function init(element) {
   }
 
   widget.querySelector('div').id = 'VERB';
+  const VERB = widget.querySelector('div').innerText.trim().toLowerCase();
 
   // Redir URL
   if (widget.querySelectorAll('div')[2]) {
@@ -78,23 +79,15 @@ export default function init(element) {
   dcScript.dataset.dropzone_id = 'CID';
   dcScript.dataset.locale = 'en-us';
   dcScript.dataset.server_env = 'dev';
-  dcScript.dataset.verb = document.querySelector('#VERB').innerText.trim().toLowerCase();
+  dcScript.dataset.verb = VERB;
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
-  // dcScript.dataset.insertSnippet = 'true';
-  // dcScript.dataset.location = WIDGET_ENV;
-  // also grab generate cache html and css
+
   widget.appendChild(dcScript);
 
   // DC Personalization
   window.addEventListener('DC_Hosted:Ready', () => {
-    setTimeout(() => {
-      console.log(fakeWidgetContainer);
-      fakeWidgetContainer.classList.add('shrink');
-      widgetContainer.classList.add('grow');
-    }, 3000);
-
     const DATA = window.dc_hosted.getUserLimits();
     DATA.then((val) => {
       const doccloudPersonalization = val;
@@ -120,6 +113,7 @@ export default function init(element) {
       window.doccloudPersonalization = doccloudPersonalization;
       // Personalization Ready Event
       const personalizationIsReady = new CustomEvent('Personalization:Ready');
+
       window.dispatchEvent(personalizationIsReady);
     });
   });
