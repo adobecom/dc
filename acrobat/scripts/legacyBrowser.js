@@ -17,8 +17,6 @@ export function browserDetection() {
     }
   }
 
-  console.log(`Version: ${version}`);
-
   // IE is not supported
   if (/Internet Explorer/i.test(browserName)) return 'IE';
 
