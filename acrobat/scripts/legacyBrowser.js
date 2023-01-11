@@ -9,24 +9,23 @@ export function browserDetection() {
 
   if (!browserName) return null;
   let majorVersion = null;
-  let minorVersion = null;
 
   if (version) {
     const versionElements = version.split('.');
     if (versionElements.length >= 1) {
       majorVersion = parseInt(versionElements[0], 10);
-      minorVersion = parseInt(versionElements[1], 10);
     }
   }
 
-  console.log(`Version: ${majorVersion}.${minorVersion}`)
+  console.log(`Version: ${version}`);
+
   // IE is not supported
   if (/Internet Explorer/i.test(browserName)) return 'IE';
 
   if (/Microsoft Edge/i.test(browserName)) {
     // if we cannot determine major version, we should not redirect to be on the safe side
-    // EDGE: DC Widget >= 79, Milo >= 85
-    if (!majorVersion || majorVersion >= 85) {
+    // EDGE: DC Widget >= 79, Milo >= 86
+    if (!majorVersion || majorVersion >= 86) {
       return 'EDGE-CHROMIUM';
     }
     return 'EDGE-LEGACY';
@@ -38,8 +37,8 @@ export function browserDetection() {
 
   if (/Safari/i.test(browserName)) {
     // if we cannot determine major version, we should not redirect to be on the safe side
-    // Safari: DC Widget > 12, Milo >= 13.1
-    return (!majorVersion || (majorVersion >= 13 && minorVersion >= 1)) ? 'SAFARI' : 'SAFARI-LEGACY';
+    // Safari: DC Widget > 12, Milo >= 14 
+    return (!majorVersion || majorVersion >= 14 ) ? 'SAFARI' : 'SAFARI-LEGACY';
   }
   return null;
 }
