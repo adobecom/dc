@@ -1,5 +1,5 @@
 const connectSrc = [
-  '"self"',
+  '\'self\'',
   'blob:',
   '14257-chimera-stage.adobeioruntime.net',
   '*.adobe.com',
@@ -28,17 +28,18 @@ const connectSrc = [
   'pdfnow-dev.adobe.io',
   'privacyportal.onetrust.com',
   'tr.snapchat.com/',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
 const defaultSrc = [
-  '"self"',
+  '\'self\'',
   'auth-stg1.services.adobe.com',
   ';',
 ];
 
 const fontSrc = [
-  '"self"',
+  '\'self\'',
   'use.typekit.net',
   ';',
 ];
@@ -52,7 +53,7 @@ const formAction = [
 ];
 
 const frameSrc = [
-  '"self"',
+  '\'self\'',
   'data:',
   'blob:',
   '*.amazonaws.com',
@@ -76,7 +77,7 @@ const frameSrc = [
 ];
 
 const imgSrc = [
-  '"self"',
+  '\'self\'',
   'about:',
   'blob:',
   'data:',
@@ -107,17 +108,21 @@ const imgSrc = [
   'www.google.com/pagead/',
   'www.google.ie/pagead/',
   'www.linkedin.com',
+  'www.facebook.com',
+  's.tgm.yahoo-net.jp',
+  'main--acrobat--adobecom.hlx.page',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
 const manifestSrc = [
-  '"self"',
+  '\'self\'',
   ';',
 ];
 
 const scriptSrc = [
-  '"self"',
-  '"unsafe-eval"',
+  '\'self\'',
+  'unsafe-eval',
   '*.adobe.com',
   '*.clarity.ms',
   'accounts.google.com/gsi/client',
@@ -153,28 +158,33 @@ const scriptSrc = [
   'www.googleadservices.com/pagead/',
   'www.googletagmanager.com/gtag/',
   'www.redditstatic.com/ads/pixel.js',
+  'main--milo--adobecom.hlx.page',
+  'stage.adobeccstatic.com',
   ';',
 ];
 
 const styleSrc = [
-  '"self"',
-  '"unsafe-inline"',
+  '\'self\'',
+  '\'unsafe-inline\'',
+  'main--milo--adobecom.hlx.page',
   '*.adobe.com',
   'accounts.google.com/gsi/style',
   'dc.dev.dexilab.acrobat.com',
   'use.typekit.net',
+  'stage.adobeccstatic.com',
+  'p.typekit.net',
   ';',
 ];
 
 const workerSrc = [
-  '"self"',
+  '\'self\'',
   'cdnssl.clicktale.net',
   'blob:',
   ';',
 ];
 
 const reportUri = [
- 'https://dc-api-dev.adobe.io/system/csp',
+  'https://dc-api-dev.adobe.io/system/csp',
   ';',
 ];
 
