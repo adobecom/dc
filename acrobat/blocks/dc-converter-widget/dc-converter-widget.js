@@ -1,5 +1,8 @@
+import frictionless from '../../scripts/frictionless.js';
+
 export default function init(element) {
   const widget = element;
+  frictionless();
   let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.35.3_1.160.1/dc-app-launcher.js';
 
   if (window.location.hostname === 'main--acrobat--adobecom.hlx.page'
