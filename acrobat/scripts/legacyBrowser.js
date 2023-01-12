@@ -35,8 +35,8 @@ export function browserDetection() {
 
   if (/Safari/i.test(browserName)) {
     // if we cannot determine major version, we should not redirect to be on the safe side
-    // Safari: DC Widget > 12, Milo >= 14 
-    return (!majorVersion || majorVersion >= 14 ) ? 'SAFARI' : 'SAFARI-LEGACY';
+    // Safari: DC Widget > 12, Milo >= 14
+    return (!majorVersion || majorVersion >= 14) ? 'SAFARI' : 'SAFARI-LEGACY';
   }
   return null;
 }
@@ -45,7 +45,7 @@ export function browserDetection() {
 export function redirectLegacyBrowsers() {
   const browserType = browserDetection();
 
-  if (browserType === 'IE' || browserType === 'EDGE-LEGACY' || browserType === 'SAFARI-LEGACY' ) {
+  if (browserType === 'IE' || browserType === 'EDGE-LEGACY' || browserType === 'SAFARI-LEGACY') {
     window.location.assign(EOLBrowserPage);
   }
 }
