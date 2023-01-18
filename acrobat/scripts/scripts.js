@@ -32,7 +32,7 @@ if (document.querySelector('.dc-converter-widget')) {
 }
 
 // Add project-wide styles here.
-const STYLES = '';
+const STYLES = '/acrobat/styles/styles.css';
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
 const LIBS = 'https://milo.adobe.com/libs';
