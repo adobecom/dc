@@ -34,3 +34,8 @@ body:not([data-current-event]) [data-event-name=onload] {
   padding: 5px;
   background-color: #acbff8;
 }
+
+[data-current-event=complete] .fake-dc-wrapper,
+[data-current-event=complete] .dc-wrapper {
+  top: 30px;
+}

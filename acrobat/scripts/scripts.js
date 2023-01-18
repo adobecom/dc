@@ -11,7 +11,7 @@
  */
 
 import { setLibs } from './utils.js';
-import { redirectLegacyBrowsers } from './legacyBrowser.js';
+// import { redirectLegacyBrowsers } from './legacyBrowser.js';
 import lanaLogging from './dcLana.js';
 import ContentSecurityPolicy from './contentSecurityPolicy/csp.js';
 
@@ -28,7 +28,7 @@ head.appendChild(clsPopIn);
 // if there is a DC widget on the page check for legacy browser and redirect
 // to EOL Browser page if needed.
 if (document.querySelector('.dc-converter-widget')) {
-  redirectLegacyBrowsers();
+  // redirectLegacyBrowsers();
 }
 
 // Add project-wide styles here.
@@ -42,6 +42,10 @@ const CONFIG = {
   codeRoot: '/acrobat',
   contentRoot: '/acrobat',
   imsClientId: 'acrobatmilo',
+  local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
+  stage: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
+  live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
+  prod: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
   locales: {
     '': { ietf: 'en-US', tk: 'hah7vzn.css' },
     de: { ietf: 'de-DE', tk: 'hah7vzn.css' },
