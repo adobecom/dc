@@ -1,15 +1,15 @@
 export default function init(element) {
   const widget = element;
-  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.35.3_1.160.1/dc-app-launcher.js';
+  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.36.1_1.162.1/dc-app-launcher.js';
 
   if (window.location.hostname === 'main--acrobat--adobecom.hlx.page'
     || window.location.hostname === 'main--acrobat--adobecom.hlx.live'
     || window.location.hostname === 'adobe.com') {
-    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.35.3_1.160.1/dc-app-launcher.js';
+    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.36.1_1.162.1/dc-app-launcher.js';
   }
 
   if (window.location.hostname === 'stage--acrobat--adobecom.hlx.page') {
-    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.35.3_1.160.1/dc-app-launcher.js';
+    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.36.1_1.162.1/dc-app-launcher.js';
   }
 
   widget.querySelector('div').id = 'VERB';
@@ -36,7 +36,7 @@ export default function init(element) {
 
   (async () => {
     // TODO: Make dynamic
-    const response = await fetch('https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.160.1/pdf-to-ppt-en-us.html');
+    const response = await fetch('https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.162.1/pdf-to-ppt-en-us.html');
     // eslint-disable-next-line default-case
     switch (response.status) {
       case 200:
