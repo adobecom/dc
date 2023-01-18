@@ -39,17 +39,22 @@
   padding-left: 10px;
 }
  
-@media (min-width: 37.5rem) {
+@media (min-width: 52.7rem) {
   .accordion-container.verb-subfooter-moblie {
     display: none;
   }
 }
 
-@media (max-width: 37.5rem) {
+@media (max-width: 52.6rem) {
   .verb-subfooter  {
     display: none;
   }
 }
+
+.accordion-container.verb-subfooter-moblie {
+  background: #fbfbfb;
+}
+
 .accordion-container.verb-subfooter-moblie .accordion-trigger {
   color: #747474;
   -ms-flex-align: center;
