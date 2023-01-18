@@ -245,3 +245,13 @@
   transition: min-height 1s;
   /* overflow: hidden; */
 }
+
+/* GNav SVG Fill overrides */
+
+.gnav .cls-2{
+  fill: #fff ;
+}
+
+.gnav .cls-1 {
+  fill: #fa0f00;
+}

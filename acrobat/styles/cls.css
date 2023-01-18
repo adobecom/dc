@@ -1,11 +1,14 @@
 /* First Time */
 .dc-converter-widget {
-  min-height: 570px !important;
+  min-height: 582px !important;
 }
 
 @media (max-width: 37.5rem) {
   .eventwrapper.onload {
     min-height: 3562px !important;
+  }
+  .dc-converter-widget {
+    min-height: 536px;
   }
 }
 
