@@ -6,14 +6,14 @@ let ENV = devCSP;
 // temp
 let NAME = 'dev';
 
-if (window.location.hostname === 'main--acrobat--adobecom.hlx.page'
+if (window.location.hostname === 'main--dc--adobecom.hlx.page'
   || window.location.hostname === 'adobe.com') {
   ENV = prodCSP;
   // temp
   NAME = 'prod';
 }
 
-if (window.location.hostname === 'stage--acrobat--adobecom.hlx.page') {
+if (window.location.hostname === 'stage--dc--adobecom.hlx.page') {
   ENV = stageCSP;
   // temp
   NAME = 'stage';

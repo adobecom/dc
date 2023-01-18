@@ -110,7 +110,7 @@ const imgSrc = [
   'www.linkedin.com',
   'www.facebook.com',
   's.tgm.yahoo-net.jp',
-  'main--acrobat--adobecom.hlx.page',
+  'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   ';',
 ];
