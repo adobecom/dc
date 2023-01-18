@@ -90,6 +90,7 @@ export default function init(element) {
         ele.dataset.tag = ele.firstElementChild.textContent;
         defaultContent('live', showAll);
         reviewBlock.forEach((reviewEle) => {
+          reviewEle.parentElement.classList.remove("xxl-spacing");
           reviewEle.classList.add('hide');
         });
 
