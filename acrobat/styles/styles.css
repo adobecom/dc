@@ -1,9 +1,9 @@
-/* 
+/*
  * Put project specific base styles here.
  *
  * Note: The proect does not load this file.
  *       You will need to load these using scripts.js.
- * 
+ *
  *
  */
 .col[data-align="center"] {
@@ -38,7 +38,7 @@
   vertical-align: top;
   padding-left: 10px;
 }
- 
+
 @media (min-width: 52.7rem) {
   .accordion-container.verb-subfooter-moblie {
     display: none;
@@ -86,8 +86,8 @@
 }
 
 .accordion-container.verb-subfooter-moblie .accordion dt.is-open,
-.accordion-container.verb-subfooter-moblie .accordion dd.is-open, 
-.accordion-container.verb-subfooter-moblie .accordion dt.has-focus, 
+.accordion-container.verb-subfooter-moblie .accordion dd.is-open,
+.accordion-container.verb-subfooter-moblie .accordion dt.has-focus,
 .accordion-container.verb-subfooter-moblie .accordion dd.has-focus {
   border-left: none;
 }
@@ -139,6 +139,14 @@
 }
 .how-to .text ol li::marker {
   display: none;
+}
+div.how-to ol li {
+  display: block;
+  font-weight: 400;
+  line-height: 38px;
+}
+div.how-to ol li::before{
+  vertical-align: bottom;
 }
 .how-to .text ol li::before {
   content: counter(custom-counter);
