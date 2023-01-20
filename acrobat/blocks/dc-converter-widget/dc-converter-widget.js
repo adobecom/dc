@@ -30,8 +30,9 @@ export default function init(element) {
 
   // Static
   const fakeWidgetContainer = document.createElement('div');
-  fakeWidgetContainer.id = 'fake';
+  fakeWidgetContainer.id = 'CID';
   fakeWidgetContainer.className = 'fake-dc-wrapper';
+  fakeWidgetContainer.dataset.rendered = 'true';
   widget.appendChild(fakeWidgetContainer);
 
   (async () => {
@@ -83,7 +84,7 @@ export default function init(element) {
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
-  dcScript.dataset.rendered = 'true';
+  // dcScript.dataset.rendered = 'true';
   // dcScript.dataset.insertSnippet = 'true';
 
   widget.appendChild(dcScript);
