@@ -1,5 +1,6 @@
 export default function init(element) {
   const widget = element;
+  console.log('commit test')
   let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.36.1_1.162.1/dc-app-launcher.js';
 
   if (window.location.hostname === 'main--acrobat--adobecom.hlx.page'
