@@ -37,7 +37,7 @@ export default function init(element) {
   const fakeWidgetContainer = document.createElement('div');
   fakeWidgetContainer.id = 'CID';
   fakeWidgetContainer.dataset.rendered = 'true';
-  fakeWidgetContainer.className = 'dc-wrapper';
+  fakeWidgetContainer.className = 'fake-dc-wrapper';
   widget.appendChild(fakeWidgetContainer);
 
   (async () => {
