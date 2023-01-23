@@ -31,3 +31,4 @@ Use the following URL query to see all Personaliztion blocks on a page `showAll`
 | Thank  you text     | Thanks for your feedback                                   |
 | Tooltips            | Poor, Below Average, Good, Very Good, Outstanding          |
 | Tooltip delay       | 5                                                          |
+| Initial Value       | 0                                                          |
