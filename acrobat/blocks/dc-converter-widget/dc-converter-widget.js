@@ -33,27 +33,31 @@ export default function init(element) {
     }
   };
 
-  // Static
-  const fakeWidgetContainer = document.createElement('div');
-  fakeWidgetContainer.id = 'CID';
-  fakeWidgetContainer.dataset.rendered = 'true';
-  fakeWidgetContainer.className = 'fake-dc-wrapper';
-  widget.appendChild(fakeWidgetContainer);
+  const firstTimeUser = window.localStorage.getItem('pdfnow.auth');
+  const preRender = !firstTimeUser;
+  if (preRender) {
+    // Static
+    const fakeWidgetContainer = document.createElement('div');
+    fakeWidgetContainer.id = 'CID';
+    fakeWidgetContainer.className = 'fake-dc-wrapper';
+    widget.appendChild(fakeWidgetContainer);
 
-  (async () => {
-    // TODO: Make dynamic
-    const response = await fetch('https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.162.1/pdf-to-ppt-en-us.html');
-    // eslint-disable-next-line default-case
-    switch (response.status) {
-      case 200:
-        // eslint-disable-next-line no-case-declarations
-        const template = await response.text();
-        fakeWidgetContainer.innerHTML = template;
-        break;
-      case 404:
-        break;
+    (async () => {
+      // TODO: Make dynamic
+      const response = await fetch('https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.162.1/pdf-to-ppt-en-us.html');
+      // eslint-disable-next-line default-case
+      switch (response.status) {
+        case 200:
+          // eslint-disable-next-line no-case-declarations
+          const template = await response.text();
+          fakeWidgetContainer.innerHTML = template;
+          break;
+        case 404:
+          break;
+      }
+    })();
     }
-  })();
+  }
 
   window.addEventListener('IMS:Ready', () => {
     // Redirect Usage
@@ -89,6 +93,9 @@ export default function init(element) {
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
+  if (preRender) {
+    dcScript.dataset.pre_rendered = 'true';
+  }
 
   widget.appendChild(dcScript);
 
