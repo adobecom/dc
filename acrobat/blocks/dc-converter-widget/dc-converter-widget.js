@@ -48,7 +48,11 @@ export default function init(element) {
       case 200:
         // eslint-disable-next-line no-case-declarations
         const template = await response.text();
-        fakeWidgetContainer.innerHTML = template;
+        // eslint-disable-next-line no-case-declarations
+        const doc = new DOMParser().parseFromString(template, 'text/html');
+        document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
+        fakeWidgetContainer.appendChild(doc.body.firstElementChild);
+        performance.mark("milo-insert-snippet");
         break;
       case 404:
         break;
