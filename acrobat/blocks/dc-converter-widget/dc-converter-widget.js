@@ -56,7 +56,6 @@ export default function init(element) {
           break;
       }
     })();
-    }
   }
 
   window.addEventListener('IMS:Ready', () => {
