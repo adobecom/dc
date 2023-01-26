@@ -1,4 +1,5 @@
 import frictionless from '../../scripts/frictionless.js';
+let runOne = false;
 
 export default function init(element) {
   const widget = element;
@@ -15,10 +16,28 @@ export default function init(element) {
     WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.36.1_1.162.1/dc-app-launcher.js';
   }
 
+
+  function addIMSShims() {
+    console.log('DC Shim');
+    console.log(window.adobeIMS);
+    if (window.adobeIMS && !window.adobeIMS.isReady) {
+        window.adobeIMS.isReady = function () {
+            return !!window.adobe_dc_sdk.imsReady;
+        };
+        window.adobeIMS.getClientID = function () {
+            return window.adobeid.client_id;
+        };
+        window.adobeIMS.getUserProfile = function() {
+            return window.adobe_dc_sdk.ims_profile;
+        };
+        window.adobeIMS.getLocale = function () {
+            return window.adobeid.locale;
+        };
+    }
+  }
+
   widget.querySelector('div').id = 'VERB';
   const VERB = widget.querySelector('div').innerText.trim().toLowerCase();
-
-  frictionless(VERB);
 
   // Redir URL
   if (widget.querySelectorAll('div')[2]) {
@@ -36,7 +55,7 @@ export default function init(element) {
   // Static
   const fakeWidgetContainer = document.createElement('div');
   fakeWidgetContainer.id = 'CID';
-  fakeWidgetContainer.dataset.rendered = 'true';
+  // fakeWidgetContainer.dataset.rendered = 'true';
   fakeWidgetContainer.className = 'fake-dc-wrapper';
   widget.appendChild(fakeWidgetContainer);
 
@@ -58,8 +77,19 @@ export default function init(element) {
   window.addEventListener('IMS:Ready', () => {
     // Redirect Usage
     redDir();
-
+    frictionless(VERB);
   });
+
+  const header = document.querySelector('header')
+  header.addEventListener('gnav:init', () => {
+    console.log('gnav ready');
+    addIMSShims();
+    // make sure you only load once! 
+    if (!runOne) {
+      widget.appendChild(dcScript);
+      runOne = true;
+    }
+  })
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
@@ -77,7 +107,12 @@ export default function init(element) {
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
 
-  widget.appendChild(dcScript);
+  console.log('shim no wait');
+  addIMSShims();
+  if (!runOne) {
+    widget.appendChild(dcScript);
+    runOne = true;
+  }
 
   // DC Personalization
   window.addEventListener('DC_Hosted:Ready', () => {

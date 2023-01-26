@@ -140,11 +140,11 @@
 .how-to .text ol li::marker {
   display: none;
 }
-div.how-to ol li {
+/* div.how-to ol li {
   display: block;
   font-weight: 400;
   line-height: 38px;
-}
+} */
 div.how-to ol li::before{
   vertical-align: bottom;
 }
