@@ -3,17 +3,17 @@ let runOne = false;
 
 export default function init(element) {
   const widget = element;
-  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.36.1_1.162.1/dc-app-launcher.js';
+  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.36.1_1.163.1/dc-app-launcher.js';
 
   if (window.location.hostname === 'main--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'adobe.com') {
-    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.36.1_1.162.1/dc-app-launcher.js';
+    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.36.1_1.163.1/dc-app-launcher.js';
   }
 
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
     || window.location.hostname === 'www.stage.adobe.com' ) {
-    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.36.1_1.162.1/dc-app-launcher.js';
+    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.36.1_1.163.1/dc-app-launcher.js';
   }
 
 
@@ -52,27 +52,29 @@ export default function init(element) {
     }
   };
 
-  // Static
-  const fakeWidgetContainer = document.createElement('div');
-  fakeWidgetContainer.id = 'CID';
-  fakeWidgetContainer.dataset.rendered = 'true';
-  fakeWidgetContainer.className = 'fake-dc-wrapper';
-  widget.appendChild(fakeWidgetContainer);
+  const widgetContainer = document.createElement('div');
+  widgetContainer.id = 'CID';
+  widgetContainer.className = 'dc-wrapper';
+  widget.appendChild(widgetContainer);
 
-  (async () => {
-    // TODO: Make dynamic
-    const response = await fetch('https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.162.1/pdf-to-ppt-en-us.html');
-    // eslint-disable-next-line default-case
-    switch (response.status) {
-      case 200:
-        // eslint-disable-next-line no-case-declarations
-        const template = await response.text();
-        fakeWidgetContainer.innerHTML = template;
-        break;
-      case 404:
-        break;
-    }
-  })();
+  const firstTimeUser = window.localStorage.getItem('pdfnow.auth');
+  const preRender = !firstTimeUser;
+  if (preRender) {
+    (async () => {
+      // TODO: Make dynamic
+      const response = await fetch('https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/pdf-to-ppt-en-us.html');
+      // eslint-disable-next-line default-case
+      switch (response.status) {
+        case 200:
+          // eslint-disable-next-line no-case-declarations
+          const template = await response.text();
+          widgetContainer.innerHTML = template;
+          break;
+        case 404:
+          break;
+      }
+    })();
+  }
 
   window.addEventListener('IMS:Ready', () => {
     // Redirect Usage
@@ -91,11 +93,6 @@ export default function init(element) {
     }
   })
 
-  const widgetContainer = document.createElement('div');
-  widgetContainer.id = 'CID';
-  widgetContainer.className = 'dc-wrapper';
-  widget.appendChild(widgetContainer);
-
   const dcScript = document.createElement('script');
   dcScript.id = 'adobe_dc_sdk_launcher';
   dcScript.setAttribute('src', WIDGET_ENV);
@@ -106,6 +103,9 @@ export default function init(element) {
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
+  if (preRender) {
+    dcScript.dataset.pre_rendered = 'true';
+  }
 
   console.log('shim no wait');
   addIMSShims();
