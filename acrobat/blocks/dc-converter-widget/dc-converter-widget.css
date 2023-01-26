@@ -55,3 +55,27 @@ min-height: 332px;
     top: 40px;
   }
 }
+
+/* Browser Extension */
+.browser-extension {
+  min-width: 480px;
+  padding: 20px;
+}
+
+.col.col-1 {
+  border-right:  1px grey solid;
+}
+
+.col.col-2 picture {
+  width: 90px;
+  height: 90px;
+  margin: auto;
+}
+
+.dialog-modal.extension-modal {
+  top: unset;
+  right: unset;
+  box-shadow: 0 .5em 1em -.125em hsla(0,0%,4%,.1),0 0 0 1px hsla(0,0%,4%,.02);
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
