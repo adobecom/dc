@@ -38,6 +38,11 @@ export default function init(element) {
     console.log(e);
     if (e === PROCESS_START) converterAnalytics();
 
+    if (e === PROCESS_COMPLETE) {
+      // Browser Extension 
+      window.location.hash = 'bext';
+    }
+
     switch (e) {
       case PROCESS_START:
         setCurrentEvent('start');
