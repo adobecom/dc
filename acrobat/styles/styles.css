@@ -153,8 +153,6 @@
 }
 
 /* Moblie HowTo */
-
-
 @media (max-width: 52.6rem) {
   .how-to.large-image {
     grid-template-areas:
@@ -164,7 +162,6 @@
     grid-template-columns: 1fr !important;
   }
 }
-
 
 div.how-to ol li::before{
   vertical-align: bottom;
