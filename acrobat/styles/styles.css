@@ -140,11 +140,39 @@
 .how-to .text ol li::marker {
   display: none;
 }
-/* div.how-to ol li {
-  display: block;
-  font-weight: 400;
-  line-height: 38px;
-} */
+
+.how-to-heading {
+  margin-right: 16px;
+}
+.how-to-image.how-to-image-large {
+  margin-left: 16px;
+}
+
+.section .how-to > ol {
+  margin-right: 16px;
+}
+
+/* Moblie HowTo */
+@media (max-width: 52.6rem) {
+  .how-to.large-image {
+    grid-template-areas:
+    "image"
+    "heading"
+    "list" !important;
+    grid-template-columns: 1fr !important;
+  }
+  .how-to-heading {
+    margin-right: 0;
+  }
+  .how-to-image.how-to-image-large {
+    margin-left: 0;
+  }
+  
+  .section .how-to > ol {
+    margin-right: 0;
+  }
+}
+
 div.how-to ol li::before{
   vertical-align: bottom;
 }
