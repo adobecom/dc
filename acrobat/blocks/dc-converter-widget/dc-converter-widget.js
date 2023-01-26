@@ -33,15 +33,14 @@ export default function init(element) {
     }
   };
 
+  const widgetContainer = document.createElement('div');
+  widgetContainer.id = 'CID';
+  widgetContainer.className = 'dc-wrapper';
+  widget.appendChild(widgetContainer);
+
   const firstTimeUser = window.localStorage.getItem('pdfnow.auth');
   const preRender = !firstTimeUser;
   if (preRender) {
-    // Static
-    const fakeWidgetContainer = document.createElement('div');
-    fakeWidgetContainer.id = 'CID';
-    fakeWidgetContainer.className = 'fake-dc-wrapper';
-    widget.appendChild(fakeWidgetContainer);
-
     (async () => {
       // TODO: Make dynamic
       const response = await fetch('https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/pdf-to-ppt-en-us.html');
@@ -50,7 +49,7 @@ export default function init(element) {
         case 200:
           // eslint-disable-next-line no-case-declarations
           const template = await response.text();
-          fakeWidgetContainer.innerHTML = template;
+          widgetContainer.innerHTML = template;
           break;
         case 404:
           break;
@@ -76,11 +75,6 @@ export default function init(element) {
       window.adobe_dc_sdk.imsReady = true;
     }
   });
-
-  const widgetContainer = document.createElement('div');
-  widgetContainer.id = 'CID';
-  widgetContainer.className = 'dc-wrapper';
-  widget.appendChild(widgetContainer);
 
   const dcScript = document.createElement('script');
   dcScript.id = 'adobe_dc_sdk_launcher';
