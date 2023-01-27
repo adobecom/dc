@@ -1,11 +1,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <!-- convert to an imported module -->
-<!-- <script defer src="/acrobat/scripts/legacy.js"></script> -->
 <script defer src="/acrobat/scripts/bowser.js"></script>
 <script src="/acrobat/scripts/scripts.js" type="module"></script>
 <style>body { display: none; }</style>
 <link rel="icon" href="data:,">
 
-<script>    window.addEventListener('modal:open', () => {
-  console.log('a simple kind of life');
-})</script>
+<script defer type="text/javascript">
+  if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent))
+      document.write('<script src="/acrobat/scripts/legacy.js"><\/script>');
+</script>
