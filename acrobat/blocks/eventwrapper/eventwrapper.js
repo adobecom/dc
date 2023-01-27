@@ -1,4 +1,4 @@
-import converterAnalytics from '../../scripts/analytics/dc-converter-widget.js';
+import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
 
 //TODO: Only have run one time
 
