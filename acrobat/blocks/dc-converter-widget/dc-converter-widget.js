@@ -106,7 +106,18 @@ export default function init(element) {
     dcScript.dataset.pre_rendered = 'true';
   }
 
-  widget.appendChild(dcScript);
+  window.addEventListener('IMS:Ready', () => {
+    widget.appendChild(dcScript);
+    console.log('new try window.adobeIMS');
+    let evt;
+    evt = new CustomEvent('dc.imslib.ready', { detail: { instance: window.adobeIMS }});
+    evt.initEvent('dc.imslib.ready', true, true);
+    console.log('are u eorking');
+    document.dispatchEvent(evt);
+    // window.adobe_dc_sdk.imsReady = true;
+    console.log(window.adobeIMS);
+
+  })
 
   // console.log('shim no wait');
   // addIMSShims();

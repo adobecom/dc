@@ -11,7 +11,7 @@
  */
 
 import { setLibs } from './utils.js';
-import { redirectLegacyBrowsers } from './legacyBrowser.js';
+// import { redirectLegacyBrowsers } from './legacyBrowser.js';
 import lanaLogging from './dcLana.js';
 import ContentSecurityPolicy from './contentSecurityPolicy/csp.js';
 
@@ -28,7 +28,7 @@ head.appendChild(clsPopIn);
 // if there is a DC widget on the page check for legacy browser and redirect
 // to EOL Browser page if needed.
 if (document.querySelector('.dc-converter-widget')) {
-  redirectLegacyBrowsers();
+  // redirectLegacyBrowsers();
 }
 
 // Add project-wide styles here.
@@ -45,15 +45,11 @@ const CONFIG = {
     // DC Web IMS config
     if (window.adobe_dc_sdk) {
       let evt;
-      if (!!document.documentMode) {
-        evt = document.createEvent('CustomEvent');
-        evt.initCustomEvent('dc.imslib.ready', true, true, { detail: { instance: window.adobeIMS }});
-      } else {
         evt = new CustomEvent('dc.imslib.ready', { detail: { instance: window.adobeIMS }});
         evt.initEvent('dc.imslib.ready', true, true);
-      }
+        console.log('are u eorking');
       document.dispatchEvent(evt);
-      window.adobe_dc_sdk.imsReady = true;
+      // window.adobe_dc_sdk.imsReady = true;
     }
   },
   codeRoot: '/acrobat',
