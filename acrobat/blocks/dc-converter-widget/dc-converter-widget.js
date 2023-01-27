@@ -7,7 +7,7 @@ export default function init(element) {
   if (window.location.hostname === 'main--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'adobe.com') {
-    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.36.1_1.163.1/dc-app-launcher.js';
+    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.37.2_1.164.0/dc-app-launcher.js';
   }
 
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
@@ -15,7 +15,7 @@ export default function init(element) {
     WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.37.2_1.164.0/dc-app-launcher.js';
   }
 
-
+  // ?milolibs=blaineTest
   // function addIMSShims() {
   //   console.log('DC Shim');
   //   console.log(window.adobeIMS);
@@ -106,8 +106,10 @@ export default function init(element) {
     dcScript.dataset.pre_rendered = 'true';
   }
 
+  widget.appendChild(dcScript);
+
   window.addEventListener('IMS:Ready', () => {
-    widget.appendChild(dcScript);
+ 
     console.log('new try window.adobeIMS');
     let evt;
     evt = new CustomEvent('dc.imslib.ready', { detail: { instance: window.adobeIMS }});

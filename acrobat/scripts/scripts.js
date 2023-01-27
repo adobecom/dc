@@ -49,7 +49,7 @@ const CONFIG = {
         evt.initEvent('dc.imslib.ready', true, true);
         console.log('are u eorking');
       document.dispatchEvent(evt);
-      // window.adobe_dc_sdk.imsReady = true;
+      window.adobe_dc_sdk.imsReady = true;
     }
   },
   codeRoot: '/acrobat',
