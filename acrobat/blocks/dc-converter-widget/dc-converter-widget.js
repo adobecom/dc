@@ -106,6 +106,7 @@ export default function init(element) {
     dcScript.dataset.pre_rendered = 'true';
   }
 
+  console.log(window.adobeIMS);
   widget.appendChild(dcScript);
 
   // console.log('shim no wait');
