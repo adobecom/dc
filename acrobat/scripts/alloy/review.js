@@ -32,5 +32,6 @@ export default function init() {
     },
   };
 
+  console.log('Alloy Review');
   window._satellite.track('event', event);
 }
