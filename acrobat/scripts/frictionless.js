@@ -4,6 +4,11 @@ import browserExtAlloy from './alloy/browserExt.js'
 
 const reviewBlock = document.querySelectorAll('.review')
 const browserExt = document.querySelectorAll("meta[name='-bext']");
+const parser = bowser.getParser(window.navigator.userAgent);
+const browserName = parser.getBrowserName();
+
+console.log('browserName ext');
+console.log(browserName);
 
 export default function init(verb) {
   // Review Alloy
@@ -23,24 +28,21 @@ export default function init(verb) {
   }
 
   // Browser Ext. Alloy
-  if (browserExt) {
+  if (browserExt && browserName === 'Chrome'
+     || browserExt && browserName === 'Edge') {
     addEventListener('hashchange', (event) => {
     if (window.location.hash === '#bext') {
       //Modal Ready...
       const findModal = setInterval(() => {
         if (document.querySelectorAll('#bext').length > 0) {
           clearInterval(findModal);
-          console.log('BX event');
           const browserExtModal = document.querySelector('#bext')
-          console.log('_______________browserExtModal');
-          console.log(browserExtModal);
           const browserExtClose = browserExtModal.querySelector('.dialog-close');
-          // const browserExtBtn = browserExtModal.querySelector('a');
-          browserExtAlloy('modalExist', 'Chrome');
-
+          browserExtAlloy('modalExist', browserName);
 
           browserExtClose.addEventListener('click', () => {
-            browserExtAlloy('modalClosed', 'Chrome');
+            browserExtAlloy('modalClosed', browserName);
+            localStorage.fricBrowExt = true;
           })
         }
 

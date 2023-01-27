@@ -1,6 +1,4 @@
 export default function init() {
-  console.log('DC Converter ALLOY!');
-
   // Figure out how to setp LH
   const lh = 'SOME DEFAULT VALUE';
 
@@ -35,4 +33,5 @@ export default function init() {
   };
 
   window._satellite.track('event', event);
+  console.log('Alloy DC Widget');
 }

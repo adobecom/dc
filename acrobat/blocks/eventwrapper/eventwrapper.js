@@ -34,13 +34,15 @@ export default function init(element) {
   }
 
   const handleEvents = (e, jobData, converter, verb) => {
-    console.log('event');
+    console.log('**EVENT**');
     console.log(e);
     if (e === PROCESS_START) converterAnalytics();
 
     if (e === PROCESS_COMPLETE) {
-      // Browser Extension 
-      window.location.hash = 'bext';
+      // Browser Extension
+      if (!localStorage.fricBrowExt) {
+        window.location.hash = 'bext';
+      }
     }
 
     switch (e) {
@@ -71,7 +73,6 @@ export default function init(element) {
         setCurrentEvent('preview');
         break;
       case DROPZONE_DIS:
-        console.log('reset');
         setCurrentEvent(DROPZONE_DIS);
         break;
       case DOWNLOAD_START:

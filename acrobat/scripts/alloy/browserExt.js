@@ -46,5 +46,5 @@ export default function init(ev, brow) {
   };
 
   window._satellite.track('event', event);
-  console.log(event);
+  console.log('Alloy Browser Ext');
 }
