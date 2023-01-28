@@ -2,6 +2,9 @@ import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
 
 //TODO: Only have run one time
 
+const parser = bowser.getParser(window.navigator.userAgent);
+const browserName = parser.getBrowserName();
+console.log('parser');
 const UPLOAD_START = 'file-upload-start';
 const PROCESS_START = 'processing-start';
 const UPLOAD_COMPLETE = 'file-upload-complete';
@@ -38,10 +41,19 @@ export default function init(element) {
     console.log(e);
     if (e === PROCESS_START) converterAnalytics();
 
-    if (e === PROCESS_COMPLETE) {
+    if (e === PROCESS_COMPLETE && parser.parsedResult.platform.type === 'desktop') {
       // Browser Extension
       if (!localStorage.fricBrowExt) {
-        window.location.hash = 'bext';
+        let extName;
+        if (browserName === 'Chrome') {
+          extName = 'chromeext';
+          window.location.hash = extName;
+        }
+    
+        if (browserName === 'Edge') {
+          extName = 'edgeext';
+          window.location.hash = extName;
+        }
       }
     }
 
