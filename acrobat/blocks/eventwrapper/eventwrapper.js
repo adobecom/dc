@@ -4,7 +4,7 @@ import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
 
 const parser = bowser.getParser(window.navigator.userAgent);
 const browserName = parser.getBrowserName();
-console.log('parser');
+
 const UPLOAD_START = 'file-upload-start';
 const PROCESS_START = 'processing-start';
 const UPLOAD_COMPLETE = 'file-upload-complete';
@@ -50,7 +50,7 @@ export default function init(element) {
           window.location.hash = extName;
         }
     
-        if (browserName === 'Edge') {
+        if (browserName === 'Microsoft Edge') {
           extName = 'edgeext';
           window.location.hash = extName;
         }
