@@ -30,13 +30,13 @@ export default function init(verb) {
 
   // Browser Ext. Alloy
   if (chromeBrowserExt.length > 0 && browserName === 'Chrome'
-     || edgeBrowserExt.length > 0 && browserName === 'Edge') {
+     || edgeBrowserExt.length > 0 && browserName === 'Microsoft Edge') {
     let extName;
     if (browserName === 'Chrome') {
       extName = '-chromeext';
     }
 
-    if (browserName === 'Edge') {
+    if (browserName === 'Microsoft Edge') {
       extName = '-edgeext';
     }
     addEventListener('hashchange', (event) => {
