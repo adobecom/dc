@@ -35,11 +35,11 @@ export default function ContentSecurityPolicy() {
 
   // temp
   console.log(`This is the ${NAME} CSP!!`);
-  console.log(theCSP);
+  console.log('theCSP');
 
   const head = document.querySelector('head');
   const cspElement = document.createElement('meta');
   cspElement.setAttribute('http-equiv', 'Content-Security-Policy');
   cspElement.setAttribute('content', 'theCSP');
-  head.appendChild(cspElement);
+  // head.appendChild(cspElement);
 }

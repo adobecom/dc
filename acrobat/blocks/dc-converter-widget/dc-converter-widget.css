@@ -62,7 +62,7 @@ min-height: 560px;
   padding: 20px;
 }
 
-.col.col-1 {
+.browser-extension .col.col-1 {
   border-right:  1px grey solid;
 }
 
