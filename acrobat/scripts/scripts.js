@@ -54,7 +54,7 @@ const CONFIG = {
   // },
   codeRoot: '/acrobat',
   contentRoot: '/acrobat',
-  imsClientId: 'acrobatmilo',
+  imsClientId: 'DocumentCloud1Yolo',
   local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   stage: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
