@@ -38,7 +38,20 @@ const STYLES = '/acrobat/styles/styles.css';
 const LIBS = 'https://milo.adobe.com/libs';
 
 // Add any config options.
+// window.adobeid = window.adobeid || {};
+// window.adobeid.scope = 'AdobeID,openid,gnav,additional_info.optionalAgreements';
 const CONFIG = {
+  // onReady: () => {
+  //   // DC Web IMS config
+  //   if (window.adobe_dc_sdk) {
+  //     let evt;
+  //       evt = new CustomEvent('dc.imslib.ready', { detail: { instance: window.adobeIMS }});
+  //       evt.initEvent('dc.imslib.ready', true, true);
+  //       console.log('are u eorking');
+  //     document.dispatchEvent(evt);
+  //     window.adobe_dc_sdk.imsReady = true;
+  //   }
+  // },
   codeRoot: '/acrobat',
   contentRoot: '/acrobat',
   imsClientId: 'acrobatmilo',

@@ -1,7 +1,15 @@
-import reviewAlloy from './analytics/review.js';
-import reviewFeedbackAlloy from './analytics/reviewFeedback.js';
+import reviewAlloy from './alloy/review.js';
+import reviewFeedbackAlloy from './alloy/reviewFeedback.js';
+import browserExtAlloy from './alloy/browserExt.js'
 
-const reviewBlock = document.querySelectorAll('.review');
+const reviewBlock = document.querySelectorAll('.review')
+const chromeBrowserExt = document.querySelectorAll("meta[name='-chromeext']");
+const edgeBrowserExt = document.querySelectorAll("meta[name='-edgeext']");
+const parser = bowser.getParser(window.navigator.userAgent);
+const browserName = parser.getBrowserName();
+
+console.log('browserName ext');
+console.log(browserName);
 
 export default function init(verb) {
   // Review Alloy
@@ -18,5 +26,40 @@ export default function init(verb) {
         });
       }
     }, 1000);
+  }
+
+  // Browser Ext. Alloy
+  if (chromeBrowserExt.length > 0 && browserName === 'Chrome'
+     || edgeBrowserExt.length > 0 && browserName === 'Microsoft Edge') {
+    let extName;
+    if (browserName === 'Chrome') {
+      extName = '-chromeext';
+    }
+
+    if (browserName === 'Microsoft Edge') {
+      extName = '-edgeext';
+    }
+    addEventListener('hashchange', (event) => {
+    if (window.location.hash === extName) {
+      //Modal Ready...
+      const findModal = setInterval(() => {
+        if (document.querySelectorAll(extName).length > 0) {
+          clearInterval(findModal);
+          const browserExtModal = document.querySelector(extName)
+          const browserExtClose = browserExtModal.querySelector('.dialog-close');
+          browserExtAlloy('modalExist', browserName);
+
+          browserExtClose.addEventListener('click', () => {
+            browserExtAlloy('modalClosed', browserName);
+            localStorage.fricBrowExt = true;
+          })
+        }
+
+      }, 1000);
+    }
+    });
+
+
+
   }
 }

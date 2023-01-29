@@ -40,26 +40,6 @@ export default function init(verb, rating, comment) {
   };
 
   window._satellite.track('event', alloyFeedbackEvent);
+  console.log('Alloy Review Feedback');
+
 }
-
-
-
-  //   // eslint-disable-next-line no-unused-vars
-  //   onRatingSet = ({ rating, comment }) => {
-  //     const feedbackInfo = {
-  //         rating,
-  //         comment,
-  //         verb: this.props.reviewPath,
-  //     };
-  //     sendAnalytics('productRating', 'rating', feedbackInfo);
-  // };
-
-  // // eslint-disable-next-line no-unused-vars
-  // onReviewLoad = ({ hasRated, rating }) => {
-  //     const feedbackInfo = {
-  //         hasRated,
-  //         rating,
-  //         verb: this.props.reviewPath,
-  //     };
-  //     sendAnalytics('productRating', 'load', feedbackInfo);
-  // };

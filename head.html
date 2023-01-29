@@ -1,7 +1,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <!-- convert to an imported module -->
-<!-- <script defer src="/acrobat/scripts/legacy.js"></script> -->
 <script defer src="/acrobat/scripts/bowser.js"></script>
 <script src="/acrobat/scripts/scripts.js" type="module"></script>
 <style>body { display: none; }</style>
 <link rel="icon" href="data:,">
+
+<script type="text/javascript">
+  if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+    document.write('<script src="/acrobat/scripts/bowser.js"><\/script>');
+    document.write('<script src="/acrobat/scripts/legacy.js"><\/script>');
+  }
+</script>
+
+
+<script src="https://auth-stg1.services.adobe.com/imslib/imslib.min.js"></script>

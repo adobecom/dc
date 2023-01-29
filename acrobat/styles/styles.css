@@ -125,6 +125,7 @@
 }
 .footer {
   background-color: #fbfbfb;
+
 }
 .how-to .text ol {
   padding-left: 0;
@@ -140,11 +141,46 @@
 .how-to .text ol li::marker {
   display: none;
 }
-div.how-to ol li {
-  display: block;
-  font-weight: 400;
-  line-height: 38px;
+
+.how-to.large-image {
+  padding-left: 0;
+  padding-right: 0;
 }
+
+.how-to-heading {
+  margin-right: 28px;
+}
+.how-to-image.how-to-image-large {
+  margin-left: 28px;
+}
+
+.section .how-to > ol {
+  margin-right: 28px;
+}
+
+/* Moblie HowTo */
+@media (max-width: 52.6rem) {
+  .how-to.large-image {
+    grid-template-areas:
+    "image"
+    "heading"
+    "list" !important;
+    grid-template-columns: 1fr !important;
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+  .how-to-heading {
+    margin-right: 0;
+  }
+  .how-to-image.how-to-image-large {
+    margin-left: 0;
+  }
+  
+  .section .how-to > ol {
+    margin-right: 0;
+  }
+}
+
 div.how-to ol li::before{
   vertical-align: bottom;
 }
@@ -240,7 +276,7 @@ div.how-to ol li::before{
 
 /* CLS */
 .dc-converter-widget {
-  min-height: 0 !important;
+  /* min-height: 0 !important; */
   -webkit-transition: min-height 1s;
   -moz-transition: min-height 1s;
   -ms-transition: min-height 1s;

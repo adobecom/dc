@@ -1,6 +1,9 @@
-import converterAnalytics from '../../scripts/analytics/dc-converter-widget.js';
+import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
 
 //TODO: Only have run one time
+
+const parser = bowser.getParser(window.navigator.userAgent);
+const browserName = parser.getBrowserName();
 
 const UPLOAD_START = 'file-upload-start';
 const PROCESS_START = 'processing-start';
@@ -10,7 +13,7 @@ const PROCESS_COMPLETE = 'processing-complete';
 const DOWNLOAD_START = 'download-start';
 const CONVERSION_COM = 'conversion-complete';
 const PREVIEW_GEN = 'preview-generating';
-// const DROPZONE_DIS = 'dropzone-displayed';
+const DROPZONE_DIS = 'dropzone-displayed';
 // const UPSELL_DIS = 'upsell-displayed';
 
 export default function init(element) {
@@ -18,6 +21,8 @@ export default function init(element) {
   const setCurrentEvent = (event) => {
     if (document.querySelectorAll(`[data-event-name="${event}"]`).length > 0) {
       document.body.dataset.currentEvent = event;
+    } else if (event === DROPZONE_DIS) {
+      document.body.removeAttribute('data-current-event')
     }
   };
 
@@ -32,7 +37,25 @@ export default function init(element) {
   }
 
   const handleEvents = (e, jobData, converter, verb) => {
+    console.log('**EVENT**');
+    console.log(e);
     if (e === PROCESS_START) converterAnalytics();
+
+    if (e === PROCESS_COMPLETE && parser.parsedResult.platform.type === 'desktop') {
+      // Browser Extension
+      if (!localStorage.fricBrowExt) {
+        let extName;
+        if (browserName === 'Chrome') {
+          extName = 'chromeext';
+          window.location.hash = extName;
+        }
+    
+        if (browserName === 'Microsoft Edge') {
+          extName = 'edgeext';
+          window.location.hash = extName;
+        }
+      }
+    }
 
     switch (e) {
       case PROCESS_START:
@@ -60,6 +83,9 @@ export default function init(element) {
         break;
       case PREVIEW_GEN:
         setCurrentEvent('preview');
+        break;
+      case DROPZONE_DIS:
+        setCurrentEvent(DROPZONE_DIS);
         break;
       case DOWNLOAD_START:
         setCurrentEvent('download');
