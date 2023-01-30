@@ -39,13 +39,13 @@
   padding-left: 10px;
 }
 
-@media (min-width: 52.7rem) {
+@media (min-width: 37.5rem) {
   .accordion-container.verb-subfooter-moblie {
     display: none;
   }
 }
 
-@media (max-width: 52.6rem) {
+@media (max-width: 37.5rem) {
   .verb-subfooter  {
     display: none;
   }
@@ -147,6 +147,10 @@
   padding-right: 0;
 }
 
+div.how-to {
+  max-width: none;
+}
+
 .how-to-heading {
   margin-right: 28px;
 }
@@ -159,7 +163,7 @@
 }
 
 /* Moblie HowTo */
-@media (max-width: 52.6rem) {
+@media (max-width: 37.5rem) {
   .how-to.large-image {
     grid-template-areas:
     "image"
@@ -175,7 +179,7 @@
   .how-to-image.how-to-image-large {
     margin-left: 0;
   }
-  
+
   .section .how-to > ol {
     margin-right: 0;
   }
