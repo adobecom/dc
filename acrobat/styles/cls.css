@@ -10,6 +10,10 @@
   .dc-converter-widget {
     min-height: 536px;
   }
+  .how-to-image.how-to-image-large img {
+    width: 375px;
+    height: 225px;
+  }
 }
 
 
