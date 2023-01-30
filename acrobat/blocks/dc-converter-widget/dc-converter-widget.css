@@ -58,8 +58,7 @@ min-height: 560px;
 
 /* Browser Extension */
 .browser-extension {
-  min-width: 440px;
-  width: 440px;
+  min-width: 480px;
   padding: 20px;
 }
 
@@ -80,42 +79,3 @@ min-height: 560px;
   margin-bottom: 20px;
   margin-left: 20px;
 }
-
-.browser-extension .row.row-1 {
-  grid-template-columns: 1fr 25%;
-}
-
-.browser-extension a {
-  border: 2px solid #000;
-  color: #000;
-  padding: 7px 18px 8px;
-  line-height: 20px;
-  border-radius: 20px;
-  font-size: 17px;
-  min-height: 21px
-}
-
-.browser-extension a:hover {
-  background-color: #000;
-  color: #fff;
-  text-decoration: none;
-}
-
-.browser-extension .col.col-2 {
-  position: relative;
-}
-
-.browser-extension picture {
-  min-width: 90px;
-  min-height: 90px;
-  margin: auto;
-  display: block;
-  margin: 0;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  text-align: center;
-  right: 7px;
-  position: absolute;
-}
-
