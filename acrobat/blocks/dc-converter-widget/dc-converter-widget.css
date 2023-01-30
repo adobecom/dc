@@ -56,22 +56,6 @@ min-height: 560px;
   }
 }
 
-/* Browser Extension */
-.browser-extension {
-  min-width: 480px;
-  padding: 20px;
-}
-
-.browser-extension .col.col-1 {
-  border-right:  1px grey solid;
-}
-
-.col.col-2 picture {
-  width: 90px;
-  height: 90px;
-  margin: auto;
-}
-
 .dialog-modal.extension-modal {
   top: unset;
   right: unset;
