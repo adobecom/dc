@@ -39,13 +39,13 @@
   padding-left: 10px;
 }
 
-@media (min-width: 37.5rem) {
+@media (min-width: 52.7rem) {
   .accordion-container.verb-subfooter-moblie {
     display: none;
   }
 }
 
-@media (max-width: 37.5rem) {
+@media (max-width: 52.6rem) {
   .verb-subfooter  {
     display: none;
   }
