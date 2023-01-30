@@ -147,6 +147,10 @@
   padding-right: 0;
 }
 
+div.how-to {
+  max-width: none;
+}
+
 .how-to-heading {
   margin-right: 28px;
 }
@@ -175,7 +179,7 @@
   .how-to-image.how-to-image-large {
     margin-left: 0;
   }
-  
+
   .section .how-to > ol {
     margin-right: 0;
   }
