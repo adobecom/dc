@@ -221,6 +221,8 @@ div.how-to ol li::before{
 }
 .section .columns.browser-extension {
   padding: 20px;
+  width:480px;
+  height: 190px;
   font-size: 16px;
   animation-name: modalSlideIn-frictionlessBrowserExtension;
   transition: opacity 125ms ease-in-out,background-color 125ms ease-in-out,backdrop-filter 125ms ease-in-out,-webkit-backdrop-filter 125ms ease-in-out,transform 125ms ease-in-out;
@@ -239,16 +241,16 @@ div.how-to ol li::before{
   width: initial;
   vertical-align: middle;
   display: flex;
-  padding: 20px 10px 0px 10px;
+  padding: 30px 10px 0px 10px;
 }
 .section .columns.browser-extension picture img {
-  width: 100%;
-  max-width: 150px;
-  padding: 10px;
+  width: 90px;
+  height: 90px;
+  margin: auto;
   display: block;
 }
 .section .columns.browser-extension .row .col-1 {
-  width: 70%;
+  width: 66.666666%;
 }
 .section .columns.browser-extension .row .col-1 a {
   border-width: 2px;
@@ -271,7 +273,7 @@ div.how-to ol li::before{
 }
 
 .section .columns.browser-extension .row .col-2 {
-  width: 30%;
+  width: 33.333333%;
   border-left: solid 2px #EAEAEA;
 }
 
