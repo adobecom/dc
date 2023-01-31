@@ -2,17 +2,17 @@ import frictionless from '../../scripts/frictionless.js';
 
 export default function init(element) {
   const widget = element;
-  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.164.0/dc-app-launcher.js';
+  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.164.1/dc-app-launcher.js';
 
   if (window.location.hostname === 'main--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'adobe.com') {
-    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.37.2_1.164.0/dc-app-launcher.js';
+    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.37.2_1.164.1/dc-app-launcher.js';
   }
 
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
     || window.location.hostname === 'www.stage.adobe.com' ) {
-    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.37.2_1.164.0/dc-app-launcher.js';
+    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.37.2_1.164.1/dc-app-launcher.js';
   }
 
   // ?milolibs=blaineTest
