@@ -75,11 +75,11 @@ export default function init(element) {
       case PROCESS_CANCELED:
         setCurrentEvent('cancel');
         break;
-      case PROCESS_COMPLETE:
-        setCurrentEvent('complete');
-        break;
+      // case PROCESS_COMPLETE:
+      //   setCurrentEvent('complete');
+      //   break;
       case CONVERSION_COM:
-        setCurrentEvent('conversion');
+        setCurrentEvent('complete');
         break;
       case PREVIEW_GEN:
         setCurrentEvent('preview');
