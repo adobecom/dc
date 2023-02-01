@@ -41,7 +41,7 @@ export default function init(element) {
     console.log(e);
     if (e === PROCESS_START) converterAnalytics();
 
-    if (e === PROCESS_COMPLETE && parser.parsedResult.platform.type === 'desktop') {
+    if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop') {
       // Browser Extension
       if (!localStorage.fricBrowExt) {
         let extName;
