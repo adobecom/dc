@@ -14,6 +14,7 @@ min-height: 560px;
   position: relative;
   overflow: hidden;
   left:0;
+  top: 30px;
   right:0;
 }
 
