@@ -2,6 +2,7 @@
   background-color: #fc6767;
   min-height: 560px;
 }
+
 .dc-wrapper {
   /* width: 100%;
   max-width: 1100px; */
@@ -11,21 +12,29 @@
   margin: auto;
   padding: 0 0 0 ;
   position: relative;
-  top: 60px;
+  overflow: hidden;
+  left:0;
+  top: 70px;
+  right:0;
 }
 
 #VERB, .hide {
   display: none;
 }
 
+
 .dc-wrapper {
   overflow: hidden;
+  width: 75%;
+  max-width: 75%;
+  margin: auto;
   top: 70px;
   left:0;
   right:0;
   margin-left:auto;
   margin-right:auto;
-  position: absolute;
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 37.5rem) {
