@@ -1,6 +1,6 @@
 .dc-converter-widget {
-background-color: #fc6767;
-min-height: 560px;
+  background-color: #fc6767;
+  min-height: 560px;
 }
 
 .dc-wrapper {
@@ -18,17 +18,13 @@ min-height: 560px;
   right:0;
 }
 
-.dc-wrapper .react-spectrum-provider {
-  position: relative;
-  z-index:10;
-}
-
 #VERB, .hide {
   display: none;
 }
 
-/* fake widget */
-.fake-dc-wrapper {
+
+.dc-wrapper {
+  overflow: hidden;
   width: 75%;
   max-width: 75%;
   margin: auto;
@@ -42,7 +38,6 @@ min-height: 560px;
 }
 
 @media (max-width: 37.5rem) {
-  .fake-dc-wrapper,
   .dc-wrapper {
     width: 91.666667%;
     max-width: 91.666667%;

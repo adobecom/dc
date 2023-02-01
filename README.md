@@ -1,13 +1,4 @@
-# Milo goes to college
-Use this project template to create a Milo site.
-
-## Steps
-1. Copy content folder
-2. Click "Use this template" on this project.
-3. Add the Helix Bot to your new project.
-4. Change your fstab.yaml file to point to your content.
-5. Add this project to the Helix Sidekick.
-6. Start creating your content.
+# DC x Milo
 
 ## Developing
 1. Install the [Helix CLI](https://github.com/adobe/helix-cli): `sudo npm install -g @adobe/helix-cli`
