@@ -33,13 +33,14 @@ export default function init(verb) {
      || edgeBrowserExt.length > 0 && browserName === 'Microsoft Edge') {
     let extName;
     if (browserName === 'Chrome') {
-      extName = '-chromeext';
+      extName = '#chromeext';
     }
 
     if (browserName === 'Microsoft Edge') {
-      extName = '-edgeext';
+      extName = '#edgeext';
     }
-    addEventListener('hashchange', (event) => {
+    window.addEventListener('hashchange', (event) => {
+      // #chromeext
     if (window.location.hash === extName) {
       //Modal Ready...
       const findModal = setInterval(() => {
@@ -51,7 +52,7 @@ export default function init(verb) {
 
           browserExtClose.addEventListener('click', () => {
             browserExtAlloy('modalClosed', browserName);
-            localStorage.fricBrowExt = true;
+            window.localStorage.fricBrowExt = true;
           })
         }
 
