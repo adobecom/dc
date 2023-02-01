@@ -12,6 +12,7 @@
 [data-current-event=cancel] [data-event-name=cancel],
 [data-current-event=complete] [data-event-name=complete],
 [data-current-event=conversion] [data-event-name=conversion],
+[data-current-event=conversion] [data-event-name=complete],
 [data-current-event=download] [data-event-name=download],
 [data-current-event=preview] [data-event-name=preview],
 [data-current-event=repeat] [data-event-name=repeat],
