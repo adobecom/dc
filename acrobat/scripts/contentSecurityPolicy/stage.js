@@ -220,16 +220,4 @@ const workerSrc = [
   ';',
 ];
 
-const reportUri = [
-  '"https://dc-api-stage.adobe.io/system/csp"',
-  ';',
-];
-
-const reportTo = [
-  '"default"',
-  ';',
-];
-
-
-
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, reportUri, reportTo};
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};

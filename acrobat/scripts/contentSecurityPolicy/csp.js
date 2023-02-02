@@ -29,9 +29,7 @@ export default function ContentSecurityPolicy() {
   manifest-src ${ENV.manifestSrc.join(' ')}\
   script-src ${ENV.scriptSrc.join(' ')}\
   style-src ${ENV.styleSrc.join(' ')}\
-  worker-src ${ENV.workerSrc.join(' ')}\
-  report-uri ${ENV.reportUri.join(' ')}\
-  report-to ${ENV.reportTo.join(' ')}`;
+  worker-src ${ENV.workerSrc.join(' ')}`;
 
   // temp
   console.log(`This is the ${NAME} CSP!!`);
@@ -40,6 +38,6 @@ export default function ContentSecurityPolicy() {
   const head = document.querySelector('head');
   const cspElement = document.createElement('meta');
   cspElement.setAttribute('http-equiv', 'Content-Security-Policy');
-  cspElement.setAttribute('content', 'theCSP');
-  // head.appendChild(cspElement);
+  cspElement.setAttribute('content', theCSP);
+  head.appendChild(cspElement);
 }
