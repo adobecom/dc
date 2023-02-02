@@ -186,6 +186,7 @@ const scriptSrc = [
   'www.googletagmanager.com/',
   'www.linkedin.com/px',
   'www.redditstatic.com/ads/pixel.js',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
@@ -196,6 +197,7 @@ const styleSrc = [
   'accounts.google.com/gsi/style',
   'adobeccstatic.com',
   'use.typekit.net',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
@@ -207,14 +209,4 @@ const workerSrc = [
   ';',
 ];
 
-const reportUri = [
-  '\'https://dc-api.adobe.io/system/csp\'',
-  ';',
-];
-
-const reportTo = [
-  '\'default\'',
-  ';',
-];
-
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, reportUri, reportTo };
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};
