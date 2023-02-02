@@ -132,7 +132,7 @@ const locales = {
   eg_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Egypt (GB English)
   kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
   qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
-  gr_el: { ietf: 'el', tk: '' }, // Greece (Greek) 
+  gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek) 
 };
 
 // Add any config options.
