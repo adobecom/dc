@@ -39,5 +39,5 @@ export default function ContentSecurityPolicy() {
   const cspElement = document.createElement('meta');
   cspElement.setAttribute('http-equiv', 'Content-Security-Policy');
   cspElement.setAttribute('content', theCSP);
-  // head.appendChild(cspElement);
+  head.appendChild(cspElement);
 }
