@@ -185,12 +185,7 @@ const workerSrc = [
   ';',
 ];
 
-const reportUri = [
-  'https://dc-api-dev.adobe.io/system/csp',
-  ';',
-];
-
 // TRY This
 // use variables for the different domians
 
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, reportUri };
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};
