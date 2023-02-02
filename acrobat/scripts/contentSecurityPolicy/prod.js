@@ -1,5 +1,5 @@
 const connectSrc = [
-  '"self"',
+  '\'self\'',
   'blob:',
   '14257-chimera.adobeioruntime.net',
   '*.adobe.com',
@@ -35,7 +35,7 @@ const connectSrc = [
 ];
 
 const defaultSrc = [
-  '"self"',
+  '\'self\'',
   'acrobat.adobe.com',
   'auth.services.adobe.com',
   'documentcloud.adobe.com',
@@ -43,7 +43,7 @@ const defaultSrc = [
 ];
 
 const fontSrc = [
-  '"self"',
+  '\'self\'',
   'use.typekit.net',
   ';',
 ];
@@ -58,7 +58,7 @@ const formAction = [
 ];
 
 const frameSrc = [
-  '"self"',
+  '\'self\'',
   'data:',
   'blob:',
   '*.amazonaws.com',
@@ -82,7 +82,7 @@ const frameSrc = [
 ];
 
 const imgSrc = [
-  '"self"',
+  '\'self\'',
   'about:',
   'blob:',
   'data:',
@@ -123,13 +123,13 @@ const imgSrc = [
 ];
 
 const manifestSrc = [
-  '"self"',
+  '\'self\'',
   ';',
 ];
 
 const scriptSrc = [
-  '"self"',
-  '"unsafe-eval"',
+  '\'self\'',
+  '\'unsafe-eval\'',
   '*.adobe.com',
   '*.clarity.ms',
   'accounts.google.com/gsi/client',
@@ -190,8 +190,8 @@ const scriptSrc = [
 ];
 
 const styleSrc = [
-  '"self"',
-  '"unsafe-inline"',
+  '\'self\'',
+  '\'unsafe-inline\'',
   '*.adobe.com',
   'accounts.google.com/gsi/style',
   'adobeccstatic.com',
@@ -200,20 +200,20 @@ const styleSrc = [
 ];
 
 const workerSrc = [
-  '"self"',
-  'blob:"',
-  'cdnssl.clicktale.net"',
-  'www.adobe.com/"',
+  '\'self\'',
+  'blob:',
+  'cdnssl.clicktale.net',
+  'www.adobe.com/',
   ';',
 ];
 
 const reportUri = [
-  '"https://dc-api.adobe.io/system/csp"',
+  '\'https://dc-api.adobe.io/system/csp\'',
   ';',
 ];
 
 const reportTo = [
-  '"default"',
+  '\'default\'',
   ';',
 ];
 

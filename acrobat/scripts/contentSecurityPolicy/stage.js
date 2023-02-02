@@ -1,5 +1,5 @@
 const connectSrc = [
-  '"self"',
+  '\'self\'',
   'blob:',
   '14257-chimera-stage.adobeioruntime.net',
   '*.adobe.com',
@@ -40,7 +40,7 @@ const connectSrc = [
 ];
 
 const defaultSrc = [
-  '"self"',
+  '\'self\'',
   'auth-stg1.services.adobe.com',
   'dc.stage.acrobat.com',
   'stage.acrobat.adobe.com',
@@ -48,7 +48,7 @@ const defaultSrc = [
 ];
 
 const fontSrc = [
-  '"self"',
+  '\'self\'',
   'use.typekit.net',
   ';',
 ];
@@ -65,7 +65,7 @@ const formAction = [
 ];
 
 const frameSrc = [
-  '"self"',
+  '\'self\'',
   'data:',
   'blob:',
   '*.amazonaws.com',
@@ -89,7 +89,7 @@ const frameSrc = [
 ];
 
 const imgSrc = [
-  '"self"',
+  '\'self\'',
   'about:',
   'blob:',
   'data:',
@@ -129,13 +129,13 @@ const imgSrc = [
 ];
 
 const manifestSrc = [
-  '"self"',
+  '\'self\'',
   ';',
 ];
 
 const scriptSrc = [
-  '"self"',
-  '"unsafe-eval"',
+  '\'self\'',
+  '\'unsafe-eval\'',
   '*.adobe.com',
   '*.clarity.ms',
   'accounts.google.com/gsi/client',
@@ -203,8 +203,8 @@ const scriptSrc = [
 ];
 
 const styleSrc = [
-  '"self"',
-  '"unsafe-inline"',
+  '\'self\'',
+  '\'unsafe-inline\'',
   '*.adobe.com',
   'accounts.google.com/gsi/style',
   'dc.stage.acrobat.com',
@@ -214,7 +214,7 @@ const styleSrc = [
 ];
 
 const workerSrc = [
-  '"self"',
+  '\'self\'',
   'blob:',
   'cdnssl.clicktale.net',
   ';',
