@@ -36,6 +36,7 @@ const connectSrc = [
   'privacyportal.onetrust.com',
   'siteintercept.qualtrics.com/',
   'tr.snapchat.com/',
+  'main--dc--adobecom.hlx.page',
   ';',
 ];
 
@@ -126,6 +127,7 @@ const imgSrc = [
   'www.googletagmanager.com/',
   'www.linkedin.com',
   'milo.adobe.com',
+  'main--dc--adobecom.hlx.page',
   ';',
 ];
 
@@ -200,6 +202,8 @@ const scriptSrc = [
   'www.linkedin.com/px',
   'www.redditstatic.com/ads/pixel.js',
   'zn3n5vyia1vy8b4ly-adobe.siteintercept.qualtrics.com/',
+  'tag.demandbase.com',
+  'munchkin.marketo.net',
   ';',
 ];
 
