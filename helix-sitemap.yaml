@@ -15,3 +15,8 @@ sitemaps:
         destination: /de/acrobat/online/sitemap.xml
         hreflang: de
         alternate: /de/{path}.html
+      uk:
+        source: https://www.adobe.com/uk/sitemap.dc.xml
+        destination: /uk/acrobat/online/sitemap.xml
+        hreflang: uk
+        alternate: /uk/{path}.html
