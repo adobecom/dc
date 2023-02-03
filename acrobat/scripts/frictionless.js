@@ -7,15 +7,6 @@ bowserEle.id = 'bowserID';
 bowserEle.setAttribute('src', '/acrobat/scripts/bowser.js');
 document.head.appendChild(bowserEle)
 
-const reviewBlock = document.querySelectorAll('.review')
-const chromeBrowserExt = document.querySelectorAll("meta[name='-chromeext']");
-const edgeBrowserExt = document.querySelectorAll("meta[name='-edgeext']");
-const parser = bowser.getParser(window.navigator.userAgent);
-const browserName = parser.getBrowserName();
-
-console.log('browserName ext');
-console.log(browserName);
-
 export default function init(verb) {
   // Review Alloy
   if (reviewBlock) {
@@ -29,6 +20,14 @@ export default function init(verb) {
           // verb, rating, comment
           reviewFeedbackAlloy(verb, data.rating, data['rating-comments']);
         });
+        const reviewBlock = document.querySelectorAll('.review')
+        const chromeBrowserExt = document.querySelectorAll("meta[name='-chromeext']");
+        const edgeBrowserExt = document.querySelectorAll("meta[name='-edgeext']");
+        const parser = bowser.getParser(window.navigator.userAgent);
+        const browserName = parser.getBrowserName();
+
+        console.log('browserName ext');
+        console.log(browserName);
       }
     }, 1000);
   }
