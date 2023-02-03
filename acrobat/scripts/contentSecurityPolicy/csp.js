@@ -6,14 +6,16 @@ let ENV = devCSP;
 // temp
 let NAME = 'dev';
 
-if (window.location.hostname === 'main--dc--adobecom.hlx.page'
+if (window.location.hostname === 'main--dc--adobecom.hlx.live'
   || window.location.hostname === 'adobe.com') {
   ENV = prodCSP;
   // temp
   NAME = 'prod';
 }
 
-if (window.location.hostname === 'stage--dc--adobecom.hlx.page') {
+if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
+  || window.location.hostname === 'main--dc--adobecom.hlx.page'
+  || window.location.hostname === 'www.stage.adobe.com') {
   ENV = stageCSP;
   // temp
   NAME = 'stage';
@@ -33,7 +35,6 @@ export default function ContentSecurityPolicy() {
 
   // temp
   console.log(`This is the ${NAME} CSP!!`);
-  console.log('theCSP');
 
   const head = document.querySelector('head');
   const cspElement = document.createElement('meta');
