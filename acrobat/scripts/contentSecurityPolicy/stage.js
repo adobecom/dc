@@ -204,6 +204,7 @@ const scriptSrc = [
   'zn3n5vyia1vy8b4ly-adobe.siteintercept.qualtrics.com/',
   'tag.demandbase.com',
   'munchkin.marketo.net',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
@@ -215,6 +216,7 @@ const styleSrc = [
   'dc.stage.acrobat.com',
   'stage.adobeccstatic.com',
   'use.typekit.net',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
