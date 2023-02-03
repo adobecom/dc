@@ -37,6 +37,7 @@ const connectSrc = [
   'siteintercept.qualtrics.com/',
   'tr.snapchat.com/',
   'main--dc--adobecom.hlx.page',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
@@ -98,6 +99,7 @@ const imgSrc = [
   '*.clarity.ms',
   '*.services.adobe.com',
   'alb.reddit.com/rp.gif',
+  's.tgm.yahoo-net.jp',
   'analytics.twitter.com/',
   'bat.bing.com/action/',
   'c.clicktale.net',
@@ -128,6 +130,7 @@ const imgSrc = [
   'www.linkedin.com',
   'milo.adobe.com',
   'main--dc--adobecom.hlx.page',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
@@ -204,6 +207,7 @@ const scriptSrc = [
   'zn3n5vyia1vy8b4ly-adobe.siteintercept.qualtrics.com/',
   'tag.demandbase.com',
   'munchkin.marketo.net',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
@@ -215,6 +219,7 @@ const styleSrc = [
   'dc.stage.acrobat.com',
   'stage.adobeccstatic.com',
   'use.typekit.net',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 

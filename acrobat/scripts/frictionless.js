@@ -2,6 +2,11 @@ import reviewAlloy from './alloy/review.js';
 import reviewFeedbackAlloy from './alloy/reviewFeedback.js';
 import browserExtAlloy from './alloy/browserExt.js'
 
+const bowserEle = document.createElement('script');
+bowserEle.id = 'bowserID';
+bowserEle.setAttribute('src', '/acrobat/scripts/bowser.js');
+document.head.appendChild(bowserEle)
+
 const reviewBlock = document.querySelectorAll('.review')
 const chromeBrowserExt = document.querySelectorAll("meta[name='-chromeext']");
 const edgeBrowserExt = document.querySelectorAll("meta[name='-edgeext']");
