@@ -26,10 +26,8 @@ export default function init(verb) {
           // verb, rating, comment
           reviewFeedbackAlloy(verb, data.rating, data['rating-comments']);
         });
-
         parser = bowser.getParser(window.navigator.userAgent);
         browserName = parser.getBrowserName();
-
         console.log('browserName ext');
         console.log(browserName);
       }
