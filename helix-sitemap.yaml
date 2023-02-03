@@ -9,22 +9,6 @@ sitemaps:
         source: /acrobat/online/query-index.json
         destination: /acrobat/online/sitemap.xml
         hreflang: en
-        alternate: /{path}
-      de:
-        source: https://www.adobe.com/de/sitemap.dc.xml
-        destination: /de/acrobat/online/sitemap.xml
-        hreflang: de
-        alternate: /de/{path}.html
-      uk:
-        source: https://www.adobe.com/uk/sitemap.dc.xml
-        destination: /uk/acrobat/online/sitemap.xml
-        hreflang: uk
-        alternate: /uk/{path}.html
-    languages-html:
-      default:
-        source: /acrobat/online/query-index.json
-        destination: /acrobat/online/sitemap-html.xml
-        hreflang: en
         alternate: /{path}.html
       de:
         source: https://www.adobe.com/de/sitemap.dc.xml
