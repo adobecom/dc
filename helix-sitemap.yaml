@@ -9,7 +9,7 @@ sitemaps:
         source: /acrobat/online/query-index.json
         destination: /acrobat/online/sitemap.xml
         hreflang: en
-        alternate: /{path}
+        alternate: /{path}.html
       de:
         source: https://www.adobe.com/de/sitemap.dc.xml
         destination: /de/acrobat/online/sitemap.xml
