@@ -311,3 +311,7 @@ div.how-to ol li::before{
 .gnav .cls-1 {
   fill: #fa0f00;
 }
+
+.hlx-Review-ratingFields input[name='rating'].is-Active {
+  background-image: url('/acrobat/img/icons/star-filled.svg') !important;
+}

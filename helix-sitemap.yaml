@@ -9,6 +9,7 @@ sitemaps:
         source: /acrobat/online/query-index.json
         destination: /acrobat/online/sitemap.xml
         hreflang: en
+        # should have .html talk to franklin team
         alternate: /{path}.html
       de:
         source: https://www.adobe.com/de/sitemap.dc.xml
