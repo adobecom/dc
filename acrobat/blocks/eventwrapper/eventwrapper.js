@@ -52,6 +52,7 @@ export default function init(element) {
     if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop') {
       // Browser Extension
       if (!localStorage.fricBrowExt) {
+        window.location.hash = '';
         let extName;
         if (browserName === 'Chrome') {
           extName = 'chromeext';
