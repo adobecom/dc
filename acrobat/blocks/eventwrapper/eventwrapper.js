@@ -22,6 +22,7 @@ const DOWNLOAD_START = 'download-start';
 const CONVERSION_COM = 'conversion-complete';
 const PREVIEW_GEN = 'preview-generating';
 const DROPZONE_DIS = 'dropzone-displayed';
+const PREVIEW_DIS = 'preview-displayed';
 // const UPSELL_DIS = 'upsell-displayed';
 
 export default function init(element) {
@@ -49,7 +50,8 @@ export default function init(element) {
     console.log(e);
     if (e === PROCESS_START) converterAnalytics();
 
-    if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop') {
+    if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop'
+        || e === PREVIEW_DIS && parser.parsedResult.platform.type === 'desktop') {
       // Browser Extension
       if (!localStorage.fricBrowExt) {
         window.location.hash = '';
