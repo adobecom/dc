@@ -61,8 +61,6 @@ export default function init(element) {
   if (preRender) {
     (async () => {
       // TODO: Make dynamic
-      console.log('VERB');
-      console.log(`https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/${VERB}-en-us.html`);
       const response = await fetch(`https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/${VERB}-en-us.html`);
       // eslint-disable-next-line default-case
       switch (response.status) {
