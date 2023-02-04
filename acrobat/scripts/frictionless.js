@@ -16,6 +16,11 @@ let browserName;
 export default function init(verb) {
   // Review Alloy
   if (reviewBlock) {
+
+    reviewBlock[0].addEventListener('mouseover', function(){
+
+      console.log('aagdg');
+    })
     reviewAlloy();
     const reviewWait = setInterval(() => {
       const reviewForm = document.querySelectorAll('.hlx-Review');

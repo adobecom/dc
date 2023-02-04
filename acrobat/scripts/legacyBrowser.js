@@ -1,5 +1,12 @@
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 
+if (!document.querySelector('#bowserID')) {
+  const bowserEle = document.createElement('script');
+  bowserEle.id = 'bowserID';
+  bowserEle.setAttribute('src', '/acrobat/scripts/bowser.js');
+  document.head.appendChild(bowserEle)
+}
+
 // Check if browser version is compatible with minimal milo / DC widget requirements
 export function browserDetection() {
   // Uses Bowser Library (https://lancedikson.github.io/bowser/docs/Parser.html)
