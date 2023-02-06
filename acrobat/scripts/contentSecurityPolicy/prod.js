@@ -31,6 +31,7 @@ const connectSrc = [
   'pdfnow.adobe.io',
   'privacyportal.onetrust.com',
   'tr.snapchat.com/',
+  'main--dc--adobecom.hlx.page',
   ';',
 ];
 
@@ -120,6 +121,7 @@ const imgSrc = [
   'www.googletagmanager.com/',
   'www.linkedin.com',
   'main--dc--adobecom.hlx.page',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
