@@ -119,6 +119,7 @@ const imgSrc = [
   'www.google.ie/pagead/1p-user-list/',
   'www.googletagmanager.com/',
   'www.linkedin.com',
+  'main--dc--adobecom.hlx.page',
   ';',
 ];
 
