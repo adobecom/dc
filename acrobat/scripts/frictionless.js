@@ -35,8 +35,7 @@ export default function init(verb) {
   }
 
   // Browser Ext. Alloy
-  if (chromeBrowserExt.length > 0 && browserName === 'Chrome'
-     || edgeBrowserExt.length > 0 && browserName === 'Microsoft Edge') {
+  window.addEventListener('modal:open', ()=> {
     let extName;
     if (browserName === 'Chrome') {
       extName = '#chromeext';
@@ -45,28 +44,15 @@ export default function init(verb) {
     if (browserName === 'Microsoft Edge') {
       extName = '#edgeext';
     }
-    window.addEventListener('hashchange', (event) => {
-      // #chromeext
-    if (window.location.hash === extName) {
-      //Modal Ready...
-      const findModal = setInterval(() => {
-        if (document.querySelectorAll(extName).length > 0) {
-          clearInterval(findModal);
-          const browserExtModal = document.querySelector(extName)
-          const browserExtClose = browserExtModal.querySelector('.dialog-close');
-          browserExtAlloy('modalExist', browserName);
+    setTimeout( ()=> {
+      const browserExtModal = document.querySelector(extName)
+      const browserExtClose = browserExtModal.querySelector('.dialog-close');
+      browserExtAlloy('modalExist', browserName);
 
-          browserExtClose.addEventListener('click', () => {
-            browserExtAlloy('modalClosed', browserName);
-            window.localStorage.fricBrowExt = true;
-          })
-        }
-
-      }, 1000);
-    }
-    });
-
-
-
-  }
+      browserExtClose.addEventListener('click', () => {
+        browserExtAlloy('modalClosed', browserName);
+        window.localStorage.fricBrowExt = true;
+      }) 
+    }, 1000);
+  });
 }

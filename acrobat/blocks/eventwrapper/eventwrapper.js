@@ -54,16 +54,17 @@ export default function init(element) {
         || e === PREVIEW_DIS && parser.parsedResult.platform.type === 'desktop') {
       // Browser Extension
       if (!localStorage.fricBrowExt) {
-        window.location.hash = '';
         let extName;
         if (browserName === 'Chrome') {
-          extName = 'chromeext';
-          window.location.hash = extName;
+          extName = '#chromeext';
+          const event = new CustomEvent('modal:open', { detail: { hash: extName } });
+          window.dispatchEvent(event);
         }
     
         if (browserName === 'Microsoft Edge') {
-          extName = 'edgeext';
-          window.location.hash = extName;
+          extName = '#edgeext';
+          const event = new CustomEvent('modal:open', { detail: { hash: extName } });
+          window.dispatchEvent(event);
         }
       }
     }
