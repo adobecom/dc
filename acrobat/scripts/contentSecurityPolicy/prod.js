@@ -32,6 +32,7 @@ const connectSrc = [
   'privacyportal.onetrust.com',
   'tr.snapchat.com/',
   'main--dc--adobecom.hlx.page',
+  'main--milo--adobecom.hlx.page',
   ';',
 ];
 
