@@ -2,8 +2,9 @@ import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
 
 //TODO: Only have run one time
 window.addEventListener('Bowser:Ready', ()=> {
-  const parser = bowser.getParser(window.navigator.userAgent);
-  const browserName = parser.getBrowserName();
+  console.log('range lide');
+  let parser = bowser.getParser(window.navigator.userAgent);
+  let browserName = parser.getBrowserName();
 })
 
 const UPLOAD_START = 'file-upload-start';
@@ -41,6 +42,8 @@ export default function init(element) {
   const handleEvents = (e, jobData, converter, verb) => {
     console.log('**EVENT**');
     console.log(e);
+    let parser = bowser.getParser(window.navigator.userAgent);
+    let browserName = parser.getBrowserName();
     if (e === PROCESS_START) converterAnalytics();
 
     if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop'
