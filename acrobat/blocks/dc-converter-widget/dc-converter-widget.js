@@ -49,7 +49,7 @@ export default function init(element) {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname === 'main--dc--adobecom.hlx.page'
       || window.location.hostname === 'www.stage.adobe.com' ) {
-        window.location = 'https://www.adobe.com/go/acrobat-pdftoppt-stage';\
+        window.location = 'https://www.adobe.com/go/acrobat-pdftoppt-stage';
         return;
         // Add Go URL for stage
       }
