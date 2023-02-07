@@ -29,7 +29,7 @@ const bowserReady = setInterval(() => {
     const bowserIsReady = new CustomEvent('Bowser:Ready');
     window.dispatchEvent(bowserIsReady);
   }
-}, 1000);
+}, 100);
 console.log('setting bowser');
 
 // CLS Scripts
