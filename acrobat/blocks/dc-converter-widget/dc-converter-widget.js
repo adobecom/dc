@@ -47,6 +47,11 @@ export default function init(element) {
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
+      if (window.location.hostname === 'main--dc--adobecom.hlx.page'
+      || window.location.hostname === 'www.stage.adobe.com' ) {
+        window.location = 'https://www.adobe.com/go/acrobat-pdftoppt-stage';
+        // Add Go URL for stage
+      }
       window.location = widget.querySelectorAll('div')[2].textContent.trim() || fallBack;
     }
   };
