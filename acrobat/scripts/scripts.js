@@ -11,11 +11,26 @@
  */
 
 import { setLibs } from './utils.js';
-// import { redirectLegacyBrowsers } from './legacyBrowser.js';
 import lanaLogging from './dcLana.js';
 import ContentSecurityPolicy from './contentSecurityPolicy/csp.js';
 
+// Set the CSP 
+// Send errors to LANA
 ContentSecurityPolicy();
+
+// Bowser Ready
+const bowserEle = document.createElement('script');
+bowserEle.id = 'bowserID';
+bowserEle.setAttribute('src', '/acrobat/scripts/bowser.js');
+document.head.appendChild(bowserEle);
+const bowserReady = setInterval(() => {
+  if (window.bowser) {
+    clearInterval(bowserReady);
+    const bowserIsReady = new CustomEvent('Bowser:Ready');
+    window.dispatchEvent(bowserIsReady);
+  }
+}, 1000);
+console.log('setting bowser');
 
 // CLS Scripts
 const head = document.querySelector('head');
@@ -24,12 +39,6 @@ clsPopIn.id = 'CLS_POPIN';
 clsPopIn.setAttribute('rel', 'stylesheet');
 clsPopIn.setAttribute('href', '/acrobat/styles/cls.css');
 head.appendChild(clsPopIn);
-
-// if there is a DC widget on the page check for legacy browser and redirect
-// to EOL Browser page if needed.
-if (document.querySelector('.dc-converter-widget')) {
-  // redirectLegacyBrowsers();
-}
 
 // Add project-wide styles here.
 const STYLES = '/acrobat/styles/styles.css';
@@ -136,20 +145,7 @@ const locales = {
 };
 
 // Add any config options.
-// window.adobeid = window.adobeid || {};
-// window.adobeid.scope = 'AdobeID,openid,gnav,additional_info.optionalAgreements';
 const CONFIG = {
-  // onReady: () => {
-  //   // DC Web IMS config
-  //   if (window.adobe_dc_sdk) {
-  //     let evt;
-  //       evt = new CustomEvent('dc.imslib.ready', { detail: { instance: window.adobeIMS }});
-  //       evt.initEvent('dc.imslib.ready', true, true);
-  //       console.log('are u eorking');
-  //     document.dispatchEvent(evt);
-  //     window.adobe_dc_sdk.imsReady = true;
-  //   }
-  // },
   codeRoot: '/acrobat',
   contentRoot: '/acrobat',
   imsClientId: 'acrobatmilo',

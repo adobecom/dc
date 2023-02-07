@@ -1,17 +1,10 @@
 import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
 
 //TODO: Only have run one time
-
-
-if (!document.querySelector('#bowserID')) {
-  const bowserEle = document.createElement('script');
-  bowserEle.id = 'bowserID';
-  bowserEle.setAttribute('src', '/acrobat/scripts/bowser.js');
-  document.head.appendChild(bowserEle)
-}
-
-const parser = bowser.getParser(window.navigator.userAgent);
-const browserName = parser.getBrowserName();
+window.addEventListener('Bowser:Ready', ()=> {
+  const parser = bowser.getParser(window.navigator.userAgent);
+  const browserName = parser.getBrowserName();
+})
 
 const UPLOAD_START = 'file-upload-start';
 const PROCESS_START = 'processing-start';
