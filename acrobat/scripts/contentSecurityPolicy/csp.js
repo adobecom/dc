@@ -27,7 +27,6 @@ export default function ContentSecurityPolicy() {
   font-src ${ENV.fontSrc.join(' ')}\
   form-action ${ENV.formAction.join(' ')}\
   frame-src ${ENV.frameSrc.join(' ')}\
-  img-src ${ENV.imgSrc.join(' ')}\
   manifest-src ${ENV.manifestSrc.join(' ')}\
   script-src ${ENV.scriptSrc.join(' ')}\
   style-src ${ENV.styleSrc.join(' ')}\

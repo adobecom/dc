@@ -1,6 +1,6 @@
 import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
 
-//TODO: Only have run one time
+//TODO: Only have run one time?
 window.addEventListener('Bowser:Ready', ()=> {
   console.log('range lide');
   let parser = bowser.getParser(window.navigator.userAgent);
