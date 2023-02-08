@@ -119,6 +119,11 @@
   background-color: transparent;
 }
 
+.accordion dt button::before {
+  padding-left: 25px;
+  box-sizing: border-box;
+}
+
 .section.hide {
   display: none;
   padding: 0;
