@@ -124,6 +124,8 @@ const imgSrc = [
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'a5.behance.net',
+  'www.googletagmanager.com',
+  'milo.adobe.com',
   ';',
 ];
 
