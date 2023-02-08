@@ -126,6 +126,8 @@ const imgSrc = [
   'a5.behance.net',
   'www.googletagmanager.com',
   'milo.adobe.com',
+  'p.typekit.net',
+  's.tgm.yahoo-net.jp',
   ';',
 ];
 
@@ -194,6 +196,7 @@ const scriptSrc = [
   'www.linkedin.com/px',
   'www.redditstatic.com/ads/pixel.js',
   'main--milo--adobecom.hlx.page',
+  'tag.demandbase.com',
   ';',
 ];
 
