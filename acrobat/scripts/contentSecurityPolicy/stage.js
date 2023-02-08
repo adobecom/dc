@@ -131,6 +131,7 @@ const imgSrc = [
   'milo.adobe.com',
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
+  'a5.behance.net',
   ';',
 ];
 
