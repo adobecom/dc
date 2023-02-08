@@ -208,6 +208,7 @@ const styleSrc = [
   'adobeccstatic.com',
   'use.typekit.net',
   'main--milo--adobecom.hlx.page',
+  'p.typekit.net',
   ';',
 ];
 
