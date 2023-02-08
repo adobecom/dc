@@ -93,7 +93,6 @@ export default function init(element) {
 
   setTimeout( () => {
     widget.appendChild(dcScript);
-
   }, 11000)
 
   window.addEventListener('IMS:Ready', () => {
