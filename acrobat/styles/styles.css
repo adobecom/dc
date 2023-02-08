@@ -319,3 +319,23 @@ div.how-to ol li::before{
   background-image: url('/acrobat/img/icons/star-filled.svg');
   margin: 0;
 }
+
+.hlx-ReviewWrapper {
+  /*font-family: adobe-clean,Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;*/
+  color: #505050;
+  line-height: 1.5;
+}
+.hlx-ReviewWrapper .hlx-reviewTitle {
+  line-height: 1.25;
+}
+.hlx-ReviewWrapper #rating-comments {
+  font-family: sans-serif;
+}
+.hlx-Review-commentFields input {
+  line-height: normal;
+}
+.hlx-Review-commentFields #ctaCover .comment-counter {
+  position: absolute;
+  top: 0;
+  left: 4px;
+}
