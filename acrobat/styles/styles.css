@@ -317,4 +317,5 @@ div.how-to ol li::before{
 }
 .hlx-Review-ratingFields input[name='rating'] {
   background-image: url('/acrobat/img/icons/star-filled.svg');
+  margin: 0;
 }
