@@ -14,7 +14,7 @@ import { setLibs } from './utils.js';
 import lanaLogging from './dcLana.js';
 import ContentSecurityPolicy from './contentSecurityPolicy/csp.js';
 
-// Set the CSP 
+// Set the CSP
 // Send errors to LANA
 ContentSecurityPolicy();
 
@@ -127,7 +127,7 @@ const locales = {
   jp: { ietf: 'ja-JP', tk: 'dvg6awq' },
   kr: { ietf: 'ko-KR', tk: 'qjs5sfm' },
   // Langstore Support.
-  langstore: { ietf: 'en-US', tk: 'hah7vzn.css' }, 
+  langstore: { ietf: 'en-US', tk: 'hah7vzn.css' },
   // geo expansion MWPW-124903
   za: { ietf: 'en-GB', tk: 'pps7abe.css' }, // South Africa (GB English)
   ng: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Nigeria (GB English)
@@ -141,7 +141,7 @@ const locales = {
   eg_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Egypt (GB English)
   kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
   qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
-  gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek) 
+  gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
 };
 
 // Add any config options.
@@ -154,6 +154,7 @@ const CONFIG = {
   live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   prod: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
   locales,
+  prodDomains: ['www.adobe.com'],
 };
 
 // Default to loading the first image as eager.
