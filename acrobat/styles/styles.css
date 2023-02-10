@@ -317,4 +317,24 @@ div.how-to ol li::before{
 }
 .hlx-Review-ratingFields input[name='rating'] {
   background-image: url('/acrobat/img/icons/star-filled.svg');
+  margin: 0;
+}
+
+.hlx-ReviewWrapper {
+  color: #505050;
+  line-height: 1.5;
+}
+.hlx-ReviewWrapper .hlx-reviewTitle {
+  line-height: 1.25;
+}
+.hlx-ReviewWrapper #rating-comments {
+  font-family: sans-serif;
+}
+.hlx-Review-commentFields input {
+  line-height: normal;
+}
+.hlx-Review-commentFields #ctaCover .comment-counter {
+  position: absolute;
+  top: 0;
+  left: 4px;
 }
