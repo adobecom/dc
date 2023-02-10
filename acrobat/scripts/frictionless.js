@@ -25,8 +25,6 @@ export default function init(verb) {
 
         parser = bowser.getParser(window.navigator.userAgent);
         browserName = parser.getBrowserName();
-        console.log('browserName ext');
-        console.log(browserName);
       }
     }, 1000);
   }

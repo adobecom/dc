@@ -185,7 +185,14 @@ const workerSrc = [
   ';',
 ];
 
+const preSrc = [
+  '\'self\'',
+  'documentcloud.adobe.com',
+  'blob:',
+  ';',
+];
+
 // TRY This
 // use variables for the different domians
 
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, preSrc};

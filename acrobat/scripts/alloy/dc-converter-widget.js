@@ -33,5 +33,4 @@ export default function init() {
   };
 
   window._satellite.track('event', event);
-  console.log('Alloy DC Widget');
 }

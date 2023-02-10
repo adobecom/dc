@@ -40,6 +40,4 @@ export default function init(verb, rating, comment) {
   };
 
   window._satellite.track('event', alloyFeedbackEvent);
-  console.log('Alloy Review Feedback');
-
 }
