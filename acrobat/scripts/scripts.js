@@ -30,7 +30,6 @@ const bowserReady = setInterval(() => {
     window.dispatchEvent(bowserIsReady);
   }
 }, 100);
-console.log('setting bowser');
 
 // CLS Scripts
 const head = document.querySelector('head');

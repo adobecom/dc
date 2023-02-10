@@ -2,7 +2,6 @@ import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
 
 //TODO: Only have run one time
 window.addEventListener('Bowser:Ready', ()=> {
-  console.log('range lide');
   let parser = bowser.getParser(window.navigator.userAgent);
   let browserName = parser.getBrowserName();
 })
@@ -40,8 +39,6 @@ export default function init(element) {
   }
 
   const handleEvents = (e, jobData, converter, verb) => {
-    console.log('**EVENT**');
-    console.log(e);
     let parser = bowser.getParser(window.navigator.userAgent);
     let browserName = parser.getBrowserName();
     if (e === PROCESS_START) converterAnalytics();
