@@ -31,7 +31,7 @@ export default function ContentSecurityPolicy() {
   img-src ${ENV.imgSrc.join(' ')}\
   manifest-src ${ENV.manifestSrc.join(' ')}\
   script-src ${ENV.scriptSrc.join(' ')}\
-
+  style-src ${ENV.styleSrc.join(' ')}\
   prefetch-src ${ENV.preSrc.join(' ')}\
   worker-src ${ENV.workerSrc.join(' ')}`;
 
