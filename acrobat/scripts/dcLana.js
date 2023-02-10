@@ -27,12 +27,12 @@ export default function lanaLogging() {
 
   // Content Security Policy Logging
   window.cspErrors.forEach((error) => { 
-    lanaOptions.tags = 'Cat=DxDC_Frictionless_CSP,origin=milo';
+    lanaCspOptions.tags = 'Cat=DxDC_Frictionless_CSP,origin=milo';
     window.lana.log(error, lanaCspOptions);
   })
 
   document.addEventListener("securitypolicyviolation", (e) => {
-    lanaOptions.tags = 'Cat=DxDC_Frictionless_CSP,origin=milo';
+    lanaCspOptions.tags = 'Cat=DxDC_Frictionless_CSP,origin=milo';
     window.lana.log(`${e.violatedDirective} violation ¶ Refused to load content from ${e.blockedURI}`, lanaCspOptions);
   });
 }
