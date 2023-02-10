@@ -1,19 +1,24 @@
 import frictionless from '../../scripts/frictionless.js';
 import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
 
+const pageLang = document.querySelector('html').lang;
+
 export default function init(element) {
   const widget = element;
   let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.164.1/dc-app-launcher.js';
+  let ENV = 'dev';
 
   if (window.location.hostname === 'main--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.adobe.com') {
     WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.37.2_1.164.1/dc-app-launcher.js';
+    ENV = 'prod';
   }
 
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
     || window.location.hostname === 'www.stage.adobe.com' ) {
     WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.37.2_1.164.1/dc-app-launcher.js';
+    ENV = 'stage';
   }
 
   widget.querySelector('div').id = 'VERB';
@@ -37,7 +42,6 @@ export default function init(element) {
       window.location = widget.querySelectorAll('div')[2].textContent.trim() || fallBack;
     }
   };
-
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
   widgetContainer.className = 'dc-wrapper';
@@ -48,7 +52,7 @@ export default function init(element) {
   if (preRender) {
     (async () => {
       // TODO: Make dynamic
-      const response = await fetch(`https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/${VERB}-en-us.html`);
+      const response = await fetch(`https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
       // eslint-disable-next-line default-case
       switch (response.status) {
         case 200:
@@ -76,8 +80,8 @@ export default function init(element) {
   dcScript.id = 'adobe_dc_sdk_launcher';
   dcScript.setAttribute('src', WIDGET_ENV);
   dcScript.dataset.dropzone_id = 'CID';
-  dcScript.dataset.locale = 'en-us';
-  dcScript.dataset.server_env = 'dev';
+  dcScript.dataset.locale = pageLang;
+  dcScript.dataset.server_env = ENV;
   dcScript.dataset.verb = VERB;
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
