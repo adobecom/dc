@@ -23,7 +23,7 @@ export default function init(verb, rating, comment) {
                 iclick: 'true',
                 rating: rating,
                 comment: comment,
-                verb: verb,
+                verb: `dc/production/${verb}`,
               },
               eventName: 'productRating',
             },
@@ -31,13 +31,12 @@ export default function init(verb, rating, comment) {
           feedback: {
             feedbackInfo: {
               rating: rating,
-              verb: verb,
+              verb: `dc/production/${verb}`,
             },
           },
         },
       },
     },
   };
-
   window._satellite.track('event', alloyFeedbackEvent);
 }
