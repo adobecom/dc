@@ -42,11 +42,11 @@ export default function init(verb) {
   window.addEventListener('modal:open', ()=> {
     let extName;
     if (browserName === 'Chrome') {
-      extName = '#chromeext';
+      extName = '-chromeext';
     }
 
     if (browserName === 'Microsoft Edge') {
-      extName = '#edgeext';
+      extName = '-edgeext';
     }
     setTimeout( ()=> {
       const browserExtModal = document.querySelector(extName)
@@ -57,6 +57,6 @@ export default function init(verb) {
         browserExtAlloy('modalClosed', browserName);
         window.localStorage.fricBrowExt = true;
       }) 
-    }, 2000);
+    }, 1000);
   });
 }

@@ -38,6 +38,7 @@ const connectSrc = [
   'tr.snapchat.com/',
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
+  'main--dc--adobecom.hlx.live',
   ';',
 ];
 
