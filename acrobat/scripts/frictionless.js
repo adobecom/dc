@@ -57,6 +57,6 @@ export default function init(verb) {
         browserExtAlloy('modalClosed', browserName);
         window.localStorage.fricBrowExt = true;
       }) 
-    }, 1000);
+    }, 2000);
   });
 }
