@@ -31,7 +31,6 @@ export default function init(element) {
     widget.querySelectorAll('div')[2].id = 'REDIRECT_URL';
     widget.querySelectorAll('div')[2].classList.add('hide');
     REDIRECT_URL = widget.querySelectorAll('div')[2].innerText.trim().toLowerCase();
-    console.log('REDIRECT URL', REDIRECT_URL);
   }
 
   // Generate cache url
@@ -39,7 +38,6 @@ export default function init(element) {
     widget.querySelectorAll('div')[4].id = 'GENERATE_CACHE_URL';
     widget.querySelectorAll('div')[4].classList.add('hide');
     DC_GENERATE_CACHE_URL = widget.querySelectorAll('div')[4].innerText.trim().toLowerCase();
-    console.log('DC_GENERATE_CACHE_URL', DC_GENERATE_CACHE_URL);
   }
 
   // Redirect
@@ -48,8 +46,7 @@ export default function init(element) {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname === 'main--dc--adobecom.hlx.page'
         || window.location.hostname === 'www.stage.adobe.com' ) {
-        console.log('before redirect', REDIRECT_URL);
-        window.location = REDIRECT_URL | `https://www.adobe.com/go/acrobat-${VERB}${ENV ? '-' + ENV : ''}`;
+        window.location = REDIRECT_URL | `https://www.adobe.com/go/acrobat-${VERB}-${ENV}`;
         return;
         // Add Go URL for stage
       }
@@ -67,7 +64,6 @@ export default function init(element) {
   if (preRender) {
     (async () => {
       // TODO: Make dynamic
-      console.log('before fetch', DC_GENERATE_CACHE_URL);
       const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
       // eslint-disable-next-line default-case
       switch (response.status) {
