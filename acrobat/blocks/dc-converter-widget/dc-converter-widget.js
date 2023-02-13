@@ -5,19 +5,19 @@ const pageLang = document.querySelector('html').lang;
 
 export default function init(element) {
   const widget = element;
-  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.164.1/dc-app-launcher.js';
+  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
   let ENV = 'dev';
 
   if (window.location.hostname === 'main--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.adobe.com') {
-    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.37.2_1.164.1/dc-app-launcher.js';
+    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
     ENV = 'prod';
   }
 
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
     || window.location.hostname === 'www.stage.adobe.com' ) {
-    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.37.2_1.164.1/dc-app-launcher.js';
+    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
     ENV = 'stage';
   }
 
@@ -52,7 +52,7 @@ export default function init(element) {
   if (preRender) {
     (async () => {
       // TODO: Make dynamic
-      const response = await fetch(`https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
+      const response = await fetch(`https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.165.0/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
       // eslint-disable-next-line default-case
       switch (response.status) {
         case 200:
