@@ -7,6 +7,8 @@ export default function init(element) {
   const widget = element;
   let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
   let ENV = 'dev';
+  let REDIRECT_URL = '';
+  let DC_GENERATE_CACHE_URL = '';
 
   if (window.location.hostname === 'main--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.live'
@@ -26,7 +28,16 @@ export default function init(element) {
 
   // Redir URL
   if (widget.querySelectorAll('div')[2]) {
+    widget.querySelectorAll('div')[2].id = 'REDIRECT_URL';
     widget.querySelectorAll('div')[2].classList.add('hide');
+    REDIRECT_URL = widget.querySelectorAll('div')[2].innerText.trim().toLowerCase();
+  }
+
+  // Generate cache url
+  if (widget.querySelectorAll('div')[4]) {
+    widget.querySelectorAll('div')[4].id = 'GENERATE_CACHE_URL';
+    widget.querySelectorAll('div')[4].classList.add('hide');
+    DC_GENERATE_CACHE_URL = widget.querySelectorAll('div')[4].innerText.trim().toLowerCase();
   }
 
   // Redirect
@@ -34,14 +45,15 @@ export default function init(element) {
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname === 'main--dc--adobecom.hlx.page'
-      || window.location.hostname === 'www.stage.adobe.com' ) {
-        window.location = 'https://www.adobe.com/go/acrobat-pdftoppt-stage';
+        || window.location.hostname === 'www.stage.adobe.com' ) {
+        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB}-${ENV}`;
         return;
         // Add Go URL for stage
       }
-      window.location = widget.querySelectorAll('div')[2].textContent.trim() || fallBack;
+      window.location = widget.querySelectorAll('div')[2].getChildren().textContent.trim() || fallBack;
     }
   };
+
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
   widgetContainer.className = 'dc-wrapper';
@@ -52,7 +64,7 @@ export default function init(element) {
   if (preRender) {
     (async () => {
       // TODO: Make dynamic
-      const response = await fetch(`https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.165.0/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
+      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
       // eslint-disable-next-line default-case
       switch (response.status) {
         case 200:
