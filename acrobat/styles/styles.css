@@ -338,3 +338,7 @@ div.how-to ol li::before{
   top: 0;
   left: 4px;
 }
+
+.accordion dt button {
+  color: #000;
+}
