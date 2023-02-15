@@ -22,6 +22,15 @@ export default function init(verb) {
           // verb, rating, comment
           reviewFeedbackAlloy(verb, data.rating, data['rating-comments']);
         });
+        if (document.querySelectorAll('.tooltip').length > 0) {
+
+          document.querySelectorAll('.tooltip')[3].addEventListener('click', () => {
+            reviewFeedbackAlloy(verb, '4');
+          })
+          document.querySelectorAll('.tooltip')[4].addEventListener('click', () => {
+            reviewFeedbackAlloy(verb, '5');
+          })
+        }
 
         parser = bowser.getParser(window.navigator.userAgent);
         browserName = parser.getBrowserName();
@@ -33,11 +42,11 @@ export default function init(verb) {
   window.addEventListener('modal:open', ()=> {
     let extName;
     if (browserName === 'Chrome') {
-      extName = '#chromeext';
+      extName = '-chromeext';
     }
 
     if (browserName === 'Microsoft Edge') {
-      extName = '#edgeext';
+      extName = '-edgeext';
     }
     setTimeout( ()=> {
       const browserExtModal = document.querySelector(extName)
