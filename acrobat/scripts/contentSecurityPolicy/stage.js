@@ -227,6 +227,7 @@ const styleSrc = [
   'dc.stage.acrobat.com',
   'stage.adobeccstatic.com',
   'use.typekit.net',
+  'p.typekit.net',
   'main--milo--adobecom.hlx.page',
   'http://localhost:6456/',
   '*.hlx.page',

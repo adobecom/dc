@@ -180,6 +180,7 @@ const styleSrc = [
   'accounts.google.com/gsi/style',
   'dc.dev.dexilab.acrobat.com',
   'use.typekit.net',
+  'p.typekit.net',
   'stage.adobeccstatic.com',
   'p.typekit.net',
   'http://localhost:6456/',
