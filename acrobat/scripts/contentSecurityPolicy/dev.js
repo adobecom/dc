@@ -32,6 +32,7 @@ const connectSrc = [
   'main--dc--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
   'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
@@ -117,6 +118,7 @@ const imgSrc = [
   'main--acrobat--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
@@ -166,6 +168,7 @@ const scriptSrc = [
   'main--milo--adobecom.hlx.page',
   'stage.adobeccstatic.com',
   'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
@@ -180,6 +183,7 @@ const styleSrc = [
   'stage.adobeccstatic.com',
   'p.typekit.net',
   'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
