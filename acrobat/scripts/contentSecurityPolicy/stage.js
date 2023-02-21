@@ -39,6 +39,7 @@ const connectSrc = [
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
+  'http://localhost:6456/',
   ';',
 ];
 
@@ -133,6 +134,7 @@ const imgSrc = [
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'a5.behance.net',
+  'http://localhost:6456/',
   ';',
 ];
 
@@ -210,6 +212,7 @@ const scriptSrc = [
   'tag.demandbase.com',
   'munchkin.marketo.net',
   'main--milo--adobecom.hlx.page',
+  'http://localhost:6456/',
   ';',
 ];
 
@@ -222,6 +225,7 @@ const styleSrc = [
   'stage.adobeccstatic.com',
   'use.typekit.net',
   'main--milo--adobecom.hlx.page',
+  'http://localhost:6456/',
   ';',
 ];
 
