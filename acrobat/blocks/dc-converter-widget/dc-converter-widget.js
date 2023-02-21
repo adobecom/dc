@@ -50,7 +50,7 @@ export default function init(element) {
         return;
         // Add Go URL for stage
       }
-      window.location = widget.querySelectorAll('div')[2].getChildren().textContent.trim() || fallBack;
+      window.location = widget.querySelectorAll('div')[2].textContent.trim() || fallBack;
     }
   };
 
