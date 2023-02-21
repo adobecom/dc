@@ -31,6 +31,7 @@ const connectSrc = [
   'main--milo--adobecom.hlx.page',
   'main--dc--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
+  'http://localhost:6456/',
   ';',
 ];
 
@@ -115,6 +116,7 @@ const imgSrc = [
   'main--dc--adobecom.hlx.page',
   'main--acrobat--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
+  'http://localhost:6456/',
   ';',
 ];
 
@@ -163,6 +165,7 @@ const scriptSrc = [
   'www.redditstatic.com/ads/pixel.js',
   'main--milo--adobecom.hlx.page',
   'stage.adobeccstatic.com',
+  'http://localhost:6456/',
   ';',
 ];
 
@@ -176,6 +179,7 @@ const styleSrc = [
   'use.typekit.net',
   'stage.adobeccstatic.com',
   'p.typekit.net',
+  'http://localhost:6456/',
   ';',
 ];
 
