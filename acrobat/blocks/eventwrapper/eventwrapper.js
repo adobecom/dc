@@ -38,26 +38,50 @@ export default function init(element) {
     return;
   }
 
+  const extInstalled = (extid, extname) => {
+    const event = new CustomEvent('modal:open', { detail: { hash: extname } });
+    if (chrome.runtime && chrome.runtime.sendMessage) {
+      chrome.runtime.sendMessage(extid, 'version', response => {
+        if (!response) {
+          console.log('No extension');
+          window.dispatchEvent(event);
+          return;
+        }
+        console.log('Extension version: ', response);
+        console.log('Yes extension')
+
+      });
+    } else {
+      console.log('Not able to tell extension INCOG');
+      window.dispatchEvent(event);
+    };
+
+  };
+
   const handleEvents = (e, jobData, converter, verb) => {
     let parser = bowser.getParser(window.navigator.userAgent);
     let browserName = parser.getBrowserName();
+    let extID;
     if (e === PROCESS_START) converterAnalytics();
 
     if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop'
         || e === PREVIEW_DIS && parser.parsedResult.platform.type === 'desktop') {
       // Browser Extension
+      console.log('EW');
       if (!localStorage.fricBrowExt) {
         let extName;
-        if (browserName === 'Chrome') {
+        if (browserName === 'Chrome' && !window.modalDisplayed) {
+          window.modalDisplayed = true;
           extName = '#chromeext';
-          const event = new CustomEvent('modal:open', { detail: { hash: extName } });
-          window.dispatchEvent(event);
+          extID = 'efaidnbmnnnibpcajpcglclefindmkaj';
+          extInstalled(extID, extName);
         }
     
-        if (browserName === 'Microsoft Edge') {
+        if (browserName === 'Microsoft Edge' && !window.modalDisplayed) {
+          window.modalDisplayed = true;
           extName = '#edgeext';
-          const event = new CustomEvent('modal:open', { detail: { hash: extName } });
-          window.dispatchEvent(event);
+          extID = 'elhekieabhbkpmcefcoobjddigjcaadp';
+          extInstalled(extID, extName);
         }
       }
     }
