@@ -42,21 +42,21 @@ export default function init(verb) {
   window.addEventListener('modal:open', ()=> {
     let extName;
     if (browserName === 'Chrome') {
-      extName = '-chromeext';
+      extName = '#chromeext';
     }
 
     if (browserName === 'Microsoft Edge') {
-      extName = '-edgeext';
+      extName = '#edgeext';
     }
     setTimeout( ()=> {
-      const browserExtModal = document.querySelector(extName)
+      const browserExtModal = document.querySelector(extName);
       const browserExtClose = browserExtModal.querySelector('.dialog-close');
       browserExtAlloy('modalExist', browserName);
 
       browserExtClose.addEventListener('click', () => {
         browserExtAlloy('modalClosed', browserName);
         window.localStorage.fricBrowExt = true;
-      }) 
+      })
     }, 1000);
   });
 }
