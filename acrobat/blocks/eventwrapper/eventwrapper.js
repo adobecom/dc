@@ -45,14 +45,10 @@ export default function init(element) {
         if (!response) {
           console.log('No extension');
           window.dispatchEvent(event);
-          return;
         }
-        console.log('Extension version: ', response);
-        console.log('Yes extension')
 
       });
     } else {
-      console.log('Not able to tell extension INCOG');
       window.dispatchEvent(event);
     };
 
@@ -67,7 +63,6 @@ export default function init(element) {
     if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop'
         || e === PREVIEW_DIS && parser.parsedResult.platform.type === 'desktop') {
       // Browser Extension
-      console.log('EW');
       if (!localStorage.fricBrowExt) {
         let extName;
         if (browserName === 'Chrome' && !window.modalDisplayed) {
