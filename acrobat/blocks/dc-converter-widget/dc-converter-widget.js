@@ -46,7 +46,7 @@ export default function init(element) {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname === 'main--dc--adobecom.hlx.page'
         || window.location.hostname === 'www.stage.adobe.com' ) {
-        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB}-${ENV}`;
+        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}-${ENV}`;
         return;
         // Add Go URL for stage
       }
