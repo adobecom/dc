@@ -315,9 +315,8 @@ div.how-to ol li::before{
 .hlx-Review-ratingFields input[name='rating'].is-Active {
   background-image: url('/acrobat/img/icons/star-filled.svg') !important;
 }
-.hlx-Review-ratingFields input[name='rating'] {
+.hlx-Review-ratingFields input[name='rating']::after {
   background-image: url('/acrobat/img/icons/star-filled.svg');
-  margin: 0;
 }
 
 .hlx-ReviewWrapper {
