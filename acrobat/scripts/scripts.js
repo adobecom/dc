@@ -184,9 +184,9 @@ const miloLibs = setLibs(LIBS);
 (async function loadPage() {
   const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
+  loadLana({ clientId: 'dxdc' });
   await loadArea();
   loadDelayed();
-  loadLana({ clientId: 'dxdc' });
   lanaLogging();
 
   // IMS Ready
