@@ -44,13 +44,13 @@ export default function init(element) {
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
-      if (window.location.hostname === 'main--dc--adobecom.hlx.page'
-        || window.location.hostname === 'www.stage.adobe.com' ) {
+      if (window.location.hostname != 'main--dc--adobecom.hlx.live'
+        || window.location.hostname != 'www.adobe.com' ) {
         window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}-${ENV}`;
         return;
         // Add Go URL for stage
       }
-      window.location = widget.querySelectorAll('div')[2].textContent.trim() || fallBack;
+      window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}` || fallBack;
     }
   };
 
