@@ -47,10 +47,9 @@ export default function init(element) {
       if (window.location.hostname != 'main--dc--adobecom.hlx.live'
         || window.location.hostname != 'www.adobe.com' ) {
         window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}-${ENV}`;
-        return;
-        // Add Go URL for stage
+      } else {
+        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}` || fallBack;
       }
-      window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}` || fallBack;
     }
   };
 
