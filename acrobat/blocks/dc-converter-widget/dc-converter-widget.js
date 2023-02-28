@@ -41,7 +41,6 @@ export default function init(element) {
   }
 
   // Redirect
-  console.log(`https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}-${ENV}`);
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
