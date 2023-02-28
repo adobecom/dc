@@ -46,7 +46,7 @@ export default function init(element) {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname != 'main--dc--adobecom.hlx.live'
         || window.location.hostname != 'www.adobe.com' ) {
-        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}-${ENV}`;
+        window.location = `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
       } else {
         window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}` || fallBack;
       }
