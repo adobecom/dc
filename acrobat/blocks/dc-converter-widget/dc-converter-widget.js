@@ -31,6 +31,7 @@ export default function init(element) {
     widget.querySelectorAll('div')[2].id = 'REDIRECT_URL';
     widget.querySelectorAll('div')[2].classList.add('hide');
     REDIRECT_URL = widget.querySelectorAll('div')[2].innerText.trim().toLowerCase();
+    console.log(REDIRECT_URL);
   }
 
   // Generate cache url
@@ -45,7 +46,7 @@ export default function init(element) {
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname != 'main--dc--adobecom.hlx.live'
-        || window.location.hostname != 'www.adobe.com' ) {
+        && window.location.hostname != 'www.adobe.com' ) {
         window.location = `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
       } else {
         window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}` || fallBack;
