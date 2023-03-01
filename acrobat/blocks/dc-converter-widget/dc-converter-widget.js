@@ -1,7 +1,23 @@
 import frictionless from '../../scripts/frictionless.js';
 import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
 
-const pageLang = document.querySelector('html').lang;
+const pageLang = document.querySelector('html').lang || 'en-US';
+const verbToRedirectLinkSuffix =  {
+  'createpdf': 'createpdf',
+  'crop-pages': 'crop',
+  'delete-pages': 'deletepages',
+  'extract-pages': 'extract',
+  'combine-pdf': 'combine',
+  'protect-pdf': 'protect',
+  'add-comment': 'addcomment',
+  'pdf-to-image': 'pdftoimage',
+  'reorder-pages': 'reorderpages',
+  'sendforsignature': 'sendforsignature',
+  'rotate-pages': 'rotatepages',
+  'fillsign': 'fillsign',
+  'split-pdf': 'split',
+  'insert-pdf': 'insert',
+};
 
 export default function init(element) {
   const widget = element;
@@ -27,19 +43,22 @@ export default function init(element) {
   const VERB = widget.querySelector('div').innerText.trim().toLowerCase();
 
   // Redir URL
-  if (widget.querySelectorAll('div')[2]) {
-    widget.querySelectorAll('div')[2].id = 'REDIRECT_URL';
-    widget.querySelectorAll('div')[2].classList.add('hide');
-    REDIRECT_URL = widget.querySelectorAll('div')[2].innerText.trim().toLowerCase();
-    console.log(REDIRECT_URL);
+  const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
+  if (REDIRECT_URL_DIV) {
+    // REDIRECT_URL_DIV.id = 'REDIRECT_URL';
+    REDIRECT_URL = REDIRECT_URL_DIV.textContent.trim();
+    REDIRECT_URL_DIV.remove();
   }
 
-  // Generate cache url
-  if (widget.querySelectorAll('div')[4]) {
-    widget.querySelectorAll('div')[4].id = 'GENERATE_CACHE_URL';
-    widget.querySelectorAll('div')[4].classList.add('hide');
-    DC_GENERATE_CACHE_URL = widget.querySelectorAll('div')[4].innerText.trim().toLowerCase();
-  }
+
+    // Generate cache url
+    const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
+    if (GENERATE_CACHE_URL_DIV) {
+      // GENERATE_CACHE_URL_DIV.id = 'GENERATE_CACHE_URL';
+      DC_GENERATE_CACHE_URL = GENERATE_CACHE_URL_DIV.textContent.trim();
+      GENERATE_CACHE_URL_DIV.remove();
+    }
+
 
   // Redirect
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
@@ -47,16 +66,15 @@ export default function init(element) {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname != 'main--dc--adobecom.hlx.live'
         && window.location.hostname != 'www.adobe.com' ) {
-        window.location = `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
+        window.location = `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
       } else {
-        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}` || fallBack;
+        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}` || fallBack;
       }
     }
   };
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
-  widgetContainer.className = 'dc-wrapper';
   widget.appendChild(widgetContainer);
 
   const firstTimeUser = window.localStorage.getItem('pdfnow.auth');
@@ -64,7 +82,7 @@ export default function init(element) {
   if (preRender) {
     (async () => {
       // TODO: Make dynamic
-      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
+      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.165.0/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
       // eslint-disable-next-line default-case
       switch (response.status) {
         case 200:
