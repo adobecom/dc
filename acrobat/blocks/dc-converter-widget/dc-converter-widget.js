@@ -2,7 +2,22 @@ import frictionless from '../../scripts/frictionless.js';
 import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
 
 const pageLang = document.querySelector('html').lang;
-
+const verbToRedirectLink =  {
+  'createpdf': 'acrobat-createpdf',
+  'crop-pages': 'acrobat-crop',
+  'delete-pages': 'acrobat-deletepages',
+  'extract-pages': 'acrobat-extract',
+  'combine-pdf': 'acrobat-combine',
+  'protect-pdf': 'acrobat-protect',
+  'add-comment': 'acrobat-addcomment',
+  'pdf-to-image': 'acrobat-pdftoimage',
+  'reorder-pages': 'acrobat-reorderpages',
+  'sendforsignature': 'acrobat-sendforsignature',
+  'rotate-pages': 'acrobat-rotatepages',
+  'fillsign': 'acrobat-fillsign',
+  'split-pdf': 'acrobat-split',
+  'insert-pdf': 'acrobat-insert',
+};
 export default function init(element) {
   const widget = element;
   let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
@@ -47,9 +62,9 @@ export default function init(element) {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname != 'main--dc--adobecom.hlx.live'
         && window.location.hostname != 'www.adobe.com' ) {
-        window.location = `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
+        window.location = `https://www.adobe.com/go/acrobat-${verbToRedirectLink[VERB]}-${ENV}`|| REDIRECT_URL;
       } else {
-        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}` || fallBack;
+        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbToRedirectLink[VERB]}` || fallBack;
       }
     }
   };
@@ -64,7 +79,7 @@ export default function init(element) {
   if (preRender) {
     (async () => {
       // TODO: Make dynamic
-      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
+      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.165.0/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
       // eslint-disable-next-line default-case
       switch (response.status) {
         case 200:
