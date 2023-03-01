@@ -2,7 +2,22 @@ import frictionless from '../../scripts/frictionless.js';
 import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
 
 const pageLang = document.querySelector('html').lang;
-
+const verbToRedirectLinkSuffix =  {
+  'createpdf': 'createpdf',
+  'crop-pages': 'crop',
+  'delete-pages': 'deletepages',
+  'extract-pages': 'extract',
+  'combine-pdf': 'combine',
+  'protect-pdf': 'protect',
+  'add-comment': 'addcomment',
+  'pdf-to-image': 'pdftoimage',
+  'reorder-pages': 'reorderpages',
+  'sendforsignature': 'sendforsignature',
+  'rotate-pages': 'rotatepages',
+  'fillsign': 'fillsign',
+  'split-pdf': 'split',
+  'insert-pdf': 'insert',
+};
 export default function init(element) {
   const widget = element;
   let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
@@ -42,14 +57,15 @@ export default function init(element) {
   }
 
   // Redirect
+  console.log('dinamic', `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`);
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname != 'main--dc--adobecom.hlx.live'
         && window.location.hostname != 'www.adobe.com' ) {
-        window.location = `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
+        window.location = `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
       } else {
-        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${VERB.split('-').join('')}` || fallBack;
+        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}` || fallBack;
       }
     }
   };
@@ -64,7 +80,7 @@ export default function init(element) {
   if (preRender) {
     (async () => {
       // TODO: Make dynamic
-      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
+      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.165.0/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
       // eslint-disable-next-line default-case
       switch (response.status) {
         case 200:
