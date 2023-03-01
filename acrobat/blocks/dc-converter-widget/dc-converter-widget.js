@@ -2,21 +2,21 @@ import frictionless from '../../scripts/frictionless.js';
 import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
 
 const pageLang = document.querySelector('html').lang;
-const verbToRedirectLink =  {
-  'createpdf': 'acrobat-createpdf',
-  'crop-pages': 'acrobat-crop',
-  'delete-pages': 'acrobat-deletepages',
-  'extract-pages': 'acrobat-extract',
-  'combine-pdf': 'acrobat-combine',
-  'protect-pdf': 'acrobat-protect',
-  'add-comment': 'acrobat-addcomment',
-  'pdf-to-image': 'acrobat-pdftoimage',
-  'reorder-pages': 'acrobat-reorderpages',
-  'sendforsignature': 'acrobat-sendforsignature',
-  'rotate-pages': 'acrobat-rotatepages',
-  'fillsign': 'acrobat-fillsign',
-  'split-pdf': 'acrobat-split',
-  'insert-pdf': 'acrobat-insert',
+const verbToRedirectLinkSuffix =  {
+  'createpdf': 'createpdf',
+  'crop-pages': 'crop',
+  'delete-pages': 'deletepages',
+  'extract-pages': 'extract',
+  'combine-pdf': 'combine',
+  'protect-pdf': 'protect',
+  'add-comment': 'addcomment',
+  'pdf-to-image': 'pdftoimage',
+  'reorder-pages': 'reorderpages',
+  'sendforsignature': 'sendforsignature',
+  'rotate-pages': 'rotatepages',
+  'fillsign': 'fillsign',
+  'split-pdf': 'split',
+  'insert-pdf': 'insert',
 };
 export default function init(element) {
   const widget = element;
@@ -57,14 +57,15 @@ export default function init(element) {
   }
 
   // Redirect
+  console.log('dinamic', `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`);
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname != 'main--dc--adobecom.hlx.live'
         && window.location.hostname != 'www.adobe.com' ) {
-        window.location = `https://www.adobe.com/go/acrobat-${verbToRedirectLink[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
+        window.location = `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
       } else {
-        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbToRedirectLink[VERB] || VERB.split('-').join('')}` || fallBack;
+        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}` || fallBack;
       }
     }
   };
