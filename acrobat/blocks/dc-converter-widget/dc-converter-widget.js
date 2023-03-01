@@ -58,9 +58,6 @@ export default function init(element) {
 
   // Redirect
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
-  console.log('verb', verbToRedirectLink[VERB]);
-  console.log('verb2', VERB.split('-').join(''));
-  console.log('verb3', verbToRedirectLink[VERB] || VERB.split('-').join(''));
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
       if (window.location.hostname != 'main--dc--adobecom.hlx.live'
