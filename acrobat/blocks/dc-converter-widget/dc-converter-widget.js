@@ -17,6 +17,7 @@ const verbToRedirectLinkSuffix =  {
   'fillsign': 'fillsign',
   'split-pdf': 'split',
   'insert-pdf': 'insert',
+  'compress-pdf': 'compress',
 };
 export default function init(element) {
   const widget = element;
