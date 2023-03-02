@@ -28,6 +28,7 @@ function hasSchema(host) {
         paths: [
           'https://main--milo--adobecom.hlx.page/docs/library/blocks.json',
           'https://main--college--adobecom.hlx.page/docs/library/blocks.json',
+          'https://main--dc--adobecom.hlx.page/drafts/dragana/library/library.json',
         ],
       },
     ],
