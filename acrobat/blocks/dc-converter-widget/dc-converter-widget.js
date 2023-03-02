@@ -26,8 +26,7 @@ export default function init(element) {
   let REDIRECT_URL = '';
   let DC_GENERATE_CACHE_URL = '';
 
-  if (window.location.hostname === 'main--dc--adobecom.hlx.page'
-    || window.location.hostname === 'main--dc--adobecom.hlx.live'
+  if (window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.adobe.com') {
     WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
     ENV = 'prod';
