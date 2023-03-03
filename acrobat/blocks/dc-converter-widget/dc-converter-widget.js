@@ -20,10 +20,14 @@ const verbToRedirectLinkSuffix =  {
 };
 export default function init(element) {
   const widget = element;
-  let DC_WIDGET_VERSION_FALLBACK = '2.37.2_1.165.0';
-  let DC_GENERATE_CACHE_VERSION_FALLBACK = '1.165.0';
-  let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content') || DC_WIDGET_VERSION_FALLBACK;
-  let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content') || DC_GENERATE_CACHE_VERSION_FALLBACK;
+  const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
+  const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
+  if (!DC_WIDGET_VERSION) {
+    console.error('DC WIDGET VERSION IS NOT SET');
+  }
+  if (!DC_GENERATE_CACHE_VERSION) {
+    console.error('DC GENERATE CACHE VERSION IS NOT SET');
+  }
   let WIDGET_ENV = `https://dev.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
   let ENV = 'dev';
   let REDIRECT_URL = '';
