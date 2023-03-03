@@ -5,13 +5,11 @@ import browserExtAlloy from './alloy/browserExt.js'
 const reviewBlock = document.querySelectorAll('.review')
 const chromeBrowserExt = document.querySelectorAll("meta[name='-chromeext']");
 const edgeBrowserExt = document.querySelectorAll("meta[name='-edgeext']");
-const parser = bowser.getParser(window.navigator.userAgent);
-const browserName = parser.getBrowserName();
-
-console.log('browserName ext');
-console.log(browserName);
+let parser;
+let browserName;
 
 export default function init(verb) {
+
   // Review Alloy
   if (reviewBlock) {
     reviewAlloy();
@@ -24,42 +22,41 @@ export default function init(verb) {
           // verb, rating, comment
           reviewFeedbackAlloy(verb, data.rating, data['rating-comments']);
         });
+        if (document.querySelectorAll('.tooltip').length > 0) {
+
+          document.querySelectorAll('.tooltip')[3].addEventListener('click', () => {
+            reviewFeedbackAlloy(verb, '4');
+          })
+          document.querySelectorAll('.tooltip')[4].addEventListener('click', () => {
+            reviewFeedbackAlloy(verb, '5');
+          })
+        }
+
+        parser = bowser.getParser(window.navigator.userAgent);
+        browserName = parser.getBrowserName();
       }
     }, 1000);
   }
 
   // Browser Ext. Alloy
-  if (chromeBrowserExt.length > 0 && browserName === 'Chrome'
-     || edgeBrowserExt.length > 0 && browserName === 'Microsoft Edge') {
+  window.addEventListener('modal:open', ()=> {
     let extName;
     if (browserName === 'Chrome') {
-      extName = '-chromeext';
+      extName = '#chromeext';
     }
 
     if (browserName === 'Microsoft Edge') {
-      extName = '-edgeext';
+      extName = '#edgeext';
     }
-    addEventListener('hashchange', (event) => {
-    if (window.location.hash === extName) {
-      //Modal Ready...
-      const findModal = setInterval(() => {
-        if (document.querySelectorAll(extName).length > 0) {
-          clearInterval(findModal);
-          const browserExtModal = document.querySelector(extName)
-          const browserExtClose = browserExtModal.querySelector('.dialog-close');
-          browserExtAlloy('modalExist', browserName);
+    setTimeout( ()=> {
+      const browserExtModal = document.querySelector(extName);
+      const browserExtClose = browserExtModal.querySelector('.dialog-close');
+      browserExtAlloy('modalExist', browserName);
 
-          browserExtClose.addEventListener('click', () => {
-            browserExtAlloy('modalClosed', browserName);
-            localStorage.fricBrowExt = true;
-          })
-        }
-
-      }, 1000);
-    }
-    });
-
-
-
-  }
+      browserExtClose.addEventListener('click', () => {
+        browserExtAlloy('modalClosed', browserName);
+        window.localStorage.fricBrowExt = true;
+      })
+    }, 1000);
+  });
 }

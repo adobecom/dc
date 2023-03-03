@@ -1,53 +1,73 @@
 import frictionless from '../../scripts/frictionless.js';
+import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
 
+const pageLang = document.querySelector('html').lang;
+const verbToRedirectLinkSuffix =  {
+  'createpdf': 'createpdf',
+  'crop-pages': 'crop',
+  'delete-pages': 'deletepages',
+  'extract-pages': 'extract',
+  'combine-pdf': 'combine',
+  'protect-pdf': 'protect',
+  'add-comment': 'addcomment',
+  'pdf-to-image': 'pdftoimage',
+  'reorder-pages': 'reorderpages',
+  'sendforsignature': 'sendforsignature',
+  'rotate-pages': 'rotatepages',
+  'fillsign': 'fillsign',
+  'split-pdf': 'split',
+  'insert-pdf': 'insert',
+  'compress-pdf': 'compress',
+};
 export default function init(element) {
   const widget = element;
-  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.164.0/dc-app-launcher.js';
+  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
+  let ENV = 'dev';
+  let REDIRECT_URL = '';
+  let DC_GENERATE_CACHE_URL = '';
 
-  if (window.location.hostname === 'main--dc--adobecom.hlx.page'
-    || window.location.hostname === 'main--dc--adobecom.hlx.live'
-    || window.location.hostname === 'adobe.com') {
-    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.36.1_1.163.1/dc-app-launcher.js';
+  if (window.location.hostname === 'main--dc--adobecom.hlx.live'
+    || window.location.hostname === 'www.adobe.com') {
+    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
+    ENV = 'prod';
   }
 
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
+    || window.location.hostname === 'main--dc--adobecom.hlx.page'
     || window.location.hostname === 'www.stage.adobe.com' ) {
-    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.37.2_1.164.0/dc-app-launcher.js';
+    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
+    ENV = 'stage';
   }
-
-  // ?milolibs=blaineTest
-  // function addIMSShims() {
-  //   console.log('DC Shim');
-  //   console.log(window.adobeIMS);
-  //   if (window.adobeIMS && !window.adobeIMS.isReady) {
-  //       window.adobeIMS.isReady = function () {
-  //           return !!window.adobe_dc_sdk.imsReady;
-  //       };
-  //       window.adobeIMS.getClientID = function () {
-  //           return window.adobeid.client_id;
-  //       };
-  //       window.adobeIMS.getUserProfile = function() {
-  //           return window.adobe_dc_sdk.ims_profile;
-  //       };
-  //       window.adobeIMS.getLocale = function () {
-  //           return window.adobeid.locale;
-  //       };
-  //   }
-  // }
 
   widget.querySelector('div').id = 'VERB';
   const VERB = widget.querySelector('div').innerText.trim().toLowerCase();
 
   // Redir URL
   if (widget.querySelectorAll('div')[2]) {
+    widget.querySelectorAll('div')[2].id = 'REDIRECT_URL';
     widget.querySelectorAll('div')[2].classList.add('hide');
+    REDIRECT_URL = widget.querySelectorAll('div')[2].innerText.trim().toLowerCase();
+    console.log(REDIRECT_URL);
+  }
+
+  // Generate cache url
+  if (widget.querySelectorAll('div')[4]) {
+    widget.querySelectorAll('div')[4].id = 'GENERATE_CACHE_URL';
+    widget.querySelectorAll('div')[4].classList.add('hide');
+    DC_GENERATE_CACHE_URL = widget.querySelectorAll('div')[4].innerText.trim().toLowerCase();
   }
 
   // Redirect
+  console.log('dinamic', `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`);
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
-      window.location = widget.querySelectorAll('div')[2].textContent.trim() || fallBack;
+      if (window.location.hostname != 'main--dc--adobecom.hlx.live'
+        && window.location.hostname != 'www.adobe.com' ) {
+        window.location = `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
+      } else {
+        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}` || fallBack;
+      }
     }
   };
 
@@ -61,13 +81,17 @@ export default function init(element) {
   if (preRender) {
     (async () => {
       // TODO: Make dynamic
-      const response = await fetch('https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.163.1/pdf-to-ppt-en-us.html');
+      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.165.0/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
       // eslint-disable-next-line default-case
       switch (response.status) {
         case 200:
           // eslint-disable-next-line no-case-declarations
           const template = await response.text();
-          widgetContainer.innerHTML = template;
+          // eslint-disable-next-line no-case-declarations
+          const doc = new DOMParser().parseFromString(template, 'text/html');
+          document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
+          widgetContainer.appendChild(doc.body.firstElementChild);
+          performance.mark("milo-insert-snippet");
           break;
         case 404:
           break;
@@ -81,23 +105,12 @@ export default function init(element) {
     frictionless(VERB);
   });
 
-  // const header = document.querySelector('header')
-  // header.addEventListener('gnav:init', () => {
-  //   console.log('gnav ready');
-  //   addIMSShims();
-  //   // make sure you only load once! 
-  //   if (!runOne) {
-  //     widget.appendChild(dcScript);
-  //     runOne = true;
-  //   }
-  // })
-
   const dcScript = document.createElement('script');
   dcScript.id = 'adobe_dc_sdk_launcher';
   dcScript.setAttribute('src', WIDGET_ENV);
   dcScript.dataset.dropzone_id = 'CID';
-  dcScript.dataset.locale = 'en-us';
-  dcScript.dataset.server_env = 'dev';
+  dcScript.dataset.locale = pageLang;
+  dcScript.dataset.server_env = ENV;
   dcScript.dataset.verb = VERB;
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
@@ -105,6 +118,11 @@ export default function init(element) {
   if (preRender) {
     dcScript.dataset.pre_rendered = 'true';
   }
+
+  window.addEventListener('Bowser:Ready', ()=> {
+    // EOL Redirect
+    redirectLegacyBrowsers();
+  })
 
   widget.appendChild(dcScript);
 
@@ -115,12 +133,6 @@ export default function init(element) {
     document.dispatchEvent(evt);
     // window.adobe_dc_sdk.imsReady = true;
   })
-
-  // console.log('shim no wait');
-  // addIMSShims();
-  // if (!runOne) {
-  //   runOne = true;
-  // }
 
   // DC Personalization
   window.addEventListener('DC_Hosted:Ready', () => {

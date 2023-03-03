@@ -147,6 +147,10 @@
   padding-right: 0;
 }
 
+div.how-to {
+  max-width: none;
+}
+
 .how-to-heading {
   margin-right: 28px;
 }
@@ -159,7 +163,7 @@
 }
 
 /* Moblie HowTo */
-@media (max-width: 52.6rem) {
+@media (max-width: 37.5rem) {
   .how-to.large-image {
     grid-template-areas:
     "image"
@@ -175,7 +179,7 @@
   .how-to-image.how-to-image-large {
     margin-left: 0;
   }
-  
+
   .section .how-to > ol {
     margin-right: 0;
   }
@@ -215,38 +219,40 @@ div.how-to ol li::before{
   overflow: hidden;
   box-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 4% / 10%), 0 0 0 1px hsl(0deg 0% 4% / 2%);
 }
-#extension-modal .fragment .section .columns.browser-extension {
+.section .columns.browser-extension {
   padding: 20px;
+  width:480px;
+  height: 190px;
   font-size: 16px;
   animation-name: modalSlideIn-frictionlessBrowserExtension;
   transition: opacity 125ms ease-in-out,background-color 125ms ease-in-out,backdrop-filter 125ms ease-in-out,-webkit-backdrop-filter 125ms ease-in-out,transform 125ms ease-in-out;
   animation-duration: 2s;
 }
-#extension-modal .fragment .section .columns.browser-extension p {
+.section .columns.browser-extension p {
   margin-top: 0;
   margin-right: 20px;
 }
-#extension-modal .fragment .section .columns.browser-extension > .row {
+.section .columns.browser-extension > .row {
   display: flex;
   margin-bottom: 0;
   gap: 0px;
 }
-#extension-modal .fragment .section .columns.browser-extension picture {
+.section .columns.browser-extension picture {
   width: initial;
   vertical-align: middle;
   display: flex;
-  padding: 20px 10px 0px 10px;
+  padding: 30px 10px 0px 10px;
 }
-#extension-modal .fragment .section .columns.browser-extension picture img {
-  width: 100%;
-  max-width: 150px;
-  padding: 10px;
+.section .columns.browser-extension picture img {
+  width: 90px;
+  height: 90px;
+  margin: auto;
   display: block;
 }
-#extension-modal .fragment .section .columns.browser-extension .row .col-1 {
-  width: 70%;
+.section .columns.browser-extension .row .col-1 {
+  width: 66.666666%;
 }
-#extension-modal .fragment .section .columns.browser-extension .row .col-1 a {
+.section .columns.browser-extension .row .col-1 a {
   border-width: 2px;
   border-style: solid;
   border-radius: 16px;
@@ -260,13 +266,14 @@ div.how-to ol li::before{
   border-color: #505050;
   color: #505050;
 }
-#extension-modal .fragment .section .columns.browser-extension .row .col-1 a:hover {
+.section .columns.browser-extension .row .col-1 a:hover {
   background-color: #505050;
   color: #ffffff;
   text-decoration: none;
 }
-#extension-modal .fragment .section .columns.browser-extension .row .col-2 {
-  width: 30%;
+
+.section .columns.browser-extension .row .col-2 {
+  width: 33.333333%;
   border-left: solid 2px #EAEAEA;
 }
 
@@ -303,4 +310,34 @@ div.how-to ol li::before{
 
 .gnav .cls-1 {
   fill: #fa0f00;
+}
+
+.hlx-Review-ratingFields input[name='rating'].is-Active {
+  background-image: url('/acrobat/img/icons/star-filled.svg') !important;
+}
+.hlx-Review-ratingFields input[name='rating']::after {
+  background-image: url('/acrobat/img/icons/star-filled.svg');
+}
+
+.hlx-ReviewWrapper {
+  color: #505050;
+  line-height: 1.5;
+}
+.hlx-ReviewWrapper .hlx-reviewTitle {
+  line-height: 1.25;
+}
+.hlx-ReviewWrapper #rating-comments {
+  font-family: sans-serif;
+}
+.hlx-Review-commentFields input {
+  line-height: normal;
+}
+.hlx-Review-commentFields #ctaCover .comment-counter {
+  position: absolute;
+  top: 0;
+  left: 4px;
+}
+
+.accordion dt button {
+  color: #000;
 }

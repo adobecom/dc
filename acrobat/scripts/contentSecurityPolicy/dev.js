@@ -29,6 +29,10 @@ const connectSrc = [
   'privacyportal.onetrust.com',
   'tr.snapchat.com/',
   'main--milo--adobecom.hlx.page',
+  'main--dc--adobecom.hlx.page',
+  'main--dc--adobecom.hlx.live',
+  'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
@@ -111,7 +115,10 @@ const imgSrc = [
   'www.facebook.com',
   's.tgm.yahoo-net.jp',
   'main--dc--adobecom.hlx.page',
+  'main--acrobat--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
+  'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
@@ -160,6 +167,8 @@ const scriptSrc = [
   'www.redditstatic.com/ads/pixel.js',
   'main--milo--adobecom.hlx.page',
   'stage.adobeccstatic.com',
+  'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
@@ -171,8 +180,11 @@ const styleSrc = [
   'accounts.google.com/gsi/style',
   'dc.dev.dexilab.acrobat.com',
   'use.typekit.net',
+  'p.typekit.net',
   'stage.adobeccstatic.com',
   'p.typekit.net',
+  'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
@@ -183,17 +195,14 @@ const workerSrc = [
   ';',
 ];
 
-const reportUri = [
-  'https://dc-api-dev.adobe.io/system/csp',
-  ';',
-];
-
-const reportTo = [
-  'default',
+const preSrc = [
+  '\'self\'',
+  'documentcloud.adobe.com',
+  'blob:',
   ';',
 ];
 
 // TRY This
 // use variables for the different domians
 
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, reportUri, reportTo };
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, preSrc};

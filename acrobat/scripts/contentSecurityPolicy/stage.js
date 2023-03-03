@@ -1,5 +1,5 @@
 const connectSrc = [
-  '"self"',
+  '\'self\'',
   'blob:',
   '14257-chimera-stage.adobeioruntime.net',
   '*.adobe.com',
@@ -36,11 +36,16 @@ const connectSrc = [
   'privacyportal.onetrust.com',
   'siteintercept.qualtrics.com/',
   'tr.snapchat.com/',
+  'main--dc--adobecom.hlx.page',
+  'main--milo--adobecom.hlx.page',
+  'main--dc--adobecom.hlx.live',
+  'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
 const defaultSrc = [
-  '"self"',
+  '\'self\'',
   'auth-stg1.services.adobe.com',
   'dc.stage.acrobat.com',
   'stage.acrobat.adobe.com',
@@ -48,7 +53,7 @@ const defaultSrc = [
 ];
 
 const fontSrc = [
-  '"self"',
+  '\'self\'',
   'use.typekit.net',
   ';',
 ];
@@ -65,7 +70,7 @@ const formAction = [
 ];
 
 const frameSrc = [
-  '"self"',
+  '\'self\'',
   'data:',
   'blob:',
   '*.amazonaws.com',
@@ -89,7 +94,7 @@ const frameSrc = [
 ];
 
 const imgSrc = [
-  '"self"',
+  '\'self\'',
   'about:',
   'blob:',
   'data:',
@@ -97,6 +102,7 @@ const imgSrc = [
   '*.clarity.ms',
   '*.services.adobe.com',
   'alb.reddit.com/rp.gif',
+  's.tgm.yahoo-net.jp',
   'analytics.twitter.com/',
   'bat.bing.com/action/',
   'c.clicktale.net',
@@ -125,17 +131,23 @@ const imgSrc = [
   'www.google.ie/pagead/1p-user-list/',
   'www.googletagmanager.com/',
   'www.linkedin.com',
+  'milo.adobe.com',
+  'main--dc--adobecom.hlx.page',
+  'main--milo--adobecom.hlx.page',
+  'a5.behance.net',
+  'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
 const manifestSrc = [
-  '"self"',
+  '\'self\'',
   ';',
 ];
 
 const scriptSrc = [
-  '"self"',
-  '"unsafe-eval"',
+  '\'self\'',
+  '\'unsafe-eval\'',
   '*.adobe.com',
   '*.clarity.ms',
   'accounts.google.com/gsi/client',
@@ -199,37 +211,41 @@ const scriptSrc = [
   'www.linkedin.com/px',
   'www.redditstatic.com/ads/pixel.js',
   'zn3n5vyia1vy8b4ly-adobe.siteintercept.qualtrics.com/',
+  'tag.demandbase.com',
+  'munchkin.marketo.net',
+  'main--milo--adobecom.hlx.page',
+  'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
 const styleSrc = [
-  '"self"',
-  '"unsafe-inline"',
+  '\'self\'',
+  '\'unsafe-inline\'',
   '*.adobe.com',
   'accounts.google.com/gsi/style',
   'dc.stage.acrobat.com',
   'stage.adobeccstatic.com',
   'use.typekit.net',
+  'p.typekit.net',
+  'main--milo--adobecom.hlx.page',
+  'http://localhost:6456/',
+  '*.hlx.page',
   ';',
 ];
 
 const workerSrc = [
-  '"self"',
+  '\'self\'',
   'blob:',
   'cdnssl.clicktale.net',
   ';',
 ];
 
-const reportUri = [
-  '"https://dc-api-stage.adobe.io/system/csp"',
+const preSrc = [
+  '\'self\'',
+  'documentcloud.adobe.com',
+  'blob:',
   ';',
 ];
 
-const reportTo = [
-  '"default"',
-  ';',
-];
-
-
-
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, reportUri, reportTo};
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, preSrc};

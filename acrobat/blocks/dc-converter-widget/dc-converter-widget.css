@@ -1,75 +1,32 @@
 .dc-converter-widget {
-background-color: #fc6767;
-min-height: 560px;
+  background-color: #fc6767;
+  min-height: 560px;
 }
+
 .dc-wrapper {
-  /* width: 100%;
-  max-width: 1100px; */
   width: 75%;
   max-width: 75%;
   height: auto;
   margin: auto;
   padding: 0 0 0 ;
   position: relative;
-  top: 60px;
-}
-
-.dc-wrapper .react-spectrum-provider {
-  position: relative;
-  z-index:10;
+  overflow: hidden;
+  left:0;
+  top: 70px;
+  right:0;
+  z-index: 1;
 }
 
 #VERB, .hide {
   display: none;
 }
 
-.dc-wrapper {
-  overflow: hidden;
-  top: 70px;
-  left:0;
-  right:0;
-  margin-left:auto;
-  margin-right:auto;
-  position: absolute;
-}
-
-/* fake widget */
-.fake-dc-wrapper {
-  width: 75%;
-  max-width: 75%;
-  margin: auto;
-  top: 70px;
-  left:0;
-  right:0;
-  margin-left:auto;
-  margin-right:auto;
-  position: relative;
-  z-index: 1;
-}
-
 @media (max-width: 37.5rem) {
-  .fake-dc-wrapper,
   .dc-wrapper {
     width: 91.666667%;
     max-width: 91.666667%;
     top: 40px;
   }
-}
-
-/* Browser Extension */
-.browser-extension {
-  min-width: 480px;
-  padding: 20px;
-}
-
-.browser-extension .col.col-1 {
-  border-right:  1px grey solid;
-}
-
-.col.col-2 picture {
-  width: 90px;
-  height: 90px;
-  margin: auto;
 }
 
 .dialog-modal.extension-modal {

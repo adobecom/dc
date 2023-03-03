@@ -1,9 +1,10 @@
 import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
 
 //TODO: Only have run one time
-
-const parser = bowser.getParser(window.navigator.userAgent);
-const browserName = parser.getBrowserName();
+window.addEventListener('Bowser:Ready', ()=> {
+  let parser = bowser.getParser(window.navigator.userAgent);
+  let browserName = parser.getBrowserName();
+})
 
 const UPLOAD_START = 'file-upload-start';
 const PROCESS_START = 'processing-start';
@@ -14,6 +15,7 @@ const DOWNLOAD_START = 'download-start';
 const CONVERSION_COM = 'conversion-complete';
 const PREVIEW_GEN = 'preview-generating';
 const DROPZONE_DIS = 'dropzone-displayed';
+const PREVIEW_DIS = 'preview-displayed';
 // const UPSELL_DIS = 'upsell-displayed';
 
 export default function init(element) {
@@ -36,23 +38,45 @@ export default function init(element) {
     return;
   }
 
+  const extInstalled = (extid, extname) => {
+    const event = new CustomEvent('modal:open', { detail: { hash: extname } });
+    if (chrome.runtime && chrome.runtime.sendMessage) {
+      chrome.runtime.sendMessage(extid, 'version', response => {
+        if (!response) {
+          console.log('No extension');
+          window.dispatchEvent(event);
+        }
+
+      });
+    } else {
+      window.dispatchEvent(event);
+    };
+
+  };
+
   const handleEvents = (e, jobData, converter, verb) => {
-    console.log('**EVENT**');
-    console.log(e);
+    let parser = bowser.getParser(window.navigator.userAgent);
+    let browserName = parser.getBrowserName();
+    let extID;
     if (e === PROCESS_START) converterAnalytics();
 
-    if (e === PROCESS_COMPLETE && parser.parsedResult.platform.type === 'desktop') {
+    if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop'
+        || e === PREVIEW_DIS && parser.parsedResult.platform.type === 'desktop') {
       // Browser Extension
       if (!localStorage.fricBrowExt) {
         let extName;
-        if (browserName === 'Chrome') {
-          extName = 'chromeext';
-          window.location.hash = extName;
+        if (browserName === 'Chrome' && !window.modalDisplayed) {
+          window.modalDisplayed = true;
+          extName = '#chromeext';
+          extID = 'efaidnbmnnnibpcajpcglclefindmkaj';
+          extInstalled(extID, extName);
         }
     
-        if (browserName === 'Microsoft Edge') {
-          extName = 'edgeext';
-          window.location.hash = extName;
+        if (browserName === 'Microsoft Edge' && !window.modalDisplayed) {
+          window.modalDisplayed = true;
+          extName = '#edgeext';
+          extID = 'elhekieabhbkpmcefcoobjddigjcaadp';
+          extInstalled(extID, extName);
         }
       }
     }
@@ -75,11 +99,11 @@ export default function init(element) {
       case PROCESS_CANCELED:
         setCurrentEvent('cancel');
         break;
-      case PROCESS_COMPLETE:
-        setCurrentEvent('complete');
-        break;
+      // case PROCESS_COMPLETE:
+      //   setCurrentEvent('complete');
+      //   break;
       case CONVERSION_COM:
-        setCurrentEvent('conversion');
+        setCurrentEvent('complete');
         break;
       case PREVIEW_GEN:
         setCurrentEvent('preview');

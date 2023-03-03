@@ -2,6 +2,7 @@ const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 
 // Check if browser version is compatible with minimal milo / DC widget requirements
 export function browserDetection() {
+
   // Uses Bowser Library (https://lancedikson.github.io/bowser/docs/Parser.html)
   const parser = bowser.getParser(window.navigator.userAgent);
   const browserName = parser.getBrowserName();

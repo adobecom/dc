@@ -1,5 +1,5 @@
 const connectSrc = [
-  '"self"',
+  '\'self\'',
   'blob:',
   '14257-chimera.adobeioruntime.net',
   '*.adobe.com',
@@ -31,11 +31,14 @@ const connectSrc = [
   'pdfnow.adobe.io',
   'privacyportal.onetrust.com',
   'tr.snapchat.com/',
+  'main--dc--adobecom.hlx.page',
+  'main--milo--adobecom.hlx.page',
+  'main--dc--adobecom.hlx.live',
   ';',
 ];
 
 const defaultSrc = [
-  '"self"',
+  '\'self\'',
   'acrobat.adobe.com',
   'auth.services.adobe.com',
   'documentcloud.adobe.com',
@@ -43,7 +46,7 @@ const defaultSrc = [
 ];
 
 const fontSrc = [
-  '"self"',
+  '\'self\'',
   'use.typekit.net',
   ';',
 ];
@@ -58,7 +61,7 @@ const formAction = [
 ];
 
 const frameSrc = [
-  '"self"',
+  '\'self\'',
   'data:',
   'blob:',
   '*.amazonaws.com',
@@ -82,7 +85,7 @@ const frameSrc = [
 ];
 
 const imgSrc = [
-  '"self"',
+  '\'self\'',
   'about:',
   'blob:',
   'data:',
@@ -119,17 +122,24 @@ const imgSrc = [
   'www.google.ie/pagead/1p-user-list/',
   'www.googletagmanager.com/',
   'www.linkedin.com',
+  'main--dc--adobecom.hlx.page',
+  'main--milo--adobecom.hlx.page',
+  'a5.behance.net',
+  'www.googletagmanager.com',
+  'milo.adobe.com',
+  'p.typekit.net',
+  's.tgm.yahoo-net.jp',
   ';',
 ];
 
 const manifestSrc = [
-  '"self"',
+  '\'self\'',
   ';',
 ];
 
 const scriptSrc = [
-  '"self"',
-  '"unsafe-eval"',
+  '\'self\'',
+  '\'unsafe-eval\'',
   '*.adobe.com',
   '*.clarity.ms',
   'accounts.google.com/gsi/client',
@@ -186,35 +196,36 @@ const scriptSrc = [
   'www.googletagmanager.com/',
   'www.linkedin.com/px',
   'www.redditstatic.com/ads/pixel.js',
+  'main--milo--adobecom.hlx.page',
+  'tag.demandbase.com',
   ';',
 ];
 
 const styleSrc = [
-  '"self"',
-  '"unsafe-inline"',
+  '\'self\'',
+  '\'unsafe-inline\'',
   '*.adobe.com',
   'accounts.google.com/gsi/style',
   'adobeccstatic.com',
   'use.typekit.net',
+  'main--milo--adobecom.hlx.page',
+  'p.typekit.net',
   ';',
 ];
 
 const workerSrc = [
-  '"self"',
-  'blob:"',
-  'cdnssl.clicktale.net"',
-  'www.adobe.com/"',
+  '\'self\'',
+  'blob:',
+  'cdnssl.clicktale.net',
+  'www.adobe.com/',
   ';',
 ];
 
-const reportUri = [
-  '"https://dc-api.adobe.io/system/csp"',
+const preSrc = [
+  '\'self\'',
+  'documentcloud.adobe.com',
+  'blob:',
   ';',
 ];
 
-const reportTo = [
-  '"default"',
-  ';',
-];
-
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, reportUri, reportTo };
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, preSrc};
