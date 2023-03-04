@@ -83,18 +83,16 @@ export default function init(element) {
     (async () => {
       // TODO: Make dynamic
       const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.165.0/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
-      // eslint-disable-next-line default-case
       switch (response.status) {
-        case 200:
-          // eslint-disable-next-line no-case-declarations
+        case 200: {
           const template = await response.text();
-          // eslint-disable-next-line no-case-declarations
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
           widgetContainer.appendChild(doc.body.firstElementChild);
           performance.mark("milo-insert-snippet");
           break;
-        case 404:
+        }
+        default:
           break;
       }
     })();
