@@ -76,9 +76,10 @@ export default function init(element) {
   widgetContainer.className = 'dc-wrapper';
   widget.appendChild(widgetContainer);
 
-  const firstTimeUser = window.localStorage.getItem('pdfnow.auth');
-  const preRender = !firstTimeUser;
-  if (preRender) {
+  const isReturningUser = window.localStorage.getItem('pdfnow.auth');
+  const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
+  const preRenderDropZone = !isReturningUser && !isRedirection;
+  if (preRenderDropZone) {
     (async () => {
       // TODO: Make dynamic
       const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.165.0/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
@@ -115,7 +116,7 @@ export default function init(element) {
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
-  if (preRender) {
+  if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true';
   }
 
