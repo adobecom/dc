@@ -76,24 +76,23 @@ export default function init(element) {
   widgetContainer.className = 'dc-wrapper';
   widget.appendChild(widgetContainer);
 
-  const firstTimeUser = window.localStorage.getItem('pdfnow.auth');
-  const preRender = !firstTimeUser;
-  if (preRender) {
+  const isReturningUser = window.localStorage.getItem('pdfnow.auth');
+  const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
+  const preRenderDropZone = !isReturningUser && !isRedirection;
+  if (preRenderDropZone) {
     (async () => {
       // TODO: Make dynamic
       const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.165.0/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
-      // eslint-disable-next-line default-case
       switch (response.status) {
-        case 200:
-          // eslint-disable-next-line no-case-declarations
+        case 200: {
           const template = await response.text();
-          // eslint-disable-next-line no-case-declarations
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
           widgetContainer.appendChild(doc.body.firstElementChild);
           performance.mark("milo-insert-snippet");
           break;
-        case 404:
+        }
+        default:
           break;
       }
     })();
@@ -115,7 +114,7 @@ export default function init(element) {
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
-  if (preRender) {
+  if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true';
   }
 
