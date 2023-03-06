@@ -21,13 +21,21 @@ const verbToRedirectLinkSuffix =  {
 };
 export default function init(element) {
   const widget = element;
-  const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
-  const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
+  const DC_WIDGET_VERSION_FALLBACK = '2.37.2_1.165.0';
+  const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.165.0';
+  let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
+  let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
+  const lanaOptions = {
+    sampleRate: 1,
+    tags: 'Cat=DxDC_Frictionless,origin=milo',
+  };
   if (!DC_WIDGET_VERSION) {
-    console.error('DC WIDGET VERSION IS NOT SET');
+    DC_WIDGET_VERSION = DC_WIDGET_VERSION_FALLBACK;
+    window.lana?.log(`DC WIDGET VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_WIDGET_VERSION_FALLBACK}`, lanaOptions);
   }
   if (!DC_GENERATE_CACHE_VERSION) {
-    console.error('DC GENERATE CACHE VERSION IS NOT SET');
+    DC_GENERATE_CACHE_VERSION = DC_GENERATE_CACHE_VERSION_FALLBACK;
+    window.lana?.log(`DC GENERATE CACHE VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_GENERATE_CACHE_VERSION_FALLBACK}`, lanaOptions);
   }
   let WIDGET_ENV = `https://dev.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
   let ENV = 'dev';
