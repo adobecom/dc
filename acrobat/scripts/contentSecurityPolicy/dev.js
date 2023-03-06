@@ -1,3 +1,9 @@
+const childSrc = [
+  '\'self\'',
+  'blob:',
+  ';',
+];
+
 const connectSrc = [
   '\'self\'',
   'blob:',
@@ -205,4 +211,4 @@ const preSrc = [
 // TRY This
 // use variables for the different domians
 
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, preSrc};
+export default { childSrc, connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, preSrc};

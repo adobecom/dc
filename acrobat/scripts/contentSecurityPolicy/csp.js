@@ -22,7 +22,8 @@ export default function ContentSecurityPolicy() {
   getCspEnv()
   .then( (data) => {
     const ENV = data.default;
-    const theCSP = `connect-src ${ENV.connectSrc.join(' ')}\
+    const theCSP = `child-src ${ENV.childSrc.join(' ')}\
+    connect-src ${ENV.connectSrc.join(' ')}\
     default-src ${ENV.defaultSrc.join(' ')}\
     font-src ${ENV.fontSrc.join(' ')}\
     form-action ${ENV.formAction.join(' ')}\
