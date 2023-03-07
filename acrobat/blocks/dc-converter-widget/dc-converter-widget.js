@@ -1,7 +1,7 @@
 import frictionless from '../../scripts/frictionless.js';
 import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
 
-const pageLang = document.querySelector('html').lang;
+const pageLang = document.querySelector('html').lang || 'en-US';
 const verbToRedirectLinkSuffix =  {
   'createpdf': 'createpdf',
   'crop-pages': 'crop',
@@ -19,6 +19,7 @@ const verbToRedirectLinkSuffix =  {
   'insert-pdf': 'insert',
   'compress-pdf': 'compress',
 };
+
 export default function init(element) {
   const widget = element;
   let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.37.2_1.165.0/dc-app-launcher.js';
@@ -43,19 +44,22 @@ export default function init(element) {
   const VERB = widget.querySelector('div').innerText.trim().toLowerCase();
 
   // Redir URL
-  if (widget.querySelectorAll('div')[2]) {
-    widget.querySelectorAll('div')[2].id = 'REDIRECT_URL';
-    widget.querySelectorAll('div')[2].classList.add('hide');
-    REDIRECT_URL = widget.querySelectorAll('div')[2].innerText.trim().toLowerCase();
-    console.log(REDIRECT_URL);
+  const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
+  if (REDIRECT_URL_DIV) {
+    // REDIRECT_URL_DIV.id = 'REDIRECT_URL';
+    REDIRECT_URL = REDIRECT_URL_DIV.textContent.trim();
+    REDIRECT_URL_DIV.remove();
   }
 
-  // Generate cache url
-  if (widget.querySelectorAll('div')[4]) {
-    widget.querySelectorAll('div')[4].id = 'GENERATE_CACHE_URL';
-    widget.querySelectorAll('div')[4].classList.add('hide');
-    DC_GENERATE_CACHE_URL = widget.querySelectorAll('div')[4].innerText.trim().toLowerCase();
-  }
+
+    // Generate cache url
+    const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
+    if (GENERATE_CACHE_URL_DIV) {
+      // GENERATE_CACHE_URL_DIV.id = 'GENERATE_CACHE_URL';
+      DC_GENERATE_CACHE_URL = GENERATE_CACHE_URL_DIV.textContent.trim();
+      GENERATE_CACHE_URL_DIV.remove();
+    }
+
 
   // Redirect
   console.log('dinamic', `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`);
@@ -73,7 +77,6 @@ export default function init(element) {
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
-  widgetContainer.className = 'dc-wrapper';
   widget.appendChild(widgetContainer);
 
   const isReturningUser = window.localStorage.getItem('pdfnow.auth');

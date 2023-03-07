@@ -1,5 +1,5 @@
 /* First Time */
-.dc-converter-widget {
+#dc-converter-widget {
   min-height: 582px !important;
 }
 
@@ -7,7 +7,7 @@
   .eventwrapper.onload {
     min-height: 3562px !important;
   }
-  .dc-converter-widget {
+  #dc-converter-widget {
     min-height: 536px;
   }
 }
