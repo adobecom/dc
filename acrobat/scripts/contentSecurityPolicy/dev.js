@@ -32,6 +32,9 @@ const connectSrc = [
   'main--dc--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
   'http://localhost:6456/',
+  'main--milo--adobecom.hlx.live',
+  'fast-track--milo--adobecom.hlx.page',
+  'fast-track--milo--adobecom.hlx.live',
   '*.hlx.page',
   ';',
 ];
@@ -118,6 +121,9 @@ const imgSrc = [
   'main--acrobat--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'http://localhost:6456/',
+  'main--milo--adobecom.hlx.live',
+  'fast-track--milo--adobecom.hlx.page',
+  'fast-track--milo--adobecom.hlx.live',
   '*.hlx.page',
   ';',
 ];
@@ -168,6 +174,9 @@ const scriptSrc = [
   'main--milo--adobecom.hlx.page',
   'stage.adobeccstatic.com',
   'http://localhost:6456/',
+  'main--milo--adobecom.hlx.live',
+  'fast-track--milo--adobecom.hlx.page',
+  'fast-track--milo--adobecom.hlx.live',
   '*.hlx.page',
   ';',
 ];
