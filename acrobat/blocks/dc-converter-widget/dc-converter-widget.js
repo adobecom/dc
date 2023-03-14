@@ -51,6 +51,7 @@ export default function init(element) {
 
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.page'
+    || window.location.hostname === 'stage--dc--adobecom.hlx.live'  
     || window.location.hostname === 'www.stage.adobe.com' ) {
     WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
     ENV = 'stage';
