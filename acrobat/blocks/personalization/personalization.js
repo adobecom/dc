@@ -59,7 +59,8 @@ export default function init(element) {
 
       // Conditons
       secondConversion = window.doccloudPersonalization[pageType].can_process
-      && window.doccloudPersonalization[pageType].has_processed;
+      && window.doccloudPersonalization[pageType].has_processed
+      || !doccloudPersonalization.download.can_download;
 
       upsell = window.doccloudPersonalization.isUpsellDisplayed[upsellType]
       || !window.doccloudPersonalization[pageType].can_process
