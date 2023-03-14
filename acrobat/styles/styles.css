@@ -30,6 +30,13 @@
   display: none;
 }
 
+@media (min-width: 48rem ) and (max-width: 57.5rem) {
+  #CID {
+    max-width: 90%;
+    width: 90%;
+  }
+}
+
 @media (max-width: 37.5rem) {
   #CID {
     width: 91.666667%;
