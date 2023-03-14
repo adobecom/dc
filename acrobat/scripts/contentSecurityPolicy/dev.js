@@ -135,7 +135,7 @@ const manifestSrc = [
 
 const scriptSrc = [
   '\'self\'',
-  'unsafe-eval',
+  '\'unsafe-eval\'',
   '*.adobe.com',
   '*.clarity.ms',
   'accounts.google.com/gsi/client',
