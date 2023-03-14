@@ -177,6 +177,7 @@ const scriptSrc = [
   'main--milo--adobecom.hlx.live',
   'fast-track--milo--adobecom.hlx.page',
   'fast-track--milo--adobecom.hlx.live',
+  'api.demandbase.com',
   '*.hlx.page',
   ';',
 ];
