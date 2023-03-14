@@ -381,3 +381,9 @@ div.how-to ol li::before{
 .accordion dt button {
   color: #000;
 }
+
+.reading-width {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
