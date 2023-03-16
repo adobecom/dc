@@ -198,7 +198,7 @@ const CONFIG = {
       const imsIsReady = new CustomEvent('DC_Hosted:Ready');
       window.dispatchEvent(imsIsReady);
     }
-  }, 1000);
+  }, 100);
 
   loadScript('/acrobat/scripts/bowser.js');
 }());

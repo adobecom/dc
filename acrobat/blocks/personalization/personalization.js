@@ -11,6 +11,7 @@ let showAll = false;
 export default function init(element) {
   const container = element;
   const frags = Array.from(container.children);
+  const userTags = localStorage.getItem('user_tags');
 
   let secondConversion;
   let upsell;
@@ -31,11 +32,23 @@ export default function init(element) {
     });
   };
 
-  // Load Default Personalized content
-  if (!window.doccloudPersonalization) {
-    defaultContent();
+  // Hide review so it doesn't show before fragment loads
+  if(reviewBlock.length){
+    reviewBlock.forEach((reviewEle) => {
+      reviewEle.parentElement.classList.remove("xxl-spacing");
+      reviewEle.classList.add('hide');
+    });
   }
 
+  // Load Default Personalized content
+  if (!userTags) {
+    defaultContent();
+    reviewBlock.forEach((reviewEle) => {
+      reviewEle.parentElement.classList.add("xxl-spacing");
+      reviewEle.classList.remove('hide');
+    });
+  }
+  
   window.addEventListener('Personalization:Ready', () => {
     const params = new Proxy(new URLSearchParams(window.location.search),{
       get: (searchParams, prop) => searchParams.get(prop),
@@ -84,16 +97,16 @@ export default function init(element) {
       if (tag === SECOND_CONVERSION && secondConversion || showAll) {
         ele.dataset.tag = ele.firstElementChild.textContent;
         defaultContent('live', showAll);
+        reviewBlock.forEach((reviewEle) => {
+          reviewEle.parentElement.classList.add("xxl-spacing");
+          reviewEle.classList.remove('hide');
+        });
       }
 
       // Upsell
       if (tag === UPSELL && upsell || showAll) {
         ele.dataset.tag = ele.firstElementChild.textContent;
         defaultContent('live', showAll);
-        reviewBlock.forEach((reviewEle) => {
-          reviewEle.parentElement.classList.remove("xxl-spacing");
-          reviewEle.classList.add('hide');
-        });
 
         const clsPopIn = document.querySelector('#CLS_POPIN');
         if (clsPopIn) {
