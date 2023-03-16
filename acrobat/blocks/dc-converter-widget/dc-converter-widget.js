@@ -24,6 +24,7 @@ export default function init(element) {
   const widget = element;
   const DC_WIDGET_VERSION_FALLBACK = '2.39.1_1.170.2';
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.170.2';
+  let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
   let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
   let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
   const lanaOptions = {
@@ -46,6 +47,7 @@ export default function init(element) {
   if (window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.adobe.com') {
     WIDGET_ENV = `https://documentcloud.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    DC_DOMAIN = 'https://documentcloud.adobe.com';
     ENV = 'prod';
   }
 
@@ -54,6 +56,7 @@ export default function init(element) {
     || window.location.hostname === 'stage--dc--adobecom.hlx.live'  
     || window.location.hostname === 'www.stage.adobe.com' ) {
     WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    DC_DOMAIN = 'https://stage.acrobat.adobe.com';
     ENV = 'stage';
   }
 
@@ -102,7 +105,7 @@ export default function init(element) {
   if (preRenderDropZone) {
     (async () => {
       // TODO: Make dynamic
-      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
+      const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
       // eslint-disable-next-line default-case
       switch (response.status) {
         case 200: {
