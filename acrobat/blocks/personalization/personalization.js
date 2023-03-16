@@ -39,15 +39,6 @@ export default function init(element) {
       reviewEle.classList.add('hide');
     });
   }
-
-  // Load Default Personalized content
-  if (!userTags) {
-    defaultContent();
-    reviewBlock.forEach((reviewEle) => {
-      reviewEle.parentElement.classList.add("xxl-spacing");
-      reviewEle.classList.remove('hide');
-    });
-  }
   
   window.addEventListener('Personalization:Ready', () => {
     const params = new Proxy(new URLSearchParams(window.location.search),{
@@ -91,6 +82,11 @@ export default function init(element) {
       // Default
       if (tag === DEFAULT && !secondConversion && !upsell || showAll) {
         ele.dataset.tag = ele.firstElementChild.textContent;
+        defaultContent();
+        reviewBlock.forEach((reviewEle) => {
+          reviewEle.parentElement.classList.add("xxl-spacing");
+          reviewEle.classList.remove('hide');
+        });
       }
 
       // 2nd Conversion
