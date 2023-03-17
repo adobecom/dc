@@ -44,8 +44,8 @@ const verbToRedirectLinkSuffix =  {
 
 export default function init(element) {
   const widget = element;
-  const DC_WIDGET_VERSION_FALLBACK = '2.39.1_1.170.2';
-  const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.170.2';
+  const DC_WIDGET_VERSION_FALLBACK = '2.39.1_1.171.1';
+  const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.171.1';
   let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
   let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
   let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
