@@ -1,7 +1,29 @@
 import frictionless from '../../scripts/frictionless.js';
 import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
 
-const pageLang = document.querySelector('html').lang || 'en-US';
+const langLocaleMap = {
+  "da": "da-DK",
+  "de": "de-DE",
+  "es": "es-ES",
+  "fi": "fi-FI",
+  "fr": "fr-FR",
+  "it": "it-IT",
+  "ja": "ja-JP",
+  "nb": "nb-NO",
+  "nl": "nl-NL",
+  "pt": "pt-BR",
+  "sv": "sv-SE",
+  "zh_cn": "zh-CN",
+  "zh_hk": "zh-TW",
+  "ko": "ko-KR",
+  "cs": "cs-CZ",
+  "pl": "pl-PL",
+  "ru": "ru-RU",
+  "tr": "tr-TR",
+};
+let url = new URL(window.location.href);
+let langFromPath = url.pathname.substr(1,2);
+const pageLang = langLocaleMap[langFromPath] || 'en-US';
 const verbToRedirectLinkSuffix =  {
   'createpdf': 'createpdf',
   'crop-pages': 'crop',
@@ -53,7 +75,7 @@ export default function init(element) {
 
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.page'
-    || window.location.hostname === 'stage--dc--adobecom.hlx.live'  
+    || window.location.hostname === 'stage--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.stage.adobe.com' ) {
     WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
     DC_DOMAIN = 'https://stage.acrobat.adobe.com';
