@@ -153,7 +153,6 @@ function decoratePromotion() {
   if (!promotionElement) {
     return;
   }
-  console.log(promotionElement);
 
   const promo = document.createElement('div');
   promo.classList.add('promotion');
