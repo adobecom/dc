@@ -133,6 +133,7 @@ const CONFIG = {
   live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   prod: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
   locales,
+  // geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
 };
 
@@ -141,6 +142,24 @@ const CONFIG = {
   const lcpImg = document.querySelector('img');
   lcpImg?.setAttribute('loading', 'eager');
 }());
+
+// Temp solution for FedPub promotions
+function decoratePromotion() {
+  if (document.querySelector('main .promotion') instanceof HTMLElement) {
+    return;
+  }
+
+  const promotionElement = document.querySelector('head meta[name="promotion"]');
+  if (!promotionElement) {
+    return;
+  }
+  console.log(promotionElement);
+
+  const promo = document.createElement('div');
+  promo.classList.add('promotion');
+  promo.setAttribute('data-promotion', promotionElement.getAttribute('content').toLowerCase());
+  document.querySelector('main > div').appendChild(promo);
+}
 
 /*
  * ------------------------------------------------------------
@@ -176,6 +195,7 @@ const CONFIG = {
 
   // Import base milo features and run them
   const { loadArea, loadDelayed, loadScript, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+  decoratePromotion();
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
   await loadArea();
