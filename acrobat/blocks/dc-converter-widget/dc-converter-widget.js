@@ -117,6 +117,8 @@ export default function init(element) {
     }
   };
 
+  console.log('new stage test');
+
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
   widget.appendChild(widgetContainer);
