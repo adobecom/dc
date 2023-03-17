@@ -21,7 +21,7 @@ const verbToRedirectLinkSuffix =  {
 };
 export default function init(element) {
   const widget = element;
-  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.39.1_1.170.2/dc-app-launcher.js';
+  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.39.1_1.171.1/dc-app-launcher.js';
   let ENV = 'dev';
   let REDIRECT_URL = '';
   let DC_GENERATE_CACHE_URL = '';
@@ -35,7 +35,7 @@ export default function init(element) {
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.page'
     || window.location.hostname === 'www.stage.adobe.com' ) {
-    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.39.1_1.170.2/dc-app-launcher.js';
+    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.39.1_1.171.1/dc-app-launcher.js';
     ENV = 'stage';
   }
 
