@@ -198,6 +198,7 @@ const scriptSrc = [
   'www.redditstatic.com/ads/pixel.js',
   'main--milo--adobecom.hlx.page',
   'tag.demandbase.com',
+  '*.typekit.net',
   ';',
 ];
 
