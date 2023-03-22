@@ -42,6 +42,7 @@ const connectSrc = [
   'main--dc--adobecom.hlx.live',
   'http://localhost:6456/',
   '*.hlx.page',
+  'cdn.linkedin.oribi.io',
   ';',
 ];
 

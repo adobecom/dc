@@ -45,6 +45,7 @@ const connectSrc = [
   'fast-track--milo--adobecom.hlx.live',
   '*.typekit.net',
   '*.hlx.page',
+  'cdn.linkedin.oribi.io',
   ';',
 ];
 
