@@ -206,6 +206,7 @@ const scriptSrc = [
   'js.adsrvr.org',
   'main--milo--adobecom.hlx.page',
   'tag.demandbase.com',
+  '*.typekit.net',
   ';',
 ];
 
