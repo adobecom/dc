@@ -34,6 +34,7 @@ const connectSrc = [
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
+  'cdn.linkedin.oribi.io',
   ';',
 ];
 
