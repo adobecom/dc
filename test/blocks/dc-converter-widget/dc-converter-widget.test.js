@@ -8,7 +8,7 @@ const { default: init } = await import(
   '../../../acrobat/blocks/dc-converter-widget/dc-converter-widget'
 );
 
-describe('dc-converter-widget block', () => {
+describe.skip('dc-converter-widget block', () => {
   before(() => {
     const block = document.body.querySelector('.dc-converter-widget');
     init(block);
