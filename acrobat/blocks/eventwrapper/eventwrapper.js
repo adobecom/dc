@@ -43,7 +43,6 @@ export default function init(element) {
     if (chrome.runtime && chrome.runtime.sendMessage) {
       chrome.runtime.sendMessage(extid, 'version', response => {
         if (!response) {
-          console.log('No extension');
           window.dispatchEvent(event);
         }
 
