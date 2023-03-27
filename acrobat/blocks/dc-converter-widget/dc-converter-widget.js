@@ -43,9 +43,8 @@ export default function init(element) {
     || window.location.hostname === 'main--dc--adobecom.hlx.page'
     || window.location.hostname === 'stage--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.stage.adobe.com' ) {
-    WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${STG_DC_WIDGET_VERSION}/dc-app-launcher.js`;
     DC_DOMAIN = 'https://stage.acrobat.adobe.com';
-    DC_WIDGET_VERSION = STG_DC_WIDGET_VERSION;
     ENV = 'stage';
   }
 
