@@ -36,11 +36,13 @@ const connectSrc = [
   'privacyportal.onetrust.com',
   'siteintercept.qualtrics.com/',
   'tr.snapchat.com/',
+  '*.typekit.net',
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
   'http://localhost:6456/',
   '*.hlx.page',
+  'cdn.linkedin.oribi.io',
   ';',
 ];
 

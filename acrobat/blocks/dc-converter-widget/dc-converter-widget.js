@@ -1,46 +1,11 @@
 import frictionless from '../../scripts/frictionless.js';
 import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
+import langLocaleMap from './localeMap.js';
+import verbToRedirectLinkSuffix from './verbRedirMap.js'
 
-const langLocaleMap = {
-  "da": "da-DK",
-  "de": "de-DE",
-  "es": "es-ES",
-  "fi": "fi-FI",
-  "fr": "fr-FR",
-  "it": "it-IT",
-  "ja": "ja-JP",
-  "nb": "nb-NO",
-  "nl": "nl-NL",
-  "pt": "pt-BR",
-  "sv": "sv-SE",
-  "zh_cn": "zh-CN",
-  "zh_hk": "zh-TW",
-  "ko": "ko-KR",
-  "cs": "cs-CZ",
-  "pl": "pl-PL",
-  "ru": "ru-RU",
-  "tr": "tr-TR",
-};
 let url = new URL(window.location.href);
-let langFromPath = url.pathname.substr(1,2);
+let langFromPath = url.pathname.split('/')[1];
 const pageLang = langLocaleMap[langFromPath] || 'en-US';
-const verbToRedirectLinkSuffix =  {
-  'createpdf': 'createpdf',
-  'crop-pages': 'crop',
-  'delete-pages': 'deletepages',
-  'extract-pages': 'extract',
-  'combine-pdf': 'combine',
-  'protect-pdf': 'protect',
-  'add-comment': 'addcomment',
-  'pdf-to-image': 'pdftoimage',
-  'reorder-pages': 'reorderpages',
-  'sendforsignature': 'sendforsignature',
-  'rotate-pages': 'rotatepages',
-  'fillsign': 'fillsign',
-  'split-pdf': 'split',
-  'insert-pdf': 'insert',
-  'compress-pdf': 'compress',
-};
 
 export default function init(element) {
   const widget = element;
@@ -104,7 +69,6 @@ export default function init(element) {
 
 
   // Redirect
-  console.log('dinamic', `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`);
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
@@ -116,8 +80,6 @@ export default function init(element) {
       }
     }
   };
-
-  console.log('new stage test');
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';

@@ -24,9 +24,8 @@ export const [setLibs, getLibs] = (() => {
   return [
     (prodLibs) => {
       const { hostname } = window.location;
-      if (!hostname.includes('hlx.page')
-        && !hostname.includes('hlx.live')
-        && !hostname.includes('localhost')) {
+      const stageEnvs = ['localhost', 'hlx.page', 'hlx.live', 'stage.adobe.com'];
+      if (!stageEnvs.some((env) => hostname.includes(env))) {
         libs = prodLibs;
         return libs;
       }
