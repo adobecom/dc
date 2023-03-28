@@ -10,34 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs } from './utils.js';
-import lanaLogging from './dcLana.js';
-import ContentSecurityPolicy from './contentSecurityPolicy/csp.js';
-
-// Set the CSP
-// Send errors to LANA
-ContentSecurityPolicy();
-
-// Bowser Ready
-const bowserEle = document.createElement('script');
-bowserEle.id = 'bowserID';
-bowserEle.setAttribute('src', '/acrobat/scripts/bowser.js');
-document.head.appendChild(bowserEle);
-const bowserReady = setInterval(() => {
-  if (window.bowser) {
-    clearInterval(bowserReady);
-    const bowserIsReady = new CustomEvent('Bowser:Ready');
-    window.dispatchEvent(bowserIsReady);
-  }
-}, 100);
-
-// CLS Scripts
-const head = document.querySelector('head');
-const clsPopIn = document.createElement('link');
-clsPopIn.id = 'CLS_POPIN';
-clsPopIn.setAttribute('rel', 'stylesheet');
-clsPopIn.setAttribute('href', '/acrobat/styles/cls.css');
-head.appendChild(clsPopIn);
+function loadStyles(paths) {
+  paths.forEach((path) => {
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'stylesheet');
+    link.setAttribute('href', path);
+    document.head.appendChild(link);
+  });
+}
 
 // Add project-wide styles here.
 const STYLES = '/acrobat/styles/styles.css';
@@ -153,6 +133,7 @@ const CONFIG = {
   live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   prod: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
   locales,
+  // geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
 };
 
@@ -162,27 +143,58 @@ const CONFIG = {
   lcpImg?.setAttribute('loading', 'eager');
 }());
 
+// Temp solution for FedPub promotions
+function decoratePromotion() {
+  if (document.querySelector('main .promotion') instanceof HTMLElement) {
+    return;
+  }
+
+  const promotionElement = document.querySelector('head meta[name="promotion"]');
+  if (!promotionElement) {
+    return;
+  }
+
+  const promo = document.createElement('div');
+  promo.classList.add('promotion');
+  promo.setAttribute('data-promotion', promotionElement.getAttribute('content').toLowerCase());
+  document.querySelector('main > div').appendChild(promo);
+}
+
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
  * ------------------------------------------------------------
  */
 
-const miloLibs = setLibs(LIBS);
+(async function loadPage() {
+  // Fast track the widget
+  const widgetBlock = document.querySelector('.dc-converter-widget');
+  if (widgetBlock) {
+    widgetBlock.removeAttribute('class');
+    widgetBlock.id = 'dc-converter-widget';
+    const { default: dcConverter } = await import('../blocks/dc-converter-widget/dc-converter-widget.js');
+    dcConverter(widgetBlock);
+  }
 
-(function loadStyles() {
+  // Setup Milo
+  const { setLibs } = await import('./utils.js');
+  const miloLibs = setLibs(LIBS);
+
+  // Setup Logging
+  const { default: lanaLogging } = await import('./dcLana.js');
+
+  // Setup CSP
+  const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
+  ContentSecurityPolicy();
+
+  // Milo and site styles
   const paths = [`${miloLibs}/styles/styles.css`];
   if (STYLES) { paths.push(STYLES); }
-  paths.forEach((path) => {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', path);
-    document.head.appendChild(link);
-  });
-}());
+  loadStyles(paths);
 
-(async function loadPage() {
-  const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+  // Import base milo features and run them
+  const { loadArea, loadDelayed, loadScript, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+  decoratePromotion();
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
   await loadArea();
@@ -206,4 +218,15 @@ const miloLibs = setLibs(LIBS);
       window.dispatchEvent(imsIsReady);
     }
   }, 1000);
+
+  loadScript('/acrobat/scripts/bowser.js');
 }());
+
+// Bowser Ready
+const bowserReady = setInterval(() => {
+  if (window.bowser) {
+    clearInterval(bowserReady);
+    const bowserIsReady = new CustomEvent('Bowser:Ready');
+    window.dispatchEvent(bowserIsReady);
+  }
+}, 100);

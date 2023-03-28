@@ -1,41 +1,50 @@
 import frictionless from '../../scripts/frictionless.js';
 import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
+import langLocaleMap from './localeMap.js';
+import verbToRedirectLinkSuffix from './verbRedirMap.js'
 
-const pageLang = document.querySelector('html').lang;
-const verbToRedirectLinkSuffix =  {
-  'createpdf': 'createpdf',
-  'crop-pages': 'crop',
-  'delete-pages': 'deletepages',
-  'extract-pages': 'extract',
-  'combine-pdf': 'combine',
-  'protect-pdf': 'protect',
-  'add-comment': 'addcomment',
-  'pdf-to-image': 'pdftoimage',
-  'reorder-pages': 'reorderpages',
-  'sendforsignature': 'sendforsignature',
-  'rotate-pages': 'rotatepages',
-  'fillsign': 'fillsign',
-  'split-pdf': 'split',
-  'insert-pdf': 'insert',
-  'compress-pdf': 'compress',
-};
+let url = new URL(window.location.href);
+let langFromPath = url.pathname.split('/')[1];
+const pageLang = langLocaleMap[langFromPath] || 'en-US';
+
 export default function init(element) {
   const widget = element;
-  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.39.1_1.171.1/dc-app-launcher.js';
+  const DC_WIDGET_VERSION_FALLBACK = '2.40.0_1.172.1';
+  const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.172.1';
+  let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
+  let STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
+  let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
+  let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
+  const lanaOptions = {
+    sampleRate: 1,
+    tags: 'Cat=DxDC_Frictionless,origin=milo',
+  };
+  if (!DC_WIDGET_VERSION) {
+    DC_WIDGET_VERSION = DC_WIDGET_VERSION_FALLBACK;
+    window.lana?.log(`DC WIDGET VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_WIDGET_VERSION_FALLBACK}`, lanaOptions);
+  }
+  if (!DC_GENERATE_CACHE_VERSION) {
+    DC_GENERATE_CACHE_VERSION = DC_GENERATE_CACHE_VERSION_FALLBACK;
+    window.lana?.log(`DC GENERATE CACHE VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_GENERATE_CACHE_VERSION_FALLBACK}`, lanaOptions);
+  }
+  let WIDGET_ENV = `https://dev.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
   let ENV = 'dev';
   let REDIRECT_URL = '';
   let DC_GENERATE_CACHE_URL = '';
 
   if (window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.adobe.com') {
-    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.39.1_1.170.2/dc-app-launcher.js';
+    WIDGET_ENV = `https://documentcloud.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    DC_DOMAIN = 'https://documentcloud.adobe.com';
     ENV = 'prod';
   }
 
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.page'
+    || window.location.hostname === 'stage--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.stage.adobe.com' ) {
-    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.39.1_1.171.1/dc-app-launcher.js';
+    WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${STG_DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    DC_DOMAIN = 'https://stage.acrobat.adobe.com';
     ENV = 'stage';
   }
 
@@ -43,22 +52,24 @@ export default function init(element) {
   const VERB = widget.querySelector('div').innerText.trim().toLowerCase();
 
   // Redir URL
-  if (widget.querySelectorAll('div')[2]) {
-    widget.querySelectorAll('div')[2].id = 'REDIRECT_URL';
-    widget.querySelectorAll('div')[2].classList.add('hide');
-    REDIRECT_URL = widget.querySelectorAll('div')[2].innerText.trim().toLowerCase();
-    console.log(REDIRECT_URL);
+  const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
+  if (REDIRECT_URL_DIV) {
+    // REDIRECT_URL_DIV.id = 'REDIRECT_URL';
+    REDIRECT_URL = REDIRECT_URL_DIV.textContent.trim();
+    REDIRECT_URL_DIV.remove();
   }
 
-  // Generate cache url
-  if (widget.querySelectorAll('div')[4]) {
-    widget.querySelectorAll('div')[4].id = 'GENERATE_CACHE_URL';
-    widget.querySelectorAll('div')[4].classList.add('hide');
-    DC_GENERATE_CACHE_URL = widget.querySelectorAll('div')[4].innerText.trim().toLowerCase();
-  }
+
+    // Generate cache url
+    const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
+    if (GENERATE_CACHE_URL_DIV) {
+      // GENERATE_CACHE_URL_DIV.id = 'GENERATE_CACHE_URL';
+      DC_GENERATE_CACHE_URL = GENERATE_CACHE_URL_DIV.textContent.trim();
+      GENERATE_CACHE_URL_DIV.remove();
+    }
+
 
   // Redirect
-  console.log('dinamic', `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`);
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
     if (window.adobeIMS.isSignedInUser()) {
@@ -73,7 +84,6 @@ export default function init(element) {
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
-  widgetContainer.className = 'dc-wrapper';
   widget.appendChild(widgetContainer);
 
   const isReturningUser = window.localStorage.getItem('pdfnow.auth');
@@ -82,7 +92,8 @@ export default function init(element) {
   if (preRenderDropZone) {
     (async () => {
       // TODO: Make dynamic
-      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.170.2/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
+      const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
+      // eslint-disable-next-line default-case
       switch (response.status) {
         case 200: {
           const template = await response.text();

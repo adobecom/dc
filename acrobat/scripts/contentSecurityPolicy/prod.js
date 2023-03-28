@@ -34,6 +34,7 @@ const connectSrc = [
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
+  'cdn.linkedin.oribi.io',
   ';',
 ];
 
@@ -196,8 +197,17 @@ const scriptSrc = [
   'www.googletagmanager.com/',
   'www.linkedin.com/px',
   'www.redditstatic.com/ads/pixel.js',
+  'cdn.megadata.co.kr',
+  'tk.mediacategory.com',
+  't1.daumcdn.net',
+  'bc.ad.daum.net',
+  'cdn.taboola.com',
+  'pips.taboola.com',
+  'trc.taboola.com',
+  'js.adsrvr.org',
   'main--milo--adobecom.hlx.page',
   'tag.demandbase.com',
+  '*.typekit.net',
   ';',
 ];
 
