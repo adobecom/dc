@@ -29,9 +29,11 @@ export const [setLibs, getLibs] = (() => {
         libs = prodLibs;
         return libs;
       }
-      const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
+      let env = hostname === "www.stage.adobe.com" ? 'stage' : 'main';
+      const branch = new URLSearchParams(window.location.search).get('milolibs') || env;
       if (branch === 'local') return 'http://localhost:6456/libs';
       if (branch.indexOf('--') > -1) return `https://${branch}.hlx.page/libs`;
+      if (branch === 'stage') return 'https://www.adobe.com/libs';
       return `https://${branch}--milo--adobecom.hlx.page/libs`;
     }, () => libs,
   ];
