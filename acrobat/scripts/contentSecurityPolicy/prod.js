@@ -43,6 +43,7 @@ const defaultSrc = [
   'acrobat.adobe.com',
   'auth.services.adobe.com',
   'documentcloud.adobe.com',
+  'acrobat.adobe.com',
   ';',
 ];
 
@@ -74,6 +75,7 @@ const frameSrc = [
   'bid.g.doubleclick.net',
   'dc-api.adobecontent.io',
   'documentcloud.adobe.com',
+  'acrobat.adobe.com',
   'servedby.flashtalking.com',
   'tr.snapchat.com/',
   'tr6.snapchat.com/',
@@ -234,6 +236,7 @@ const workerSrc = [
 const preSrc = [
   '\'self\'',
   'documentcloud.adobe.com',
+  'acrobat.adobe.com',
   'blob:',
   ';',
 ];

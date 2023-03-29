@@ -34,8 +34,8 @@ export default function init(element) {
 
   if (window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.adobe.com') {
-    WIDGET_ENV = `https://documentcloud.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
-    DC_DOMAIN = 'https://documentcloud.adobe.com';
+    WIDGET_ENV = `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    DC_DOMAIN = 'https://acrobat.adobe.com';
     ENV = 'prod';
   }
 
