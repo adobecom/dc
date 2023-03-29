@@ -30,9 +30,9 @@
       ],
       "url": "https://main--milo--adobecom.hlx.page/tools/loc/index.html?project=dc--adobecom",
       "passReferrer": true,
-      "includePaths": [
-        "**.xlsx**"
-      ]
+      "passConfig": true,
+      "excludePaths": [ "/**" ],
+      "includePaths": [ "**/:x**" ]
     },
     {
       "containerId": "tools",
