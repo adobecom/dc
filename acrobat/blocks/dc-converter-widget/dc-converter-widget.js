@@ -13,6 +13,7 @@ export default function init(element) {
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.172.1';
   let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
   let STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
+  let STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
   let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
   let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
   const lanaOptions = {
@@ -45,6 +46,7 @@ export default function init(element) {
     || window.location.hostname === 'www.stage.adobe.com' ) {
     WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${STG_DC_WIDGET_VERSION}/dc-app-launcher.js`;
     DC_DOMAIN = 'https://stage.acrobat.adobe.com';
+    DC_GENERATE_CACHE_VERSION = STG_DC_GENERATE_CACHE_VERSION;
     ENV = 'stage';
   }
 
