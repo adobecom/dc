@@ -166,7 +166,7 @@ function decoratePromotion() {
  * ------------------------------------------------------------
  */
 
-(async function loadPage() {
+async function loadPage() {
   // Fast track the widget
   const widgetBlock = document.querySelector('.dc-converter-widget');
   if (widgetBlock) {
@@ -220,7 +220,13 @@ function decoratePromotion() {
   }, 1000);
 
   loadScript('/acrobat/scripts/bowser.js');
-}());
+}
+
+document.onreadystatechange = () => {
+  if (document.readyState === "complete") {
+    loadPage();
+  }
+};
 
 // Bowser Ready
 const bowserReady = setInterval(() => {
