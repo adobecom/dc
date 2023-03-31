@@ -25,3 +25,8 @@ sitemaps:
         destination: /es/acrobat/sitemap.xml
         hreflang: es-ES
         alternate: /es/{path}.html
+      kr:
+        source: /kr/acrobat/query-index.json
+        destination: /kr/acrobat/sitemap.xml
+        hreflang: ko-KR
+        alternate: /kr/{path}.html
