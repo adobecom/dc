@@ -22,13 +22,12 @@ export default function init(verb) {
           // verb, rating, comment
           reviewFeedbackAlloy(verb, data.rating, data['rating-comments']);
         });
-        if (document.querySelectorAll('.tooltip').length > 0) {
-
-          document.querySelectorAll('.tooltip')[3].addEventListener('click', () => {
-            reviewFeedbackAlloy(verb, '4');
-          })
-          document.querySelectorAll('.tooltip')[4].addEventListener('click', () => {
-            reviewFeedbackAlloy(verb, '5');
+        const tooltips = document.querySelectorAll('.tooltip');
+        if (tooltips.length > 0) {
+          tooltips.forEach((tooltip, index) => {
+            tooltip.addEventListener('click', () => {
+              reviewFeedbackAlloy(verb, (index + 1).toString());
+            })
           })
         }
 
