@@ -50,15 +50,15 @@
 .pricing-card .radio-group {
   padding: 24px 0;
 }
-.pricing-card .footer {
+.pricing-card .card-footer {
   padding-top: 8px;
 }
-.pricing-card .footer .footer-secure-transaction .icon {
+.pricing-card .card-footer .footer-secure-transaction .icon {
   width: 11px;
   margin-right: 4px;
   line-height: 0;
 }
-.pricing-card .footer .footer-secure-transaction .text {
+.pricing-card .card-footer .footer-secure-transaction .text {
   font-size: 13px;
 }
 

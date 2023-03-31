@@ -44,7 +44,7 @@ const init = (block) => {
     }
 
     const divider = createTag('div', {class: 'divider'});
-    const footer = createTag('div', {class: 'footer'});
+    const footer = createTag('div', {class: 'card-footer'});
     const footerSecureTransaction =  createTag('div', {class: 'footer-secure-transaction'});
     const footerImg = createTag('img', {class: 'icon', src: '/acrobat/blocks/pricing-card/lock-icon-grey-40x50.png'});
     const secureTransactionText = createTag('span', {class: 'text'}, 'Secure transaction');
@@ -126,7 +126,7 @@ const collectContent = (cardNode, cardProperties) => {
     cardNode.querySelector('.disclaimer')?.append(d);
   });
   footers.forEach(f => {
-    cardNode.querySelector('.footer')?.append(f);
+    cardNode.querySelector('.footer-content')?.append(f);
   });
 }
 
