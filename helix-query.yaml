@@ -1,7 +1,7 @@
 version: 1
 
 indices:
-  acrobat:
+  us:
     include:
       - '/acrobat/**'
     exclude:
@@ -10,6 +10,36 @@ indices:
       - '**/fragments/**'
       - '**/localization/**'
     target: /acrobat/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: |
+          dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  kr:
+    include:
+      - '/kr/acrobat/**'
+    exclude:
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+    target: /kr/acrobat/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
