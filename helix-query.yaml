@@ -1,12 +1,15 @@
 version: 1
 
 indices:
-  frictionless:
+  acrobat:
     include:
-      - '/acrobat/online/**'
+      - '/acrobat/**'
     exclude:
+      - '**/gnav/**'
+      - '**/drafts/**'
       - '**/fragments/**'
-    target: /acrobat/online/query-index.xlsx
+      - '**/localization/**'
+    target: /acrobat/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
