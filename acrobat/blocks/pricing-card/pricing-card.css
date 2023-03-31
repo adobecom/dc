@@ -1,16 +1,25 @@
 .pricing-card > div {
   display: none;
 }
+.pricing-card {
+  margin: 50px;
+}
 .pricing-card .card-box {
   display: block;
-}
-.pricing-card .card-box {
-  border: yellow solid 2px;
-  width: 300px;
+  position: relative;
+  border: solid 2px rgb(255, 204, 0);
+  width: 470px;
   min-height: 400px;
 }
+
+.pricing-card .card-box .content-container {
+  display: block;
+  padding: 40px 24px 24px 24px;
+}
+
 .pricing-card .card-box .divider {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #EAEAEA;
+  padding: 7.5px 0;
 }
 .hide {
   display: none;
@@ -18,3 +27,39 @@
 .display {
   display: block;
 }
+.pricing-card .promotion-text {
+ background: rgb(255, 204, 0);
+  position: absolute;
+  top: 15px;
+  right: 0;
+  width: auto;
+}
+.pricing-card .title {
+  font-weight: bold;
+  font-size: 24px;
+  padding-bottom: 8px;
+}
+.pricing-card .price {
+  font-size: 32px;
+  font-weight: bold;
+}
+.pricing-card .dislaimer {
+  padding-top: 8px;
+  font-size: 14px;
+}
+.pricing-card .radio-group {
+  padding: 24px 0;
+}
+.pricing-card .footer {
+  padding-top: 8px;
+}
+.pricing-card .footer .footer-secure-transaction .icon {
+  width: 11px;
+  margin-right: 4px;
+  line-height: 0;
+}
+.pricing-card .footer .footer-secure-transaction .text {
+  font-size: 13px;
+}
+
+

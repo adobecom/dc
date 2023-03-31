@@ -14,6 +14,8 @@ const init = (block) => {
     const radioGroup = createTag('div', {class: 'radio-group'});
 
     for (let i = 1; i <= properties['countOptions']; i++) {
+
+
       const currentOption = `option${i}`;
       const radioInput = createTag('input', {
         type: 'radio',
@@ -26,24 +28,39 @@ const init = (block) => {
         radioInput.setAttribute('checked', true);
       }
       radioInput.addEventListener('change', (e) => toggleContent(e.target.getAttribute('option'),block));
-      radioGroup.append(radioInput);
+
+
 
       const label = createTag('label', {for: currentOption + '-' + properties[currentOption]});
       label.innerText = properties[currentOption];
-      radioGroup.append(label);
+
+      const option = createTag('div', {class: 'radio-item'});
+      option.append(radioInput);
+      option.append(label);
+
+      radioGroup.append(option);
+
+
     }
 
     const divider = createTag('div', {class: 'divider'});
     const footer = createTag('div', {class: 'footer'});
+    const footerSecureTransaction =  createTag('div', {class: 'footer-secure-transaction'});
+    const footerImg = createTag('img', {class: 'icon', src: '/acrobat/blocks/pricing-card/lock-icon-grey-40x50.png'});
+    const secureTransactionText = createTag('span', {class: 'text'}, 'Secure transaction');
+    footerSecureTransaction.append(footerImg);
+    footerSecureTransaction.append(secureTransactionText);
+    const footerContent = createTag('div', {class: 'footer-content'});
+    footer.append(footerSecureTransaction);
+    footer.append(footerContent);
 
-
-    cardContent.append(promotionText);
-    cardContent.append(title);
-    cardContent.append(price);
-    cardContent.append(disclaimer);
-    cardContent.append(radioGroup);
-    cardContent.append(divider);
-    cardContent.append(footer);
+    cardContent.insertBefore(promotionText, cardContainer);
+    cardContainer.append(title);
+    cardContainer.append(price);
+    cardContainer.append(disclaimer);
+    cardContainer.append(radioGroup);
+    cardContainer.append(divider);
+    cardContainer.append(footer);
     block.append(cardContent);
 
 
@@ -96,7 +113,7 @@ const collectContent = (cardNode, cardProperties) => {
         switch (optionProperties['place']) {
           case 'price' : prices.push(content);break;
           case 'disclaimer': disclaimers.push(content);break;
-          case 'footer': footers.push(content);break;
+          case 'footer-content': footers.push(content);break;
         }
       }
     });
@@ -128,3 +145,6 @@ const displayElement = (element) => {
 };
 
 export default init;
+// todo 1: promotion text:
+// todo 1: make border collor customizable (orange or black depending on promotion existence)
+// todo 1: text can have more lines and different style for each line
