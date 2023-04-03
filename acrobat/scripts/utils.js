@@ -27,14 +27,20 @@ export const [setLibs, getLibs] = (() => {
       const stageEnvs = ['localhost', 'hlx.page', 'hlx.live', 'stage.adobe.com'];
       if (!stageEnvs.some((env) => hostname.includes(env))) {
         libs = prodLibs;
-        return libs;
+      } else {
+        const env = hostname === "www.stage.adobe.com" ? 'stage' : 'main';
+        const branch = new URLSearchParams(window.location.search).get('milolibs') || env;
+        if (branch === 'local') {
+          libs = 'http://localhost:6456/libs';
+        } else if (branch.indexOf('--') > -1) {
+          libs = `https://${branch}.hlx.page/libs`;
+        } else if (branch === 'stage') {
+          libs = 'https://www.adobe.com/libs';
+        } else {
+          libs = `https://${branch}--milo--adobecom.hlx.page/libs`;
+        }
       }
-      let env = hostname === "www.stage.adobe.com" ? 'stage' : 'main';
-      const branch = new URLSearchParams(window.location.search).get('milolibs') || env;
-      if (branch === 'local') return 'http://localhost:6456/libs';
-      if (branch.indexOf('--') > -1) return `https://${branch}.hlx.page/libs`;
-      if (branch === 'stage') return 'https://www.adobe.com/libs';
-      return `https://${branch}--milo--adobecom.hlx.page/libs`;
+      return libs;
     }, () => libs,
   ];
 })();
