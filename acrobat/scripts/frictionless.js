@@ -23,13 +23,11 @@ export default function init(verb) {
           reviewFeedbackAlloy(verb, data.rating, data['rating-comments']);
         });
         const tooltips = document.querySelectorAll('.tooltip');
-        if (tooltips.length > 0) {
-          tooltips.forEach((tooltip, index) => {
-            tooltip.addEventListener('click', () => {
-              reviewFeedbackAlloy(verb, (index + 1).toString());
-            })
-          })
-        }
+        tooltips.forEach((tooltip, index) => {
+          tooltip.addEventListener('click', () => {
+            reviewFeedbackAlloy(verb, (index + 1).toString());
+          });
+        });
 
         parser = bowser.getParser(window.navigator.userAgent);
         browserName = parser.getBrowserName();
