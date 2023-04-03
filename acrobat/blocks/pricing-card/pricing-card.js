@@ -29,6 +29,8 @@ const preparePricingCardDOM = (block, properties, createTag) => {
   cardContainer.append(divider);
   cardContainer.append(footer);
   block.append(cardContent);
+  cardContainer.classList.add(properties['title'].replace(/\s+/g, '-').toLowerCase());
+
 }
 const createRadioGroup = (properties, createTag, block) => {
   const radioGroup = createTag('div', {class: 'radio-group'});

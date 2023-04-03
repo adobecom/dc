@@ -4,6 +4,7 @@ const blocks = [
   'personalization',
   'verb-subfooters',
   'pricing-card',
+  'pricing-card-wrapper',
 ];
 
 export default blocks;
