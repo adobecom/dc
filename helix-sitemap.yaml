@@ -6,22 +6,22 @@ sitemaps:
     lastmod: YYYY-MM-DD
     languages:
       default:
-        source: /acrobat/online/query-index.json
-        destination: /acrobat/online/sitemap.xml
+        source: /acrobat/query-index.json
+        destination: /acrobat/sitemap.xml
         hreflang: en-US
         alternate: /{path}.html
       de:
         source: https://www.adobe.com/de/sitemap.dc.xml
-        destination: /de/acrobat/online/sitemap.xml
+        destination: /de/acrobat/sitemap.xml
         hreflang: de-DE
         alternate: /de/{path}.html
       uk:
         source: https://www.adobe.com/uk/sitemap.dc.xml
-        destination: /uk/acrobat/online/sitemap.xml
+        destination: /uk/acrobat/sitemap.xml
         hreflang: en-GB
         alternate: /uk/{path}.html
       es:
         source: https://www.adobe.com/es/sitemap.dc.xml
-        destination: /es/acrobat/online/sitemap.xml
+        destination: /es/acrobat/sitemap.xml
         hreflang: es-ES
         alternate: /es/{path}.html

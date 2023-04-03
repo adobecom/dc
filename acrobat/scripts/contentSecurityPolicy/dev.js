@@ -218,6 +218,7 @@ const workerSrc = [
 const preSrc = [
   '\'self\'',
   'documentcloud.adobe.com',
+  'acrobat.adobe.com',
   'blob:',
   ';',
 ];
