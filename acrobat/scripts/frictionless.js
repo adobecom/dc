@@ -58,11 +58,11 @@ export default function init(verb) {
       browserExtClose.addEventListener('click', () => {
         browserExtAlloy('modalClosed', browserName);
         window.localStorage.fricBrowExt = true;
-      })
+      });
 
       browserExtGetLink.addEventListener('click', () => {
         browserExtAlloy('modalGetExtension', browserName);
-      })
+      });
     }, 1000);
   });
 }
