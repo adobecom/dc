@@ -1,5 +1,12 @@
 name: Inside Tests
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - stage
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+    branches:
+      - stage
 jobs:
   trigger-circleci:
     name: Trigger CircleCI Job
