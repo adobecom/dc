@@ -35,6 +35,7 @@ const connectSrc = [
   'main--milo--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
   'cdn.linkedin.oribi.io',
+  '*.typekit.net/',
   ';',
 ];
 
@@ -208,6 +209,7 @@ const scriptSrc = [
   'main--milo--adobecom.hlx.page',
   'tag.demandbase.com',
   '*.typekit.net',
+  'zn3n5vyia1vy8b4ly-adobe.siteintercept.qualtrics.com/',
   ';',
 ];
 
