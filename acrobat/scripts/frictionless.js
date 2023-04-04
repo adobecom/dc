@@ -51,12 +51,18 @@ export default function init(verb) {
     setTimeout( ()=> {
       const browserExtModal = document.querySelector(extName);
       const browserExtClose = browserExtModal.querySelector('.dialog-close');
+      const browserExtGetLink = browserExtModal.querySelector('.browser-extension  a');
       browserExtAlloy('modalExist', browserName);
+      browserExtAlloy('modalGetExtension', browserName);
 
       browserExtClose.addEventListener('click', () => {
         browserExtAlloy('modalClosed', browserName);
         window.localStorage.fricBrowExt = true;
-      })
+      });
+
+      browserExtGetLink.addEventListener('click', () => {
+        browserExtAlloy('modalGetExtension', browserName);
+      });
     }, 1000);
   });
 }

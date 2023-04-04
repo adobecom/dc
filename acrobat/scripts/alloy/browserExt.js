@@ -12,7 +12,11 @@ export default function init(ev, brow) {
     modalAlready : {
       Chrome: 'Get the extension-1|already-closed-viewer-extension|Chrome-extension',
       'Microsoft Edge': 'Get the extension-1|already-closed-viewer-extension|MSFT-Edge-extension',
-    }
+    },
+    modalGetExtension : {
+      Chrome: 'Get the extension-1|viewer-extension|Chrome-extension',
+      'Microsoft Edge': 'Get the extension-1|viewer-extension|MSFT-Edge-extension',
+    },
   };
 
   const event = {
