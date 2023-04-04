@@ -223,7 +223,7 @@ async function loadPage() {
 }
 
 document.onreadystatechange = () => {
-  if (document.readyState === "interactive") {
+  if (document.readyState === "complete") {
     loadPage();
   }
 };
