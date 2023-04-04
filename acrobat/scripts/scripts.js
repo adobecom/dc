@@ -184,8 +184,10 @@ function decoratePromotion() {
   const { default: lanaLogging } = await import('./dcLana.js');
 
   // Setup CSP
-  const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
-  ContentSecurityPolicy();
+  if (window.location.pathname.indexOf('online') > 0) {
+    const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
+    ContentSecurityPolicy();
+  }
 
   // Milo and site styles
   const paths = [`${miloLibs}/styles/styles.css`];
