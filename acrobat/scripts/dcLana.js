@@ -1,5 +1,5 @@
 export default function lanaLogging() {
-  const fricPage = window.location.pathname.indexOf('online/') > 0;
+  const fricPage = window.location.pathname.includes('online/');
   const lanaOptions = {
     sampleRate: 1,
   };
