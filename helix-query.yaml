@@ -1,30 +1,2028 @@
 version: 1
 
 indices:
-  frictionless:
+  us:
     include:
-      - '/acrobat/online/**'
+    - /**
     exclude:
-      - '**/fragments/**'
-    target: /acrobat/online/query-index.xlsx
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-us.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
-        value: |
-          attribute(el, 'content')
+        value: attribute(el, 'content')
       date:
         select: head > meta[name="publishdate"]
-        value: |
-          dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
       image:
         select: head > meta[property="og:image"]
-        value: |
-          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
       description:
         select: head > meta[name="description"]
-        value: |
-          attribute(el, 'content')
+        value: attribute(el, 'content')
       lastModified:
         select: none
-        value: |
-          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  uk:
+    include:
+    - /uk/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-uk.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ae_en:
+    include:
+    - /ae_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ae_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  africa:
+    include:
+    - /africa/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-africa.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ar:
+    include:
+    - /ar/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ar.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  at:
+    include:
+    - /at/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-at.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  au:
+    include:
+    - /au/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-au.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  be_en:
+    include:
+    - /be_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-be_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  be_fr:
+    include:
+    - /be_fr/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-be_fr.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  be_nl:
+    include:
+    - /be_nl/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-be_nl.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  bg:
+    include:
+    - /bg/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-bg.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  br:
+    include:
+    - /br/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-br.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ca:
+    include:
+    - /ca/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ca.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ca_fr:
+    include:
+    - /ca_fr/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ca_fr.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ch_de:
+    include:
+    - /ch_de/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ch_de.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ch_fr:
+    include:
+    - /ch_fr/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ch_fr.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ch_it:
+    include:
+    - /ch_it/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ch_it.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  cl:
+    include:
+    - /cl/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-cl.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  cn:
+    include:
+    - /cn/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-cn.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  co:
+    include:
+    - /co/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-co.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  cr:
+    include:
+    - /cr/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-cr.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  cy_en:
+    include:
+    - /cy_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-cy_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  cz:
+    include:
+    - /cz/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-cz.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  de:
+    include:
+    - /de/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-de.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  dk:
+    include:
+    - /dk/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-dk.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ec:
+    include:
+    - /ec/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ec.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ee:
+    include:
+    - /ee/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ee.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  eg_en:
+    include:
+    - /eg_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-eg_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  es:
+    include:
+    - /es/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-es.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  fi:
+    include:
+    - /fi/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-fi.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  fr:
+    include:
+    - /fr/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-fr.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  gr_en:
+    include:
+    - /gr_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-gr_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  gt:
+    include:
+    - /gt/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-gt.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  hk_en:
+    include:
+    - /hk_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-hk_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  hk_zh:
+    include:
+    - /hk_zh/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-hk_zh.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  hu:
+    include:
+    - /hu/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-hu.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  id_en:
+    include:
+    - /id_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-id_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  id_id:
+    include:
+    - /id_id/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-id_id.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ie:
+    include:
+    - /ie/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ie.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  il_en:
+    include:
+    - /il_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-il_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  in:
+    include:
+    - /in/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-in.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  in_hi:
+    include:
+    - /in_hi/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-in_hi.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  it:
+    include:
+    - /it/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-it.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  jp:
+    include:
+    - /jp/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-jp.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  kr:
+    include:
+    - /kr/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-kr.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  kw_en:
+    include:
+    - /kw_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-kw_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  la:
+    include:
+    - /la/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-la.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  lt:
+    include:
+    - /lt/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-lt.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  lu_de:
+    include:
+    - /lu_de/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-lu_de.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  lu_en:
+    include:
+    - /lu_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-lu_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  lu_fr:
+    include:
+    - /lu_fr/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-lu_fr.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  lv:
+    include:
+    - /lv/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-lv.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  mena_en:
+    include:
+    - /mena_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-mena_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  mt:
+    include:
+    - /mt/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-mt.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  mx:
+    include:
+    - /mx/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-mx.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  my_en:
+    include:
+    - /my_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-my_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  my_ms:
+    include:
+    - /my_ms/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-my_ms.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ng_en:
+    include:
+    - /ng_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ng_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  nl:
+    include:
+    - /nl/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-nl.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  'no':
+    include:
+    - /no/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-no.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  nz:
+    include:
+    - /nz/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-nz.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  pe:
+    include:
+    - /pe/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-pe.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ph_en:
+    include:
+    - /ph_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ph_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ph_fil:
+    include:
+    - /ph_fil/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ph_fil.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  pl:
+    include:
+    - /pl/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-pl.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  pt:
+    include:
+    - /pt/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-pt.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  qa_en:
+    include:
+    - /qa_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-qa_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ro:
+    include:
+    - /ro/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ro.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ru:
+    include:
+    - /ru/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ru.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  sa_en:
+    include:
+    - /sa_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-sa_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  se:
+    include:
+    - /se/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-se.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  sg:
+    include:
+    - /sg/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-sg.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  si:
+    include:
+    - /si/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-si.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  sk:
+    include:
+    - /sk/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-sk.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  th_en:
+    include:
+    - /th_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-th_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  th_th:
+    include:
+    - /th_th/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-th_th.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  tr:
+    include:
+    - /tr/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-tr.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  tw:
+    include:
+    - /tw/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-tw.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  ua:
+    include:
+    - /ua/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-ua.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  vn_en:
+    include:
+    - /vn_en/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-vn_en.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  vn_vi:
+    include:
+    - /vn_vi/**
+    exclude:
+    - '**/gnav/**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /documentcloud/query-index-vn_vi.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')

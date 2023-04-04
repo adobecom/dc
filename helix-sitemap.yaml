@@ -6,22 +6,413 @@ sitemaps:
     lastmod: YYYY-MM-DD
     languages:
       default:
-        source: /acrobat/online/query-index.json
-        destination: /acrobat/online/sitemap.xml
+        source: /acrobat/query-index.json
+        destination: /acrobat/sitemap.xml
         hreflang: en-US
         alternate: /{path}.html
+      ae_en:
+        source: /documentcloud/query-index-ae_en.json
+        alternate: /ae_en/{path}.html
+        destination: /documentcloud/sitemap-ae_en.xml
+        hreflang: en-AE
+      africa:
+        source: /documentcloud/query-index-africa.json
+        alternate: /africa/{path}.html
+        destination: /documentcloud/sitemap-africa.xml
+        hreflang: en-BJ
+      ar:
+        source: /documentcloud/query-index-ar.json
+        alternate: /ar/{path}.html
+        destination: /documentcloud/sitemap-ar.xml
+        hreflang: es-AR
+      at:
+        source: /documentcloud/query-index-at.json
+        alternate: /at/{path}.html
+        destination: /documentcloud/sitemap-at.xml
+        hreflang: de-AT
+      au:
+        source: /documentcloud/query-index-au.json
+        alternate: /au/{path}.html
+        destination: /documentcloud/sitemap-au.xml
+        hreflang: en-AU
+      be_en:
+        source: /documentcloud/query-index-be_en.json
+        alternate: /be_en/{path}.html
+        destination: /documentcloud/sitemap-be_en.xml
+        hreflang: en-BE
+      be_fr:
+        source: /documentcloud/query-index-be_fr.json
+        alternate: /be_fr/{path}.html
+        destination: /documentcloud/sitemap-be_fr.xml
+        hreflang: fr-BE
+      be_nl:
+        source: /documentcloud/query-index-be_nl.json
+        alternate: /be_nl/{path}.html
+        destination: /documentcloud/sitemap-be_nl.xml
+        hreflang: nl-BE
+      bg:
+        source: /documentcloud/query-index-bg.json
+        alternate: /bg/{path}.html
+        destination: /documentcloud/sitemap-bg.xml
+        hreflang: bg-BG
+      br:
+        source: /documentcloud/query-index-br.json
+        alternate: /br/{path}.html
+        destination: /documentcloud/sitemap-br.xml
+        hreflang: pt-BR
+      ca:
+        source: /documentcloud/query-index-ca.json
+        alternate: /ca/{path}.html
+        destination: /documentcloud/sitemap-ca.xml
+        hreflang: en-CA
+      ca_fr:
+        source: /documentcloud/query-index-ca_fr.json
+        alternate: /ca_fr/{path}.html
+        destination: /documentcloud/sitemap-ca_fr.xml
+        hreflang: fr-CA
+      ch_de:
+        source: /documentcloud/query-index-ch_de.json
+        alternate: /ch_de/{path}.html
+        destination: /documentcloud/sitemap-ch_de.xml
+        hreflang: de-CH
+      ch_fr:
+        source: /documentcloud/query-index-ch_fr.json
+        alternate: /ch_fr/{path}.html
+        destination: /documentcloud/sitemap-ch_fr.xml
+        hreflang: fr-CH
+      ch_it:
+        source: /documentcloud/query-index-ch_it.json
+        alternate: /ch_it/{path}.html
+        destination: /documentcloud/sitemap-ch_it.xml
+        hreflang: it-CH
+      cl:
+        source: /documentcloud/query-index-cl.json
+        alternate: /cl/{path}.html
+        destination: /documentcloud/sitemap-cl.xml
+        hreflang: es-CL
+      cn:
+        source: /documentcloud/query-index-cn.json
+        alternate: /cn/{path}.html
+        destination: /documentcloud/sitemap-cn.xml
+        hreflang: zh-Hans-CN
+      co:
+        source: /documentcloud/query-index-co.json
+        alternate: /co/{path}.html
+        destination: /documentcloud/sitemap-co.xml
+        hreflang: es-CO
+      cr:
+        source: /documentcloud/query-index-cr.json
+        alternate: /cr/{path}.html
+        destination: /documentcloud/sitemap-cr.xml
+        hreflang: es-CR
+      cy_en:
+        source: /documentcloud/query-index-cy_en.json
+        alternate: /cy_en/{path}.html
+        destination: /documentcloud/sitemap-cy_en.xml
+        hreflang: en-CY
+      cz:
+        source: /documentcloud/query-index-cz.json
+        alternate: /cz/{path}.html
+        destination: /documentcloud/sitemap-cz.xml
+        hreflang: cs-CZ
       de:
-        source: https://www.adobe.com/de/sitemap.dc.xml
-        destination: /de/acrobat/online/sitemap.xml
-        hreflang: de-DE
+        source: /documentcloud/query-index-de.json
         alternate: /de/{path}.html
-      uk:
-        source: https://www.adobe.com/uk/sitemap.dc.xml
-        destination: /uk/acrobat/online/sitemap.xml
-        hreflang: en-GB
-        alternate: /uk/{path}.html
+        destination: /documentcloud/sitemap-de.xml
+        hreflang: de-DE
+      dk:
+        source: /documentcloud/query-index-dk.json
+        alternate: /dk/{path}.html
+        destination: /documentcloud/sitemap-dk.xml
+        hreflang: da-DK
+      us:
+        source: /documentcloud/query-index-us.json
+        alternate: /{path}.html
+        destination: /documentcloud/sitemap-us.xml
+        hreflang: en-us
+      ec:
+        source: /documentcloud/query-index-ec.json
+        alternate: /ec/{path}.html
+        destination: /documentcloud/sitemap-ec.xml
+        hreflang: es-EC
+      ee:
+        source: /documentcloud/query-index-ee.json
+        alternate: /ee/{path}.html
+        destination: /documentcloud/sitemap-ee.xml
+        hreflang: et-EE
+      eg_en:
+        source: /documentcloud/query-index-eg_en.json
+        alternate: /eg_en/{path}.html
+        destination: /documentcloud/sitemap-eg_en.xml
+        hreflang: en-EG
       es:
-        source: https://www.adobe.com/es/sitemap.dc.xml
-        destination: /es/acrobat/online/sitemap.xml
-        hreflang: es-ES
+        source: /documentcloud/query-index-es.json
         alternate: /es/{path}.html
+        destination: /documentcloud/sitemap-es.xml
+        hreflang: es-ES
+      fi:
+        source: /documentcloud/query-index-fi.json
+        alternate: /fi/{path}.html
+        destination: /documentcloud/sitemap-fi.xml
+        hreflang: fi-FI
+      fr:
+        source: /documentcloud/query-index-fr.json
+        alternate: /fr/{path}.html
+        destination: /documentcloud/sitemap-fr.xml
+        hreflang: fr-FR
+      gr_en:
+        source: /documentcloud/query-index-gr_en.json
+        alternate: /gr_en/{path}.html
+        destination: /documentcloud/sitemap-gr_en.xml
+        hreflang: en-GR
+      gt:
+        source: /documentcloud/query-index-gt.json
+        alternate: /gt/{path}.html
+        destination: /documentcloud/sitemap-gt.xml
+        hreflang: es-GT
+      hk_en:
+        source: /documentcloud/query-index-hk_en.json
+        alternate: /hk_en/{path}.html
+        destination: /documentcloud/sitemap-hk_en.xml
+        hreflang: en-HK
+      hk_zh:
+        source: /documentcloud/query-index-hk_zh.json
+        alternate: /hk_zh/{path}.html
+        destination: /documentcloud/sitemap-hk_zh.xml
+        hreflang: zh-HK
+      hu:
+        source: /documentcloud/query-index-hu.json
+        alternate: /hu/{path}.html
+        destination: /documentcloud/sitemap-hu.xml
+        hreflang: hu-HU
+      id_en:
+        source: /documentcloud/query-index-id_en.json
+        alternate: /id_en/{path}.html
+        destination: /documentcloud/sitemap-id_en.xml
+        hreflang: en-ID
+      id_id:
+        source: /documentcloud/query-index-id_id.json
+        alternate: /id_id/{path}.html
+        destination: /documentcloud/sitemap-id_id.xml
+        hreflang: id-ID
+      ie:
+        source: /documentcloud/query-index-ie.json
+        alternate: /ie/{path}.html
+        destination: /documentcloud/sitemap-ie.xml
+        hreflang: en-IE
+      il_en:
+        source: /documentcloud/query-index-il_en.json
+        alternate: /il_en/{path}.html
+        destination: /documentcloud/sitemap-il_en.xml
+        hreflang: en-IL
+      in:
+        source: /documentcloud/query-index-in.json
+        alternate: /in/{path}.html
+        destination: /documentcloud/sitemap-in.xml
+        hreflang: en-IN
+      in_hi:
+        source: /documentcloud/query-index-in_hi.json
+        alternate: /in_hi/{path}.html
+        destination: /documentcloud/sitemap-in_hi.xml
+        hreflang: hi-IN
+      it:
+        source: /documentcloud/query-index-it.json
+        alternate: /it/{path}.html
+        destination: /documentcloud/sitemap-it.xml
+        hreflang: it-IT
+      jp:
+        source: /documentcloud/query-index-jp.json
+        alternate: /jp/{path}.html
+        destination: /documentcloud/sitemap-jp.xml
+        hreflang: ja-JP
+      kr:
+        source: /documentcloud/query-index-kr.json
+        alternate: /kr/{path}.html
+        destination: /documentcloud/sitemap-kr.xml
+        hreflang: ko-KR
+      kw_en:
+        source: /documentcloud/query-index-kw_en.json
+        alternate: /kw_en/{path}.html
+        destination: /documentcloud/sitemap-kw_en.xml
+        hreflang: en-KW
+      la:
+        source: /documentcloud/query-index-la.json
+        alternate: /la/{path}.html
+        destination: /documentcloud/sitemap-la.xml
+        hreflang: es-sv
+      lt:
+        source: /documentcloud/query-index-lt.json
+        alternate: /lt/{path}.html
+        destination: /documentcloud/sitemap-lt.xml
+        hreflang: lt-LT
+      lu_de:
+        source: /documentcloud/query-index-lu_de.json
+        alternate: /lu_de/{path}.html
+        destination: /documentcloud/sitemap-lu_de.xml
+        hreflang: de-LU
+      lu_en:
+        source: /documentcloud/query-index-lu_en.json
+        alternate: /lu_en/{path}.html
+        destination: /documentcloud/sitemap-lu_en.xml
+        hreflang: en-LU
+      lu_fr:
+        source: /documentcloud/query-index-lu_fr.json
+        alternate: /lu_fr/{path}.html
+        destination: /documentcloud/sitemap-lu_fr.xml
+        hreflang: fr-LU
+      lv:
+        source: /documentcloud/query-index-lv.json
+        alternate: /lv/{path}.html
+        destination: /documentcloud/sitemap-lv.xml
+        hreflang: lv-LV
+      mena_en:
+        source: /documentcloud/query-index-mena_en.json
+        alternate: /mena_en/{path}.html
+        destination: /documentcloud/sitemap-mena_en.xml
+        hreflang: en-DZ
+      mt:
+        source: /documentcloud/query-index-mt.json
+        alternate: /mt/{path}.html
+        destination: /documentcloud/sitemap-mt.xml
+        hreflang: en-MT
+      mx:
+        source: /documentcloud/query-index-mx.json
+        alternate: /mx/{path}.html
+        destination: /documentcloud/sitemap-mx.xml
+        hreflang: es-MX
+      my_en:
+        source: /documentcloud/query-index-my_en.json
+        alternate: /my_en/{path}.html
+        destination: /documentcloud/sitemap-my_en.xml
+        hreflang: en-MY
+      my_ms:
+        source: /documentcloud/query-index-my_ms.json
+        alternate: /my_ms/{path}.html
+        destination: /documentcloud/sitemap-my_ms.xml
+        hreflang: ms-MY
+      ng_en:
+        source: /documentcloud/query-index-ng_en.json
+        alternate: /ng_en/{path}.html
+        destination: /documentcloud/sitemap-ng_en.xml
+        hreflang: en-NG
+      nl:
+        source: /documentcloud/query-index-nl.json
+        alternate: /nl/{path}.html
+        destination: /documentcloud/sitemap-nl.xml
+        hreflang: nl-NL
+      no:
+        source: /documentcloud/query-index-no.json
+        alternate: /no/{path}.html
+        destination: /documentcloud/sitemap-no.xml
+        hreflang: no-NO
+      nz:
+        source: /documentcloud/query-index-nz.json
+        alternate: /nz/{path}.html
+        destination: /documentcloud/sitemap-nz.xml
+        hreflang: en-NZ
+      pe:
+        source: /documentcloud/query-index-pe.json
+        alternate: /pe/{path}.html
+        destination: /documentcloud/sitemap-pe.xml
+        hreflang: es-PE
+      ph_en:
+        source: /documentcloud/query-index-ph_en.json
+        alternate: /ph_en/{path}.html
+        destination: /documentcloud/sitemap-ph_en.xml
+        hreflang: en-PH
+      ph_fil:
+        source: /documentcloud/query-index-ph_fil.json
+        alternate: /ph_fil/{path}.html
+        destination: /documentcloud/sitemap-ph_fil.xml
+        hreflang: fil-PH
+      pl:
+        source: /documentcloud/query-index-pl.json
+        alternate: /pl/{path}.html
+        destination: /documentcloud/sitemap-pl.xml
+        hreflang: pl-PL
+      pt:
+        source: /documentcloud/query-index-pt.json
+        alternate: /pt/{path}.html
+        destination: /documentcloud/sitemap-pt.xml
+        hreflang: pt-PT
+      qa_en:
+        source: /documentcloud/query-index-qa_en.json
+        alternate: /qa_en/{path}.html
+        destination: /documentcloud/sitemap-qa_en.xml
+        hreflang: en-QA
+      ro:
+        source: /documentcloud/query-index-ro.json
+        alternate: /ro/{path}.html
+        destination: /documentcloud/sitemap-ro.xml
+        hreflang: ro-RO
+      ru:
+        source: /documentcloud/query-index-ru.json
+        alternate: /ru/{path}.html
+        destination: /documentcloud/sitemap-ru.xml
+        hreflang: ru-RU
+      sa_en:
+        source: /documentcloud/query-index-sa_en.json
+        alternate: /sa_en/{path}.html
+        destination: /documentcloud/sitemap-sa_en.xml
+        hreflang: en-SA
+      se:
+        source: /documentcloud/query-index-se.json
+        alternate: /se/{path}.html
+        destination: /documentcloud/sitemap-se.xml
+        hreflang: sv-SE
+      sg:
+        source: /documentcloud/query-index-sg.json
+        alternate: /sg/{path}.html
+        destination: /documentcloud/sitemap-sg.xml
+        hreflang: en-SG
+      si:
+        source: /documentcloud/query-index-si.json
+        alternate: /si/{path}.html
+        destination: /documentcloud/sitemap-si.xml
+        hreflang: sl-SI
+      sk:
+        source: /documentcloud/query-index-sk.json
+        alternate: /sk/{path}.html
+        destination: /documentcloud/sitemap-sk.xml
+        hreflang: sk-SK
+      th_en:
+        source: /documentcloud/query-index-th_en.json
+        alternate: /th_en/{path}.html
+        destination: /documentcloud/sitemap-th_en.xml
+        hreflang: en-TH
+      th_th:
+        source: /documentcloud/query-index-th_th.json
+        alternate: /th_th/{path}.html
+        destination: /documentcloud/sitemap-th_th.xml
+        hreflang: th-TH
+      tr:
+        source: /documentcloud/query-index-tr.json
+        alternate: /tr/{path}.html
+        destination: /documentcloud/sitemap-tr.xml
+        hreflang: tr-TR
+      tw:
+        source: /documentcloud/query-index-tw.json
+        alternate: /tw/{path}.html
+        destination: /documentcloud/sitemap-tw.xml
+        hreflang: zh-TW
+      ua:
+        source: /documentcloud/query-index-ua.json
+        alternate: /ua/{path}.html
+        destination: /documentcloud/sitemap-ua.xml
+        hreflang: uk-UA
+      uk:
+        source: /documentcloud/query-index-uk.json
+        alternate: /uk/{path}.html
+        destination: /documentcloud/sitemap-uk.xml
+        hreflang: en-gb
+      vn_en:
+        source: /documentcloud/query-index-vn_en.json
+        alternate: /vn_en/{path}.html
+        destination: /documentcloud/sitemap-vn_en.xml
+        hreflang: en-VN
+      vn_vi:
+        source: /documentcloud/query-index-vn_vi.json
+        alternate: /vn_vi/{path}.html
+        destination: /documentcloud/sitemap-vn_vi.xml
+        hreflang: vi-VN
+
