@@ -143,23 +143,6 @@ const CONFIG = {
   lcpImg?.setAttribute('loading', 'eager');
 }());
 
-// Temp solution for FedPub promotions
-function decoratePromotion() {
-  if (document.querySelector('main .promotion') instanceof HTMLElement) {
-    return;
-  }
-
-  const promotionElement = document.querySelector('head meta[name="promotion"]');
-  if (!promotionElement) {
-    return;
-  }
-
-  const promo = document.createElement('div');
-  promo.classList.add('promotion');
-  promo.setAttribute('data-promotion', promotionElement.getAttribute('content').toLowerCase());
-  document.querySelector('main > div').appendChild(promo);
-}
-
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -193,11 +176,20 @@ function decoratePromotion() {
   loadStyles(paths);
 
   // Import base milo features and run them
-  const { loadArea, loadDelayed, loadScript, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
-  decoratePromotion();
+  const {
+    loadArea, loadDelayed, loadScript, setConfig, loadLana, getMetadata,
+  } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
   await loadArea();
+
+  // Promotion from metadata (for FedPub)
+  const promotionMetadata = getMetadata('promotion');
+  if (promotionMetadata && !document.querySelector('main .promotion')) {
+    const { promotionFromMetadata } = await import('../blocks/promotion/promotion.js');
+    promotionFromMetadata(promotionMetadata);
+  }
+
   loadDelayed();
   lanaLogging();
 
