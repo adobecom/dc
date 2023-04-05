@@ -11,8 +11,10 @@ export default function init(element) {
   const widget = element;
   const DC_WIDGET_VERSION_FALLBACK = '2.40.0_1.172.1';
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.172.1';
+  const STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
+  const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
+
   let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
-  let STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
   let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
   let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
   const lanaOptions = {
@@ -34,8 +36,8 @@ export default function init(element) {
 
   if (window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.adobe.com') {
-    WIDGET_ENV = `https://documentcloud.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
-    DC_DOMAIN = 'https://documentcloud.adobe.com';
+    WIDGET_ENV = `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    DC_DOMAIN = 'https://acrobat.adobe.com';
     ENV = 'prod';
   }
 
@@ -45,6 +47,7 @@ export default function init(element) {
     || window.location.hostname === 'www.stage.adobe.com' ) {
     WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${STG_DC_WIDGET_VERSION}/dc-app-launcher.js`;
     DC_DOMAIN = 'https://stage.acrobat.adobe.com';
+    DC_GENERATE_CACHE_VERSION = STG_DC_GENERATE_CACHE_VERSION;
     ENV = 'stage';
   }
 

@@ -30,6 +30,10 @@
   display: none;
 }
 
+#CID li {
+  margin-bottom: 8px;
+}
+
 @media (min-width: 48rem ) and (max-width: 57.5rem) {
   #CID {
     max-width: 90%;
@@ -73,7 +77,7 @@
 }
 .verb-subfooter ul {
   list-style-type: none;
-  padding-left: 8px;
+  padding-left: 0;
 }
 .verb-subfooter ul li {
   padding-top: 15px;
