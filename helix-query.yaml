@@ -3,13 +3,13 @@ version: 1
 indices:
   us:
     include:
-    - /**
+      - /**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
-    target: /documentcloud/query-index-us.xlsx
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+      target: /documentcloud/query-index-us.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -28,12 +28,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   uk:
     include:
-    - /uk/**
+      - /uk/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-uk.xlsx
     properties:
       title:
@@ -53,12 +53,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ae_en:
     include:
-    - /ae_en/**
+      - /ae_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ae_en.xlsx
     properties:
       title:
@@ -78,12 +78,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   africa:
     include:
-    - /africa/**
+      - /africa/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-africa.xlsx
     properties:
       title:
@@ -103,12 +103,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ar:
     include:
-    - /ar/**
+      - /ar/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ar.xlsx
     properties:
       title:
@@ -128,12 +128,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   at:
     include:
-    - /at/**
+      - /at/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-at.xlsx
     properties:
       title:
@@ -153,12 +153,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   au:
     include:
-    - /au/**
+      - /au/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-au.xlsx
     properties:
       title:
@@ -178,12 +178,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   be_en:
     include:
-    - /be_en/**
+      - /be_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-be_en.xlsx
     properties:
       title:
@@ -203,12 +203,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   be_fr:
     include:
-    - /be_fr/**
+      - /be_fr/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-be_fr.xlsx
     properties:
       title:
@@ -228,12 +228,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   be_nl:
     include:
-    - /be_nl/**
+      - /be_nl/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-be_nl.xlsx
     properties:
       title:
@@ -253,12 +253,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   bg:
     include:
-    - /bg/**
+      - /bg/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-bg.xlsx
     properties:
       title:
@@ -278,12 +278,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   br:
     include:
-    - /br/**
+      - /br/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-br.xlsx
     properties:
       title:
@@ -303,12 +303,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ca:
     include:
-    - /ca/**
+      - /ca/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ca.xlsx
     properties:
       title:
@@ -328,12 +328,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ca_fr:
     include:
-    - /ca_fr/**
+      - /ca_fr/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ca_fr.xlsx
     properties:
       title:
@@ -353,12 +353,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ch_de:
     include:
-    - /ch_de/**
+      - /ch_de/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ch_de.xlsx
     properties:
       title:
@@ -378,12 +378,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ch_fr:
     include:
-    - /ch_fr/**
+      - /ch_fr/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ch_fr.xlsx
     properties:
       title:
@@ -403,12 +403,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ch_it:
     include:
-    - /ch_it/**
+      - /ch_it/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ch_it.xlsx
     properties:
       title:
@@ -430,10 +430,10 @@ indices:
     include:
     - /cl/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-cl.xlsx
     properties:
       title:
@@ -453,12 +453,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   cn:
     include:
-    - /cn/**
+      - /cn/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-cn.xlsx
     properties:
       title:
@@ -478,12 +478,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   co:
     include:
-    - /co/**
+      - /co/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-co.xlsx
     properties:
       title:
@@ -505,10 +505,10 @@ indices:
     include:
     - /cr/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-cr.xlsx
     properties:
       title:
@@ -528,12 +528,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   cy_en:
     include:
-    - /cy_en/**
+      - /cy_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-cy_en.xlsx
     properties:
       title:
@@ -553,12 +553,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   cz:
     include:
-    - /cz/**
+      - /cz/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-cz.xlsx
     properties:
       title:
@@ -578,12 +578,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   de:
     include:
-    - /de/**
+      - /de/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-de.xlsx
     properties:
       title:
@@ -603,12 +603,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   dk:
     include:
-    - /dk/**
+      - /dk/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-dk.xlsx
     properties:
       title:
@@ -628,12 +628,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ec:
     include:
-    - /ec/**
+      - /ec/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ec.xlsx
     properties:
       title:
@@ -653,12 +653,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ee:
     include:
-    - /ee/**
+      - /ee/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ee.xlsx
     properties:
       title:
@@ -678,12 +678,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   eg_en:
     include:
-    - /eg_en/**
+      - /eg_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-eg_en.xlsx
     properties:
       title:
@@ -703,12 +703,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   es:
     include:
-    - /es/**
+      - /es/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-es.xlsx
     properties:
       title:
@@ -728,12 +728,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   fi:
     include:
-    - /fi/**
+      - /fi/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-fi.xlsx
     properties:
       title:
@@ -753,12 +753,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   fr:
     include:
-    - /fr/**
+      - /fr/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-fr.xlsx
     properties:
       title:
@@ -778,12 +778,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   gr_en:
     include:
-    - /gr_en/**
+      - /gr_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-gr_en.xlsx
     properties:
       title:
@@ -803,12 +803,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   gt:
     include:
-    - /gt/**
+      - /gt/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-gt.xlsx
     properties:
       title:
@@ -828,12 +828,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   hk_en:
     include:
-    - /hk_en/**
+      - /hk_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-hk_en.xlsx
     properties:
       title:
@@ -853,12 +853,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   hk_zh:
     include:
-    - /hk_zh/**
+      - /hk_zh/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-hk_zh.xlsx
     properties:
       title:
@@ -878,12 +878,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   hu:
     include:
-    - /hu/**
+      - /hu/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-hu.xlsx
     properties:
       title:
@@ -903,12 +903,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   id_en:
     include:
-    - /id_en/**
+      - /id_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-id_en.xlsx
     properties:
       title:
@@ -928,12 +928,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   id_id:
     include:
-    - /id_id/**
+      - /id_id/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-id_id.xlsx
     properties:
       title:
@@ -953,12 +953,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ie:
     include:
-    - /ie/**
+      - /ie/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ie.xlsx
     properties:
       title:
@@ -978,12 +978,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   il_en:
     include:
-    - /il_en/**
+      - /il_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-il_en.xlsx
     properties:
       title:
@@ -1003,12 +1003,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   in:
     include:
-    - /in/**
+      - /in/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-in.xlsx
     properties:
       title:
@@ -1028,12 +1028,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   in_hi:
     include:
-    - /in_hi/**
+      - /in_hi/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-in_hi.xlsx
     properties:
       title:
@@ -1053,12 +1053,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   it:
     include:
-    - /it/**
+      - /it/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-it.xlsx
     properties:
       title:
@@ -1078,12 +1078,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   jp:
     include:
-    - /jp/**
+      - /jp/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-jp.xlsx
     properties:
       title:
@@ -1103,12 +1103,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   kr:
     include:
-    - /kr/**
+      - /kr/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-kr.xlsx
     properties:
       title:
@@ -1128,12 +1128,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   kw_en:
     include:
-    - /kw_en/**
+      - /kw_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-kw_en.xlsx
     properties:
       title:
@@ -1153,12 +1153,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   la:
     include:
-    - /la/**
+      - /la/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-la.xlsx
     properties:
       title:
@@ -1178,12 +1178,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   lt:
     include:
-    - /lt/**
+      - /lt/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-lt.xlsx
     properties:
       title:
@@ -1203,12 +1203,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   lu_de:
     include:
-    - /lu_de/**
+      - /lu_de/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-lu_de.xlsx
     properties:
       title:
@@ -1228,12 +1228,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   lu_en:
     include:
-    - /lu_en/**
+      - /lu_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-lu_en.xlsx
     properties:
       title:
@@ -1253,12 +1253,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   lu_fr:
     include:
-    - /lu_fr/**
+      - /lu_fr/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-lu_fr.xlsx
     properties:
       title:
@@ -1278,12 +1278,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   lv:
     include:
-    - /lv/**
+      - /lv/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-lv.xlsx
     properties:
       title:
@@ -1303,12 +1303,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   mena_en:
     include:
-    - /mena_en/**
+      - /mena_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-mena_en.xlsx
     properties:
       title:
@@ -1328,12 +1328,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   mt:
     include:
-    - /mt/**
+      - /mt/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-mt.xlsx
     properties:
       title:
@@ -1353,12 +1353,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   mx:
     include:
-    - /mx/**
+      - /mx/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-mx.xlsx
     properties:
       title:
@@ -1378,12 +1378,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   my_en:
     include:
-    - /my_en/**
+      - /my_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-my_en.xlsx
     properties:
       title:
@@ -1403,12 +1403,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   my_ms:
     include:
-    - /my_ms/**
+      - /my_ms/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-my_ms.xlsx
     properties:
       title:
@@ -1428,12 +1428,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ng_en:
     include:
-    - /ng_en/**
+      - /ng_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ng_en.xlsx
     properties:
       title:
@@ -1453,12 +1453,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   nl:
     include:
-    - /nl/**
+      - /nl/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-nl.xlsx
     properties:
       title:
@@ -1478,12 +1478,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   'no':
     include:
-    - /no/**
+      - /no/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-no.xlsx
     properties:
       title:
@@ -1503,12 +1503,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   nz:
     include:
-    - /nz/**
+      - /nz/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-nz.xlsx
     properties:
       title:
@@ -1528,12 +1528,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   pe:
     include:
-    - /pe/**
+      - /pe/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-pe.xlsx
     properties:
       title:
@@ -1553,12 +1553,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ph_en:
     include:
-    - /ph_en/**
+      - /ph_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ph_en.xlsx
     properties:
       title:
@@ -1578,12 +1578,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ph_fil:
     include:
-    - /ph_fil/**
+      - /ph_fil/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ph_fil.xlsx
     properties:
       title:
@@ -1603,12 +1603,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   pl:
     include:
-    - /pl/**
+      - /pl/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-pl.xlsx
     properties:
       title:
@@ -1628,12 +1628,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   pt:
     include:
-    - /pt/**
+      - /pt/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-pt.xlsx
     properties:
       title:
@@ -1653,12 +1653,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   qa_en:
     include:
-    - /qa_en/**
+      - /qa_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-qa_en.xlsx
     properties:
       title:
@@ -1678,12 +1678,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ro:
     include:
-    - /ro/**
+      - /ro/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ro.xlsx
     properties:
       title:
@@ -1703,12 +1703,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ru:
     include:
-    - /ru/**
+      - /ru/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ru.xlsx
     properties:
       title:
@@ -1728,12 +1728,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   sa_en:
     include:
-    - /sa_en/**
+      - /sa_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-sa_en.xlsx
     properties:
       title:
@@ -1753,12 +1753,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   se:
     include:
-    - /se/**
+      - /se/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-se.xlsx
     properties:
       title:
@@ -1778,12 +1778,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   sg:
     include:
-    - /sg/**
+      - /sg/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-sg.xlsx
     properties:
       title:
@@ -1803,12 +1803,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   si:
     include:
-    - /si/**
+      - /si/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-si.xlsx
     properties:
       title:
@@ -1828,12 +1828,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   sk:
     include:
-    - /sk/**
+      - /sk/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-sk.xlsx
     properties:
       title:
@@ -1853,12 +1853,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   th_en:
     include:
-    - /th_en/**
+      - /th_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-th_en.xlsx
     properties:
       title:
@@ -1878,12 +1878,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   th_th:
     include:
-    - /th_th/**
+      - /th_th/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-th_th.xlsx
     properties:
       title:
@@ -1903,12 +1903,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   tr:
     include:
-    - /tr/**
+      - /tr/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-tr.xlsx
     properties:
       title:
@@ -1928,12 +1928,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   tw:
     include:
-    - /tw/**
+      - /tw/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-tw.xlsx
     properties:
       title:
@@ -1953,12 +1953,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ua:
     include:
-    - /ua/**
+      - /ua/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-ua.xlsx
     properties:
       title:
@@ -1978,12 +1978,12 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   vn_en:
     include:
-    - /vn_en/**
+      - /vn_en/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
     target: /documentcloud/query-index-vn_en.xlsx
     properties:
       title:
@@ -2003,13 +2003,13 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   vn_vi:
     include:
-    - /vn_vi/**
+      - /vn_vi/**
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
-    target: /documentcloud/query-index-vn_vi.xlsx
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+      target: /documentcloud/query-index-vn_vi.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
