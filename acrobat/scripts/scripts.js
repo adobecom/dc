@@ -180,9 +180,6 @@ function decoratePromotion() {
   const { setLibs } = await import('./utils.js');
   const miloLibs = setLibs(LIBS);
 
-  // Setup Logging
-  const { default: lanaLogging } = await import('./dcLana.js');
-
   // Setup CSP
   if (window.location.pathname.indexOf('online') > 0) {
     const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
@@ -201,6 +198,9 @@ function decoratePromotion() {
   loadLana({ clientId: 'dxdc' });
   await loadArea();
   loadDelayed();
+
+  // Setup Logging
+  const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
 
   // IMS Ready
