@@ -1,5 +1,3 @@
-import { getLibs } from '../../scripts/utils.js';
-
 export default async function init(el) {
   const locale = 'en-US';
   const promotionName = el.getAttribute('data-promotion');
