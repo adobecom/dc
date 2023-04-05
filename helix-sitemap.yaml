@@ -415,4 +415,3 @@ sitemaps:
         alternate: /vn_vi/{path}.html
         destination: /documentcloud/sitemap-vn_vi.xml
         hreflang: vi-VN
-
