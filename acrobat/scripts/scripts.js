@@ -151,23 +151,27 @@ const CONFIG = {
 
 (async function loadPage() {
   // Fast track the widget
-  const widgetBlock = document.querySelector('.dc-converter-widget');
-  if (widgetBlock) {
-    widgetBlock.removeAttribute('class');
-    widgetBlock.id = 'dc-converter-widget';
-    const { default: dcConverter } = await import('../blocks/dc-converter-widget/dc-converter-widget.js');
-    dcConverter(widgetBlock);
-  }
+  (async () => {
+    const widgetBlock = document.querySelector('.dc-converter-widget');
+    if (widgetBlock) {
+      widgetBlock.removeAttribute('class');
+      widgetBlock.id = 'dc-converter-widget';
+      const { default: dcConverter } = await import('../blocks/dc-converter-widget/dc-converter-widget.js');
+      dcConverter(widgetBlock);
+    }
+  })();
+
+  // Setup CSP
+  (async () => {
+    if (document.querySelector('meta[name="dc-widget-version"]')) {
+      const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
+      ContentSecurityPolicy();
+    }
+  })();
 
   // Setup Milo
   const { setLibs } = await import('./utils.js');
   const miloLibs = setLibs(LIBS);
-
-  // Setup CSP
-  if (document.querySelector('meta[name="dc-widget-version"]')) {
-    const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
-    ContentSecurityPolicy();
-  }
 
   // Milo and site styles
   const paths = [`${miloLibs}/styles/styles.css`];
