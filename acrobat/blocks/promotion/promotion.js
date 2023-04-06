@@ -15,3 +15,12 @@ export default async function init(el) {
   el.appendChild(document.createRange()
     .createContextualFragment(promotionContent));
 }
+
+// Solution for FedPub promotions
+export const promotionFromMetadata = async (metadata) => {
+  const promo = document.createElement('div');
+  promo.classList.add('promotion');
+  promo.setAttribute('data-promotion', metadata.toLowerCase());
+  document.querySelector('main > div').appendChild(promo);
+  init(promo);
+};
