@@ -11,6 +11,9 @@ describe('Test dcLana script', async () => {
     };
     window.cspErrors = ['Fake Error'];
     clock = sinon.useFakeTimers();
+    const mTag = document.createElement('meta');
+    mTag.setAttribute('name', 'dc-widget-version');
+    document.head.appendChild(mTag);
     lanaLogging();
   });
 

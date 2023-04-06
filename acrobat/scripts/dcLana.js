@@ -1,5 +1,5 @@
 export default function lanaLogging() {
-  const fricPage = window.location.pathname.includes('online/');
+  const fricPage = document.querySelector('meta[name="dc-widget-version"]');
   const lanaOptions = {
     sampleRate: 1,
   };
