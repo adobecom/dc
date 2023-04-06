@@ -66,7 +66,7 @@ const verbRedirMap = {
 
 let url = new URL(window.location.href);
 let langFromPath = url.pathname.split('/')[1];
-const pageLang = langLocaleMap[langFromPath] || 'en-US';
+const pageLang = localeMap[langFromPath] || 'en-US';
 
 export default function init(element) {
   const widget = element;
@@ -171,7 +171,7 @@ export default function init(element) {
     })();
   }
 
-  window.addEventListener('IMS:Ready', () => {
+  window.addEventListener('IMS:Ready', async () => {
     // Redirect Usage
     if (window.adobeIMS.isSignedInUser()) {
       redDir();
@@ -196,7 +196,7 @@ export default function init(element) {
     dcScript.dataset.pre_rendered = 'true';
   }
 
-  window.addEventListener('Bowser:Ready', ()=> {
+  window.addEventListener('Bowser:Ready', async () => {
     // EOL Redirect
     const { redirectLegacyBrowsers } = await import('../../scripts/legacyBrowser.js');
     redirectLegacyBrowsers();
