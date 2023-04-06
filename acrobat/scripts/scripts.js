@@ -164,7 +164,7 @@ const CONFIG = {
   const miloLibs = setLibs(LIBS);
 
   // Setup CSP
-  if (window.location.pathname.indexOf('online') > 0) {
+  if (document.querySelector('meta[name="dc-widget-version"]')) {
     const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
     ContentSecurityPolicy();
   }
