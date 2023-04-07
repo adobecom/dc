@@ -10,6 +10,18 @@
  * governing permissions and limitations under the License.
  */
 
+/**
+ * The decision engine for where to get Milo's libs from.
+ */
+const setLibs = (prodLibs, location) => {
+  const { hostname, search } = location || window.location;
+  const branch = new URLSearchParams(search).get('milolibs') || 'main';
+  if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.adobe.com/libs';
+  if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
+  if (branch === 'local') return 'http://localhost:6456/libs';
+  return branch.includes('--') ? `https://${branch}.hlx.page/libs` : `https://${branch}--milo--adobecom.hlx.page/libs`;
+}
+
 function loadStyles(paths) {
   paths.forEach((path) => {
     const link = document.createElement('link');
@@ -170,7 +182,6 @@ const CONFIG = {
   })();
 
   // Setup Milo
-  const { setLibs } = await import('./utils.js');
   const miloLibs = setLibs(LIBS);
 
   // Milo and site styles
