@@ -10,6 +10,18 @@
  * governing permissions and limitations under the License.
  */
 
+/**
+ * The decision engine for where to get Milo's libs from.
+ */
+const setLibs = (prodLibs, location) => {
+  const { hostname, search } = location || window.location;
+  const branch = new URLSearchParams(search).get('milolibs') || 'main';
+  if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.adobe.com/libs';
+  if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
+  if (branch === 'local') return 'http://localhost:6456/libs';
+  return branch.includes('--') ? `https://${branch}.hlx.page/libs` : `https://${branch}--milo--adobecom.hlx.page/libs`;
+}
+
 function loadStyles(paths) {
   paths.forEach((path) => {
     const link = document.createElement('link');
@@ -151,23 +163,26 @@ const CONFIG = {
 
 (async function loadPage() {
   // Fast track the widget
-  const widgetBlock = document.querySelector('.dc-converter-widget');
-  if (widgetBlock) {
-    widgetBlock.removeAttribute('class');
-    widgetBlock.id = 'dc-converter-widget';
-    const { default: dcConverter } = await import('../blocks/dc-converter-widget/dc-converter-widget.js');
-    dcConverter(widgetBlock);
-  }
-
-  // Setup Milo
-  const { setLibs } = await import('./utils.js');
-  const miloLibs = setLibs(LIBS);
+  (async () => {
+    const widgetBlock = document.querySelector('.dc-converter-widget');
+    if (widgetBlock) {
+      widgetBlock.removeAttribute('class');
+      widgetBlock.id = 'dc-converter-widget';
+      const { default: dcConverter } = await import('../blocks/dc-converter-widget/dc-converter-widget.js');
+      dcConverter(widgetBlock);
+    }
+  })();
 
   // Setup CSP
-  if (document.querySelector('meta[name="dc-widget-version"]')) {
-    const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
-    ContentSecurityPolicy();
-  }
+  (async () => {
+    if (document.querySelector('meta[name="dc-widget-version"]')) {
+      const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
+      ContentSecurityPolicy();
+    }
+  })();
+
+  // Setup Milo
+  const miloLibs = setLibs(LIBS);
 
   // Milo and site styles
   const paths = [`${miloLibs}/styles/styles.css`];
