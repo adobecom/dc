@@ -16,6 +16,7 @@ const CONVERSION_COM = 'conversion-complete';
 const PREVIEW_GEN = 'preview-generating';
 const DROPZONE_DIS = 'dropzone-displayed';
 const PREVIEW_DIS = 'preview-displayed';
+const TRY_ANOTHER = 'try-another-file-start';
 // const UPSELL_DIS = 'upsell-displayed';
 
 export default function init(element) {
@@ -98,9 +99,12 @@ export default function init(element) {
       case PROCESS_CANCELED:
         setCurrentEvent('cancel');
         break;
-      // case PROCESS_COMPLETE:
-      //   setCurrentEvent('complete');
-      //   break;
+      case TRY_ANOTHER:
+        // suppress browser ext;
+        document.querySelector('.dialog-close')?.click();
+        localStorage.removeItem('fricBrowExt');
+        window.modalDisplayed = false;
+        break;
       case CONVERSION_COM:
         setCurrentEvent('complete');
         break;
