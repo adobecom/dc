@@ -126,7 +126,7 @@ const locales = {
 // Add any config options.
 const CONFIG = {
   codeRoot: '/acrobat',
-  contentRoot: '/acrobat',
+  contentRoot: '/',
   imsClientId: 'acrobatmilo',
   local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   stage: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
@@ -142,23 +142,6 @@ const CONFIG = {
   const lcpImg = document.querySelector('img');
   lcpImg?.setAttribute('loading', 'eager');
 }());
-
-// Temp solution for FedPub promotions
-function decoratePromotion() {
-  if (document.querySelector('main .promotion') instanceof HTMLElement) {
-    return;
-  }
-
-  const promotionElement = document.querySelector('head meta[name="promotion"]');
-  if (!promotionElement) {
-    return;
-  }
-
-  const promo = document.createElement('div');
-  promo.classList.add('promotion');
-  promo.setAttribute('data-promotion', promotionElement.getAttribute('content').toLowerCase());
-  document.querySelector('main > div').appendChild(promo);
-}
 
 /*
  * ------------------------------------------------------------
@@ -180,11 +163,8 @@ function decoratePromotion() {
   const { setLibs } = await import('./utils.js');
   const miloLibs = setLibs(LIBS);
 
-  // Setup Logging
-  const { default: lanaLogging } = await import('./dcLana.js');
-
   // Setup CSP
-  if (window.location.pathname.indexOf('online') > 0) {
+  if (document.querySelector('meta[name="dc-widget-version"]')) {
     const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
     ContentSecurityPolicy();
   }
@@ -195,12 +175,24 @@ function decoratePromotion() {
   loadStyles(paths);
 
   // Import base milo features and run them
-  const { loadArea, loadDelayed, loadScript, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
-  decoratePromotion();
+  const {
+    loadArea, loadDelayed, loadScript, setConfig, loadLana, getMetadata,
+  } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
   await loadArea();
+
+  // Promotion from metadata (for FedPub)
+  const promotionMetadata = getMetadata('promotion');
+  if (promotionMetadata && !document.querySelector('main .promotion')) {
+    const { promotionFromMetadata } = await import('../blocks/promotion/promotion.js');
+    promotionFromMetadata(promotionMetadata);
+  }
+
   loadDelayed();
+
+  // Setup Logging
+  const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
 
   // IMS Ready
