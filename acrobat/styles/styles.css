@@ -115,7 +115,6 @@
   -moz-appearance: none;
   appearance: none;
   background-color: inherit;
-  border: 0;
   box-sizing: border-box;
   cursor: pointer;
   display: -ms-flexbox;
@@ -133,7 +132,7 @@
   text-overflow: ellipsis;
   text-transform: uppercase;
   width: 100%;
-  padding: 0;
+  padding: 12px;
 }
 
 .accordion-container.verb-subfooter-moblie .accordion dt.is-open,
