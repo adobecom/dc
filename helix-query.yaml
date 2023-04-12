@@ -3,14 +3,15 @@ version: 1
 indices:
   us:
     include:
-    - /**
+    - '/acrobat/**'
+    - '/sign/**'
     exclude:
     - '**/gnav/**'
     - '**/drafts/**'
     - '**/fragments/**'
     - '**/localization/**'
     - '**/dc-shared/**'
-    target: /dc-shared/query-index-us.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-us.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
