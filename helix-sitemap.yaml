@@ -6,8 +6,8 @@ sitemaps:
     lastmod: YYYY-MM-DD
     languages:
       default:
-        source: /acrobat/query-index.json
-        destination: /acrobat/sitemap.xml
+        source: /dc-shared/query-index.json
+        destination: /dc-shared/sitemap.xml
         hreflang: en-US
         alternate: /{path}.html
       ae_en:
