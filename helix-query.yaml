@@ -9,7 +9,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-      target: /dc-shared/query-index.json
+      target: /dc-shared/assets/sitemaps/query-index.json
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -34,7 +34,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-uk.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-uk.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -59,7 +59,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ae_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ae_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -84,7 +84,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-africa.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-africa.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -109,7 +109,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ar.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ar.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -134,7 +134,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-at.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-at.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -159,7 +159,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-au.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-au.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -184,7 +184,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-be_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-be_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -209,7 +209,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-be_fr.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-be_fr.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -234,7 +234,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-be_nl.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-be_nl.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -259,7 +259,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-bg.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-bg.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -284,7 +284,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-br.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-br.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -309,7 +309,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ca.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ca.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -334,7 +334,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ca_fr.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ca_fr.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -359,7 +359,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ch_de.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ch_de.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -384,7 +384,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ch_fr.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ch_fr.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -409,7 +409,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ch_it.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ch_it.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -434,7 +434,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-cl.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-cl.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -459,7 +459,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-cn.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-cn.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -484,7 +484,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-co.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-co.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -509,7 +509,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-cr.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-cr.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -534,7 +534,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-cy_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-cy_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -559,7 +559,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-cz.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-cz.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -584,7 +584,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-de.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-de.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -609,7 +609,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-dk.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-dk.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -634,7 +634,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ec.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ec.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -659,7 +659,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ee.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ee.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -684,7 +684,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-eg_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-eg_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -709,7 +709,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-es.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-es.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -734,7 +734,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-fi.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-fi.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -759,7 +759,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-fr.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-fr.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -784,7 +784,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-gr_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-gr_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -809,7 +809,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-gt.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-gt.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -834,7 +834,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-hk_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-hk_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -859,7 +859,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-hk_zh.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-hk_zh.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -884,7 +884,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-hu.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-hu.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -909,7 +909,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-id_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-id_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -934,7 +934,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-id_id.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-id_id.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -959,7 +959,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ie.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ie.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -984,7 +984,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-il_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-il_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1009,7 +1009,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-in.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-in.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1034,7 +1034,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-in_hi.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-in_hi.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1059,7 +1059,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-it.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-it.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1084,7 +1084,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-jp.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-jp.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1109,7 +1109,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-kr.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-kr.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1134,7 +1134,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-kw_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-kw_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1159,7 +1159,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-la.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-la.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1184,7 +1184,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-lt.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-lt.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1209,7 +1209,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-lu_de.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-lu_de.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1234,7 +1234,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-lu_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-lu_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1259,7 +1259,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-lu_fr.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-lu_fr.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1284,7 +1284,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-lv.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-lv.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1309,7 +1309,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-mena_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-mena_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1334,7 +1334,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-mt.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-mt.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1359,7 +1359,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-mx.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-mx.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1384,7 +1384,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-my_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-my_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1409,7 +1409,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-my_ms.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-my_ms.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1434,7 +1434,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ng_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ng_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1459,7 +1459,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-nl.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-nl.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1484,7 +1484,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-no.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-no.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1509,7 +1509,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-nz.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-nz.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1534,7 +1534,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-pe.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-pe.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1559,7 +1559,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ph_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ph_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1584,7 +1584,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ph_fil.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ph_fil.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1609,7 +1609,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-pl.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-pl.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1634,7 +1634,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-pt.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-pt.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1659,7 +1659,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-qa_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-qa_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1684,7 +1684,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ro.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ro.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1709,7 +1709,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ru.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ru.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1734,7 +1734,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-sa_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-sa_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1759,7 +1759,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-se.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-se.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1784,7 +1784,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-sg.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-sg.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1809,7 +1809,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-si.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-si.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1834,7 +1834,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-sk.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-sk.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1859,7 +1859,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-th_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-th_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1884,7 +1884,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-th_th.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-th_th.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1909,7 +1909,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-tr.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-tr.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1934,7 +1934,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-tw.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-tw.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1959,7 +1959,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-ua.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-ua.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -1984,7 +1984,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /dc-shared/query-index-vn_en.xlsx
+    target: /dc-shared/assets/sitemaps/query-index-vn_en.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -2009,7 +2009,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-      target: /dc-shared/query-index-vn_vi.xlsx
+      target: /dc-shared/assets/sitemaps/query-index-vn_vi.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
