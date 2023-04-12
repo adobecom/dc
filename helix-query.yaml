@@ -9,7 +9,8 @@ indices:
     - '**/drafts/**'
     - '**/fragments/**'
     - '**/localization/**'
-    target: /documentcloud/query-index-us.xlsx
+    - '**/dc-shared/**'
+    target: /dc-shared/query-index-us.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
