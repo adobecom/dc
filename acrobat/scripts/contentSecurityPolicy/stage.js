@@ -43,6 +43,7 @@ const connectSrc = [
   'http://localhost:6456/',
   '*.hlx.page',
   'cdn.linkedin.oribi.io',
+  '*.akstat.io/',
   ';',
 ];
 
