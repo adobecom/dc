@@ -226,3 +226,78 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  hk:
+    include:
+      - /hk/**
+    exclude:
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+    target: /hk/dc-shared/assets/sitemaps/query-index-hk.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  th:
+    include:
+      - /th/**
+    exclude:
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+    target: /th/dc-shared/assets/sitemaps/query-index-th.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  tw:
+    include:
+      - /tw/**
+    exclude:
+      - '**/gnav/**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+    target: /tw/dc-shared/assets/sitemaps/query-index-tw.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')                        
