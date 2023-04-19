@@ -11,42 +11,42 @@ sitemaps:
         hreflang: en-US
         alternate: /{path}.html
       au:
-        source: /dc-shared/assets/sitemaps/query-index-au.json
+        source: /au/dc-shared/assets/sitemaps/query-index.json
         alternate: /au/{path}.html
-        destination: /dc-shared/assets/sitemaps/sitemap-au.xml
+        destination: /au/dc-shared/assets/sitemaps/sitemap.xml
         hreflang: en-AU
       de:
-        source: /dc-shared/assets/sitemaps/query-index-de.json
+        source: /de/dc-shared/assets/sitemaps/query-index.json
         alternate: /de/{path}.html
-        destination: /dc-shared/assets/sitemaps/sitemap-de.xml
+        destination: /de/dc-shared/assets/sitemaps/sitemap.xml
         hreflang: de-DE
       es:
-        source: /dc-shared/assets/sitemaps/query-index-es.json
+        source: /es/dc-shared/assets/sitemaps/query-index.json
         alternate: /es/{path}.html
-        destination: /dc-shared/assets/sitemaps/sitemap-es.xml
+        destination: /es/dc-shared/assets/sitemaps/sitemap.xml
         hreflang: es-ES
       fr:
-        source: /dc-shared/assets/sitemaps/query-index-fr.json
+        source: /fr/dc-shared/assets/sitemaps/query-index.json
         alternate: /fr/{path}.html
-        destination: /dc-shared/assets/sitemaps/sitemap-fr.xml
+        destination: /fr/dc-shared/assets/sitemaps/sitemap.xml
         hreflang: fr-FR
       it:
-        source: /dc-shared/assets/sitemaps/query-index-it.json
+        source: /it/dc-shared/assets/sitemaps/query-index.json
         alternate: /it/{path}.html
-        destination: /dc-shared/assets/sitemaps/sitemap-it.xml
+        destination: /it/dc-shared/assets/sitemaps/sitemap.xml
         hreflang: it-IT
       jp:
-        source: /dc-shared/assets/sitemaps/query-index-jp.json
+        source: /jp/dc-shared/assets/sitemaps/query-index.json
         alternate: /jp/{path}.html
-        destination: /dc-shared/assets/sitemaps/sitemap-jp.xml
+        destination: /jp/dc-shared/assets/sitemaps/sitemap.xml
         hreflang: ja-JP
       kr:
-        source: /dc-shared/assets/sitemaps/query-index-kr.json
+        source: /kr/dc-shared/assets/sitemaps/query-index.json
         alternate: /kr/{path}.html
-        destination: /dc-shared/assets/sitemaps/sitemap-kr.xml
+        destination: /kr/dc-shared/assets/sitemaps/sitemap.xml
         hreflang: ko-KR
       ru:
-        source: /dc-shared/assets/sitemaps/query-index-ru.json
+        source: /ru/dc-shared/assets/sitemaps/query-index.json
         alternate: /ru/{path}.html
-        destination: /dc-shared/assets/sitemaps/sitemap-ru.xml
+        destination: /ru/dc-shared/assets/sitemaps/sitemap.xml
         hreflang: ru-RU
