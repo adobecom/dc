@@ -59,7 +59,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: de/dc-shared/assets/sitemaps/query-index.xlsx
+    target: /de/dc-shared/assets/sitemaps/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
