@@ -10,6 +10,8 @@
  * governing permissions and limitations under the License.
  */
 
+import localeMap from "./maps/localeMap.js";
+
 function loadStyles(paths) {
   paths.forEach((path) => {
     const link = document.createElement('link');
@@ -17,6 +19,17 @@ function loadStyles(paths) {
     link.setAttribute('href', path);
     document.head.appendChild(link);
   });
+}
+
+function addLocale() {
+  const url = new URL(window.location.href);
+  const langFromPath = url.pathname.split('/')[1];
+  const pageLang = localeMap[langFromPath] || 'en-US';
+  const metaTag = document.createElement('meta');
+  metaTag.setAttribute('property', 'og:locale');
+  metaTag.setAttribute('content', pageLang);
+  const head = document.querySelector('head');
+  head.appendChild(metaTag);
 }
 
 // Add project-wide styles here.
@@ -158,6 +171,10 @@ const CONFIG = {
     const { default: dcConverter } = await import('../blocks/dc-converter-widget/dc-converter-widget.js');
     dcConverter(widgetBlock);
   }
+  
+  //Add locale
+  addLocale();
+
 
   // Setup Milo
   const { setLibs } = await import('./utils.js');
