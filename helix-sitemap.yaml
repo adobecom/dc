@@ -51,9 +51,9 @@ sitemaps:
         destination: /ru/dc-shared/assets/sitemaps/sitemap.xml
         hreflang: ru-RU
       hk:
-        source: hk_zh/dc-shared/assets/sitemaps/query-index-hk.json
-        alternate: hk_zh/{path}.html
-        destination: hk_zh/dc-shared/assets/sitemaps/sitemap-hk.xml
+        source: /hk_zh/dc-shared/assets/sitemaps/query-index-hk.json
+        alternate: /hk_zh/{path}.html
+        destination: /hk_zh/dc-shared/assets/sitemaps/sitemap-hk.xml
         hreflang: hk-zh
       th:
         source: /th_th/dc-shared/assets/sitemaps/query-index-th.json
