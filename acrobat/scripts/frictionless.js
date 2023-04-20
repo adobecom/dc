@@ -12,6 +12,7 @@ export default function init(verb) {
 
   // Review Alloy
   if (reviewBlock) {
+    reviewAlloy();
     const reviewWait = setInterval(() => {
       const reviewForm = document.querySelectorAll('.hlx-Review');
       if (reviewForm.length > 0) {
@@ -19,9 +20,16 @@ export default function init(verb) {
         reviewForm[0].addEventListener('submit', (e) => {
           const data = Object.fromEntries(new FormData(e.target).entries());
           // verb, rating, comment
-          reviewAlloy();
           reviewFeedbackAlloy(verb, data.rating, data['rating-comments']);
         });
+        if (document.querySelectorAll('.tooltip').length > 0) {
+          document.querySelectorAll('.tooltip')[3].addEventListener('click', () => {
+            reviewFeedbackAlloy(verb, '4');
+          })
+          document.querySelectorAll('.tooltip')[4].addEventListener('click', () => {
+            reviewFeedbackAlloy(verb, '5');
+          })
+        }
         parser = bowser.getParser(window.navigator.userAgent);
         browserName = parser.getBrowserName();
       }
