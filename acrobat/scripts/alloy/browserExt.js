@@ -1,4 +1,4 @@
-export default function init(ev, brow) {
+export default function init(ev, brow, inter) {
 
   const names = {
     modalClosed : {
@@ -37,10 +37,7 @@ export default function init(ev, brow) {
             digitalData: {
                 primaryEvent: {
                     eventInfo: {
-                        interaction: {
-                            click: names[ev][brow],
-                            iclick: 'true',
-                        },
+                        interaction: inter ? { [inter]: names[ev][brow] } : {click: names[ev][brow], iclick: 'true'},
                         eventName: names[ev][brow],
                     },
                 },

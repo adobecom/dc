@@ -38,12 +38,16 @@ export default function init(verb) {
     if (browserName === 'Microsoft Edge') {
       extName = '#edgeext';
     }
-    setTimeout( ()=> {
+    const extensionWait = setInterval( ()=> {
       const browserExtModal = document.querySelector(extName);
       const browserExtClose = browserExtModal.querySelector('.dialog-close');
       const browserExtGetLink = browserExtModal.querySelector('.browser-extension  a');
+      if(!browserExtModal || !browserExtClose || !browserExtGetLink){
+        return;
+      }
+      clearInterval(extensionWait);
       browserExtAlloy('modalExist', browserName);
-      browserExtAlloy('modalGetExtension', browserName);
+      browserExtAlloy('modalGetExtension', browserName, 'impression');
 
       browserExtClose.addEventListener('click', () => {
         browserExtAlloy('modalClosed', browserName);
