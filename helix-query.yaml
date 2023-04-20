@@ -228,13 +228,13 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   hk:
     include:
-      - /hk/**
+      - /hk_zh/**
     exclude:
       - '**/gnav/**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /hk/dc-shared/assets/sitemaps/query-index-hk.xlsx
+    target: /hk_zh/dc-shared/assets/sitemaps/query-index-hk.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -253,13 +253,13 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   th:
     include:
-      - /th/**
+      - /th_th/**
     exclude:
       - '**/gnav/**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /th/dc-shared/assets/sitemaps/query-index-th.xlsx
+    target: /th_th/dc-shared/assets/sitemaps/query-index-th.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
