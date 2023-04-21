@@ -37,7 +37,7 @@ const connectSrc = [
   'cdn.linkedin.oribi.io',
   '*.typekit.net/',
   'trial-eum-clienttons-s.akamaihd.net/',
-  '17de4c11.akstat.io/',
+  '*.akstat.io/',
   ';',
 ];
 
