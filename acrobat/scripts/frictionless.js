@@ -12,6 +12,7 @@ export default function init(verb) {
 
   // Review Alloy
   if (reviewBlock) {
+    reviewAlloy();
     const reviewWait = setInterval(() => {
       const reviewForm = document.querySelectorAll('.hlx-Review');
       if (reviewForm.length > 0) {
@@ -19,9 +20,17 @@ export default function init(verb) {
         reviewForm[0].addEventListener('submit', (e) => {
           const data = Object.fromEntries(new FormData(e.target).entries());
           // verb, rating, comment
-          reviewAlloy();
           reviewFeedbackAlloy(verb, data.rating, data['rating-comments']);
         });
+        const reviewTooltip = reviewBlock[0].querySelectorAll('.tooltip');
+        if (reviewTooltip.length > 0) {
+          reviewTooltip[3].addEventListener('click', () => {
+            reviewFeedbackAlloy(verb, '4');
+          })
+          reviewTooltip[4].addEventListener('click', () => {
+            reviewFeedbackAlloy(verb, '5');
+          })
+        }
         parser = bowser.getParser(window.navigator.userAgent);
         browserName = parser.getBrowserName();
       }
@@ -40,8 +49,9 @@ export default function init(verb) {
     }
     const extensionWait = setInterval( ()=> {
       const browserExtModal = document.querySelector(extName);
-      const browserExtClose = browserExtModal.querySelector('.dialog-close');
-      const browserExtGetLink = browserExtModal.querySelector('.browser-extension  a');
+      const browserExtClose = browserExtModal?.querySelector('.dialog-close');
+      const browserExtGetLink = browserExtModal?.querySelector('.browser-extension  a');
+
       if(!browserExtModal || !browserExtClose || !browserExtGetLink){
         return;
       }

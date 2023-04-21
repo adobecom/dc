@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
+
 function loadStyles(paths) {
   paths.forEach((path) => {
     const link = document.createElement('link');
@@ -17,6 +18,13 @@ function loadStyles(paths) {
     link.setAttribute('href', path);
     document.head.appendChild(link);
   });
+}
+
+function addLocale(locale) {
+  const metaTag = document.createElement('meta');
+  metaTag.setAttribute('property', 'og:locale');
+  metaTag.setAttribute('content', locale);
+  document.head.appendChild(metaTag);
 }
 
 // Add project-wide styles here.
@@ -158,7 +166,7 @@ const CONFIG = {
     const { default: dcConverter } = await import('../blocks/dc-converter-widget/dc-converter-widget.js');
     dcConverter(widgetBlock);
   }
-
+  
   // Setup Milo
   const { setLibs } = await import('./utils.js');
   const miloLibs = setLibs(LIBS);
@@ -176,8 +184,10 @@ const CONFIG = {
 
   // Import base milo features and run them
   const {
-    loadArea, loadDelayed, loadScript, setConfig, loadLana, getMetadata,
+    loadArea, loadDelayed, loadScript, setConfig, loadLana, getMetadata, getLocale
   } = await import(`${miloLibs}/utils/utils.js`);
+  const { ietf } = getLocale(locales);
+  addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
   await loadArea();
