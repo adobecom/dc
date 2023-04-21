@@ -252,12 +252,4 @@ const workerSrc = [
   ';',
 ];
 
-const preSrc = [
-  '\'self\'',
-  'documentcloud.adobe.com',
-  'acrobat.adobe.com',
-  'blob:',
-  ';',
-];
-
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, preSrc};
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};

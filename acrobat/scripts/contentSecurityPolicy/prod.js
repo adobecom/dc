@@ -36,6 +36,8 @@ const connectSrc = [
   'main--dc--adobecom.hlx.live',
   'cdn.linkedin.oribi.io',
   '*.typekit.net/',
+  'trial-eum-clienttons-s.akamaihd.net/',
+  '17de4c11.akstat.io/',
   ';',
 ];
 
@@ -235,12 +237,4 @@ const workerSrc = [
   ';',
 ];
 
-const preSrc = [
-  '\'self\'',
-  'documentcloud.adobe.com',
-  'acrobat.adobe.com',
-  'blob:',
-  ';',
-];
-
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, preSrc};
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};
