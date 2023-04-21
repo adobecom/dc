@@ -31,6 +31,13 @@ function loadStyles(paths) {
   });
 }
 
+function addLocale(locale) {
+  const metaTag = document.createElement('meta');
+  metaTag.setAttribute('property', 'og:locale');
+  metaTag.setAttribute('content', locale);
+  document.head.appendChild(metaTag);
+}
+
 // Add project-wide styles here.
 const STYLES = '/acrobat/styles/styles.css';
 
@@ -180,7 +187,7 @@ const CONFIG = {
       ContentSecurityPolicy();
     }
   })();
-
+  
   // Setup Milo
   const miloLibs = setLibs(LIBS);
 
@@ -191,8 +198,10 @@ const CONFIG = {
 
   // Import base milo features and run them
   const {
-    loadArea, loadDelayed, loadScript, setConfig, loadLana, getMetadata,
+    loadArea, loadDelayed, loadScript, setConfig, loadLana, getMetadata, getLocale
   } = await import(`${miloLibs}/utils/utils.js`);
+  const { ietf } = getLocale(locales);
+  addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
   await loadArea();
