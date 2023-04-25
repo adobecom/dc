@@ -6,9 +6,9 @@ sitemaps:
     lastmod: YYYY-MM-DD
     languages:
       default:
-        source: //dc-shared/assets/query-index.json
-        alternate: //{path}.html
-        destination: //dc-shared/assets/sitemap.xml
+        source: /dc-shared/assets/query-index.json
+        alternate: /{path}.html
+        destination: /dc-shared/assets/sitemap.xml
         hreflang: en-US
 
       ar:
