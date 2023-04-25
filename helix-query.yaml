@@ -112,14 +112,6 @@ indices:
       - '/pe/dc-shared/*'
     target: /pe/dc-shared/assets/query-index.xlsx
  
-  :
-    <<: *def
-    include:
-      - '//acrobat/**'
-    exclude:
-      - '//dc-shared/*'
-    target: //dc-shared/assets/query-index.xlsx
- 
   africa:
     <<: *def
     include:
