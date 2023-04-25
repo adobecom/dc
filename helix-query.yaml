@@ -1,15 +1,12 @@
 version: 1
 
 indices:
-  us:
+  def: &def
     include:
-    - /**
+    - '/acrobat/*'
     exclude:
-    - '**/gnav/**'
-    - '**/drafts/**'
-    - '**/fragments/**'
-    - '**/localization/**'
-    target: /dc-shared/assets/sitemaps/query-index.xlsx
+    - '/dc-shared/*'
+    target: /dc-shared/assets/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -26,203 +23,19 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-   au:
-    include:
-      - /au/**
-    exclude:
-      - '**/gnav/**'
-      - '**/drafts/**'
-      - '**/fragments/**'
-      - '**/localization/**'
-    target: /au/dc-shared/assets/sitemaps/query-index.xlsx
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, 'content')
-      date:
-        select: head > meta[name="publishdate"]
-        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-      image:
-        select: head > meta[property="og:image"]
-        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      description:
-        select: head > meta[name="description"]
-        value: attribute(el, 'content')
-      lastModified:
-        select: none
-        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+
   de:
+    <<: *def
     include:
-      - /de/**
+      - '/de/acrobat/*'
     exclude:
-      - '**/gnav/**'
-      - '**/drafts/**'
-      - '**/fragments/**'
-      - '**/localization/**'
-    target: /de/dc-shared/assets/sitemaps/query-index.xlsx
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, 'content')
-      date:
-        select: head > meta[name="publishdate"]
-        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-      image:
-        select: head > meta[property="og:image"]
-        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      description:
-        select: head > meta[name="description"]
-        value: attribute(el, 'content')
-      lastModified:
-        select: none
-        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  es:
-    include:
-      - /es/**
-    exclude:
-      - '**/gnav/**'
-      - '**/drafts/**'
-      - '**/fragments/**'
-      - '**/localization/**'
-    target: /es/dc-shared/assets/sitemaps/query-index.xlsx
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, 'content')
-      date:
-        select: head > meta[name="publishdate"]
-        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-      image:
-        select: head > meta[property="og:image"]
-        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      description:
-        select: head > meta[name="description"]
-        value: attribute(el, 'content')
-      lastModified:
-        select: none
-        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+      - '/de/dc-shared/*'
+    target: /de/dc-shared/assets/query-index.xlsx
+
   fr:
+    <<: *def
     include:
-      - /fr/**
+      - '/fr/acrobat/*'
     exclude:
-      - '**/gnav/**'
-      - '**/drafts/**'
-      - '**/fragments/**'
-      - '**/localization/**'
-    target: /fr/dc-shared/assets/sitemaps/query-index.xlsx
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, 'content')
-      date:
-        select: head > meta[name="publishdate"]
-        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-      image:
-        select: head > meta[property="og:image"]
-        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      description:
-        select: head > meta[name="description"]
-        value: attribute(el, 'content')
-      lastModified:
-        select: none
-        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  it:
-    include:
-      - /it/**
-    exclude:
-      - '**/gnav/**'
-      - '**/drafts/**'
-      - '**/fragments/**'
-      - '**/localization/**'
-    target: /it/dc-shared/assets/sitemaps/query-index.xlsx
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, 'content')
-      date:
-        select: head > meta[name="publishdate"]
-        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-      image:
-        select: head > meta[property="og:image"]
-        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      description:
-        select: head > meta[name="description"]
-        value: attribute(el, 'content')
-      lastModified:
-        select: none
-        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  jp:
-    include:
-      - /jp/**
-    exclude:
-      - '**/gnav/**'
-      - '**/drafts/**'
-      - '**/fragments/**'
-      - '**/localization/**'
-    target: /jp/dc-shared/assets/sitemaps/query-index.xlsx
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, 'content')
-      date:
-        select: head > meta[name="publishdate"]
-        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-      image:
-        select: head > meta[property="og:image"]
-        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      description:
-        select: head > meta[name="description"]
-        value: attribute(el, 'content')
-      lastModified:
-        select: none
-        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  kr:
-    include:
-      - /kr/**
-    exclude:
-      - '**/gnav/**'
-      - '**/drafts/**'
-      - '**/fragments/**'
-      - '**/localization/**'
-    target: /kr/dc-shared/assets/sitemaps/query-index.xlsx
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, 'content')
-      date:
-        select: head > meta[name="publishdate"]
-        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-      image:
-        select: head > meta[property="og:image"]
-        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      description:
-        select: head > meta[name="description"]
-        value: attribute(el, 'content')
-      lastModified:
-        select: none
-        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  ru:
-    include:
-      - /ru/**
-    exclude:
-      - '**/gnav/**'
-      - '**/drafts/**'
-      - '**/fragments/**'
-      - '**/localization/**'
-    target: /ru/dc-shared/assets/sitemaps/query-index.xlsx
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, 'content')
-      date:
-        select: head > meta[name="publishdate"]
-        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-      image:
-        select: head > meta[property="og:image"]
-        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      description:
-        select: head > meta[name="description"]
-        value: attribute(el, 'content')
-      lastModified:
-        select: none
-        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+      - '/fr/dc-shared/*'
+    target: /fr/dc-shared/assets/query-index.xlsx
