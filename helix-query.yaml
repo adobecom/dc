@@ -168,14 +168,6 @@ indices:
       - '/dk/dc-shared/*'
     target: /dk/dc-shared/assets/query-index.xlsx
  
-  de:
-    <<: *def
-    include:
-      - '/de/acrobat/**'
-    exclude:
-      - '/de/dc-shared/*'
-    target: /de/dc-shared/assets/query-index.xlsx
- 
   ee:
     <<: *def
     include:
@@ -191,14 +183,6 @@ indices:
     exclude:
       - '/es/dc-shared/*'
     target: /es/dc-shared/assets/query-index.xlsx
- 
-  fr:
-    <<: *def
-    include:
-      - '/fr/acrobat/**'
-    exclude:
-      - '/fr/dc-shared/*'
-    target: /fr/dc-shared/assets/query-index.xlsx
  
   gr_en:
     <<: *def
