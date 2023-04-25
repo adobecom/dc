@@ -35,7 +35,7 @@ indices:
   fr:
     <<: *def
     include:
-      - '/fr/acrobat/*'
+      - '/fr/acrobat/**'
     exclude:
-      - '/fr/dc-shared/*'
+      - '/fr/dc-shared/**'
     target: /fr/dc-shared/assets/query-index.xlsx
