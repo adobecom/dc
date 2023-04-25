@@ -3,9 +3,9 @@ version: 1
 indices:
   def: &def
     include:
-    - '/acrobat/*'
+    - '/acrobat/**'
     exclude:
-    - '/dc-shared/*'
+    - '/dc-shared/**'
     target: /dc-shared/assets/query-index.xlsx
     properties:
       title:
