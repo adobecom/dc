@@ -16,3 +16,9 @@ sitemaps:
         alternate: /de/{path}.html
         destination: /de/dc-shared/assets/sitemap.xml
         hreflang: de-DE
+
+      fr:
+        source: /fr/dc-shared/assets/query-index.json
+        alternate: /fr/{path}.html
+        destination: /fr/dc-shared/assets/sitemap.xml
+        hreflang: fr-FR
