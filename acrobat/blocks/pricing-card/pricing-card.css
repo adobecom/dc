@@ -108,10 +108,11 @@
   align-content: space-between;
 }
 
-.pricing-card .card-footer .footer-content {
+.pricing-card .card-footer .footer-content .display {
   display: flex;
   align-items: center;
   justify-content: space-between;
   align-content: space-between;
+  gap: 10px;
 }
 
