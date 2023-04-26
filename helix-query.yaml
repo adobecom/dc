@@ -624,14 +624,6 @@ indices:
       - '/kr/dc-shared/*'
     target: /kr/dc-shared/assets/query-index.xlsx
  
-  langstore:
-    <<: *def
-    include:
-      - '/langstore/acrobat/**'
-    exclude:
-      - '/langstore/dc-shared/*'
-    target: /langstore/dc-shared/assets/query-index.xlsx
- 
   za:
     <<: *def
     include:
