@@ -4,7 +4,7 @@ const init = (block) => {
   createTag.then((createTag) => {
     const properties = getProperties(block);
     preparePricingCardDOM(block, properties, createTag);
-    collectContent(block, properties);
+    collectContent(block, properties, createTag);
     toggleContent(properties['initialOption'], block);
   });
 };
@@ -76,18 +76,24 @@ const getProperties = (block) => {
   tableRows.forEach((row) => {
     if (row.children[0] && row.children[0].innerText) {
       properties[row.children[0].innerText] =  row.children[1] ? row.children[1].innerText : '';
-      if (row.children[0].innerText.startsWith('option')) countOptions ++;
+      if (row.children[0].innerText.startsWith('option')) {
+        countOptions ++;
+        const xfLink = row.querySelector('a[href]');
+        if (xfLink) {
+          properties[row.children[0].innerText + 'XfLink'] = xfLink.getAttribute('href');
+        }
+      }
     }
   });
   properties.countOptions = countOptions;
+  console.log('properties', properties);
   return properties;
 };
-const collectContent = (cardNode, cardProperties) => {
+const collectContent = (cardNode, cardProperties, createTag) => {
   const prices = [];
   const disclaimers = [];
-  // todo implement footers (ctas, qty selectors)
-  const footers = [];
-  for (let i = 1; i <= cardProperties['countOptions']; i++) {
+  const ctas = [];
+  const getPricesFromSections = (i) => {
     const optionContent = document.querySelectorAll(`.section.option${i}`);
     optionContent.forEach((content) => {
       const optionProperties = getProperties(content.querySelector('.section-metadata'));
@@ -96,10 +102,23 @@ const collectContent = (cardNode, cardProperties) => {
         switch (optionProperties['place']) {
           case 'price' : prices.push(content);break;
           case 'disclaimer': disclaimers.push(content);break;
-          case 'footer-content': footers.push(content);break;
+          case 'footer-content': ctas.push(content);break;
         }
       }
     });
+  };
+  const getPricesFromTableProps = (i) => {
+    prices.push(createTag('div',{ class: `option${i} hide` }, cardProperties[`price${i}`]));
+    ctas.push(createTag('div',{ class: `option${i} hide` }, cardProperties[`cta${i}`]));
+    disclaimers.push(createTag('div',{ class: `option${i} hide` }, cardProperties[`disclaimer${i}`]));
+  }
+
+  for (let i = 1; i <= cardProperties['countOptions']; i++) {
+    if (cardProperties['price1']) {
+      getPricesFromTableProps(i);
+    } else {
+      getPricesFromSections(i);
+    }
   }
 
   prices.forEach(p => {
@@ -108,7 +127,7 @@ const collectContent = (cardNode, cardProperties) => {
   disclaimers.forEach(d => {
     cardNode.querySelector('.disclaimer')?.append(d);
   });
-  footers.forEach(f => {
+  ctas.forEach(f => {
     cardNode.querySelector('.footer-content')?.append(f);
   });
 }
