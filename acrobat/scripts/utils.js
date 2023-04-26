@@ -46,10 +46,8 @@ export const getProperties = (block) => {
     if (row.children[0] && row.children[0].innerText) {
       properties[row.children[0].innerText] =  row.children[1] ? row.children[1].innerText : '';
       if (row.children[0].innerText.startsWith('option')) countOptions ++;
-      if (row.children[0].innerText.startsWith('card')) countCards ++;
     }
   });
   properties.countOptions = countOptions;
-  properties.countCards = countCards;
   return properties;
 };

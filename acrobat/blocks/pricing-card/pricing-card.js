@@ -21,13 +21,13 @@ const preparePricingCardDOM = (block, properties, createTag) => {
   const price = createTag('div', {class: 'price'});
   const disclaimer = createTag('div', {class: 'disclaimer'});
   const radioGroup = createRadioGroup(properties, createTag, block);
-  const divider = createTag('div', {class: 'divider'});
+  // const divider = createTag('div', {class: 'divider'});
   const footer = createFooter(properties, createTag);
   cardContainer.append(title);
   cardContainer.append(price);
   cardContainer.append(disclaimer);
   cardContainer.append(radioGroup);
-  cardContainer.append(divider);
+  // footer.append(divider);
   cardContainer.append(footer);
   block.append(cardContent);
   cardContainer.classList.add(properties['title'].replace(/\s+/g, '-').toLowerCase());

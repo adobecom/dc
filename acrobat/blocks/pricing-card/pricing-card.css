@@ -13,6 +13,7 @@
   width: 470px;
   min-height: 400px;
   border-radius: 5px;
+  height: 100%;
 }
 .pricing-card .card-box.promotion-active {
   border-color: rgb(255 204 0);
@@ -88,7 +89,8 @@
 }
 
 .pricing-card .card-footer {
-  padding-top: 8px;
+  border-top: 1px solid #EAEAEA;
+  padding: 8px 0;
 }
 
 .pricing-card .card-footer .footer-secure-transaction .icon {
@@ -114,5 +116,9 @@
   justify-content: space-between;
   align-content: space-between;
   gap: 10px;
+}
+.section.pricing-card-columns {
+  display: flex;
+  align-items: stretch;
 }
 
