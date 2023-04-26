@@ -12,8 +12,9 @@ const preparePricingCardDOM = (block, properties, createTag) => {
   const cardContainer = createTag('div', { class: 'content-container' });
   const cardContent = createTag('div', { class: 'card-box' }, cardContainer);
   if (properties['promotionText']) {
-    const promotionText = createTag('div', {class: 'promotion-text'}, properties['promotionText']);
-    cardContent.insertBefore(promotionText, cardContainer);
+    const promotionText = createTag('div', {class: 'promotion-text'}, properties['promotionText']);;
+    const promotion = createTag('div', {class: 'promotion'}, promotionText);
+    cardContent.insertBefore(promotion, cardContainer);
     cardContent.classList.add('promotion-active');
   }
   const title = createTag('div', {class: 'title'}, properties['title']);
@@ -75,13 +76,9 @@ const getProperties = (block) => {
   let countOptions = 0;
   tableRows.forEach((row) => {
     if (row.children[0] && row.children[0].innerText) {
-      properties[row.children[0].innerText] =  row.children[1] ? row.children[1].innerText : '';
+      properties[row.children[0].innerText] =  row.children[1] ? row.children[1].innerHTML : '';
       if (row.children[0].innerText.startsWith('option')) {
         countOptions ++;
-        const xfLink = row.querySelector('a[href]');
-        if (xfLink) {
-          properties[row.children[0].innerText + 'XfLink'] = xfLink.getAttribute('href');
-        }
       }
     }
   });

@@ -35,25 +35,44 @@
 .display {
   display: block;
 }
-
-.pricing-card .promotion-text {
+.pricing-card .promotion {
+  display: flex;
+  justify-content: end;
+}
+.pricing-card .promotion .promotion-text {
  background: rgb(255 204 0);
-  position: absolute;
+  position: relative;
   top: 15px;
   right: 0;
-  width: auto;
+  width: fit-content;
   padding: 4px 8px;
   border-radius: 4px 0 0 4px;
   font-size: 12px;
   line-height: 0.875rem;
 }
-
+.pricing-card .promotion .promotion-text p {
+  margin: 0;
+}
+.pricing-card .promotion .promotion-text h1 {
+  margin: 0;
+  font-size: 14px;
+  font-width: bold;
+  line-height: 1.5;
+}
 .pricing-card .title {
   font-weight: bold;
-  font-size: 24px;
   padding-bottom: 8px;
 }
-
+.pricing-card .title h1 {
+  font-size: 24px;
+  margin: 0;
+  line-height: 1;
+}
+.pricing-card .title p {
+  font-size: 20px;
+  margin: 0;
+  line-height: 1;
+}
 .pricing-card .price {
   font-size: 32px;
   font-weight: bold;
@@ -82,4 +101,17 @@
   font-size: 13px;
 }
 
+.pricing-card .card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: space-between;
+}
+
+.pricing-card .card-footer .footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: space-between;
+}
 
