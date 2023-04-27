@@ -209,6 +209,12 @@ sitemaps:
 #         destination: /mena_en/dc-shared/assets/sitemap.xml
 #         hreflang: en-MENA
 
+#       mena_ar:
+#         source: /mena_ar/dc-shared/assets/query-index.json
+#         alternate: /mena_ar/{path}.html
+#         destination: /mena_ar/dc-shared/assets/sitemap.xml
+#         hreflang: ar-MENA
+
 #       nl:
 #         source: /nl/dc-shared/assets/query-index.json
 #         alternate: /nl/{path}.html
@@ -340,12 +346,6 @@ sitemaps:
 #         alternate: /ae_ar/{path}.html
 #         destination: /ae_ar/dc-shared/assets/sitemap.xml
 #         hreflang: ar-AE
-
-#       mena_ar:
-#         source: /mena_ar/dc-shared/assets/query-index.json
-#         alternate: /mena_ar/{path}.html
-#         destination: /mena_ar/dc-shared/assets/sitemap.xml
-#         hreflang: ar-MENA
 
 #       sa_ar:
 #         source: /sa_ar/dc-shared/assets/query-index.json
