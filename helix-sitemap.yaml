@@ -53,6 +53,12 @@ sitemaps:
         destination: /cl/dc-shared/assets/sitemap.xml
         hreflang: es-CL
 
+      jp:
+        source: /jp/dc-shared/assets/query-index.json
+        alternate: /jp/{path}.html
+        destination: /jp/dc-shared/assets/sitemap.xml
+        hreflang: ja-JP
+
 #       co:
 #         source: /co/dc-shared/assets/query-index.json
 #         alternate: /co/{path}.html
@@ -448,12 +454,6 @@ sitemaps:
 #         alternate: /tw/{path}.html
 #         destination: /tw/dc-shared/assets/sitemap.xml
 #         hreflang: zh-TW
-
-#       jp:
-#         source: /jp/dc-shared/assets/query-index.json
-#         alternate: /jp/{path}.html
-#         destination: /jp/dc-shared/assets/sitemap.xml
-#         hreflang: ja-JP
 
 #       kr:
 #         source: /kr/dc-shared/assets/query-index.json
