@@ -77,23 +77,23 @@ sitemaps:
         destination: /la/dc-shared/assets/sitemap.xml
         hreflang: es-LA
 
-#       mx:
-#         source: /mx/dc-shared/assets/query-index.json
-#         alternate: /mx/{path}.html
-#         destination: /mx/dc-shared/assets/sitemap.xml
-#         hreflang: es-MX
+      mx:
+        source: /mx/dc-shared/assets/query-index.json
+        alternate: /mx/{path}.html
+        destination: /mx/dc-shared/assets/sitemap.xml
+        hreflang: es-MX
 
-#       pe:
-#         source: /pe/dc-shared/assets/query-index.json
-#         alternate: /pe/{path}.html
-#         destination: /pe/dc-shared/assets/sitemap.xml
-#         hreflang: es-PE
+      pe:
+        source: /pe/dc-shared/assets/query-index.json
+        alternate: /pe/{path}.html
+        destination: /pe/dc-shared/assets/sitemap.xml
+        hreflang: es-PE
 
       africa:
         source: /africa/dc-shared/assets/query-index.json
         alternate: /africa/{path}.html
         destination: /africa/dc-shared/assets/sitemap.xml
-        hreflang: en
+        hreflang: en-BJ
 
 #       be_fr:
 #         source: /be_fr/dc-shared/assets/query-index.json
