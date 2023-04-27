@@ -65,17 +65,17 @@ sitemaps:
         destination: /uk/dc-shared/assets/sitemap.xml
         hreflang: en-GB
 
-#       co:
-#         source: /co/dc-shared/assets/query-index.json
-#         alternate: /co/{path}.html
-#         destination: /co/dc-shared/assets/sitemap.xml
-#         hreflang: es-CO
+      co:
+        source: /co/dc-shared/assets/query-index.json
+        alternate: /co/{path}.html
+        destination: /co/dc-shared/assets/sitemap.xml
+        hreflang: es-CO
 
-#       la:
-#         source: /la/dc-shared/assets/query-index.json
-#         alternate: /la/{path}.html
-#         destination: /la/dc-shared/assets/sitemap.xml
-#         hreflang: es-LA
+      la:
+        source: /la/dc-shared/assets/query-index.json
+        alternate: /la/{path}.html
+        destination: /la/dc-shared/assets/sitemap.xml
+        hreflang: es-LA
 
 #       mx:
 #         source: /mx/dc-shared/assets/query-index.json
@@ -533,8 +533,8 @@ sitemaps:
 #         destination: /qa_en/dc-shared/assets/sitemap.xml
 #         hreflang: en-QA
 
-#       gr_el:
-#         source: /gr_el/dc-shared/assets/query-index.json
-#         alternate: /gr_el/{path}.html
-#         destination: /gr_el/dc-shared/assets/sitemap.xml
-#         hreflang: el-GR
+      gr_el:
+        source: /gr_el/dc-shared/assets/query-index.json
+        alternate: /gr_el/{path}.html
+        destination: /gr_el/dc-shared/assets/sitemap.xml
+        hreflang: el-GR
