@@ -113,17 +113,17 @@ sitemaps:
 #         destination: /be_nl/dc-shared/assets/sitemap.xml
 #         hreflang: nl-BE
 
-#       cy_en:
-#         source: /cy_en/dc-shared/assets/query-index.json
-#         alternate: /cy_en/{path}.html
-#         destination: /cy_en/dc-shared/assets/sitemap.xml
-#         hreflang: en-CY
+      cy_en:
+        source: /cy_en/dc-shared/assets/query-index.json
+        alternate: /cy_en/{path}.html
+        destination: /cy_en/dc-shared/assets/sitemap.xml
+        hreflang: en-CY
 
-#       dk:
-#         source: /dk/dc-shared/assets/query-index.json
-#         alternate: /dk/{path}.html
-#         destination: /dk/dc-shared/assets/sitemap.xml
-#         hreflang: da-DK
+      dk:
+        source: /dk/dc-shared/assets/query-index.json
+        alternate: /dk/{path}.html
+        destination: /dk/dc-shared/assets/sitemap.xml
+        hreflang: da-DK
 
 #       ee:
 #         source: /ee/dc-shared/assets/query-index.json
