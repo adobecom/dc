@@ -107,11 +107,11 @@ sitemaps:
         destination: /be_en/dc-shared/assets/sitemap.xml
         hreflang: en-BE
 
-#       be_nl:
-#         source: /be_nl/dc-shared/assets/query-index.json
-#         alternate: /be_nl/{path}.html
-#         destination: /be_nl/dc-shared/assets/sitemap.xml
-#         hreflang: nl-BE
+      be_nl:
+        source: /be_nl/dc-shared/assets/query-index.json
+        alternate: /be_nl/{path}.html
+        destination: /be_nl/dc-shared/assets/sitemap.xml
+        hreflang: nl-BE
 
       cy_en:
         source: /cy_en/dc-shared/assets/query-index.json
