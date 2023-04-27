@@ -89,11 +89,11 @@ sitemaps:
 #         destination: /pe/dc-shared/assets/sitemap.xml
 #         hreflang: es-PE
 
-#       africa:
-#         source: /africa/dc-shared/assets/query-index.json
-#         alternate: /africa/{path}.html
-#         destination: /africa/dc-shared/assets/sitemap.xml
-#         hreflang: en
+      africa:
+        source: /africa/dc-shared/assets/query-index.json
+        alternate: /africa/{path}.html
+        destination: /africa/dc-shared/assets/sitemap.xml
+        hreflang: en
 
 #       be_fr:
 #         source: /be_fr/dc-shared/assets/query-index.json
