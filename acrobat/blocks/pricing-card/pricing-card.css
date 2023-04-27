@@ -1,16 +1,15 @@
 .pricing-card > div {
   display: none;
 }
-
 .pricing-card {
-  margin: 50px;
+  margin: 10px;
 }
-
 .pricing-card .card-box {
   display: block;
   position: relative;
   border: solid 2px #E1E1E1;
-  /*made width of card configurable on section(create class for section)*/
+
+  /*default widht, if we need some more, add classes that can be used on section to configure card widht inside section*/
   width: 470px;
   min-height: 400px;
   border-radius: 5px;
@@ -132,5 +131,11 @@
   align-items: stretch;
   flex-wrap: wrap;
   width: 100%;
+  justify-content: center;
 }
-
+.section.pricing-card-columns.w-470 .pricing-card .card-box {
+  width: 470px;
+}
+.section.pricing-card-columns.w-400 .pricing-card .card-box {
+  width: 400px;
+}
