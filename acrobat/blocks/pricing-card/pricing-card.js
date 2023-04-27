@@ -9,28 +9,32 @@ const init = (block) => {
   });
 };
 const preparePricingCardDOM = (block, properties, createTag) => {
-  const cardContainer = createTag('div', { class: 'content-container' });
-  const cardContent = createTag('div', { class: 'card-box' }, cardContainer);
+  const cardContentContainer = createTag('div', { class: 'content-container' });
+  const mainContent = createTag('div', { class: 'main-content' });
+  const card = createTag('div', { class: 'card-box' }, cardContentContainer);
+  const promotion = createTag('div', {class: 'promotion'});
+
   if (properties['promotionText']) {
-    const promotionText = createTag('div', {class: 'promotion-text'}, properties['promotionText']);;
-    const promotion = createTag('div', {class: 'promotion'}, promotionText);
-    cardContent.insertBefore(promotion, cardContainer);
-    cardContent.classList.add('promotion-active');
+    const promotionText = createTag('div', {class: 'promotion-text'}, properties['promotionText']);
+    promotion.append(promotionText);
+    card.classList.add('promotion-active');
   }
+  card.insertBefore(promotion, cardContentContainer);
+
   const title = createTag('div', {class: 'title'}, properties['title']);
   const price = createTag('div', {class: 'price'});
   const disclaimer = createTag('div', {class: 'disclaimer'});
   const radioGroup = createRadioGroup(properties, createTag, block);
-  // const divider = createTag('div', {class: 'divider'});
   const footer = createFooter(properties, createTag);
-  cardContainer.append(title);
-  cardContainer.append(price);
-  cardContainer.append(disclaimer);
-  cardContainer.append(radioGroup);
-  // footer.append(divider);
-  cardContainer.append(footer);
-  block.append(cardContent);
-  cardContainer.classList.add(properties['title'].replace(/\s+/g, '-').toLowerCase());
+
+  mainContent.append(title);
+  mainContent.append(price);
+  mainContent.append(disclaimer);
+  cardContentContainer.append(mainContent);
+  cardContentContainer.append(radioGroup);
+  cardContentContainer.append(footer);
+  block.append(card);
+  cardContentContainer.classList.add(properties['title'].replace(/\s+/g, '-').toLowerCase());
 
 }
 const createRadioGroup = (properties, createTag, block) => {
@@ -144,16 +148,8 @@ const displayElement = (element) => {
 };
 
 export default init;
-// todo 1: promotion text:
-// todo 1: make border collor customizable (orange or black depending on promotion existence)
-// todo 1: text can have more lines and different style for each line
 
-// todo 2: toggle content:
-// todo 2: what will be content for price/disclaimer/footer and what parts we should include in pricing cards, how it will be created
-
-// todo 3:
-// make sure that we hide/show (manipulate) with dom only inside current pricing card
-// test with more than one pricing card on the page
-
-// todo 4:
-// should we create a container element where we can put all pricing cards inside it (maybe create card container that will pick all pricing cards from page)
+//todo  inline prices and buttons (when milo  m@s is released) - check do we need some style adaptation
+//todo finish section styling (with class pricing-card-columns)
+//todo see how qty selector will be supported, it should be m@s element since in aem it is also m@s element
+//todo since we have different variations of pricing pods, make sure we support all of them (maybe create css rules that can be added to section that contains prices)

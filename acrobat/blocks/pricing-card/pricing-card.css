@@ -10,6 +10,7 @@
   display: block;
   position: relative;
   border: solid 2px #E1E1E1;
+  /*made width of card configurable on section(create class for section)*/
   width: 470px;
   min-height: 400px;
   border-radius: 5px;
@@ -22,6 +23,10 @@
 .pricing-card .card-box .content-container {
   display: block;
   padding: 40px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
 }
 
 .pricing-card .card-box .divider {
@@ -39,6 +44,10 @@
 .pricing-card .promotion {
   display: flex;
   justify-content: end;
+  /*make height configurable on section maybe, because there are different
+  variations of cards and promotion texts and usually all cards in section are
+  created with same gap between promo text and title*/
+  height: 30px;
 }
 .pricing-card .promotion .promotion-text {
  background: rgb(255 204 0);
@@ -50,6 +59,7 @@
   border-radius: 4px 0 0 4px;
   font-size: 12px;
   line-height: 0.875rem;
+  height: fit-content;
 }
 .pricing-card .promotion .promotion-text p {
   margin: 0;
@@ -120,5 +130,7 @@
 .section.pricing-card-columns {
   display: flex;
   align-items: stretch;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
