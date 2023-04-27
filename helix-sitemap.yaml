@@ -521,17 +521,17 @@ sitemaps:
 #         destination: /eg_en/dc-shared/assets/sitemap.xml
 #         hreflang: en-EG
 
-#       kw_en:
-#         source: /kw_en/dc-shared/assets/query-index.json
-#         alternate: /kw_en/{path}.html
-#         destination: /kw_en/dc-shared/assets/sitemap.xml
-#         hreflang: en-KW
+      kw_en:
+        source: /kw_en/dc-shared/assets/query-index.json
+        alternate: /kw_en/{path}.html
+        destination: /kw_en/dc-shared/assets/sitemap.xml
+        hreflang: en-KW
 
-#       qa_en:
-#         source: /qa_en/dc-shared/assets/query-index.json
-#         alternate: /qa_en/{path}.html
-#         destination: /qa_en/dc-shared/assets/sitemap.xml
-#         hreflang: en-QA
+      qa_en:
+        source: /qa_en/dc-shared/assets/query-index.json
+        alternate: /qa_en/{path}.html
+        destination: /qa_en/dc-shared/assets/sitemap.xml
+        hreflang: en-QA
 
       gr_el:
         source: /gr_el/dc-shared/assets/query-index.json
