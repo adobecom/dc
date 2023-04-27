@@ -58,6 +58,12 @@ sitemaps:
         alternate: /jp/{path}.html
         destination: /jp/dc-shared/assets/sitemap.xml
         hreflang: ja-JP
+        
+      uk:
+        source: /uk/dc-shared/assets/query-index.json
+        alternate: /uk/{path}.html
+        destination: /uk/dc-shared/assets/sitemap.xml
+        hreflang: en-GB
 
 #       co:
 #         source: /co/dc-shared/assets/query-index.json
@@ -292,12 +298,6 @@ sitemaps:
 #         alternate: /ae_en/{path}.html
 #         destination: /ae_en/dc-shared/assets/sitemap.xml
 #         hreflang: en-AE
-
-#       uk:
-#         source: /uk/dc-shared/assets/query-index.json
-#         alternate: /uk/{path}.html
-#         destination: /uk/dc-shared/assets/sitemap.xml
-#         hreflang: en-GB
 
 #       at:
 #         source: /at/dc-shared/assets/query-index.json
