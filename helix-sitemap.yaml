@@ -215,17 +215,17 @@ sitemaps:
         destination: /mena_ar/dc-shared/assets/sitemap.xml
         hreflang: ar-MENA
 
-#       nl:
-#         source: /nl/dc-shared/assets/query-index.json
-#         alternate: /nl/{path}.html
-#         destination: /nl/dc-shared/assets/sitemap.xml
-#         hreflang: nl-NL
+      nl:
+        source: /nl/dc-shared/assets/query-index.json
+        alternate: /nl/{path}.html
+        destination: /nl/dc-shared/assets/sitemap.xml
+        hreflang: nl-NL
 
-#       no:
-#         source: /no/dc-shared/assets/query-index.json
-#         alternate: /no/{path}.html
-#         destination: /no/dc-shared/assets/sitemap.xml
-#         hreflang: no-NO
+      no:
+        source: /no/dc-shared/assets/query-index.json
+        alternate: /no/{path}.html
+        destination: /no/dc-shared/assets/sitemap.xml
+        hreflang: no-NO
 
 #       pl:
 #         source: /pl/dc-shared/assets/query-index.json
