@@ -47,11 +47,11 @@ sitemaps:
         destination: /ca_fr/dc-shared/assets/sitemap.xml
         hreflang: fr-CA
 
-#       cl:
-#         source: /cl/dc-shared/assets/query-index.json
-#         alternate: /cl/{path}.html
-#         destination: /cl/dc-shared/assets/sitemap.xml
-#         hreflang: es-CL
+      cl:
+        source: /cl/dc-shared/assets/query-index.json
+        alternate: /cl/{path}.html
+        destination: /cl/dc-shared/assets/sitemap.xml
+        hreflang: es-CL
 
 #       co:
 #         source: /co/dc-shared/assets/query-index.json
