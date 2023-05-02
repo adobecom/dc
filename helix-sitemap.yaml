@@ -71,11 +71,23 @@ sitemaps:
         destination: /co/dc-shared/assets/sitemap.xml
         hreflang: es-CO
 
-      la:
+      la_ve:
         source: /la/dc-shared/assets/query-index.json
         alternate: /la/{path}.html
         destination: /la/dc-shared/assets/sitemap.xml
-        hreflang: es-LA
+        hreflang: es-VE
+        
+      la_sv:
+        source: /la/dc-shared/assets/query-index.json
+        alternate: /la/{path}.html
+        destination: /la/dc-shared/assets/sitemap.xml
+        hreflang: es-SV
+      
+      la_pa:
+        source: /la/dc-shared/assets/query-index.json
+        alternate: /la/{path}.html
+        destination: /la/dc-shared/assets/sitemap.xml
+        hreflang: es-PA
 
       mx:
         source: /mx/dc-shared/assets/query-index.json
@@ -95,25 +107,25 @@ sitemaps:
         destination: /africa/dc-shared/assets/sitemap.xml
         hreflang: en-BJ
         
-      africa-cm:
+      africa_cm:
         source: /africa/dc-shared/assets/query-index.json
         alternate: /africa/{path}.html
         destination: /africa/dc-shared/assets/sitemap.xml
         hreflang: en-CM
         
-      africa-tg:
+      africa_tg:
         source: /africa/dc-shared/assets/query-index.json
         alternate: /africa/{path}.html
         destination: /africa/dc-shared/assets/sitemap.xml
         hreflang: en-TG
         
-      africa-tn:
+      africa_tn:
         source: /africa/dc-shared/assets/query-index.json
         alternate: /africa/{path}.html
         destination: /africa/dc-shared/assets/sitemap.xml
         hreflang: en-TN
         
-      africa-ma:
+      africa_ma:
         source: /africa/dc-shared/assets/query-index.json
         alternate: /africa/{path}.html
         destination: /africa/dc-shared/assets/sitemap.xml
@@ -233,7 +245,7 @@ sitemaps:
         destination: /mena_en/dc-shared/assets/sitemap.xml
         hreflang: en-DZ
 
-      mena_ar:
+      mena_ar_lb:
         source: /mena_ar/dc-shared/assets/query-index.json
         alternate: /mena_ar/{path}.html
         destination: /mena_ar/dc-shared/assets/sitemap.xml
@@ -261,7 +273,7 @@ sitemaps:
         source: /mena_ar/dc-shared/assets/query-index.json
         alternate: /mena_ar/{path}.html
         destination: /mena_ar/dc-shared/assets/sitemap.xml
-        hreflang: ar-OM
+        hreflang: ar-JO
         
       mena_ar_om:
         source: /mena_ar/dc-shared/assets/query-index.json
@@ -382,6 +394,54 @@ sitemaps:
         alternate: /ru/{path}.html
         destination: /ru/dc-shared/assets/sitemap.xml
         hreflang: ru-RU
+        
+      cis_ru_kz:
+        source: /ru/dc-shared/assets/query-index.json
+        alternate: /ru/{path}.html
+        destination: /ru/dc-shared/assets/sitemap.xml
+        hreflang: ru-KZ
+        
+      cis_ru_uz:
+        source: /ru/dc-shared/assets/query-index.json
+        alternate: /ru/{path}.html
+        destination: /ru/dc-shared/assets/sitemap.xml
+        hreflang: ru-UZ
+        
+      cis_ru_am:
+        source: /ru/dc-shared/assets/query-index.json
+        alternate: /ru/{path}.html
+        destination: /ru/dc-shared/assets/sitemap.xml
+        hreflang: ru-AM
+        
+      cis_ru_by:
+        source: /ru/dc-shared/assets/query-index.json
+        alternate: /ru/{path}.html
+        destination: /ru/dc-shared/assets/sitemap.xml
+        hreflang: ru-BY
+        
+      cis_ru_md:
+        source: /ru/dc-shared/assets/query-index.json
+        alternate: /ru/{path}.html
+        destination: /ru/dc-shared/assets/sitemap.xml
+        hreflang: ru-MD
+        
+      cis_ru_kg:
+        source: /ru/dc-shared/assets/query-index.json
+        alternate: /ru/{path}.html
+        destination: /ru/dc-shared/assets/sitemap.xml
+        hreflang: ru-KG
+        
+      cis_ru_tj:
+        source: /ru/dc-shared/assets/query-index.json
+        alternate: /ru/{path}.html
+        destination: /ru/dc-shared/assets/sitemap.xml
+        hreflang: ru-TJ
+        
+      cis_ru_az:
+        source: /ru/dc-shared/assets/query-index.json
+        alternate: /ru/{path}.html
+        destination: /ru/dc-shared/assets/sitemap.xml
+        hreflang: ru-AZ        
 
       ua:
         source: /ua/dc-shared/assets/query-index.json
@@ -592,3 +652,15 @@ sitemaps:
         alternate: /gr_el/{path}.html
         destination: /gr_el/dc-shared/assets/sitemap.xml
         hreflang: el-GR
+        
+#       vn_en:
+#         source: /vn_en/dc-shared/assets/query-index.json
+#         alternate: /vn_en/{path}.html
+#         destination: /vn_en/dc-shared/assets/sitemap.xml
+#         hreflang: en-VN
+        
+#       vn_vi:
+#         source: /vn_vi/dc-shared/assets/query-index.json
+#         alternate: /vn_vi/{path}.html
+#         destination: /vn_vi/dc-shared/assets/sitemap.xml
+#         hreflang: vi-VN
