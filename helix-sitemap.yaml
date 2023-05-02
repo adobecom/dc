@@ -653,14 +653,14 @@ sitemaps:
         destination: /gr_el/dc-shared/assets/sitemap.xml
         hreflang: el-GR
         
-#       vn_en:
-#         source: /vn_en/dc-shared/assets/query-index.json
-#         alternate: /vn_en/{path}.html
-#         destination: /vn_en/dc-shared/assets/sitemap.xml
-#         hreflang: en-VN
+      vn_en:
+        source: /vn_en/dc-shared/assets/query-index.json
+        alternate: /vn_en/{path}.html
+        destination: /vn_en/dc-shared/assets/sitemap.xml
+        hreflang: en-VN
         
-#       vn_vi:
-#         source: /vn_vi/dc-shared/assets/query-index.json
-#         alternate: /vn_vi/{path}.html
-#         destination: /vn_vi/dc-shared/assets/sitemap.xml
-#         hreflang: vi-VN
+      vn_vi:
+        source: /vn_vi/dc-shared/assets/query-index.json
+        alternate: /vn_vi/{path}.html
+        destination: /vn_vi/dc-shared/assets/sitemap.xml
+        hreflang: vi-VN
