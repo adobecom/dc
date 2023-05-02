@@ -727,3 +727,19 @@ indices:
     exclude:
       - '/gr_el/dc-shared/*'
     target: /gr_el/dc-shared/assets/query-index.xlsx
+    
+  vn_en:
+    <<: *def
+    include:
+      - '/vn_en/acrobat/**'
+    exclude:
+      - '/vn_en/dc-shared/*'
+    target: /vn_en/dc-shared/assets/query-index.xlsx
+    
+  vn_vi:
+    <<: *def
+    include:
+      - '/vn_vi/acrobat/**'
+    exclude:
+      - '/vn_vi/dc-shared/*'
+    target: /vn_vi/dc-shared/assets/query-index.xlsx  
