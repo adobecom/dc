@@ -94,6 +94,30 @@ sitemaps:
         alternate: /africa/{path}.html
         destination: /africa/dc-shared/assets/sitemap.xml
         hreflang: en-BJ
+        
+      africa-cm:
+        source: /africa/dc-shared/assets/query-index.json
+        alternate: /africa/{path}.html
+        destination: /africa/dc-shared/assets/sitemap.xml
+        hreflang: en-CM
+        
+      africa-tg:
+        source: /africa/dc-shared/assets/query-index.json
+        alternate: /africa/{path}.html
+        destination: /africa/dc-shared/assets/sitemap.xml
+        hreflang: en-TG
+        
+      africa-tn:
+        source: /africa/dc-shared/assets/query-index.json
+        alternate: /africa/{path}.html
+        destination: /africa/dc-shared/assets/sitemap.xml
+        hreflang: en-TN
+        
+      africa-ma:
+        source: /africa/dc-shared/assets/query-index.json
+        alternate: /africa/{path}.html
+        destination: /africa/dc-shared/assets/sitemap.xml
+        hreflang: en-MA
 
       be_fr:
         source: /be_fr/dc-shared/assets/query-index.json
