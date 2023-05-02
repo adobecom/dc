@@ -203,17 +203,47 @@ sitemaps:
         destination: /mt/dc-shared/assets/sitemap.xml
         hreflang: en-MT
 
-      mena_en:
+      mena_dz:
         source: /mena_en/dc-shared/assets/query-index.json
         alternate: /mena_en/{path}.html
         destination: /mena_en/dc-shared/assets/sitemap.xml
-        hreflang: en-MENA
+        hreflang: en-DZ
 
       mena_ar:
         source: /mena_ar/dc-shared/assets/query-index.json
         alternate: /mena_ar/{path}.html
         destination: /mena_ar/dc-shared/assets/sitemap.xml
-        hreflang: ar-MENA
+        hreflang: ar-LB
+        
+      mena_ar_il:
+        source: /mena_ar/dc-shared/assets/query-index.json
+        alternate: /mena_ar/{path}.html
+        destination: /mena_ar/dc-shared/assets/sitemap.xml
+        hreflang: ar-IL
+
+      mena_ar_ma:
+        source: /mena_ar/dc-shared/assets/query-index.json
+        alternate: /mena_ar/{path}.html
+        destination: /mena_ar/dc-shared/assets/sitemap.xml
+        hreflang: ar-MA
+        
+      mena_ar_iq:
+        source: /mena_ar/dc-shared/assets/query-index.json
+        alternate: /mena_ar/{path}.html
+        destination: /mena_ar/dc-shared/assets/sitemap.xml
+        hreflang: ar-IQ
+        
+      mena_ar_jo:
+        source: /mena_ar/dc-shared/assets/query-index.json
+        alternate: /mena_ar/{path}.html
+        destination: /mena_ar/dc-shared/assets/sitemap.xml
+        hreflang: ar-OM
+        
+      mena_ar_om:
+        source: /mena_ar/dc-shared/assets/query-index.json
+        alternate: /mena_ar/{path}.html
+        destination: /mena_ar/dc-shared/assets/sitemap.xml
+        hreflang: ar-OM
 
       nl:
         source: /nl/dc-shared/assets/query-index.json
