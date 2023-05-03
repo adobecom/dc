@@ -9,6 +9,12 @@ sitemaps:
         source: /dc-shared/assets/query-index.json
         alternate: /{path}.html
         destination: /dc-shared/assets/sitemap.xml
+        hreflang: x-default
+
+      us:
+        source: /dc-shared/assets/query-index.json
+        alternate: /{path}.html
+        destination: /dc-shared/assets/sitemap.xml
         hreflang: en-US
 
       de:
