@@ -4,13 +4,8 @@ sitemaps:
   website:
     origin: https://www.adobe.com
     lastmod: YYYY-MM-DD
+    default: en-US
     languages:
-      default:
-        source: /dc-shared/assets/query-index.json
-        alternate: /{path}.html
-        destination: /dc-shared/assets/sitemap.xml
-        hreflang: x-default
-
       us:
         source: /dc-shared/assets/query-index.json
         alternate: /{path}.html
