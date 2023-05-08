@@ -5,7 +5,7 @@ sitemaps:
   website:
     origin: https://www.adobe.com
     lastmod: YYYY-MM-DD
-    default: en-US # FIXME: should be languages key, not hreflang value. See https://github.com/adobe/helix-admin/blob/main/src/sitemap/builder.js#L59
+    default: en-US
     languages:
       us:
         source: /dc-shared/assets/query-index.json
