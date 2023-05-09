@@ -22,18 +22,16 @@
 export const [setLibs, getLibs] = (() => {
   let libs;
   return [
-    (prodLibs) => {
-      const { hostname } = window.location;
-      if (!hostname.includes('hlx.page')
-        && !hostname.includes('hlx.live')
-        && !hostname.includes('localhost')) {
-        libs = prodLibs;
-        return libs;
-      }
-      const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
-      if (branch === 'local') return 'http://localhost:6456/libs';
-      if (branch.indexOf('--') > -1) return `https://${branch}.hlx.page/libs`;
-      return `https://${branch}--milo--adobecom.hlx.page/libs`;
+    (prodLibs, location) => {
+      libs = (() => {
+        const { hostname, search } = location || window.location;
+        const branch = new URLSearchParams(search).get('milolibs') || 'main';
+        if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.adobe.com/libs';
+        if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
+        if (branch === 'local') return 'http://localhost:6456/libs';
+        return branch.includes('--') ? `https://${branch}.hlx.page/libs` : `https://${branch}--milo--adobecom.hlx.page/libs`;
+      })();
+      return libs;
     }, () => libs,
   ];
 })();

@@ -1,8 +1,52 @@
-import frictionless from '../../scripts/frictionless.js';
-import { redirectLegacyBrowsers } from '../../scripts/legacyBrowser.js';
+// Could use webpack/rollup. Just manually inline these structures, for now.
+// import langLocaleMap from './localeMap.js';
+const localeMap = {
+  'ca_fr': 'fr-FR',
+  'be_fr': 'fr-FR',
+  'dk': 'da-DK',
+  'de': 'de-DE',
+  'lu_de': 'de-DE',
+  'ch_de': 'de-DE',
+  'at': 'de-DE',
+  'es': 'es-ES',
+  'ar': 'es-ES',
+  'cl': 'es-ES',
+  'co': 'es-ES',
+  'cr': 'es-ES',
+  'ec': 'es-ES',
+  'gt': 'es-ES',
+  'pe': 'es-ES',
+  'pr': 'es-ES',
+  'fi': 'fi-FI',
+  'fr': 'fr-FR',
+  'ch_fr': 'fr-FR',
+  'lu_fr': 'fr-FR',
+  'it': 'it-IT',
+  'ch_it': 'it-IT',
+  'jp': 'ja-JP',
+  'nb': 'nb-NO',
+  'no': 'nb-NO',
+  'nl': 'nl-NL',
+  'pt': 'pt-BR',
+  'sv': 'sv-SE',
+  'se': 'sv-SE',
+  'zh_cn': 'zh-CN',
+  'zh_hk': 'zh-TW',
+  'hk_zh': 'zh-hant-hk',
+  'tw': 'zh-hant-tw',
+  'kr': 'ko-KR',
+  'cz': 'cs-CZ',
+  'pl': 'pl-PL',
+  'ru': 'ru-RU',
+  'tr': 'tr-TR',
+  'br': 'pt-BR',
+  'la': 'es-ES',
+  'mx': 'es-ES',
+  'be_nl': 'nl-NL',
+};
 
-const pageLang = document.querySelector('html').lang;
-const verbToRedirectLinkSuffix =  {
+// import verbToRedirectLinkSuffix from './verbRedirMap.js'
+const verbRedirMap = {
   'createpdf': 'createpdf',
   'crop-pages': 'crop',
   'delete-pages': 'deletepages',
@@ -18,24 +62,54 @@ const verbToRedirectLinkSuffix =  {
   'split-pdf': 'split',
   'insert-pdf': 'insert',
   'compress-pdf': 'compress',
+  'png-to-pdf': 'jpgtopdf',
 };
+
+let url = new URL(window.location.href);
+let langFromPath = url.pathname.split('/')[1];
+const pageLang = localeMap[langFromPath] || 'en-US';
+
 export default function init(element) {
   const widget = element;
-  let WIDGET_ENV = 'https://dev.acrobat.adobe.com/dc-hosted/2.39.1_1.171.1/dc-app-launcher.js';
+  const DC_WIDGET_VERSION_FALLBACK = '2.40.0_1.172.1';
+  const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.172.1';
+  const STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
+  const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
+
+  let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
+  let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
+  let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
+  const lanaOptions = {
+    sampleRate: 1,
+    tags: 'Cat=DxDC_Frictionless,origin=milo',
+  };
+  if (!DC_WIDGET_VERSION) {
+    DC_WIDGET_VERSION = DC_WIDGET_VERSION_FALLBACK;
+    window.lana?.log(`DC WIDGET VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_WIDGET_VERSION_FALLBACK}`, lanaOptions);
+  }
+  if (!DC_GENERATE_CACHE_VERSION) {
+    DC_GENERATE_CACHE_VERSION = DC_GENERATE_CACHE_VERSION_FALLBACK;
+    window.lana?.log(`DC GENERATE CACHE VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_GENERATE_CACHE_VERSION_FALLBACK}`, lanaOptions);
+  }
+  let WIDGET_ENV = `https://dev.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
   let ENV = 'dev';
   let REDIRECT_URL = '';
   let DC_GENERATE_CACHE_URL = '';
 
   if (window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.adobe.com') {
-    WIDGET_ENV = 'https://documentcloud.adobe.com/dc-hosted/2.39.1_1.170.2/dc-app-launcher.js';
+    WIDGET_ENV = `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    DC_DOMAIN = 'https://acrobat.adobe.com';
     ENV = 'prod';
   }
 
   if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
     || window.location.hostname === 'main--dc--adobecom.hlx.page'
+    || window.location.hostname === 'stage--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.stage.adobe.com' ) {
-    WIDGET_ENV = 'https://stage.acrobat.adobe.com/dc-hosted/2.39.1_1.171.1/dc-app-launcher.js';
+    WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${STG_DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    DC_DOMAIN = 'https://stage.acrobat.adobe.com';
+    DC_GENERATE_CACHE_VERSION = STG_DC_GENERATE_CACHE_VERSION;
     ENV = 'stage';
   }
 
@@ -43,37 +117,35 @@ export default function init(element) {
   const VERB = widget.querySelector('div').innerText.trim().toLowerCase();
 
   // Redir URL
-  if (widget.querySelectorAll('div')[2]) {
-    widget.querySelectorAll('div')[2].id = 'REDIRECT_URL';
-    widget.querySelectorAll('div')[2].classList.add('hide');
-    REDIRECT_URL = widget.querySelectorAll('div')[2].innerText.trim().toLowerCase();
-    console.log(REDIRECT_URL);
+  const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
+  if (REDIRECT_URL_DIV) {
+    // REDIRECT_URL_DIV.id = 'REDIRECT_URL';
+    REDIRECT_URL = REDIRECT_URL_DIV.textContent.trim();
+    REDIRECT_URL_DIV.remove();
   }
 
-  // Generate cache url
-  if (widget.querySelectorAll('div')[4]) {
-    widget.querySelectorAll('div')[4].id = 'GENERATE_CACHE_URL';
-    widget.querySelectorAll('div')[4].classList.add('hide');
-    DC_GENERATE_CACHE_URL = widget.querySelectorAll('div')[4].innerText.trim().toLowerCase();
-  }
+
+    // Generate cache url
+    const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
+    if (GENERATE_CACHE_URL_DIV) {
+      // GENERATE_CACHE_URL_DIV.id = 'GENERATE_CACHE_URL';
+      DC_GENERATE_CACHE_URL = GENERATE_CACHE_URL_DIV.textContent.trim();
+      GENERATE_CACHE_URL_DIV.remove();
+    }
 
   // Redirect
-  console.log('dinamic', `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`);
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
-    if (window.adobeIMS.isSignedInUser()) {
-      if (window.location.hostname != 'main--dc--adobecom.hlx.live'
-        && window.location.hostname != 'www.adobe.com' ) {
-        window.location = `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
-      } else {
-        window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbToRedirectLinkSuffix[VERB] || VERB.split('-').join('')}` || fallBack;
-      }
+    if (window.location.hostname != 'main--dc--adobecom.hlx.live'
+      && window.location.hostname != 'www.adobe.com' ) {
+      window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
+    } else {
+      window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
     }
   };
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
-  widgetContainer.className = 'dc-wrapper';
   widget.appendChild(widgetContainer);
 
   const isReturningUser = window.localStorage.getItem('pdfnow.auth');
@@ -82,7 +154,8 @@ export default function init(element) {
   if (preRenderDropZone) {
     (async () => {
       // TODO: Make dynamic
-      const response = await fetch(DC_GENERATE_CACHE_URL || `https://documentcloud.adobe.com/dc-generate-cache/dc-hosted-1.170.2/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
+      const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
+      // eslint-disable-next-line default-case
       switch (response.status) {
         case 200: {
           const template = await response.text();
@@ -98,9 +171,14 @@ export default function init(element) {
     })();
   }
 
-  window.addEventListener('IMS:Ready', () => {
+  window.addEventListener('IMS:Ready', async () => {
     // Redirect Usage
-    redDir();
+    if (window.adobeIMS.isSignedInUser()) {
+      redDir();
+      return;
+    }
+
+    const { default: frictionless } = await import('../../scripts/frictionless.js');
     frictionless(VERB);
   });
 
@@ -118,8 +196,9 @@ export default function init(element) {
     dcScript.dataset.pre_rendered = 'true';
   }
 
-  window.addEventListener('Bowser:Ready', ()=> {
+  window.addEventListener('Bowser:Ready', async () => {
     // EOL Redirect
+    const { redirectLegacyBrowsers } = await import('../../scripts/legacyBrowser.js');
     redirectLegacyBrowsers();
   })
 

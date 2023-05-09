@@ -1,30 +1,745 @@
 version: 1
 
 indices:
-  frictionless:
+  def: &def
     include:
-      - '/acrobat/online/**'
+    - '/acrobat/**'
     exclude:
-      - '**/fragments/**'
-    target: /acrobat/online/query-index.xlsx
+    - '/dc-shared/**'
+    target: /dc-shared/assets/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
-        value: |
-          attribute(el, 'content')
+        value: attribute(el, 'content')
       date:
         select: head > meta[name="publishdate"]
-        value: |
-          dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
       image:
         select: head > meta[property="og:image"]
-        value: |
-          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
       description:
         select: head > meta[name="description"]
-        value: |
-          attribute(el, 'content')
+        value: attribute(el, 'content')
       lastModified:
         select: none
-        value: |
-          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+
+  de:
+    <<: *def
+    include:
+      - '/de/acrobat/**'
+    exclude:
+      - '/de/dc-shared/*'
+    target: /de/dc-shared/assets/query-index.xlsx
+
+  fr:
+    <<: *def
+    include:
+      - '/fr/acrobat/**'
+    exclude:
+      - '/fr/dc-shared/**'
+    target: /fr/dc-shared/assets/query-index.xlsx
+    
+  ar:
+    <<: *def
+    include:
+      - '/ar/acrobat/**'
+    exclude:
+      - '/ar/dc-shared/*'
+    target: /ar/dc-shared/assets/query-index.xlsx
+
+  br:
+    <<: *def
+    include:
+      - '/br/acrobat/**'
+    exclude:
+      - '/br/dc-shared/*'
+    target: /br/dc-shared/assets/query-index.xlsx
+
+  ca:
+    <<: *def
+    include:
+      - '/ca/acrobat/**'
+    exclude:
+      - '/ca/dc-shared/*'
+    target: /ca/dc-shared/assets/query-index.xlsx
+ 
+  ca_fr:
+    <<: *def
+    include:
+      - '/ca_fr/acrobat/**'
+    exclude:
+      - '/ca_fr/dc-shared/*'
+    target: /ca_fr/dc-shared/assets/query-index.xlsx
+ 
+  cl:
+    <<: *def
+    include:
+      - '/cl/acrobat/**'
+    exclude:
+      - '/cl/dc-shared/*'
+    target: /cl/dc-shared/assets/query-index.xlsx
+ 
+  co:
+    <<: *def
+    include:
+      - '/co/acrobat/**'
+    exclude:
+      - '/co/dc-shared/*'
+    target: /co/dc-shared/assets/query-index.xlsx
+ 
+  la:
+    <<: *def
+    include:
+      - '/la/acrobat/**'
+    exclude:
+      - '/la/dc-shared/*'
+    target: /la/dc-shared/assets/query-index.xlsx
+ 
+  mx:
+    <<: *def
+    include:
+      - '/mx/acrobat/**'
+    exclude:
+      - '/mx/dc-shared/*'
+    target: /mx/dc-shared/assets/query-index.xlsx
+ 
+  pe:
+    <<: *def
+    include:
+      - '/pe/acrobat/**'
+    exclude:
+      - '/pe/dc-shared/*'
+    target: /pe/dc-shared/assets/query-index.xlsx
+ 
+  africa:
+    <<: *def
+    include:
+      - '/africa/acrobat/**'
+    exclude:
+      - '/africa/dc-shared/*'
+    target: /africa/dc-shared/assets/query-index.xlsx
+ 
+  be_fr:
+    <<: *def
+    include:
+      - '/be_fr/acrobat/**'
+    exclude:
+      - '/be_fr/dc-shared/*'
+    target: /be_fr/dc-shared/assets/query-index.xlsx
+ 
+  be_en:
+    <<: *def
+    include:
+      - '/be_en/acrobat/**'
+    exclude:
+      - '/be_en/dc-shared/*'
+    target: /be_en/dc-shared/assets/query-index.xlsx
+ 
+  be_nl:
+    <<: *def
+    include:
+      - '/be_nl/acrobat/**'
+    exclude:
+      - '/be_nl/dc-shared/*'
+    target: /be_nl/dc-shared/assets/query-index.xlsx
+ 
+  cy_en:
+    <<: *def
+    include:
+      - '/cy_en/acrobat/**'
+    exclude:
+      - '/cy_en/dc-shared/*'
+    target: /cy_en/dc-shared/assets/query-index.xlsx
+ 
+  dk:
+    <<: *def
+    include:
+      - '/dk/acrobat/**'
+    exclude:
+      - '/dk/dc-shared/*'
+    target: /dk/dc-shared/assets/query-index.xlsx
+ 
+  ee:
+    <<: *def
+    include:
+      - '/ee/acrobat/**'
+    exclude:
+      - '/ee/dc-shared/*'
+    target: /ee/dc-shared/assets/query-index.xlsx
+ 
+  es:
+    <<: *def
+    include:
+      - '/es/acrobat/**'
+    exclude:
+      - '/es/dc-shared/*'
+    target: /es/dc-shared/assets/query-index.xlsx
+ 
+  gr_en:
+    <<: *def
+    include:
+      - '/gr_en/acrobat/**'
+    exclude:
+      - '/gr_en/dc-shared/*'
+    target: /gr_en/dc-shared/assets/query-index.xlsx
+ 
+  ie:
+    <<: *def
+    include:
+      - '/ie/acrobat/**'
+    exclude:
+      - '/ie/dc-shared/*'
+    target: /ie/dc-shared/assets/query-index.xlsx
+ 
+  il_en:
+    <<: *def
+    include:
+      - '/il_en/acrobat/**'
+    exclude:
+      - '/il_en/dc-shared/*'
+    target: /il_en/dc-shared/assets/query-index.xlsx
+ 
+  it:
+    <<: *def
+    include:
+      - '/it/acrobat/**'
+    exclude:
+      - '/it/dc-shared/*'
+    target: /it/dc-shared/assets/query-index.xlsx
+ 
+  lv:
+    <<: *def
+    include:
+      - '/lv/acrobat/**'
+    exclude:
+      - '/lv/dc-shared/*'
+    target: /lv/dc-shared/assets/query-index.xlsx
+ 
+  lt:
+    <<: *def
+    include:
+      - '/lt/acrobat/**'
+    exclude:
+      - '/lt/dc-shared/*'
+    target: /lt/dc-shared/assets/query-index.xlsx
+ 
+  lu_de:
+    <<: *def
+    include:
+      - '/lu_de/acrobat/**'
+    exclude:
+      - '/lu_de/dc-shared/*'
+    target: /lu_de/dc-shared/assets/query-index.xlsx
+ 
+  lu_en:
+    <<: *def
+    include:
+      - '/lu_en/acrobat/**'
+    exclude:
+      - '/lu_en/dc-shared/*'
+    target: /lu_en/dc-shared/assets/query-index.xlsx
+ 
+  lu_fr:
+    <<: *def
+    include:
+      - '/lu_fr/acrobat/**'
+    exclude:
+      - '/lu_fr/dc-shared/*'
+    target: /lu_fr/dc-shared/assets/query-index.xlsx
+ 
+  hu:
+    <<: *def
+    include:
+      - '/hu/acrobat/**'
+    exclude:
+      - '/hu/dc-shared/*'
+    target: /hu/dc-shared/assets/query-index.xlsx
+ 
+  mt:
+    <<: *def
+    include:
+      - '/mt/acrobat/**'
+    exclude:
+      - '/mt/dc-shared/*'
+    target: /mt/dc-shared/assets/query-index.xlsx
+ 
+  mena_en:
+    <<: *def
+    include:
+      - '/mena_en/acrobat/**'
+    exclude:
+      - '/mena_en/dc-shared/*'
+    target: /mena_en/dc-shared/assets/query-index.xlsx
+ 
+  nl:
+    <<: *def
+    include:
+      - '/nl/acrobat/**'
+    exclude:
+      - '/nl/dc-shared/*'
+    target: /nl/dc-shared/assets/query-index.xlsx
+ 
+  no:
+    <<: *def
+    include:
+      - '/no/acrobat/**'
+    exclude:
+      - '/no/dc-shared/*'
+    target: /no/dc-shared/assets/query-index.xlsx
+ 
+  pl:
+    <<: *def
+    include:
+      - '/pl/acrobat/**'
+    exclude:
+      - '/pl/dc-shared/*'
+    target: /pl/dc-shared/assets/query-index.xlsx
+ 
+  pt:
+    <<: *def
+    include:
+      - '/pt/acrobat/**'
+    exclude:
+      - '/pt/dc-shared/*'
+    target: /pt/dc-shared/assets/query-index.xlsx
+ 
+  ro:
+    <<: *def
+    include:
+      - '/ro/acrobat/**'
+    exclude:
+      - '/ro/dc-shared/*'
+    target: /ro/dc-shared/assets/query-index.xlsx
+ 
+  sa_en:
+    <<: *def
+    include:
+      - '/sa_en/acrobat/**'
+    exclude:
+      - '/sa_en/dc-shared/*'
+    target: /sa_en/dc-shared/assets/query-index.xlsx
+ 
+  ch_de:
+    <<: *def
+    include:
+      - '/ch_de/acrobat/**'
+    exclude:
+      - '/ch_de/dc-shared/*'
+    target: /ch_de/dc-shared/assets/query-index.xlsx
+ 
+  si:
+    <<: *def
+    include:
+      - '/si/acrobat/**'
+    exclude:
+      - '/si/dc-shared/*'
+    target: /si/dc-shared/assets/query-index.xlsx
+ 
+  sk:
+    <<: *def
+    include:
+      - '/sk/acrobat/**'
+    exclude:
+      - '/sk/dc-shared/*'
+    target: /sk/dc-shared/assets/query-index.xlsx
+ 
+  ch_fr:
+    <<: *def
+    include:
+      - '/ch_fr/acrobat/**'
+    exclude:
+      - '/ch_fr/dc-shared/*'
+    target: /ch_fr/dc-shared/assets/query-index.xlsx
+ 
+  fi:
+    <<: *def
+    include:
+      - '/fi/acrobat/**'
+    exclude:
+      - '/fi/dc-shared/*'
+    target: /fi/dc-shared/assets/query-index.xlsx
+ 
+  se:
+    <<: *def
+    include:
+      - '/se/acrobat/**'
+    exclude:
+      - '/se/dc-shared/*'
+    target: /se/dc-shared/assets/query-index.xlsx
+ 
+  ch_it:
+    <<: *def
+    include:
+      - '/ch_it/acrobat/**'
+    exclude:
+      - '/ch_it/dc-shared/*'
+    target: /ch_it/dc-shared/assets/query-index.xlsx
+ 
+  tr:
+    <<: *def
+    include:
+      - '/tr/acrobat/**'
+    exclude:
+      - '/tr/dc-shared/*'
+    target: /tr/dc-shared/assets/query-index.xlsx
+ 
+  ae_en:
+    <<: *def
+    include:
+      - '/ae_en/acrobat/**'
+    exclude:
+      - '/ae_en/dc-shared/*'
+    target: /ae_en/dc-shared/assets/query-index.xlsx
+ 
+  uk:
+    <<: *def
+    include:
+      - '/uk/acrobat/**'
+    exclude:
+      - '/uk/dc-shared/*'
+    target: /uk/dc-shared/assets/query-index.xlsx
+ 
+  at:
+    <<: *def
+    include:
+      - '/at/acrobat/**'
+    exclude:
+      - '/at/dc-shared/*'
+    target: /at/dc-shared/assets/query-index.xlsx
+ 
+  cz:
+    <<: *def
+    include:
+      - '/cz/acrobat/**'
+    exclude:
+      - '/cz/dc-shared/*'
+    target: /cz/dc-shared/assets/query-index.xlsx
+ 
+  bg:
+    <<: *def
+    include:
+      - '/bg/acrobat/**'
+    exclude:
+      - '/bg/dc-shared/*'
+    target: /bg/dc-shared/assets/query-index.xlsx
+ 
+  ru:
+    <<: *def
+    include:
+      - '/ru/acrobat/**'
+    exclude:
+      - '/ru/dc-shared/*'
+    target: /ru/dc-shared/assets/query-index.xlsx
+ 
+  ua:
+    <<: *def
+    include:
+      - '/ua/acrobat/**'
+    exclude:
+      - '/ua/dc-shared/*'
+    target: /ua/dc-shared/assets/query-index.xlsx
+ 
+  il_he:
+    <<: *def
+    include:
+      - '/il_he/acrobat/**'
+    exclude:
+      - '/il_he/dc-shared/*'
+    target: /il_he/dc-shared/assets/query-index.xlsx
+ 
+  ae_ar:
+    <<: *def
+    include:
+      - '/ae_ar/acrobat/**'
+    exclude:
+      - '/ae_ar/dc-shared/*'
+    target: /ae_ar/dc-shared/assets/query-index.xlsx
+ 
+  mena_ar:
+    <<: *def
+    include:
+      - '/mena_ar/acrobat/**'
+    exclude:
+      - '/mena_ar/dc-shared/*'
+    target: /mena_ar/dc-shared/assets/query-index.xlsx
+ 
+  sa_ar:
+    <<: *def
+    include:
+      - '/sa_ar/acrobat/**'
+    exclude:
+      - '/sa_ar/dc-shared/*'
+    target: /sa_ar/dc-shared/assets/query-index.xlsx
+ 
+  au:
+    <<: *def
+    include:
+      - '/au/acrobat/**'
+    exclude:
+      - '/au/dc-shared/*'
+    target: /au/dc-shared/assets/query-index.xlsx
+ 
+  hk_en:
+    <<: *def
+    include:
+      - '/hk_en/acrobat/**'
+    exclude:
+      - '/hk_en/dc-shared/*'
+    target: /hk_en/dc-shared/assets/query-index.xlsx
+ 
+  in:
+    <<: *def
+    include:
+      - '/in/acrobat/**'
+    exclude:
+      - '/in/dc-shared/*'
+    target: /in/dc-shared/assets/query-index.xlsx
+ 
+  id_id:
+    <<: *def
+    include:
+      - '/id_id/acrobat/**'
+    exclude:
+      - '/id_id/dc-shared/*'
+    target: /id_id/dc-shared/assets/query-index.xlsx
+ 
+  id_en:
+    <<: *def
+    include:
+      - '/id_en/acrobat/**'
+    exclude:
+      - '/id_en/dc-shared/*'
+    target: /id_en/dc-shared/assets/query-index.xlsx
+ 
+  my_ms:
+    <<: *def
+    include:
+      - '/my_ms/acrobat/**'
+    exclude:
+      - '/my_ms/dc-shared/*'
+    target: /my_ms/dc-shared/assets/query-index.xlsx
+ 
+  my_en:
+    <<: *def
+    include:
+      - '/my_en/acrobat/**'
+    exclude:
+      - '/my_en/dc-shared/*'
+    target: /my_en/dc-shared/assets/query-index.xlsx
+ 
+  nz:
+    <<: *def
+    include:
+      - '/nz/acrobat/**'
+    exclude:
+      - '/nz/dc-shared/*'
+    target: /nz/dc-shared/assets/query-index.xlsx
+ 
+  ph_en:
+    <<: *def
+    include:
+      - '/ph_en/acrobat/**'
+    exclude:
+      - '/ph_en/dc-shared/*'
+    target: /ph_en/dc-shared/assets/query-index.xlsx
+ 
+  ph_fil:
+    <<: *def
+    include:
+      - '/ph_fil/acrobat/**'
+    exclude:
+      - '/ph_fil/dc-shared/*'
+    target: /ph_fil/dc-shared/assets/query-index.xlsx
+ 
+  sg:
+    <<: *def
+    include:
+      - '/sg/acrobat/**'
+    exclude:
+      - '/sg/dc-shared/*'
+    target: /sg/dc-shared/assets/query-index.xlsx
+ 
+  th_en:
+    <<: *def
+    include:
+      - '/th_en/acrobat/**'
+    exclude:
+      - '/th_en/dc-shared/*'
+    target: /th_en/dc-shared/assets/query-index.xlsx
+ 
+  in_hi:
+    <<: *def
+    include:
+      - '/in_hi/acrobat/**'
+    exclude:
+      - '/in_hi/dc-shared/*'
+    target: /in_hi/dc-shared/assets/query-index.xlsx
+ 
+  th_th:
+    <<: *def
+    include:
+      - '/th_th/acrobat/**'
+    exclude:
+      - '/th_th/dc-shared/*'
+    target: /th_th/dc-shared/assets/query-index.xlsx
+ 
+  cn:
+    <<: *def
+    include:
+      - '/cn/acrobat/**'
+    exclude:
+      - '/cn/dc-shared/*'
+    target: /cn/dc-shared/assets/query-index.xlsx
+ 
+  hk_zh:
+    <<: *def
+    include:
+      - '/hk_zh/acrobat/**'
+    exclude:
+      - '/hk_zh/dc-shared/*'
+    target: /hk_zh/dc-shared/assets/query-index.xlsx
+ 
+  tw:
+    <<: *def
+    include:
+      - '/tw/acrobat/**'
+    exclude:
+      - '/tw/dc-shared/*'
+    target: /tw/dc-shared/assets/query-index.xlsx
+ 
+  jp:
+    <<: *def
+    include:
+      - '/jp/acrobat/**'
+    exclude:
+      - '/jp/dc-shared/*'
+    target: /jp/dc-shared/assets/query-index.xlsx
+ 
+  kr:
+    <<: *def
+    include:
+      - '/kr/acrobat/**'
+    exclude:
+      - '/kr/dc-shared/*'
+    target: /kr/dc-shared/assets/query-index.xlsx
+ 
+  za:
+    <<: *def
+    include:
+      - '/za/acrobat/**'
+    exclude:
+      - '/za/dc-shared/*'
+    target: /za/dc-shared/assets/query-index.xlsx
+ 
+  ng:
+    <<: *def
+    include:
+      - '/ng/acrobat/**'
+    exclude:
+      - '/ng/dc-shared/*'
+    target: /ng/dc-shared/assets/query-index.xlsx
+ 
+  cr:
+    <<: *def
+    include:
+      - '/cr/acrobat/**'
+    exclude:
+      - '/cr/dc-shared/*'
+    target: /cr/dc-shared/assets/query-index.xlsx
+ 
+  ec:
+    <<: *def
+    include:
+      - '/ec/acrobat/**'
+    exclude:
+      - '/ec/dc-shared/*'
+    target: /ec/dc-shared/assets/query-index.xlsx
+ 
+  pr:
+    <<: *def
+    include:
+      - '/pr/acrobat/**'
+    exclude:
+      - '/pr/dc-shared/*'
+    target: /pr/dc-shared/assets/query-index.xlsx
+ 
+  gt:
+    <<: *def
+    include:
+      - '/gt/acrobat/**'
+    exclude:
+      - '/gt/dc-shared/*'
+    target: /gt/dc-shared/assets/query-index.xlsx
+ 
+  eg_ar:
+    <<: *def
+    include:
+      - '/eg_ar/acrobat/**'
+    exclude:
+      - '/eg_ar/dc-shared/*'
+    target: /eg_ar/dc-shared/assets/query-index.xlsx
+ 
+  kw_ar:
+    <<: *def
+    include:
+      - '/kw_ar/acrobat/**'
+    exclude:
+      - '/kw_ar/dc-shared/*'
+    target: /kw_ar/dc-shared/assets/query-index.xlsx
+ 
+  qa_ar:
+    <<: *def
+    include:
+      - '/qa_ar/acrobat/**'
+    exclude:
+      - '/qa_ar/dc-shared/*'
+    target: /qa_ar/dc-shared/assets/query-index.xlsx
+ 
+  eg_en:
+    <<: *def
+    include:
+      - '/eg_en/acrobat/**'
+    exclude:
+      - '/eg_en/dc-shared/*'
+    target: /eg_en/dc-shared/assets/query-index.xlsx
+ 
+  kw_en:
+    <<: *def
+    include:
+      - '/kw_en/acrobat/**'
+    exclude:
+      - '/kw_en/dc-shared/*'
+    target: /kw_en/dc-shared/assets/query-index.xlsx
+ 
+  qa_en:
+    <<: *def
+    include:
+      - '/qa_en/acrobat/**'
+    exclude:
+      - '/qa_en/dc-shared/*'
+    target: /qa_en/dc-shared/assets/query-index.xlsx
+ 
+  gr_el:
+    <<: *def
+    include:
+      - '/gr_el/acrobat/**'
+    exclude:
+      - '/gr_el/dc-shared/*'
+    target: /gr_el/dc-shared/assets/query-index.xlsx
+    
+  vn_en:
+    <<: *def
+    include:
+      - '/vn_en/acrobat/**'
+    exclude:
+      - '/vn_en/dc-shared/*'
+    target: /vn_en/dc-shared/assets/query-index.xlsx
+    
+  vn_vi:
+    <<: *def
+    include:
+      - '/vn_vi/acrobat/**'
+    exclude:
+      - '/vn_vi/dc-shared/*'
+    target: /vn_vi/dc-shared/assets/query-index.xlsx  

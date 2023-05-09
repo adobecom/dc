@@ -3,9 +3,31 @@
   "host": "www.adobe.com",
   "plugins": [
     {
+      "id": "library",
+      "title": "Library",
+      "environments": [
+        "edit"
+      ],
+      "isPalette": true,
+      "passConfig": true,
+      "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 398px; width: 360px;",
+      "url": "https://milo.adobe.com/tools/library",
+      "includePaths": [
+        "**.docx**"
+      ]
+    },
+    {
+      "id": "tools",
+      "title": "Tools",
+      "isContainer": true
+    },
+    {
+      "containerId": "tools",
       "id": "localize",
       "title": "Localize",
-      "environments": [ "edit" ],
+      "environments": [
+        "edit"
+      ],
       "url": "https://main--milo--adobecom.hlx.page/tools/loc/index.html?project=dc--adobecom",
       "passReferrer": true,
       "passConfig": true,
@@ -13,33 +35,63 @@
       "includePaths": [ "**/:x**" ]
     },
     {
+      "containerId": "tools",
       "title": "Send to CaaS",
       "id": "sendtocaas",
-      "environments": ["dev","preview", "live", "prod"],
+      "environments": [
+        "dev",
+        "preview",
+        "live",
+        "prod"
+      ],
       "event": "send-to-caas",
-      "excludePaths": ["https://milo.adobe.com/tools/caas**", "*.json"]
+      "excludePaths": [
+        "https://milo.adobe.com/tools/caas**",
+        "*.json"
+      ]
     },
     {
+      "containerId": "tools",
       "title": "Check Schema",
       "id": "checkschema",
-      "environments": ["prod"],
+      "environments": [
+        "prod"
+      ],
       "event": "check-schema",
-      "excludePaths": ["/tools**", "*.json"]
+      "excludePaths": [
+        "/tools**",
+        "*.json"
+      ]
     },
     {
-      "id": "library",
-      "title": "Library",
-      "environments": [ "edit" ],
-      "isPalette": true,
-      "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 398px; width: 360px;",
-      "url": "https://milo.adobe.com/tools/library?blocks=main--dc--adobecom",
-      "includePaths": [ "**.docx**" ]
-    },
-    {
+      "containerId": "tools",
       "title": "Preflight",
       "id": "preflight",
-      "environments": ["dev", "preview", "live"],
+      "environments": [
+        "dev",
+        "preview",
+        "live"
+      ],
       "event": "preflight"
+    },
+    {
+      "containerId": "tools",
+      "id": "locales",
+      "title": "Locales",
+      "environments": [
+        "edit",
+        "dev",
+        "preview",
+        "live"
+      ],
+      "isPalette": true,
+      "passConfig": true,
+      "passReferrer": true,
+      "paletteRect": "top: auto; bottom: 25px; left: 75px; height: 388px; width: 360px;",
+      "url": "https://milo.adobe.com/tools/locale-nav",
+      "includePaths": [
+        "**.docx**"
+      ]
     }
   ]
 }

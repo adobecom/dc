@@ -36,11 +36,14 @@ const connectSrc = [
   'privacyportal.onetrust.com',
   'siteintercept.qualtrics.com/',
   'tr.snapchat.com/',
+  '*.typekit.net',
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
   'http://localhost:6456/',
   '*.hlx.page',
+  'cdn.linkedin.oribi.io',
+  '*.akstat.io/',
   ';',
 ];
 
@@ -213,6 +216,14 @@ const scriptSrc = [
   'zn3n5vyia1vy8b4ly-adobe.siteintercept.qualtrics.com/',
   'tag.demandbase.com',
   'munchkin.marketo.net',
+  'cdn.megadata.co.kr',
+  'tk.mediacategory.com',
+  't1.daumcdn.net',
+  'bc.ad.daum.net',
+  'cdn.taboola.com',
+  'pips.taboola.com',
+  'trc.taboola.com',
+  'js.adsrvr.org',
   'main--milo--adobecom.hlx.page',
   'http://localhost:6456/',
   '*.hlx.page',
@@ -241,11 +252,4 @@ const workerSrc = [
   ';',
 ];
 
-const preSrc = [
-  '\'self\'',
-  'documentcloud.adobe.com',
-  'blob:',
-  ';',
-];
-
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, preSrc};
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};

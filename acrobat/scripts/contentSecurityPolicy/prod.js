@@ -34,6 +34,10 @@ const connectSrc = [
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
+  'cdn.linkedin.oribi.io',
+  '*.typekit.net/',
+  'trial-eum-clienttons-s.akamaihd.net/',
+  '*.akstat.io/',
   ';',
 ];
 
@@ -42,6 +46,7 @@ const defaultSrc = [
   'acrobat.adobe.com',
   'auth.services.adobe.com',
   'documentcloud.adobe.com',
+  'acrobat.adobe.com',
   ';',
 ];
 
@@ -73,6 +78,7 @@ const frameSrc = [
   'bid.g.doubleclick.net',
   'dc-api.adobecontent.io',
   'documentcloud.adobe.com',
+  'acrobat.adobe.com',
   'servedby.flashtalking.com',
   'tr.snapchat.com/',
   'tr6.snapchat.com/',
@@ -196,8 +202,18 @@ const scriptSrc = [
   'www.googletagmanager.com/',
   'www.linkedin.com/px',
   'www.redditstatic.com/ads/pixel.js',
+  'cdn.megadata.co.kr',
+  'tk.mediacategory.com',
+  't1.daumcdn.net',
+  'bc.ad.daum.net',
+  'cdn.taboola.com',
+  'pips.taboola.com',
+  'trc.taboola.com',
+  'js.adsrvr.org',
   'main--milo--adobecom.hlx.page',
   'tag.demandbase.com',
+  '*.typekit.net',
+  'zn3n5vyia1vy8b4ly-adobe.siteintercept.qualtrics.com/',
   ';',
 ];
 
@@ -221,11 +237,4 @@ const workerSrc = [
   ';',
 ];
 
-const preSrc = [
-  '\'self\'',
-  'documentcloud.adobe.com',
-  'blob:',
-  ';',
-];
-
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc, preSrc};
+export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};

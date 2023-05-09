@@ -1,4 +1,4 @@
-export default function init(ev, brow) {
+export default function init(ev, brow, inter) {
 
   const names = {
     modalClosed : {
@@ -12,7 +12,11 @@ export default function init(ev, brow) {
     modalAlready : {
       Chrome: 'Get the extension-1|already-closed-viewer-extension|Chrome-extension',
       'Microsoft Edge': 'Get the extension-1|already-closed-viewer-extension|MSFT-Edge-extension',
-    }
+    },
+    modalGetExtension : {
+      Chrome: 'Get the extension-1|viewer-extension|Chrome-extension',
+      'Microsoft Edge': 'Get the extension-1|viewer-extension|MSFT-Edge-extension',
+    },
   };
 
   const event = {
@@ -33,10 +37,7 @@ export default function init(ev, brow) {
             digitalData: {
                 primaryEvent: {
                     eventInfo: {
-                        interaction: {
-                            click: names[ev][brow],
-                            iclick: 'true',
-                        },
+                        interaction: inter ? { [inter]: names[ev][brow] } : {click: names[ev][brow], iclick: 'true'},
                         eventName: names[ev][brow],
                     },
                 },

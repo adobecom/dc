@@ -22,16 +22,15 @@ export default function init(verb) {
           // verb, rating, comment
           reviewFeedbackAlloy(verb, data.rating, data['rating-comments']);
         });
-        if (document.querySelectorAll('.tooltip').length > 0) {
-
-          document.querySelectorAll('.tooltip')[3].addEventListener('click', () => {
+        const reviewTooltip = reviewBlock[0].querySelectorAll('.tooltip');
+        if (reviewTooltip.length > 0) {
+          reviewTooltip[3].addEventListener('click', () => {
             reviewFeedbackAlloy(verb, '4');
           })
-          document.querySelectorAll('.tooltip')[4].addEventListener('click', () => {
+          reviewTooltip[4].addEventListener('click', () => {
             reviewFeedbackAlloy(verb, '5');
           })
         }
-
         parser = bowser.getParser(window.navigator.userAgent);
         browserName = parser.getBrowserName();
       }
@@ -48,15 +47,26 @@ export default function init(verb) {
     if (browserName === 'Microsoft Edge') {
       extName = '#edgeext';
     }
-    setTimeout( ()=> {
+    const extensionWait = setInterval( ()=> {
       const browserExtModal = document.querySelector(extName);
-      const browserExtClose = browserExtModal.querySelector('.dialog-close');
+      const browserExtClose = browserExtModal?.querySelector('.dialog-close');
+      const browserExtGetLink = browserExtModal?.querySelector('.browser-extension  a');
+
+      if(!browserExtModal || !browserExtClose || !browserExtGetLink){
+        return;
+      }
+      clearInterval(extensionWait);
       browserExtAlloy('modalExist', browserName);
+      browserExtAlloy('modalGetExtension', browserName, 'impression');
 
       browserExtClose.addEventListener('click', () => {
         browserExtAlloy('modalClosed', browserName);
         window.localStorage.fricBrowExt = true;
-      })
+      });
+
+      browserExtGetLink.addEventListener('click', () => {
+        browserExtAlloy('modalGetExtension', browserName);
+      });
     }, 1000);
   });
 }

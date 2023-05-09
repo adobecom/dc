@@ -1,6 +1,6 @@
 export default function init() {
   // Figure out how to setp LH
-  const lh = 'SOME DEFAULT VALUE';
+  const lh = 'marquee|verb';
 
   const event = {
     // always trigger the event using navigator.sendBeacon
