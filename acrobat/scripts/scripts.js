@@ -145,7 +145,7 @@ const locales = {
 // Add any config options.
 const CONFIG = {
   codeRoot: '/acrobat',
-  contentRoot: '/',
+  contentRoot: '/dc-shared',
   imsClientId: 'acrobatmilo',
   local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   stage: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },

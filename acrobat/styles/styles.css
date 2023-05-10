@@ -9,7 +9,7 @@
 
  #dc-converter-widget {
   background-color: #fc6767;
-  min-height: 560px;
+  min-height: 570px;
 }
 
 #CID {
@@ -17,8 +17,8 @@
   max-width: 75%;
   height: auto;
   margin: auto;
-  padding: 0 0 0 ;
-  position: relative;
+  padding: 0;
+  position: absolute;
   left:0;
   top: 70px;
   right:0;
@@ -295,10 +295,6 @@ div.how-to ol li::before{
 .section .columns.browser-extension .row .col-2 {
   width: 33.333333%;
   border-left: solid 2px #EAEAEA;
-}
-
-.breadcrumbs ul {
-  padding: 5px 0 !important;
 }
 
 /* CLS */
