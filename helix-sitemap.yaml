@@ -365,7 +365,7 @@ sitemaps:
         source: /il_he/dc-shared/assets/query-index.json
         alternate: /il_he/{path}.html
         destination: /il_he/dc-shared/assets/sitemap.xml
-        hreflang: he-il
+        hreflang: he-IL
 
       ae_ar:
         source: /ae_ar/dc-shared/assets/query-index.json
