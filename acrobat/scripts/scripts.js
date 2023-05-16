@@ -149,7 +149,7 @@ const CONFIG = {
   imsClientId: 'acrobatmilo',
   local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   stage: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
-  live: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
+  live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   prod: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
   locales,
   // geoRouting: 'on',
