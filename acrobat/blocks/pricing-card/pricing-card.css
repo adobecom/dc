@@ -142,6 +142,7 @@
 .pricing-card .card-box .content-container .main-content .disclaimer {
   line-height: 1.0625rem;
   font-size: 0.825rem;
+  padding-top: 8px;
 }
 
 .section.pricing-card-columns {
