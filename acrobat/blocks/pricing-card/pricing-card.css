@@ -139,6 +139,11 @@
   border: 8px solid transparent;
 }
 
+.pricing-card .card-box .content-container .main-content .disclaimer {
+  line-height: 1.0625rem;
+  font-size: 0.825rem;
+}
+
 .section.pricing-card-columns {
   display: flex;
   align-items: stretch;
