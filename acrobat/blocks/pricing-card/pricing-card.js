@@ -22,7 +22,7 @@ const preparePricingCardDOM = (block, properties, createTag) => {
   card.insertBefore(promotion, cardContentContainer);
 
   const title = createTag('div', {class: 'title'}, properties['title']);
-  const price = createTag('div', {class: 'price'});
+  const price = createTag('div', {class: 'price-placeholder'});
   const disclaimer = createTag('div', {class: 'disclaimer'});
   const radioGroup = createRadioGroup(properties, createTag, block);
   const footer = createFooter(properties, createTag);
@@ -94,20 +94,6 @@ const collectContent = (cardNode, cardProperties, createTag) => {
   const prices = [];
   const disclaimers = [];
   const ctas = [];
-  const getPricesFromSections = (i) => {
-    const optionContent = document.querySelectorAll(`.section.option${i}`);
-    optionContent.forEach((content) => {
-      const optionProperties = getProperties(content.querySelector('.section-metadata'));
-      if (optionProperties['pricing-card'] === cardProperties.title) {
-        hideElement(content);
-        switch (optionProperties['place']) {
-          case 'price' : prices.push(content);break;
-          case 'disclaimer': disclaimers.push(content);break;
-          case 'footer-content': ctas.push(content);break;
-        }
-      }
-    });
-  };
   const getPricesFromTableProps = (i) => {
     prices.push(createTag('div',{ class: `option${i} hide` }, cardProperties[`price${i}`]));
     ctas.push(createTag('div',{ class: `option${i} hide` }, cardProperties[`cta${i}`]));
@@ -117,13 +103,11 @@ const collectContent = (cardNode, cardProperties, createTag) => {
   for (let i = 1; i <= cardProperties['countOptions']; i++) {
     if (cardProperties['price1']) {
       getPricesFromTableProps(i);
-    } else {
-      getPricesFromSections(i);
     }
   }
 
   prices.forEach(p => {
-    cardNode.querySelector('.price')?.append(p);
+    cardNode.querySelector('.price-placeholder')?.append(p);
   });
   disclaimers.forEach(d => {
     cardNode.querySelector('.disclaimer')?.append(d);
@@ -153,3 +137,4 @@ export default init;
 //todo finish section styling (with class pricing-card-columns)
 //todo see how qty selector will be supported, it should be m@s element since in aem it is also m@s element
 //todo since we have different variations of pricing pods, make sure we support all of them (maybe create css rules that can be added to section that contains prices)
+//todo define how prices should be styled
