@@ -109,6 +109,7 @@
 
 .pricing-card .radio-group {
   padding: 24px 0;
+  flex-grow: 2;
 }
 
 .pricing-card .card-footer {
