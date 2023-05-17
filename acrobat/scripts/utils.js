@@ -35,17 +35,3 @@ export const [setLibs, getLibs] = (() => {
     }, () => libs,
   ];
 })();
-export const getProperties = (block) => {
-  const properties = {};
-  const tableRows = block.querySelectorAll(':scope > div');
-  let countOptions = 0;
-  let countCards = 0;
-  tableRows.forEach((row) => {
-    if (row.children[0] && row.children[0].innerText) {
-      properties[row.children[0].innerText] =  row.children[1] ? row.children[1].innerText : '';
-      if (row.children[0].innerText.startsWith('option')) countOptions ++;
-    }
-  });
-  properties.countOptions = countOptions;
-  return properties;
-};
