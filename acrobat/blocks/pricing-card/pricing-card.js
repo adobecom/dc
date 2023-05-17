@@ -86,8 +86,10 @@ const getProperties = (block) => {
       }
     }
   });
+  if (!properties['initialOption']) {
+    properties.initialOption = 'option1';
+  }
   properties.countOptions = countOptions;
-  console.log('properties', properties);
   return properties;
 };
 const collectContent = (cardNode, cardProperties, createTag) => {
@@ -132,9 +134,3 @@ const displayElement = (element) => {
 };
 
 export default init;
-
-//todo  inline prices and buttons (when milo  m@s is released) - check do we need some style adaptation
-//todo finish section styling (with class pricing-card-columns)
-//todo see how qty selector will be supported, it should be m@s element since in aem it is also m@s element
-//todo since we have different variations of pricing pods, make sure we support all of them (maybe create css rules that can be added to section that contains prices)
-//todo define how prices should be styled
