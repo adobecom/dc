@@ -1,0 +1,163 @@
+.pricing-card > div {
+  display: none;
+}
+
+.pricing-card {
+  margin: 10px;
+}
+
+.pricing-card .card-box {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: solid 2px #E1E1E1;
+
+  /* default widht, if we need some more,
+   add classes that can be used on section to configure card widht inside section */
+  width: 470px;
+  min-height: 400px;
+  border-radius: 5px;
+  height: 100%;
+}
+
+.pricing-card .card-box.promotion-active {
+  border-color: rgb(255 204 0);
+}
+
+.pricing-card .card-box .content-container {
+  padding: 40px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+  flex: 1;
+}
+
+.pricing-card .card-box .divider {
+  border-bottom: 1px solid #EAEAEA;
+  padding: 7.5px 0;
+}
+
+.hide {
+  display: none;
+}
+
+.display {
+  display: block;
+}
+
+.pricing-card .promotion {
+  display: flex;
+  justify-content: end;
+
+  /* make height configurable on section maybe, because there are different
+  variations of cards and promotion texts and usually all cards in section are
+  created with same gap between promo text and title */
+  height: 30px;
+}
+
+.pricing-card .promotion .promotion-text {
+ background: rgb(255 204 0);
+  position: relative;
+  top: 15px;
+  right: 0;
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 4px 0 0 4px;
+  font-size: 12px;
+  line-height: 0.875rem;
+  height: fit-content;
+}
+
+.pricing-card .title h1 {
+  font-size: 24px;
+  margin: 0;
+  line-height: 1;
+}
+
+.pricing-card .title p {
+  font-size: 20px;
+  margin: 0;
+  line-height: 1;
+}
+
+.pricing-card .promotion .promotion-text p {
+  margin: 0;
+}
+
+.pricing-card .promotion .promotion-text h1 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.pricing-card .title {
+  font-weight: bold;
+  padding-bottom: 8px;
+}
+
+.pricing-card .price-placeholder {
+  font-size: 32px;
+  font-weight: 500;
+}
+
+.pricing-card .dislaimer {
+  padding-top: 8px;
+  font-size: 14px;
+}
+
+.pricing-card .radio-group {
+  padding: 24px 0;
+  flex-grow: 2;
+}
+
+.pricing-card .card-footer {
+  border-top: 1px solid #EAEAEA;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: space-between;
+}
+
+.pricing-card .card-footer .footer-secure-transaction .icon {
+  width: 11px;
+  margin-right: 4px;
+  line-height: 0;
+}
+
+.pricing-card .card-footer .footer-secure-transaction .text {
+  font-size: 13px;
+}
+
+.pricing-card .card-footer .footer-content .display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: space-between;
+  gap: 10px;
+  border: 8px solid transparent;
+}
+
+.pricing-card .card-box .content-container .main-content .disclaimer {
+  line-height: 1.0625rem;
+  font-size: 0.825rem;
+  padding-top: 8px;
+}
+
+.section.pricing-card-columns {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+}
+
+.section.pricing-card-columns.w-470 .pricing-card .card-box {
+  width: 470px;
+}
+
+.section.pricing-card-columns.w-400 .pricing-card .card-box {
+  width: 400px;
+}
