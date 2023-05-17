@@ -3,7 +3,7 @@
   min-height: 582px !important;
 }
 
-@media (max-width: 37.5rem) {
+@media (max-width: 600px) {
   .eventwrapper.onload {
     min-height: 3562px !important;
   }
@@ -13,7 +13,7 @@
 }
 
 
-@media (min-width: 37.5rem) {
+@media (min-width: 600px) {
   .eventwrapper.onload {
     min-height: 1983px !important;
   }
