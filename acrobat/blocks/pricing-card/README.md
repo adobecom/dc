@@ -54,8 +54,7 @@ or
 
 ## User Experience
 
-<img width="1197" alt="pricing-card-width-470" src="https://github.com/adobecom/dc/assets/32739655/169671f5-4add-4750-91a2-621caef8cc2c">
-
+<img width="1221" alt="pricing-card-width-470" src="https://github.com/adobecom/dc/assets/32739655/fc0802bc-ed53-4cbf-8e51-09842897f560">
 
 <img width="1334" alt="pricing-card-width-400" src="https://github.com/adobecom/dc/assets/32739655/c5dd1043-2261-4c98-8d08-b717c29e2a8d">
 
