@@ -1,5 +1,4 @@
 // Could use webpack/rollup. Just manually inline these structures, for now.
-// import langLocaleMap from './localeMap.js';
 const localeMap = {
   'ca_fr': 'fr-FR',
   'be_fr': 'fr-FR',
@@ -41,7 +40,7 @@ const localeMap = {
   'tr': 'tr-TR',
   'br': 'pt-BR',
   'la': 'es-ES',
-  'mx': 'es-ES',
+  'mx': 'es-MX',
   'be_nl': 'nl-NL',
 };
 
