@@ -40,7 +40,7 @@
   }
 }
 
-@media (max-width: 37.5rem) {
+@media (max-width: 600px) {
   #CID {
     width: 91.666667%;
     max-width: 91.666667%;
@@ -77,6 +77,7 @@
 .verb-subfooter ul {
   list-style-type: none;
   padding-left: 0;
+  padding-right: 0;
 }
 .verb-subfooter ul li {
   padding-top: 15px;
@@ -183,7 +184,7 @@ div.how-to {
 }
 
 /* Moblie HowTo */
-@media (max-width: 37.5rem) {
+@media (max-width: 600px) {
   .how-to.large-image {
     grid-template-areas:
     "image"
@@ -192,6 +193,13 @@ div.how-to {
     grid-template-columns: 1fr !important;
     padding-top: 56px;
     padding-bottom: 56px;
+  }
+  /* Moblie HowTo word-to-pdf US ONLY */
+  [data-path="/dc-shared/fragments/frictionless-personalization-xfs/word-to-pdf-xfs/how-to/default"] .how-to.large-image {
+    grid-template-areas:
+    "heading"
+    "list"
+    "image" !important;
   }
   .how-to-heading {
     margin-right: 0;
