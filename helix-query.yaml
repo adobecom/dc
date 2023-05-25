@@ -429,6 +429,7 @@ indices:
     <<: *def
     include:
       - '/ru/acrobat/**'
+      - '/sign/**'
     exclude:
       - '/ru/dc-shared/*'
     target: /ru/dc-shared/assets/query-index.xlsx
