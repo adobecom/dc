@@ -4,6 +4,7 @@ indices:
   def: &def
     include:
     - '/acrobat/**'
+    - '/sign/**'
     exclude:
     - '/dc-shared/**'
     target: /dc-shared/assets/query-index.xlsx
