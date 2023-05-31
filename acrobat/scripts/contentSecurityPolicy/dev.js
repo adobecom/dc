@@ -196,6 +196,7 @@ const styleSrc = [
   '\'self\'',
   '\'unsafe-inline\'',
   'main--milo--adobecom.hlx.page',
+  'main--milo--adobecom.hlx.live',
   '*.adobe.com',
   'accounts.google.com/gsi/style',
   'dc.dev.dexilab.acrobat.com',
