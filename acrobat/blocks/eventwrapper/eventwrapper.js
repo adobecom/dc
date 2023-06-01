@@ -106,8 +106,6 @@ export default function init(element) {
         window.modalDisplayed = false;
         break;
       case CONVERSION_COM:
-        document.querySelector('body').click();
-        console.log('DOM clciked to fool CLS....');
         setCurrentEvent('complete');
         break;
       case PREVIEW_GEN:
