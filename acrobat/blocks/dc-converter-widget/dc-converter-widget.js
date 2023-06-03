@@ -154,14 +154,16 @@ export default function init(element) {
     (async () => {
       // TODO: Make dynamic
       const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang.toLocaleLowerCase()}.html`);
-      // eslint-disable-next-line default-case
       switch (response.status) {
         case 200: {
           const template = await response.text();
-          const doc = new DOMParser().parseFromString(template, 'text/html');
-          document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
-          widgetContainer.appendChild(doc.body.firstElementChild);
-          performance.mark("milo-insert-snippet");
+          if (!("rendered" in widgetContainer.dataset)) {
+            widgetContainer.dataset.rendered = "true";
+            const doc = new DOMParser().parseFromString(template, 'text/html');
+            document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
+            widgetContainer.appendChild(doc.body.firstElementChild);
+            performance.mark("milo-insert-snippet");
+          }
           break;
         }
         default:
@@ -192,7 +194,7 @@ export default function init(element) {
   dcScript.dataset.load_imslib = 'false';
   dcScript.dataset.enable_unload_prompt = 'true';
   if (preRenderDropZone) {
-    dcScript.dataset.pre_rendered = 'true';
+    dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
 
   window.addEventListener('Bowser:Ready', async () => {
