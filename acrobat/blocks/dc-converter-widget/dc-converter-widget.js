@@ -113,7 +113,7 @@ export default function init(element) {
   }
 
   widget.querySelector('div').id = 'VERB';
-  const VERB = widget.querySelector('div').innerText.trim().toLowerCase();
+  const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
 
   // Redir URL
   const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
