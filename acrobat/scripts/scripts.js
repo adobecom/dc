@@ -83,11 +83,11 @@ const locales = {
   no: { ietf: 'no-NO', tk: 'aaz7dvd.css' },
   pl: { ietf: 'pl-PL', tk: 'aaz7dvd.css' },
   pt: { ietf: 'pt-PT', tk: 'inq1xob.css' },
-  ro: { ietf: 'ro-RO', tk: 'aaz7dvd.css' },
+  ro: { ietf: 'en-RO', tk: 'aaz7dvd.css' },
   sa_en: { ietf: 'en', tk: 'pps7abe.css' },
   ch_de: { ietf: 'de-CH', tk: 'vin7zsi.css' },
-  si: { ietf: 'sl-SI', tk: 'aaz7dvd.css' },
-  sk: { ietf: 'sk-SK', tk: 'aaz7dvd.css' },
+  si: { ietf: 'en-SI', tk: 'aaz7dvd.css' },
+  sk: { ietf: 'en-SK', tk: 'aaz7dvd.css' },
   ch_fr: { ietf: 'fr-CH', tk: 'vrk5vyv.css' },
   fi: { ietf: 'fi-FI', tk: 'aaz7dvd.css' },
   se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
@@ -99,11 +99,11 @@ const locales = {
   cz: { ietf: 'cs-CZ', tk: 'aaz7dvd.css' },
   bg: { ietf: 'bg-BG', tk: 'aaz7dvd.css' },
   ru: { ietf: 'ru-RU', tk: 'aaz7dvd.css' },
-  ua: { ietf: 'uk-UA', tk: 'aaz7dvd.css' },
-  il_he: { ietf: 'he', tk: 'nwq1mna.css' },
-  ae_ar: { ietf: 'ar', tk: 'nwq1mna.css' },
-  mena_ar: { ietf: 'ar', tk: 'dis2dpj.css' },
-  sa_ar: { ietf: 'ar', tk: 'nwq1mna.css' },
+  ua: { ietf: 'en-UA', tk: 'aaz7dvd.css' },
+  il_he: { ietf: 'he', tk: 'nwq1mna.css', dir: 'rtl' },
+  ae_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
+  mena_ar: { ietf: 'ar', tk: 'dis2dpj.css', dir: 'rtl' },
+  sa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
   // Asia Pacific
   au: { ietf: 'en-AU', tk: 'pps7abe.css' },
   hk_en: { ietf: 'en-HK', tk: 'pps7abe.css' },
@@ -133,9 +133,9 @@ const locales = {
   ec: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Ecuador (Spanish Latin America)
   pr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Puerto Rico (Spanish Latin America)
   gt: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Guatemala (Spanish Latin America)
-  eg_ar: { ietf: 'ar', tk: 'nwq1mna.css' }, // Egypt (Arabic)
-  kw_ar: { ietf: 'ar', tk: 'nwq1mna.css' }, // Kuwait (Arabic)
-  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css' }, // Quatar (Arabic)
+  eg_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Egypt (Arabic)
+  kw_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Kuwait (Arabic)
+  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Quatar (Arabic)
   eg_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Egypt (GB English)
   kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
   qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
