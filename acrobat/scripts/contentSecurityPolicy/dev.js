@@ -45,6 +45,7 @@ const connectSrc = [
   'fast-track--milo--adobecom.hlx.live',
   '*.typekit.net',
   '*.hlx.page',
+  '*.hlx.live',
   'cdn.linkedin.oribi.io',
   ';',
 ];
@@ -135,6 +136,7 @@ const imgSrc = [
   'fast-track--milo--adobecom.hlx.page',
   'fast-track--milo--adobecom.hlx.live',
   '*.hlx.page',
+  '*.hlx.live',
   ';',
 ];
 
@@ -189,6 +191,7 @@ const scriptSrc = [
   'fast-track--milo--adobecom.hlx.live',
   'api.demandbase.com',
   '*.hlx.page',
+  '*.hlx.live',
   ';',
 ];
 
@@ -206,6 +209,7 @@ const styleSrc = [
   'p.typekit.net',
   'http://localhost:6456/',
   '*.hlx.page',
+  '*.hlx.live',
   ';',
 ];
 
