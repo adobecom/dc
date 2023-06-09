@@ -3,32 +3,60 @@ import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 import { waitForElement, delay } from '../../helpers/waitfor.js';
 
-document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+document.head.innerHTML = await readFile({ path: './mocks/head.html' });
+document.body.innerHTML = await readFile({ path: './mocks/body_cache.html' });
 const { default: init } = await import(
   '../../../acrobat/blocks/dc-converter-widget/dc-converter-widget'
 );
 
-describe.skip('dc-converter-widget block', () => {
+describe('dc-converter-widget block', () => {
   before(() => {
     const block = document.body.querySelector('.dc-converter-widget');
     init(block);
   });
 
-  it('shoud creates a DC converter widget block', async function () {
-    this.timeout(5000); // default 2000ms
-    const button = await waitForElement('#lifecycle-nativebutton');
-    expect(document.querySelector('#lifecycle-drop-zone')).to.be.exist;
-    expect(document.querySelector('#lifecycle-nativebutton')).to.be.exist;
+  afterEach(() => {
+    sinon.restore();
   });
 
-  it('should handle DC_Hosted:Ready event', () => {
+  it('handles DC_Hosted:Ready event', async() => {
     window.dc_hosted = {
-      getUserLimits: async () => {
+      getUserLimits: async () => ({
         upload: {
-          can_upload: true;
+          can_upload: true
         }
-      },
+      }),
     };
     window.dispatchEvent(new CustomEvent('DC_Hosted:Ready'));
+    await delay(100);
+    expect(window.doccloudPersonalization).to.be.exist;
+  });
+
+  it('handles IMS:Ready event', async () => {
+    window.adobeIMS = {
+      isSignedInUser: () => false,
+    };
+    window._satellite = {
+      track: sinon.stub(),
+    };
+    window.bowser = {
+      getParser: () => ({
+        getBrowserName: () => 'Chrome',
+        getBrowserVersion: () => '110',
+      }),
+    };
+    const widget = await readFile({ path: './mocks/widget.html' });
+    sinon.stub(window, 'fetch');
+    var res = new window.Response(widget, {
+      status: 200
+    });
+    window.fetch.returns(Promise.resolve(res));
+    window.dispatchEvent(new CustomEvent('IMS:Ready'));
+    await delay(1000);
+    expect(document.querySelector('#CID')).to.be.exist;
+  });
+
+  it('handles Bowser:Ready event', () => {
+    window.dispatchEvent(new CustomEvent('Bowser:Ready'));
   });
 });
