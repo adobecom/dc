@@ -7,7 +7,7 @@
  *
  */
 
- #dc-converter-widget {
+#dc-converter-widget {
   background-color: #fc6767;
   min-height: 570px;
 }
@@ -22,7 +22,6 @@
   left:0;
   top: 70px;
   right:0;
-  z-index: 1;
 }
 
 #VERB, .hide {
@@ -138,6 +137,10 @@
 
 .accordion-container.verb-subfooter-moblie  dd.is-open.has-focus {
   background-color: transparent;
+}
+
+.section {
+  z-index: -1;
 }
 
 .section.hide {
