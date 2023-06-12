@@ -7,6 +7,10 @@
  *
  */
 
+main:has(#dc-converter-widget) {
+  isolation: isolate;
+}
+
  #dc-converter-widget {
   background-color: #fc6767;
   min-height: 570px;
