@@ -33,6 +33,6 @@
   overflow: hidden;
 }
 
-main:has(#dc-converter-widget) {
+main {
   isolation: isolate;
 }
