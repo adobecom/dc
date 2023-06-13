@@ -42,6 +42,7 @@ const connectSrc = [
   'main--dc--adobecom.hlx.live',
   'http://localhost:6456/',
   '*.hlx.page',
+  '*.hlx.live',
   'cdn.linkedin.oribi.io',
   '*.akstat.io/',
   ';',
@@ -140,6 +141,7 @@ const imgSrc = [
   'a5.behance.net',
   'http://localhost:6456/',
   '*.hlx.page',
+  '*.hlx.live',
   ';',
 ];
 
@@ -227,6 +229,7 @@ const scriptSrc = [
   'main--milo--adobecom.hlx.page',
   'http://localhost:6456/',
   '*.hlx.page',
+  '*.hlx.live',
   ';',
 ];
 
@@ -242,6 +245,7 @@ const styleSrc = [
   'main--milo--adobecom.hlx.page',
   'http://localhost:6456/',
   '*.hlx.page',
+  '*.hlx.live',
   ';',
 ];
 

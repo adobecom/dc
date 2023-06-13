@@ -1,0 +1,158 @@
+import * as sinon from 'sinon';
+import { expect } from '@esm-bundle/chai';
+import { readFile } from '@web/test-runner-commands';
+import { delay } from '../../helpers/waitfor.js';
+
+const head = await readFile({ path: './mocks/head.html' });
+const body = await readFile({ path: './mocks/body.html' });
+const { default: init } = await import(
+  '../../../acrobat/blocks/eventwrapper/eventwrapper'
+);
+
+describe('eventwrapper block', () => {
+  let browserName = 'Chrome';
+
+  before(() => {
+    window.bowser = {
+      getParser: () => ({
+        getBrowserName: () => browserName,
+        parsedResult: {
+          platform: {
+            type: 'desktop',
+          },
+        },
+      }),
+    };
+    window.dc_hosted = {
+      events: [],
+      listeners: [],
+      addEventListener: function (fn) {
+        window.dc_hosted.listeners.push(fn);
+        window.dc_hosted.events.forEach(function (e) {
+          try {
+            fn(e.event, e.data);
+          } catch (ex) {
+            console.error('Error in addEventListener: ', ex, ex.stack);
+          }
+        });
+      },
+      dispatchEvent: function (event, data) {
+        window.dc_hosted.events.push({ event: event, data: data });
+        window.dc_hosted.listeners.forEach(function (fn) {
+          try {
+            fn(event, data);
+          } catch (e) {
+            console.error('Error in dispatchEvent: ', e, e.stack);
+          }
+        });
+      },
+    };
+    window.chrome = {
+      runtime: {
+        sendMessage: function (message, version, callback) {
+          callback(false);
+        },
+      },
+    };
+    window._satellite = {
+      track: sinon.stub(),
+    };
+  });
+
+  afterEach(() => {
+    sinon.resetHistory();
+  });
+
+  after(() => {
+    sinon.restore();
+  });
+
+  it('handles Bowser:Ready', async function () {
+    this.timeout(5000);
+    window.dispatchEvent(new CustomEvent('Bowser:Ready'));
+  });
+
+  it('shows the ext modal on Chrome when conversion complete and preview displayed', async function () {
+    document.head.innerHTML = head;
+    document.body.innerHTML = body;
+    window.dc_hosted.listeners = [];
+    localStorage.removeItem('fricBrowExt');
+    window.modalDisplayed = false;
+    const blocks = document.body.querySelectorAll('.eventwrapper');
+    blocks.forEach((x) => init(x));
+    window.dispatchEvent(new CustomEvent('DC_Hosted:Ready'));
+    expect(window.dc_hosted.listeners).to.have.lengthOf(blocks.length);
+    window.dc_hosted.dispatchEvent('conversion-complete', {});
+    expect(window.modalDisplayed).to.be.true;
+
+    window.modalDisplayed = false;
+    window.dc_hosted.dispatchEvent('preview-displayed', {});
+    expect(window.modalDisplayed).to.be.true;
+  });
+
+  it('shows the ext modal on MS Edge when conversion complete and preview displayed', async function () {
+    browserName = 'Microsoft Edge';
+    document.head.innerHTML = head;
+    document.body.innerHTML = body;
+    window.dc_hosted.listeners = [];
+    localStorage.removeItem('fricBrowExt');  
+    window.modalDisplayed = false;
+    window.chrome = {
+      runtime: {},
+    };
+    const blocks = document.body.querySelectorAll('.eventwrapper');
+    blocks.forEach((x) => init(x));
+    window.dispatchEvent(new CustomEvent('DC_Hosted:Ready'));
+    window.dc_hosted.dispatchEvent('conversion-complete', {});
+    expect(window.modalDisplayed).to.be.true;
+
+    window.modalDisplayed = false;
+    window.dc_hosted.dispatchEvent('preview-displayed', {});
+    expect(window.modalDisplayed).to.be.true;
+  });
+
+  it('handles processing-start', async function () {
+    window.dc_hosted.dispatchEvent('processing-start', {});
+    expect(document.body.dataset.currentEvent).to.eql('start');
+  });
+
+  it('handles file-upload-start', async function () {
+    window.dc_hosted.dispatchEvent('file-upload-start', {});
+    expect(document.body.dataset.currentEvent).to.eql('upload');
+  });
+
+  it('handles file-upload-complete', async function () {
+    window.dc_hosted.dispatchEvent('file-upload-complete', {});
+    expect(document.body.dataset.currentEvent).to.eql('uploadcomplete');
+  });
+
+  it('handles processing-cancelled', async function () {
+    window.dc_hosted.dispatchEvent('processing-cancelled', {});
+    expect(document.body.dataset.currentEvent).to.eql('cancel');
+  });
+
+  it('handles try-another-file-start', async function () {
+    window.dc_hosted.dispatchEvent('try-another-file-start', {});
+    expect(window.modalDisplayed).to.be.false;  
+  });
+
+  it('handles preview-generating', async function () {
+    window.dc_hosted.dispatchEvent('preview-generating', {});
+    expect(document.body.dataset.currentEvent).to.eql('preview');   
+  });
+
+  it('handles preview-displayed', async function () {
+    window.dc_hosted.dispatchEvent('preview-displayed', {});
+    expect(document.body.dataset.currentEvent).to.eql('preview');
+  });
+
+  it('handles dropzone-displayed', async function () {
+    window.dc_hosted.dispatchEvent('dropzone-displayed', {});
+    expect(document.body.dataset.currentEvent).to.be.undefined;
+  });
+
+  it('handles download-start', async function () {
+    window.dc_hosted.dispatchEvent('download-start', {});
+    expect(document.body.dataset.currentEvent).to.eql('download');
+  });
+});

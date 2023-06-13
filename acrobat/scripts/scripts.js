@@ -19,7 +19,8 @@ const setLibs = (prodLibs, location) => {
   if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.adobe.com/libs';
   if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
   if (branch === 'local') return 'http://localhost:6456/libs';
-  return branch.includes('--') ? `https://${branch}.hlx.page/libs` : `https://${branch}--milo--adobecom.hlx.page/libs`;
+  const tld = hostname.includes('live') ? 'live' : 'page';
+  return branch.includes('--') ? `https://${branch}.hlx.${tld}/libs` : `https://${branch}--milo--adobecom.hlx.${tld}/libs`;
 }
 
 function loadStyles(paths) {

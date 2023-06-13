@@ -4,8 +4,12 @@
   "version": "1.0.0",
   "description": "Website foundation technology.",
   "scripts": {
-    "test": "wtr \"./test/**/*.test.(js|html)\" --node-resolve --port=2000 --coverage --concurrent-browsers 4",
-    "test:watch": "npm test -- --watch",
+    "test": "npm run wtr ; npm run jest",
+    "wtr": "wtr \"./test/**/*.test.(js|html)\" --node-resolve --port=2000 --coverage --concurrent-browsers 4",
+    "wtr:watch": "npm run wtr -- --watch",
+    "jest": "jest --coverage --coverageDirectory=coverage/jest",
+    "jest:watch": "npm run jest -- --watchAll",
+    "lcov": "lcov -a coverage/jest/lcov.info -a coverage/wtr/lcov.info -o coverage/lcov.info",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint .",
     "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css'"
@@ -31,6 +35,8 @@
     "eslint": "8.11.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.25.4",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
     "microbundle": "^0.15.1",
     "sinon": "13.0.1",
     "stylelint": "14.6.0",
@@ -39,5 +45,18 @@
   },
   "dependencies": {
     "bowser": "^2.11.0"
+  },
+  "jest": {
+    "testRegex": "\\.jest\\.(js|jsx)$",
+    "collectCoverageFrom": [
+      "acrobat/**/*.js"
+    ],
+    "coverageProvider": "v8",
+    "moduleNameMapper": {
+      "^https:\/\/main--milo--adobecom\\.hlx\\.page\/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
+      "^https:\/\/www\\.adobe\\.com\/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
+      "^http:\/\/localhost:6456\/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",  
+      "^\/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1"           
+    }
   }
 }
