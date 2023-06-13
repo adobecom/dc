@@ -208,7 +208,6 @@ const CONFIG = {
   addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
-  await loadArea();
 
   // Setup href of sign in
   const singInReady = setInterval(() => {
@@ -220,6 +219,8 @@ const CONFIG = {
     }
 
   }, 100);
+
+  await loadArea();
 
   // Promotion from metadata (for FedPub)
   const promotionMetadata = getMetadata('promotion');
