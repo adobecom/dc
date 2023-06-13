@@ -210,6 +210,17 @@ const CONFIG = {
   loadLana({ clientId: 'dxdc' });
   await loadArea();
 
+  // Setup href of sign in
+  const singInReady = setInterval(() => {
+    const singIn = document.querySelector('.gnav-signin');
+    if(singIn){
+      console.log(singIn);
+      clearInterval(singInReady);
+      singIn.setAttribute('href', '#');
+    }
+
+  }, 100);
+
   // Promotion from metadata (for FedPub)
   const promotionMetadata = getMetadata('promotion');
   if (promotionMetadata && !document.querySelector('main .promotion')) {
