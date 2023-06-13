@@ -213,7 +213,6 @@ const CONFIG = {
   const singInReady = setInterval(() => {
     const singIn = document.querySelector('.gnav-signin');
     if(singIn){
-      console.log(singIn);
       clearInterval(singInReady);
       singIn.setAttribute('href', '#');
     }
