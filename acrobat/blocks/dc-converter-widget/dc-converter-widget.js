@@ -62,6 +62,7 @@ const verbRedirMap = {
   'insert-pdf': 'insert',
   'compress-pdf': 'compress',
   'png-to-pdf': 'jpgtopdf',
+  'number-pages': 'number',
 };
 
 let url = new URL(window.location.href);
