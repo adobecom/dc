@@ -39,6 +39,17 @@ function addLocale(locale) {
   document.head.appendChild(metaTag);
 }
 
+function setupGnavItemsHref(selector) {
+  const gnavItemReady = setInterval(() => {
+    const gnavItem = document.querySelector(selector);
+    if(gnavItem){
+      clearInterval(gnavItemReady);
+      gnavItem.setAttribute('href', '#');
+    }
+
+  }, 100);
+}
+
 // Add project-wide styles here.
 const STYLES = '/acrobat/styles/styles.css';
 
@@ -210,14 +221,10 @@ const CONFIG = {
   loadLana({ clientId: 'dxdc' });
 
   // Setup href of sign in
-  const singInReady = setInterval(() => {
-    const singIn = document.querySelector('.gnav-signin');
-    if(singIn){
-      clearInterval(singInReady);
-      singIn.setAttribute('href', '#');
-    }
+  setupGnavItemsHref('.gnav-signin');
 
-  }, 100);
+  //Setup href of section menu
+  setupGnavItemsHref('.section-menu > a');
 
   await loadArea();
 
