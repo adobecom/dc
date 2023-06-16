@@ -65,7 +65,7 @@ const locales = {
   cy_en: { ietf: 'en-CY', tk: 'pps7abe.css' },
   dk: { ietf: 'da-DK', tk: 'aaz7dvd.css' },
   de: { ietf: 'de-DE', tk: 'vin7zsi.css' },
-  ee: { ietf: 'et-EE', tk: 'aaz7dvd.css' },
+  ee: { ietf: 'en-EE', tk: 'aaz7dvd.css' },
   es: { ietf: 'es-ES', tk: 'oln4yqj.css' },
   fr: { ietf: 'fr-FR', tk: 'vrk5vyv.css' },
   gr_en: { ietf: 'en-GR', tk: 'pps7abe.css' },
@@ -98,7 +98,7 @@ const locales = {
   uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
   at: { ietf: 'de-AT', tk: 'vin7zsi.css' },
   cz: { ietf: 'cs-CZ', tk: 'aaz7dvd.css' },
-  bg: { ietf: 'bg-BG', tk: 'aaz7dvd.css' },
+  bg: { ietf: 'en-BG', tk: 'aaz7dvd.css' },
   ru: { ietf: 'ru-RU', tk: 'aaz7dvd.css' },
   ua: { ietf: 'en-UA', tk: 'aaz7dvd.css' },
   il_he: { ietf: 'he', tk: 'nwq1mna.css', dir: 'rtl' },
@@ -191,7 +191,7 @@ const CONFIG = {
       ContentSecurityPolicy();
     }
   })();
-  
+
   // Setup Milo
   const miloLibs = setLibs(LIBS);
 
