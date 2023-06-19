@@ -1,4 +1,5 @@
 import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
+import browserExtAlloy from '../../scripts/alloy/browserExt.js'
 
 //TODO: Only have run one time
 window.addEventListener('Bowser:Ready', ()=> {
@@ -39,12 +40,14 @@ export default function init(element) {
     return;
   }
 
-  const extInstalled = (extid, extname) => {
+  const extInstalled = (extid, extname, browserName) => {
     const event = new CustomEvent('modal:open', { detail: { hash: extname } });
     if (chrome.runtime && chrome.runtime.sendMessage) {
       chrome.runtime.sendMessage(extid, 'version', response => {
         if (!response) {
           window.dispatchEvent(event);
+        }else{
+          browserExtAlloy('modalExist', browserName);
         }
 
       });
@@ -69,15 +72,17 @@ export default function init(element) {
           window.modalDisplayed = true;
           extName = '#chromeext';
           extID = 'efaidnbmnnnibpcajpcglclefindmkaj';
-          extInstalled(extID, extName);
+          extInstalled(extID, extName, browserName);
         }
     
         if (browserName === 'Microsoft Edge' && !window.modalDisplayed) {
           window.modalDisplayed = true;
           extName = '#edgeext';
           extID = 'elhekieabhbkpmcefcoobjddigjcaadp';
-          extInstalled(extID, extName);
+          extInstalled(extID, extName, browserName);
         }
+      }else{
+        browserExtAlloy('modalAlready', browserName);
       }
     }
 
