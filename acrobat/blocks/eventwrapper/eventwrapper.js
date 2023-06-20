@@ -21,6 +21,7 @@ const TRY_ANOTHER = 'try-another-file-start';
 
 export default function init(element) {
   const wrapper = element;
+  const reviewBlock = document.querySelectorAll('.review');
   const setCurrentEvent = (event) => {
     if (document.querySelectorAll(`[data-event-name="${event}"]`).length > 0) {
       document.body.dataset.currentEvent = event;
@@ -55,6 +56,7 @@ export default function init(element) {
   };
 
   const handleEvents = (e, jobData, converter, verb) => {
+    console.log(e);
     let parser = bowser.getParser(window.navigator.userAgent);
     let browserName = parser.getBrowserName();
     let extID;
@@ -92,6 +94,7 @@ export default function init(element) {
         break;
       case UPLOAD_START:
         setCurrentEvent('upload');
+        if (reviewBlock[0]) { reviewBlock[0].classList.add('fade'); };
         break;
       case UPLOAD_COMPLETE:
         setCurrentEvent('uploadcomplete');
@@ -107,12 +110,15 @@ export default function init(element) {
         break;
       case CONVERSION_COM:
         setCurrentEvent('complete');
+        if (reviewBlock[0]) { reviewBlock[0].classList.remove('fade'); };
         break;
       case PREVIEW_GEN:
         setCurrentEvent('preview');
+        if (reviewBlock[0]) { reviewBlock[0].classList.remove('fade'); };
         break;
       case DROPZONE_DIS:
         setCurrentEvent(DROPZONE_DIS);
+        if (reviewBlock[0]) { reviewBlock[0].classList.remove('fade'); };
         break;
       case DOWNLOAD_START:
         setCurrentEvent('download');

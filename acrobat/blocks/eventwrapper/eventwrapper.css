@@ -38,6 +38,7 @@ body:not([data-current-event]) [data-event-name=onload] {
 
 [data-current-event=complete] .fake-dc-wrapper,
 [data-current-event=complete] #CID,
+[data-current-event=start] #CID,
 [data-current-event=uploadcomplete] .fake-dc-wrapper,
 [data-current-event=uploadcomplete] #CID {
   top: 30px;
