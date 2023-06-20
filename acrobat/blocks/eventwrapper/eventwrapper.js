@@ -56,7 +56,6 @@ export default function init(element) {
   };
 
   const handleEvents = (e, jobData, converter, verb) => {
-    console.log(e);
     let parser = bowser.getParser(window.navigator.userAgent);
     let browserName = parser.getBrowserName();
     let extID;
