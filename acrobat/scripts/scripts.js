@@ -99,10 +99,14 @@ const CONFIG = {
   loadStyles(paths);
 
   // Import base milo features and run them
-  const { locales } = await import(`${miloLibs}/scripts/scripts.js`);
-  const {
-    loadArea, loadDelayed, loadScript, setConfig, loadLana, getMetadata, getLocale
-  } = await import(`${miloLibs}/utils/utils.js`);
+  const [
+    { locales },
+    { loadArea, loadDelayed, loadScript, setConfig, loadLana, getMetadata, getLocale }
+  ] = await Promise.all([
+    import(`${miloLibs}/scripts/locales.js`),
+    import(`${miloLibs}/utils/utils.js`),
+  ]);
+
   const { ietf } = getLocale(locales);
   addLocale(ietf);
   setConfig({ ...CONFIG, locales, miloLibs });
