@@ -7,7 +7,6 @@ describe('Test scripts', () => {
     jest.mock('https://www.adobe.com/libs/utils/utils.js', () => {
       return {
         loadArea: jest.fn(),
-        loadDelayed: jest.fn(),
         loadScript: jest.fn(),
         loadLana: jest.fn(),
         getLocale: jest.fn().mockImplementation(() => ({ ietf: 'en-US' })),
@@ -20,7 +19,6 @@ describe('Test scripts', () => {
       () => {
         return {
           loadArea: jest.fn(),
-          loadDelayed: jest.fn(),
           loadScript: jest.fn(),
           loadLana: jest.fn(),
           getLocale: jest.fn().mockImplementation(() => ({ ietf: 'en-US' })),
@@ -32,7 +30,6 @@ describe('Test scripts', () => {
     jest.mock('/libs/utils/utils.js', () => {
       return {
         loadArea: jest.fn(),
-        loadDelayed: jest.fn(),
         loadScript: jest.fn(),
         loadLana: jest.fn(),
         getLocale: jest.fn().mockImplementation(() => ({ ietf: 'en-US' })),
