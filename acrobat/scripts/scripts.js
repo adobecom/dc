@@ -202,7 +202,7 @@ const CONFIG = {
 
   // Import base milo features and run them
   const {
-    loadArea, loadDelayed, loadScript, setConfig, loadLana, getMetadata, getLocale
+    loadArea, loadScript, setConfig, loadLana, getMetadata, getLocale
   } = await import(`${miloLibs}/utils/utils.js`);
   const { ietf } = getLocale(locales);
   addLocale(ietf);
@@ -216,8 +216,6 @@ const CONFIG = {
     const { promotionFromMetadata } = await import('../blocks/promotion/promotion.js');
     promotionFromMetadata(promotionMetadata);
   }
-
-  loadDelayed();
 
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
