@@ -193,6 +193,7 @@ export default function init(element) {
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
+  widgetContainer.className = `wapper-${VERB}`;
   widget.appendChild(widgetContainer);
 
   const isReturningUser = window.localStorage.getItem('pdfnow.auth');
