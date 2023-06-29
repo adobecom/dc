@@ -10,7 +10,7 @@ const connectSrc = [
   '*.clarity.ms',
   '*.clicktale.net/',
   '*.mktoresp.com',
-  '*.demandbase.com',
+  'tag-logger.demandbase.com',
   'accounts.google.com/gsi/log',
   'accounts.google.com/gsi/status',
   'adobe.tt.omtrdc.net',

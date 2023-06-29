@@ -9,7 +9,7 @@ const connectSrc = [
   '*.blob.core.windows.net',
   '*.clicktale.net/',
   '*.mktoresp.com',
-  '*.demandbase.com',  
+  'tag-logger.demandbase.com',
   'accounts.google.com/gsi/log',
   'accounts.google.com/gsi/status',
   'acom-reviews--adobe.hlx.live/reviews-api/',
