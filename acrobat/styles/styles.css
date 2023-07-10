@@ -257,7 +257,6 @@ div.how-to ol li::before{
 .section .columns.browser-extension {
   padding: 20px;
   width:480px;
-  height: 190px;
   font-size: 16px;
   animation-name: modalSlideIn-frictionlessBrowserExtension;
   transition: opacity 125ms ease-in-out,background-color 125ms ease-in-out,backdrop-filter 125ms ease-in-out,-webkit-backdrop-filter 125ms ease-in-out,transform 125ms ease-in-out;
@@ -267,6 +266,11 @@ div.how-to ol li::before{
   margin-top: 0;
   margin-right: 20px;
 }
+
+.section .columns.browser-extension p:last-child {
+  margin-bottom: 10px;
+}
+
 .section .columns.browser-extension > .row {
   display: flex;
   margin-bottom: 0;
@@ -274,9 +278,6 @@ div.how-to ol li::before{
 }
 .section .columns.browser-extension picture {
   width: initial;
-  vertical-align: middle;
-  display: flex;
-  padding: 30px 10px 0px 10px;
 }
 .section .columns.browser-extension picture img {
   width: 90px;
@@ -310,6 +311,9 @@ div.how-to ol li::before{
 .section .columns.browser-extension .row .col-2 {
   width: 33.333333%;
   border-left: solid 2px #EAEAEA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* CLS */
