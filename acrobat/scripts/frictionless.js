@@ -56,7 +56,6 @@ export default function init(verb) {
         return;
       }
       clearInterval(extensionWait);
-      browserExtAlloy('modalExist', browserName);
       browserExtAlloy('modalGetExtension', browserName, 'impression');
 
       browserExtClose.addEventListener('click', () => {
