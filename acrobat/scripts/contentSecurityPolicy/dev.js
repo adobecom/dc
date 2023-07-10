@@ -10,6 +10,7 @@ const connectSrc = [
   '*.clarity.ms',
   '*.clicktale.net/',
   '*.mktoresp.com',
+  'tag-logger.demandbase.com',
   'accounts.google.com/gsi/log',
   'accounts.google.com/gsi/status',
   'adobe.tt.omtrdc.net',
@@ -91,6 +92,7 @@ const frameSrc = [
   'vimeo.com',
   'www.facebook.com',
   'www.youtube.com',
+  's.company-target.com',
   ';',
 ];
 
