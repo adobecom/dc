@@ -9,6 +9,7 @@ const connectSrc = [
   '*.amazonaws.com',
   '*.blob.core.windows.net',
   '*.mktoresp.com',
+  'tag-logger.demandbase.com',
   'accounts.google.com/gsi/log',
   'accounts.google.com/gsi/status',
   'acom-reviews--adobe.hlx.live/reviews-api/',
@@ -87,6 +88,7 @@ const frameSrc = [
   'vimeo.com',
   'www.facebook.com',
   'www.youtube.com',
+  's.company-target.com',
   ';',
 ];
 
