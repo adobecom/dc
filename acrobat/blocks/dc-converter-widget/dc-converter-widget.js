@@ -149,13 +149,12 @@ export default function init(element) {
       'data-load_imslib': 'false',
       'data-enable_unload_prompt': 'true',
     });
-    // element.append(dcWidgetScript);
 
-    // setTimeout( ()=> {
+    document.addEventListener('milo:deferred', ()=> {
+      console.log('milo def 1');
+      element.append(dcWidgetScript);
 
-    // }, 10000)
-
-
+    })
   });
   
  
