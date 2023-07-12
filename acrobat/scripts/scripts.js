@@ -200,6 +200,23 @@ const CONFIG = {
   if (STYLES) { paths.push(STYLES); }
   loadStyles(paths);
 
+  // Labeling the placeholders before they get processed by Milo
+  const placeholderLabel = (document) => {
+    const ccregex = /{{(.*?)}}/g;
+    const matches = [...document.innerHTML.matchAll(ccregex)];
+    if (matches.length > 0) {
+      const pTags = document.querySelectorAll('p');
+      pTags.forEach((pTag) => {
+        if (pTag.innerHTML.match(ccregex)) {
+          const translationLabel = pTag.innerHTML;
+          const label = translationLabel.slice(2,-2);
+          pTag.setAttribute('data-local', label);
+        }
+      });
+    }
+  };
+  placeholderLabel(document.documentElement);
+
   // Import base milo features and run them
   const {
     loadArea, loadScript, setConfig, loadLana, getMetadata, getLocale
@@ -208,6 +225,7 @@ const CONFIG = {
   addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
+  console.log('milo function runs');
   await loadArea();
 
   // Promotion from metadata (for FedPub)
