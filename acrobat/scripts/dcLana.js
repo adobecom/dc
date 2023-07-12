@@ -19,6 +19,7 @@ export default function lanaLogging() {
     });
   });
 
+  console.log('test');
   setTimeout(() => {
     if (fricPage && !window.dc_hosted) {
       lanaOptions.tags = 'Cat=DxDC_Frictionless,origin=milo';
