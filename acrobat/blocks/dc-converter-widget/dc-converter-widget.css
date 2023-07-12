@@ -20,14 +20,14 @@
 }
 
 .widget-wrapper {
-  border: 1px #e1e1e1 solid;
+  /* border: 1px #e1e1e1 solid; */
   margin: 5px;
   border-radius: 8px;
 }
 
-/* Full Screen Widget US / PDF-to-PPT ONLY */
 @media (max-width: 600px) {
-  .widget-wrapper {
+  .widget-wrapper,
+  .widget-wrapper > div {
     height: calc(100vh - 120px);
   }
 }

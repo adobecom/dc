@@ -151,9 +151,7 @@ export default function init(element) {
     });
 
     document.addEventListener('milo:deferred', ()=> {
-      console.log('milo def 1');
       element.append(dcWidgetScript);
-
     })
   });
   
