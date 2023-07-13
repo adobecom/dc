@@ -26,6 +26,7 @@
 }
 
 @media (max-width: 600px) {
+  .dc-converter-widget,
   .widget-wrapper,
   .widget-wrapper > div {
     height: calc(100vh - 120px);
