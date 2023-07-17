@@ -124,16 +124,22 @@ export default function init(element) {
   const HEADING = 'Convert PDF to PowerPoint';
   const COPY = 'Select a PDF file to convert it into a Microsoft PowerPoint presentation.';
   const LEGAL = 'Your file will be securely handled by Adobe servers and deleted unless you sign in to save it. By using this service, you agree to the Adobe Terms of Use and Privacy Policy.'
+  const BTN = 'Upload a File'
 
   //Create Fake Widget
   createTag.then((tag) => {
     const wrapper = tag('div', {id: 'CID', class: 'widget-wrapper' });
     const heading = tag('h1', { class: 'widget-heading' }, HEADING);
+
+    const center = tag('div', { class: 'widget-center' });
     const copy = tag('div', { class: 'widget-copy' }, COPY);
     const legal = tag('div', { class: 'widget-legal' }, LEGAL);
+    const button = tag('div', { class: 'widget-button' }, BTN);
     element.append(wrapper);
     wrapper.append(heading);
-    wrapper.append(copy);
+    wrapper.append(center)
+    center.append(copy);
+    center.append(button);
     wrapper.append(legal);
 
     let WIDGET_ENV = `https://dev.acrobat.adobe.com/dc-hosted/2.40.0_1.172.1/dc-app-launcher.js`;
@@ -151,7 +157,7 @@ export default function init(element) {
     });
 
     document.addEventListener('milo:deferred', ()=> {
-      element.append(dcWidgetScript);
+      // element.append(dcWidgetScript);
     })
   });
   
