@@ -58,4 +58,15 @@
     
     /* justify-content: center; */
   }
+  
+  .fs > div > div {
+    height: calc(100vh - 110px);
+  }
 }
+
+/* 
+@media (max-width: 600px) {
+  [lang="en-US"] .wapper-pdf-to-ppt > div > div {
+    height: calc(100vh - 120px);
+  }
+} */

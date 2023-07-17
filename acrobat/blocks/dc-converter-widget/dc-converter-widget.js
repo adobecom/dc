@@ -157,7 +157,8 @@ export default function init(element) {
     });
 
     document.addEventListener('milo:deferred', ()=> {
-      // element.append(dcWidgetScript);
+      wrapper.classList.add('fs');
+      element.append(dcWidgetScript);
     })
   });
   
