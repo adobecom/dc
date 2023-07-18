@@ -181,6 +181,12 @@ const CONFIG = {
       widgetBlock.id = 'dc-converter-widget';
       const { default: dcConverter } = await import('../blocks/dc-converter-widget/dc-converter-widget.js');
       dcConverter(widgetBlock);
+
+      setTimeout(() =>{
+        const dcor = document.querySelector('[data-status="decorated"]');
+        delete dcor.dataset.status
+        console.log('fasttrack');
+      }, 10)
     }
   })();
 
@@ -208,7 +214,9 @@ const CONFIG = {
   addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
+  console.log('b4 DC Load Area');
   await loadArea();
+  console.log('After DC Load Area');
 
   // Promotion from metadata (for FedPub)
   const promotionMetadata = getMetadata('promotion');
