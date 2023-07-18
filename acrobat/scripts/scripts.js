@@ -21,7 +21,7 @@ const setLibs = (prodLibs, location) => {
   if (branch === 'local') return 'http://localhost:6456/libs';
   const tld = hostname.includes('live') ? 'live' : 'page';
   return branch.includes('--') ? `https://${branch}.hlx.${tld}/libs` : `https://${branch}--milo--adobecom.hlx.${tld}/libs`;
-}
+};
 
 function loadStyles(paths) {
   paths.forEach((path) => {
@@ -209,7 +209,7 @@ const CONFIG = {
       pTags.forEach((pTag) => {
         if (pTag.innerHTML.match(ccregex)) {
           const translationLabel = pTag.innerHTML;
-          const label = translationLabel.slice(2,-2);
+          const label = translationLabel.slice(2, -2);
           pTag.setAttribute('data-local', label);
         }
       });
@@ -219,13 +219,12 @@ const CONFIG = {
 
   // Import base milo features and run them
   const {
-    loadArea, loadScript, setConfig, loadLana, getMetadata, getLocale
+    loadArea, loadScript, setConfig, loadLana, getMetadata, getLocale,
   } = await import(`${miloLibs}/utils/utils.js`);
   const { ietf } = getLocale(locales);
   addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
-  console.log('milo function runs');
   await loadArea();
 
   // Promotion from metadata (for FedPub)
@@ -268,3 +267,8 @@ const bowserReady = setInterval(() => {
     window.dispatchEvent(bowserIsReady);
   }
 }, 100);
+
+const { default: ccTranslations } = await import('./ccTranslations.js');
+document.addEventListener('milo:deferred', () => {
+  ccTranslations();
+});
