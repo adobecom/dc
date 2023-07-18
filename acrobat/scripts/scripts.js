@@ -176,17 +176,21 @@ const CONFIG = {
   // Fast track the widget
   (async () => {
     const widgetBlock = document.querySelector('.dc-converter-widget');
+    console.log(widgetBlock);
     if (widgetBlock) {
+      const basic = setInterval(() =>{
+        const dcor = document.querySelectorAll('[data-status="decorated"]');
+        console.log(dcor);
+        if (dcor[0]) {
+          delete dcor[0].dataset.status
+          console.log('fasttrack');
+          clearInterval(basic)
+        }
+      }, 10)
       widgetBlock.removeAttribute('class');
       widgetBlock.id = 'dc-converter-widget';
       const { default: dcConverter } = await import('../blocks/dc-converter-widget/dc-converter-widget.js');
       dcConverter(widgetBlock);
-
-      setTimeout(() =>{
-        const dcor = document.querySelector('[data-status="decorated"]');
-        delete dcor.dataset.status
-        console.log('fasttrack');
-      }, 10)
     }
   })();
 
