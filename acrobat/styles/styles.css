@@ -50,10 +50,10 @@
 
 .dialog-modal.extension-modal {
   top: unset;
-  right: unset;
+  left: unset;
   box-shadow: 0 .5em 1em -.125em hsla(0,0%,4%,.1),0 0 0 1px hsla(0,0%,4%,.02);
   margin-bottom: 20px;
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .col[data-align="center"] {
@@ -241,16 +241,16 @@ div.how-to ol li::before{
 
 /* browser extension modal */
 @keyframes modalSlideIn-frictionlessBrowserExtension {
-  from { left: -50rem !important; }
-  to { left: 0; }
+  from { right: -50rem !important; }
+  to { right: 0; }
 }
 .dialog-modal.extension-modal.backdrop-off {
   width: 30rem;
   max-height: 188px;
   top: revert;
-  right: revert;
+  left: revert;
   margin-bottom: 20px;
-  margin-left: 20px;
+  margin-right: 20px;
   overflow: hidden;
   box-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 4% / 10%), 0 0 0 1px hsl(0deg 0% 4% / 2%);
 }
