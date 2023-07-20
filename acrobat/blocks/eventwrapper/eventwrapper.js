@@ -18,6 +18,8 @@ const DROPZONE_DIS = 'dropzone-displayed';
 const PREVIEW_DIS = 'preview-displayed';
 const TRY_ANOTHER = 'try-another-file-start';
 // const UPSELL_DIS = 'upsell-displayed';
+const FADE = 'review fade-in';
+console.log('sgadggadg');
 
 export default function init(element) {
   const wrapper = element;
@@ -109,15 +111,15 @@ export default function init(element) {
         break;
       case CONVERSION_COM:
         setCurrentEvent('complete');
-        if (reviewBlock[0]) { reviewBlock[0].classList.remove('fade'); };
+        if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case PREVIEW_GEN:
         setCurrentEvent('preview');
-        if (reviewBlock[0]) { reviewBlock[0].classList.remove('fade'); };
+        if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DROPZONE_DIS:
         setCurrentEvent(DROPZONE_DIS);
-        if (reviewBlock[0]) { reviewBlock[0].classList.remove('fade'); };
+        if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DOWNLOAD_START:
         setCurrentEvent('download');
