@@ -7,7 +7,11 @@
  *
  */
 
- #dc-converter-widget {
+div[data-section="widget"] {
+  display: block !important;
+}
+
+#dc-converter-widget {
   background-color: #fc6767;
   min-height: 570px;
 }
