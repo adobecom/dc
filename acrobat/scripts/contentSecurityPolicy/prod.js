@@ -1,3 +1,8 @@
+const childSrc = [
+  '\'self\'',
+  ';',
+];
+
 const connectSrc = [
   '\'self\'',
   'blob:',
@@ -239,4 +244,4 @@ const workerSrc = [
   ';',
 ];
 
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};
+export default { childSrc, connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};
