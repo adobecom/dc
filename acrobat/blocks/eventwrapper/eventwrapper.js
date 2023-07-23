@@ -19,7 +19,6 @@ const PREVIEW_DIS = 'preview-displayed';
 const TRY_ANOTHER = 'try-another-file-start';
 // const UPSELL_DIS = 'upsell-displayed';
 const FADE = 'review fade-in';
-console.log('sgadggadg');
 
 export default function init(element) {
   const wrapper = element;
@@ -49,7 +48,6 @@ export default function init(element) {
         if (!response) {
           window.dispatchEvent(event);
         }
-
       });
     } else {
       window.dispatchEvent(event);
@@ -62,7 +60,6 @@ export default function init(element) {
     let browserName = parser.getBrowserName();
     let extID;
     if (e === PROCESS_START) converterAnalytics();
-
     if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop'
         || e === PREVIEW_DIS && parser.parsedResult.platform.type === 'desktop') {
       // Browser Extension
@@ -95,7 +92,7 @@ export default function init(element) {
         break;
       case UPLOAD_START:
         setCurrentEvent('upload');
-        if (reviewBlock[0]) { reviewBlock[0].classList.add('fade'); };
+        if (reviewBlock[0]) { reviewBlock[0].classList.add('hide'); };
         break;
       case UPLOAD_COMPLETE:
         setCurrentEvent('uploadcomplete');

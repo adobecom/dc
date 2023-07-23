@@ -50,21 +50,6 @@ body:not([data-current-event]) [data-event-name=onload] {
   animation-name: fade-in;
 }
 
-/* .review.fade-out {
-  animation-duration: 1s;
-  animation-name: fade-in;
-  visibility: hidden;
-} */
-
-/* @keyframes fade-out { 
-  0% { 
-    opacity: 1;
-  }
-
-  100% { 
-    opacity: 0;
-  }
-} */
 
 @keyframes fade-in { 
   0% { 
