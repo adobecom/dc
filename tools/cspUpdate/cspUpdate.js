@@ -126,7 +126,7 @@ const raisePR = async () => {
     title: 'CSP Update',
     body: '',
     head: `${OWNER}:${BRANCH}`,
-    base: 'main',
+    base: 'stage',
   }
   const pullRequest = await fetch(URL_PULL, {headers, body: JSON.stringify(pullBody), method: 'POST'});
   if(pullRequest.status !== 201){
