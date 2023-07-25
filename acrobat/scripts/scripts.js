@@ -151,8 +151,11 @@ const CONFIG = {
   codeRoot: '/acrobat',
   contentRoot: '/dc-shared',
   imsClientId: 'acrobatmilo',
-  local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
-  stage: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
+  local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga' },
+  stage: {
+    edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
+    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js'
+  },
   live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   prod: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
   locales,

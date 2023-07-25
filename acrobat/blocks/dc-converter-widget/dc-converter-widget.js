@@ -117,6 +117,7 @@ let langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
 
 export default function init(element) {
+  element.closest('main > div').dataset.section = 'widget';
   const widget = element;
   const DC_WIDGET_VERSION_FALLBACK = '2.40.0_1.172.1';
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.172.1';

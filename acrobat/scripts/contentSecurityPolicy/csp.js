@@ -21,7 +21,8 @@ async function getCspEnv() {
 export default async function ContentSecurityPolicy() {
   const { default: ENV } = await getCspEnv();
 
-  const theCSP = `connect-src ${ENV.connectSrc.join(' ')}\
+  const theCSP = `child-src ${ENV.childSrc.join(' ')}\
+  connect-src ${ENV.connectSrc.join(' ')}\
   default-src ${ENV.defaultSrc.join(' ')}\
   font-src ${ENV.fontSrc.join(' ')}\
   form-action ${ENV.formAction.join(' ')}\
