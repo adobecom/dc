@@ -125,6 +125,9 @@ export default function init(element) {
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.172.1';
   const STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
   const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
+  const isReturningUser = window.localStorage.getItem('pdfnow.auth');
+  const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
+  const preRenderDropZone = !isReturningUser && !isRedirection;
 
   let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
   let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
@@ -148,7 +151,7 @@ export default function init(element) {
 
   createTag.then((createTag) => {
     const preCacheGen = createTag('link', { rel: 'prefetch', as: 'script', href: `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html` });
-    document.head.appendChild(preCacheGen);
+    if (preRenderDropZone) { document.head.appendChild(preCacheGen); }
     const preAppLauncher = createTag('link', { rel: 'prefetch', as: 'script', href: WIDGET_ENV });
     document.head.appendChild(preAppLauncher);
   });
@@ -181,7 +184,6 @@ export default function init(element) {
     REDIRECT_URL_DIV.remove();
   }
 
-
     // Generate cache url
     const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
     if (GENERATE_CACHE_URL_DIV) {
@@ -208,9 +210,6 @@ export default function init(element) {
   widgetContainer.className = `wapper-${VERB}`;
   widget.appendChild(widgetContainer);
 
-  const isReturningUser = window.localStorage.getItem('pdfnow.auth');
-  const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
-  const preRenderDropZone = !isReturningUser && !isRedirection;
   if (preRenderDropZone) {
     (async () => {
       // TODO: Make dynamic
