@@ -1,3 +1,5 @@
+import {createTag} from "../../scripts/miloUtils.js";
+
 // Could use webpack/rollup. Just manually inline these structures, for now.
 const localeMap = {
   '': 'en-us',
@@ -144,6 +146,11 @@ export default function init(element) {
   let REDIRECT_URL = '';
   let DC_GENERATE_CACHE_URL = '';
 
+  createTag.then((createTag) => {
+    const preTag = createTag('link', { rel: 'prefetch', as: 'script', href: WIDGET_ENV });
+    document.head.appendChild(preTag);
+  });
+
   if (window.location.hostname === 'www.adobe.com') {
     WIDGET_ENV = `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
     DC_DOMAIN = 'https://acrobat.adobe.com';
@@ -191,6 +198,8 @@ export default function init(element) {
       window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
     }
   };
+
+
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
