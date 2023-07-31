@@ -147,8 +147,10 @@ export default function init(element) {
   let DC_GENERATE_CACHE_URL = '';
 
   createTag.then((createTag) => {
-    const preTag = createTag('link', { rel: 'prefetch', as: 'script', href: WIDGET_ENV });
-    document.head.appendChild(preTag);
+    const preCacheGen = createTag('link', { rel: 'prefetch', as: 'script', href: `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html` });
+    document.head.appendChild(preCacheGen);
+    const preAppLauncher = createTag('link', { rel: 'prefetch', as: 'script', href: WIDGET_ENV });
+    document.head.appendChild(preAppLauncher);
   });
 
   if (window.location.hostname === 'www.adobe.com') {
