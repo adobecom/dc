@@ -177,6 +177,7 @@ div.how-to {
 }
 
 .how-to-heading {
+  padding-top: 60px;
   margin-right: 28px;
 }
 .how-to-image.how-to-image-large {
@@ -385,4 +386,10 @@ div.how-to ol li::before{
   max-width: 600px;
   margin: auto;
   padding: 20px;
+}
+
+@media (max-width: 1200px) {
+  .how-to-heading {
+    padding-top: 52px;
+  }
 }
