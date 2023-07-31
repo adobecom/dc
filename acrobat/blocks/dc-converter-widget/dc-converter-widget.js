@@ -121,6 +121,8 @@ const pageLang = localeMap[langFromPath] || 'en-us';
 export default function init(element) {
   element.closest('main > div').dataset.section = 'widget';
   const widget = element;
+  widget.querySelector('div').id = 'VERB';
+  const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
   const DC_WIDGET_VERSION_FALLBACK = '2.40.0_1.172.1';
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.172.1';
   const STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
@@ -173,9 +175,6 @@ export default function init(element) {
     ENV = 'stage';
   }
 
-  widget.querySelector('div').id = 'VERB';
-  const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
-
   // Redir URL
   const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
   if (REDIRECT_URL_DIV) {
@@ -207,7 +206,7 @@ export default function init(element) {
 
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
-  widgetContainer.className = `wapper-${VERB}`;
+  widgetContainer.className = `fsw wapper-${VERB}`;
   widget.appendChild(widgetContainer);
 
   if (preRenderDropZone) {
