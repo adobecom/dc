@@ -205,6 +205,7 @@ div.how-to {
     "image" !important;
   }
   .how-to-heading {
+    padding-top: 44px;
     margin-right: 0;
   }
   .how-to-image.how-to-image-large {
@@ -393,11 +394,5 @@ div.how-to ol li::before{
 
   .how-to-heading {
     padding-top: 52px;
-  }
-}
-
-@media (max-width: 599px) {
-  .how-to-heading {
-    padding-top: 44px;
   }
 }
