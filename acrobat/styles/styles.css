@@ -188,6 +188,16 @@ div.how-to {
   margin-right: 28px;
 }
 
+@media (max-width: 1200px) {
+  .how-to > .foreground {
+    padding-top: 80px !important;
+  }
+
+  .how-to-heading {
+    padding-top: 52px;
+  }
+}
+
 /* Moblie HowTo */
 @media (max-width: 600px) {
   .how-to.large-image {
@@ -385,14 +395,4 @@ div.how-to ol li::before{
   max-width: 600px;
   margin: auto;
   padding: 20px;
-}
-
-@media (max-width: 1200px) {
-  .how-to > .foreground {
-    padding-top: 80px !important;
-  }
-
-  .how-to-heading {
-    padding-top: 52px;
-  }
 }
