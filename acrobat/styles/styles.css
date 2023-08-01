@@ -217,9 +217,9 @@ div.how-to {
   }
 }
 
-/* Full Screen Widget */
+/* Full Screen Widget US / PDF-to-PPT ONLY */
 @media (max-width: 600px) {
-  .fsw > div > div {
+  [lang="en-US"] .wapper-pdf-to-ppt > div > div {
     height: calc(100vh - 120px);
   }
 }
