@@ -196,8 +196,6 @@ div.how-to {
     "heading"
     "list" !important;
     grid-template-columns: 1fr !important;
-    padding-top: 56px;
-    padding-bottom: 56px;
   }
   /* Moblie HowTo word-to-pdf US ONLY */
   [data-path="/dc-shared/fragments/frictionless-personalization-xfs/word-to-pdf-xfs/how-to/default"] .how-to.large-image {
@@ -389,7 +387,17 @@ div.how-to ol li::before{
 }
 
 @media (max-width: 1200px) {
+  .how-to > .foreground {
+    padding-top: 80px !important;
+  }
+
   .how-to-heading {
     padding-top: 52px;
+  }
+}
+
+@media (max-width: 599px) {
+  .how-to-heading {
+    padding-top: 44px;
   }
 }
