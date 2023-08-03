@@ -205,20 +205,13 @@ const CONFIG = {
 
   // Import base milo features and run them
   const {
-    loadArea, loadScript, setConfig, loadLana, getMetadata, getLocale
+    loadArea, loadScript, setConfig, loadLana, getLocale
   } = await import(`${miloLibs}/utils/utils.js`);
   const { ietf } = getLocale(locales);
   addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
   await loadArea();
-
-  // Promotion from metadata (for FedPub)
-  const promotionMetadata = getMetadata('promotion');
-  if (promotionMetadata && !document.querySelector('main .promotion')) {
-    const { promotionFromMetadata } = await import('../blocks/promotion/promotion.js');
-    promotionFromMetadata(promotionMetadata);
-  }
 
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
