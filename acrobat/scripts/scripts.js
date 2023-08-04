@@ -204,6 +204,8 @@ const CONFIG = {
   loadStyles(paths);
 
   // Import base milo features and run them
+  
+
   const {
     loadArea, loadScript, setConfig, loadLana, getMetadata, getLocale
   } = await import(`${miloLibs}/utils/utils.js`);
