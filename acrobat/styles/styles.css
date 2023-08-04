@@ -179,12 +179,27 @@ div.how-to {
 .how-to-heading {
   margin-right: 28px;
 }
+
+.eventwrapper .how-to-heading {
+  padding-top: 60px;
+}
+
 .how-to-image.how-to-image-large {
   margin-left: 28px;
 }
 
 .section .how-to > ol {
   margin-right: 28px;
+}
+
+@media (max-width: 1200px) {
+  .eventwrapper .how-to > .foreground {
+    padding-top: 80px !important;
+  }
+
+  .eventwrapper .how-to-heading {
+    padding-top: 52px;
+  }
 }
 
 /* Moblie HowTo */
@@ -195,8 +210,6 @@ div.how-to {
     "heading"
     "list" !important;
     grid-template-columns: 1fr !important;
-    padding-top: 56px;
-    padding-bottom: 56px;
   }
   /* Moblie HowTo word-to-pdf US ONLY */
   [data-path="/dc-shared/fragments/frictionless-personalization-xfs/word-to-pdf-xfs/how-to/default"] .how-to.large-image {
@@ -205,7 +218,8 @@ div.how-to {
     "list"
     "image" !important;
   }
-  .how-to-heading {
+  .eventwrapper .how-to-heading {
+    padding-top: 44px;
     margin-right: 0;
   }
   .how-to-image.how-to-image-large {
