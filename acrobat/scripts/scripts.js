@@ -247,7 +247,7 @@ const { ietf } = getLocale(locales);
 
   // Import base milo features and run them
   const {
-    loadArea, loadScript, setConfig, loadLana, getMetadata, loadPostLCP
+    loadArea, loadScript, setConfig, loadLana, getMetadata
   } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });

@@ -169,7 +169,6 @@ export default function init(element) {
       createTag.then((tag) => {
         const wrapper = tag('div', {id: 'CID', class: `fsw widget-wrapper wapper-${VERB}` });
         const heading = tag('h1', { class: 'widget-heading' }, HEADING);
-    
         const center = tag('div', { class: 'widget-center' });
         const copy = tag('p', { class: 'widget-copy' }, COPY);
         const legal = tag('p', { class: 'widget-legal' }, LEGAL);
@@ -191,13 +190,11 @@ export default function init(element) {
           'data-load_typekit': 'false',
           'data-load_imslib': 'false',
           'data-enable_unload_prompt': 'true',
-    
         });
-            // element.prepend(dcWidgetScript);
-  
+
+        // element.prepend(dcWidgetScript);
         document.addEventListener('milo:deferred', ()=> {
           wrapper.classList.add('widget-loaded');
-          console.log('load widget');
           element.prepend(dcWidgetScript);
         })
         // setTimeout(() => {
