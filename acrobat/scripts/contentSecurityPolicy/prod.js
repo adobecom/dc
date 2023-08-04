@@ -1,5 +1,6 @@
 const childSrc = [
   '\'self\'',
+  'blob:',
   ';',
 ];
 
