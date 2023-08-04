@@ -205,10 +205,10 @@ const { ietf } = getLocale(locales);
   // Fast track the widget
   (async () => {
     const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
-    const blockName = widgetBlock.classList.value;
-    widgetBlock.removeAttribute('class');
-    widgetBlock.id = 'dc-converter-widget';
     if (widgetBlock) {
+      const blockName = widgetBlock.classList.value;
+      widgetBlock.removeAttribute('class');
+      widgetBlock.id = 'dc-converter-widget'; 
       const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
       const dcUrls = [
         `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`,
