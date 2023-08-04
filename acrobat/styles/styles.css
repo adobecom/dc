@@ -220,7 +220,7 @@ div.how-to {
 /* Full Screen Widget */
 @media (max-width: 600px) {
   .fsw > div > div {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 100px);
   }
 }
 
@@ -385,4 +385,68 @@ div.how-to ol li::before{
   max-width: 600px;
   margin: auto;
   padding: 20px;
+}
+
+/* ootb widget */
+.dc-converter-widget > div:first-of-type {
+  display: none;
+}
+
+.widget-heading {
+  font-size: 36px;
+  margin: 40px 10px;
+  text-align: center;
+}
+
+.widget-copy {
+  font-size: 16px;
+  text-align: center;
+  margin: 0 10px;
+}
+
+.widget-center {
+  justify-content: center;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.widget-legal {
+  font-size: 16px;
+  text-align: center;
+  margin: 0 10px;
+  margin-top: 0;
+}
+
+.widget-wrapper {
+  /* border: 1px #e1e1e1 solid; */
+  margin: 5px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  min-height: 570px;
+}
+
+.widget-button {
+    border-radius: 24px;
+    width: 252px;
+    padding: 10px;
+    background: grey;
+    margin: 0 auto;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+  .dc-converter-widget,
+  .widget-wrapper {
+    height: calc(100vh - 110px) !important;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+  }
+
+  .widget-loaded > div {
+    height: calc(100vh - 110px);
+  }
 }
