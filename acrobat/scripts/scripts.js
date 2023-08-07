@@ -23,6 +23,30 @@ const setLibs = (prodLibs, location) => {
   return branch.includes('--') ? `https://${branch}.hlx.${tld}/libs` : `https://${branch}--milo--adobecom.hlx.${tld}/libs`;
 };
 
+const getLocale = (locales, pathname = window.location.pathname) => {
+  if (!locales) {
+    return { ietf: 'en-US', tk: 'hah7vzn.css', prefix: '' };
+  }
+  const LANGSTORE = 'langstore';
+  const split = pathname.split('/');
+  const localeString = split[1];
+  const locale = locales[localeString] || locales[''];
+  if (localeString === LANGSTORE) {
+    locale.prefix = `/${localeString}/${split[2]}`;
+    if (
+      Object.values(locales)
+        .find((loc) => loc.ietf?.startsWith(split[2]))?.dir === 'rtl'
+    ) locale.dir = 'rtl';
+    return locale;
+  }
+  const isUS = locale.ietf === 'en-US';
+  locale.prefix = isUS ? '' : `/${localeString}`;
+  locale.region = isUS ? 'us' : localeString.split('_')[0];
+  return locale;
+}
+
+
+
 function loadStyles(paths) {
   paths.forEach((path) => {
     const link = document.createElement('link');
@@ -151,13 +175,17 @@ const CONFIG = {
   codeRoot: '/acrobat',
   contentRoot: '/dc-shared',
   imsClientId: 'acrobatmilo',
-  local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
-  stage: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
+  local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga' },
+  stage: {
+    edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
+    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js'
+  },
   live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   prod: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
   locales,
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
+
 };
 
 // Default to loading the first image as eager.
@@ -171,15 +199,33 @@ const CONFIG = {
  * Edit below at your own risk
  * ------------------------------------------------------------
  */
+const { ietf } = getLocale(locales);
 
 (async function loadPage() {
   // Fast track the widget
   (async () => {
-    const widgetBlock = document.querySelector('.dc-converter-widget');
+    const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
     if (widgetBlock) {
+      const blockName = widgetBlock.classList.value;
       widgetBlock.removeAttribute('class');
-      widgetBlock.id = 'dc-converter-widget';
-      const { default: dcConverter } = await import('../blocks/dc-converter-widget/dc-converter-widget.js');
+      widgetBlock.id = 'dc-converter-widget'; 
+      const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
+      const [,DC_GENERATE_CACHE_VERSION] = DC_WIDGET_VERSION.split('_');
+      const dcUrls = [
+        `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`,
+        `https://acrobat.adobe.com/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${window.location.pathname.split('/').pop().split('.')[0]}-${ietf.toLowerCase()}.html`
+      ];
+
+      dcUrls.forEach( url => {
+        const link = document.createElement('link');
+        link.setAttribute('rel', 'prefetch');
+        if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
+        if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');;}
+        link.setAttribute('href', url);
+        document.head.appendChild(link);
+      })
+
+      const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);
       dcConverter(widgetBlock);
     }
   })();
@@ -219,13 +265,13 @@ const CONFIG = {
 
   // Import base milo features and run them
   const {
-    loadArea, loadScript, setConfig, loadLana, getMetadata, getLocale,
+    loadArea, loadScript, setConfig, loadLana, getMetadata
   } = await import(`${miloLibs}/utils/utils.js`);
-  const { ietf } = getLocale(locales);
   addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
-  await loadArea();
+  // get event back form dc web and then load area 
+  await loadArea(document, false);
 
   // Promotion from metadata (for FedPub)
   const promotionMetadata = getMetadata('promotion');

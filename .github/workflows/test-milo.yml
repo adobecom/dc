@@ -1,0 +1,27 @@
+name: Verify Milo Changes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    name: Trigger CircleCI Job
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - name: Trigger CircleCI Job
+        run: |
+          curl -X POST 'https://circle.ci.adobe.com/api/v2/project/gh/wcms/Platform-UI-DC/pipeline' \
+              -H 'Circle-Token: ${{ secrets.CCI_TOKEN }}' \
+              -H 'content-type: application/json' \
+              -d "{\"branch\":\"main\", \
+                    \"parameters\":{ \
+                      \"env\":\"prod\", \
+                      \"dcbranch\":\"main\" \
+                    } \
+              }"
+
+      - name: Trigger Jenkins Job
+        run: |
+          curl -X POST 'https://dc.ci.corp.adobe.com/job/DC%20Release%20-%20Run%20Nala/buildWithParameters?token=${{ secrets.JNK_JOB_TOKEN }}&branch=main' \
+              -u '${{ secrets.JNK_USER }}:${{ secrets.JNK_API_TOKEN }}'
+

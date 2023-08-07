@@ -7,7 +7,11 @@
  *
  */
 
- #dc-converter-widget {
+div[data-section="widget"] {
+  display: block !important;
+}
+
+#dc-converter-widget {
   background-color: #fc6767;
   min-height: 570px;
 }
@@ -50,10 +54,10 @@
 
 .dialog-modal.extension-modal {
   top: unset;
-  right: unset;
+  left: unset;
   box-shadow: 0 .5em 1em -.125em hsla(0,0%,4%,.1),0 0 0 1px hsla(0,0%,4%,.02);
   margin-bottom: 20px;
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .col[data-align="center"] {
@@ -175,12 +179,27 @@ div.how-to {
 .how-to-heading {
   margin-right: 28px;
 }
+
+.eventwrapper .how-to-heading {
+  padding-top: 60px;
+}
+
 .how-to-image.how-to-image-large {
   margin-left: 28px;
 }
 
 .section .how-to > ol {
   margin-right: 28px;
+}
+
+@media (max-width: 1200px) {
+  .eventwrapper .how-to > .foreground {
+    padding-top: 80px !important;
+  }
+
+  .eventwrapper .how-to-heading {
+    padding-top: 52px;
+  }
 }
 
 /* Moblie HowTo */
@@ -191,8 +210,6 @@ div.how-to {
     "heading"
     "list" !important;
     grid-template-columns: 1fr !important;
-    padding-top: 56px;
-    padding-bottom: 56px;
   }
   /* Moblie HowTo word-to-pdf US ONLY */
   [data-path="/dc-shared/fragments/frictionless-personalization-xfs/word-to-pdf-xfs/how-to/default"] .how-to.large-image {
@@ -201,7 +218,8 @@ div.how-to {
     "list"
     "image" !important;
   }
-  .how-to-heading {
+  .eventwrapper .how-to-heading {
+    padding-top: 44px;
     margin-right: 0;
   }
   .how-to-image.how-to-image-large {
@@ -210,6 +228,13 @@ div.how-to {
 
   .section .how-to > ol {
     margin-right: 0;
+  }
+}
+
+/* Full Screen Widget */
+@media (max-width: 600px) {
+  .fsw > div > div {
+    height: calc(100vh - 100px);
   }
 }
 
@@ -234,23 +259,22 @@ div.how-to ol li::before{
 
 /* browser extension modal */
 @keyframes modalSlideIn-frictionlessBrowserExtension {
-  from { left: -50rem !important; }
-  to { left: 0; }
+  from { right: -50rem !important; }
+  to { right: 0; }
 }
 .dialog-modal.extension-modal.backdrop-off {
   width: 30rem;
   max-height: 188px;
   top: revert;
-  right: revert;
+  left: revert;
   margin-bottom: 20px;
-  margin-left: 20px;
+  margin-right: 20px;
   overflow: hidden;
   box-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 4% / 10%), 0 0 0 1px hsl(0deg 0% 4% / 2%);
 }
 .section .columns.browser-extension {
   padding: 20px;
   width:480px;
-  height: 190px;
   font-size: 16px;
   animation-name: modalSlideIn-frictionlessBrowserExtension;
   transition: opacity 125ms ease-in-out,background-color 125ms ease-in-out,backdrop-filter 125ms ease-in-out,-webkit-backdrop-filter 125ms ease-in-out,transform 125ms ease-in-out;
@@ -260,6 +284,11 @@ div.how-to ol li::before{
   margin-top: 0;
   margin-right: 20px;
 }
+
+.section .columns.browser-extension p:last-child {
+  margin-bottom: 10px;
+}
+
 .section .columns.browser-extension > .row {
   display: flex;
   margin-bottom: 0;
@@ -267,9 +296,6 @@ div.how-to ol li::before{
 }
 .section .columns.browser-extension picture {
   width: initial;
-  vertical-align: middle;
-  display: flex;
-  padding: 30px 10px 0px 10px;
 }
 .section .columns.browser-extension picture img {
   width: 90px;
@@ -303,6 +329,9 @@ div.how-to ol li::before{
 .section .columns.browser-extension .row .col-2 {
   width: 33.333333%;
   border-left: solid 2px #EAEAEA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* CLS */
@@ -370,4 +399,67 @@ div.how-to ol li::before{
   max-width: 600px;
   margin: auto;
   padding: 20px;
+}
+
+/* ootb widget */
+.dc-converter-widget > div:first-of-type {
+  display: none;
+}
+
+.widget-heading {
+  font-size: 36px;
+  margin: 40px 10px;
+  text-align: center;
+}
+
+.widget-copy {
+  font-size: 16px;
+  text-align: center;
+  margin: 0 10px;
+}
+
+.widget-center {
+  justify-content: center;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.widget-legal {
+  font-size: 16px;
+  text-align: center;
+  margin: 0 10px 20px;
+  margin-top: 0;
+}
+
+.widget-wrapper {
+  margin: 5px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  min-height: 570px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.widget-button {
+    border-radius: 24px;
+    width: 252px;
+    padding: 10px;
+    background: grey;
+    margin: 0 auto;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+  .dc-converter-widget,
+  .widget-wrapper {
+    height: calc(100vh - 110px) !important;
+  }
+
+  .widget-loaded > div {
+    height: calc(100vh - 110px);
+  }
 }

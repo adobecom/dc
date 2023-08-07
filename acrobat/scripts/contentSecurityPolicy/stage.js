@@ -1,3 +1,9 @@
+const childSrc = [
+  '\'self\'',
+  'blob:',
+  ';',
+];
+
 const connectSrc = [
   '\'self\'',
   'blob:',
@@ -9,6 +15,7 @@ const connectSrc = [
   '*.blob.core.windows.net',
   '*.clicktale.net/',
   '*.mktoresp.com',
+  'tag-logger.demandbase.com',
   'accounts.google.com/gsi/log',
   'accounts.google.com/gsi/status',
   'acom-reviews--adobe.hlx.live/reviews-api/',
@@ -94,6 +101,7 @@ const frameSrc = [
   'vimeo.com',
   'www.facebook.com',
   'www.youtube.com',
+  's.company-target.com',
   ';',
 ];
 
@@ -256,4 +264,4 @@ const workerSrc = [
   ';',
 ];
 
-export default { connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};
+export default { childSrc, connectSrc, defaultSrc, fontSrc, formAction, frameSrc, imgSrc, manifestSrc, scriptSrc, styleSrc, workerSrc};

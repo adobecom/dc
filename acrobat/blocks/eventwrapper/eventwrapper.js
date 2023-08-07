@@ -19,9 +19,11 @@ const DROPZONE_DIS = 'dropzone-displayed';
 const PREVIEW_DIS = 'preview-displayed';
 const TRY_ANOTHER = 'try-another-file-start';
 // const UPSELL_DIS = 'upsell-displayed';
+const FADE = 'review fade-in';
 
 export default function init(element) {
   const wrapper = element;
+  const reviewBlock = document.querySelectorAll('.review');
   const setCurrentEvent = (event) => {
     if (document.querySelectorAll(`[data-event-name="${event}"]`).length > 0) {
       document.body.dataset.currentEvent = event;
@@ -49,7 +51,6 @@ export default function init(element) {
         }else{
           browserExtAlloy('modalExist', browserName);
         }
-
       });
     } else {
       window.dispatchEvent(event);
@@ -62,7 +63,6 @@ export default function init(element) {
     let browserName = parser.getBrowserName();
     let extID;
     if (e === PROCESS_START) converterAnalytics();
-
     if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop'
         || e === PREVIEW_DIS && parser.parsedResult.platform.type === 'desktop') {
       // Browser Extension
@@ -97,6 +97,7 @@ export default function init(element) {
         break;
       case UPLOAD_START:
         setCurrentEvent('upload');
+        if (reviewBlock[0]) { reviewBlock[0].classList.add('hide'); };
         break;
       case UPLOAD_COMPLETE:
         setCurrentEvent('uploadcomplete');
@@ -112,12 +113,15 @@ export default function init(element) {
         break;
       case CONVERSION_COM:
         setCurrentEvent('complete');
+        if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case PREVIEW_GEN:
         setCurrentEvent('preview');
+        if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DROPZONE_DIS:
         setCurrentEvent(DROPZONE_DIS);
+        if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DOWNLOAD_START:
         setCurrentEvent('download');
