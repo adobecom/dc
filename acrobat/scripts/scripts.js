@@ -220,7 +220,7 @@ const { ietf } = getLocale(locales);
         const link = document.createElement('link');
         link.setAttribute('rel', 'prefetch');
         if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
-        if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');;}
+        if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');}
         link.setAttribute('href', url);
         link.setAttribute('crossorigin', '');
         document.head.appendChild(link);
