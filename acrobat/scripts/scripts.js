@@ -221,6 +221,7 @@ const { ietf } = getLocale(locales);
         if (url.split('.').pop() === 'html') link.setAttribute('as', 'fetch');
         if (url.split('.').pop() === 'js') link.setAttribute('as', 'script');
         link.setAttribute('href', url);
+        link.setAttribute('crossorigin', '');
         document.head.appendChild(link);
       });
 
