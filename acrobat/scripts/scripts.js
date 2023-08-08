@@ -208,19 +208,21 @@ const { ietf } = getLocale(locales);
     if (widgetBlock) {
       const blockName = widgetBlock.classList.value;
       widgetBlock.removeAttribute('class');
-      widgetBlock.id = 'dc-converter-widget';
+      widgetBlock.id = 'dc-converter-widget'; 
       const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
+      const [,DC_GENERATE_CACHE_VERSION] = DC_WIDGET_VERSION.split('_');
       const dcUrls = [
-        `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`,
-        `https://acrobat.adobe.com/dc-generate-cache/dc-hosted-2.10.2/${window.location.pathname.split('/').pop().split('.')[0]}-${ietf.toLowerCase()}.html`
+        `https://acrobat.adobe.com/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${window.location.pathname.split('/').pop().split('.')[0]}-${ietf.toLowerCase()}.html`,
+        `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`
       ];
 
       dcUrls.forEach( url => {
         const link = document.createElement('link');
         link.setAttribute('rel', 'prefetch');
         if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
-        if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');;}
+        if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');}
         link.setAttribute('href', url);
+        link.setAttribute('crossorigin', '');
         document.head.appendChild(link);
       })
 

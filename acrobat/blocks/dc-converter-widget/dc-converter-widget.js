@@ -200,7 +200,7 @@ export default function init(element) {
   const isReturningUser = window.localStorage.getItem('pdfnow.auth');
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   const preRenderDropZone = !isReturningUser && !isRedirection;
-  if (preRenderDropZone) {
+  if (VERB === 'compress-pdf' || preRenderDropZone) {
     (async () => {
       // TODO: Make dynamic
       const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);

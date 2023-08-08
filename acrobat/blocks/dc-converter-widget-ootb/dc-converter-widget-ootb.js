@@ -125,6 +125,8 @@ export default function init(element) {
   const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
   const HEADING = 'Convert JPG to PDF';
   const COPY = 'Drag and drop an image file (JPG, PNG, BMP, and more) to use our PDF converter.';
+  const WORD_HEADING = 'Convert PDF to Word';
+  const WORD_COPY = 'Drag and drop a PDF file to use our PDF to Microsoft Word converter.';
   const LEGAL = 'Your file will be securely handled by Adobe servers and deleted unless you sign in to save it. By using this service, you agree to the Adobe Terms of Use and Privacy Policy.';
   const BTN = 'Select a file';
 
@@ -164,13 +166,14 @@ export default function init(element) {
 
   widget.querySelector('div').id = 'VERB';
   const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
-
+      const dynamicHead = VERB === 'jpg-to-pdf' ? HEADING : WORD_HEADING;
+      const dynamicCopy = VERB === 'jpg-to-pdf' ? COPY : WORD_COPY;
       //Create Fake Widget
       createTag.then((tag) => {
         const wrapper = tag('div', {id: 'CID', class: `fsw widget-wrapper wapper-${VERB}` });
-        const heading = tag('h1', { class: 'widget-heading' }, HEADING);
+        const heading = tag('h1', { class: 'widget-heading' }, dynamicHead);
         const center = tag('div', { class: 'widget-center' });
-        const copy = tag('p', { class: 'widget-copy' }, COPY);
+        const copy = tag('p', { class: 'widget-copy' }, dynamicCopy);
         const legal = tag('p', { class: 'widget-legal' }, LEGAL);
         const button = tag('p', { class: 'widget-button' }, BTN);
         wrapper.append(heading);
@@ -287,7 +290,6 @@ export default function init(element) {
       const personalizationIsReady = new CustomEvent('Personalization:Ready');
 
       window.dispatchEvent(personalizationIsReady);
-      console.log('dc personalizationIsReady this');
     });
   });
 }
