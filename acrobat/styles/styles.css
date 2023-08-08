@@ -467,3 +467,9 @@ div.how-to ol li::before{
     height: calc(100vh - 110px);
   }
 }
+
+.promotion {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
