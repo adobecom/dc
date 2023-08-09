@@ -89,7 +89,7 @@ const locales = {
   cy_en: { ietf: 'en-CY', tk: 'pps7abe.css' },
   dk: { ietf: 'da-DK', tk: 'aaz7dvd.css' },
   de: { ietf: 'de-DE', tk: 'vin7zsi.css' },
-  ee: { ietf: 'en-EE', tk: 'aaz7dvd.css' },
+  ee: { ietf: 'et-EE', tk: 'aaz7dvd.css' },
   es: { ietf: 'es-ES', tk: 'oln4yqj.css' },
   fr: { ietf: 'fr-FR', tk: 'vrk5vyv.css' },
   gr_en: { ietf: 'en-GR', tk: 'pps7abe.css' },
@@ -111,7 +111,7 @@ const locales = {
   ro: { ietf: 'en-RO', tk: 'aaz7dvd.css' },
   sa_en: { ietf: 'en', tk: 'pps7abe.css' },
   ch_de: { ietf: 'de-CH', tk: 'vin7zsi.css' },
-  si: { ietf: 'en-SI', tk: 'aaz7dvd.css' },
+  si: { ietf: 'sl-SI', tk: 'aaz7dvd.css' },
   sk: { ietf: 'en-SK', tk: 'aaz7dvd.css' },
   ch_fr: { ietf: 'fr-CH', tk: 'vrk5vyv.css' },
   fi: { ietf: 'fi-FI', tk: 'aaz7dvd.css' },
@@ -122,9 +122,9 @@ const locales = {
   uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
   at: { ietf: 'de-AT', tk: 'vin7zsi.css' },
   cz: { ietf: 'cs-CZ', tk: 'aaz7dvd.css' },
-  bg: { ietf: 'en-BG', tk: 'aaz7dvd.css' },
+  bg: { ietf: 'bg-BG', tk: 'aaz7dvd.css' },
   ru: { ietf: 'ru-RU', tk: 'aaz7dvd.css' },
-  ua: { ietf: 'en-UA', tk: 'aaz7dvd.css' },
+  ua: { ietf: 'uk-UA', tk: 'aaz7dvd.css' },
   il_he: { ietf: 'he', tk: 'nwq1mna.css', dir: 'rtl' },
   ae_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
   mena_ar: { ietf: 'ar', tk: 'dis2dpj.css', dir: 'rtl' },
@@ -208,7 +208,7 @@ const { ietf } = getLocale(locales);
     if (widgetBlock) {
       const blockName = widgetBlock.classList.value;
       widgetBlock.removeAttribute('class');
-      widgetBlock.id = 'dc-converter-widget'; 
+      widgetBlock.id = 'dc-converter-widget';
       const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
       const [,DC_GENERATE_CACHE_VERSION] = DC_WIDGET_VERSION.split('_');
       const dcUrls = [
@@ -254,7 +254,7 @@ const { ietf } = getLocale(locales);
   addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
-  // get event back form dc web and then load area 
+  // get event back form dc web and then load area
   await loadArea(document, false);
 
   // Promotion from metadata (for FedPub)
