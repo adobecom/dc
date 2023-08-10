@@ -107,8 +107,8 @@ export default function init(element) {
         const footerHeight = footer ? footer.offsetHeight : 0;
         widget.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
         widget.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-        lifecycleOrganizeContainer.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-        lifecycleOrganizeContainer.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
+        lifecycleOrganizeContainer.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight - 10}px)`;
+        lifecycleOrganizeContainer.style.height = `calc(100vh - ${gnavHeight + footerHeight - 10}px)`;
       }, 2000);
       const widgetCid = widget.querySelector('#CID');
       widgetCid.style.top = '10px';
