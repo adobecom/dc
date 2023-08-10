@@ -155,6 +155,7 @@ export default function init(element) {
         break;
       case PREVIEW_GEN:
         setCurrentEvent('preview');
+        if (verb === 'rotate-pages') showContent('10px');
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DROPZONE_DIS:
