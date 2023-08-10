@@ -59,6 +59,7 @@ export default function init(element) {
   };
 
   const handleEvents = (e, converter, verb) => {
+    console.log('gaga e', e);
     let parser = bowser.getParser(window.navigator.userAgent);
     let browserName = parser.getBrowserName();
     let extID;
@@ -154,6 +155,11 @@ export default function init(element) {
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case PREVIEW_GEN:
+        setCurrentEvent('preview');
+        if (verb === 'rotate-pages') showContent('10px');
+        if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
+        break;
+      case PREVIEW_DIS:
         setCurrentEvent('preview');
         if (verb === 'rotate-pages') showContent('10px');
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
