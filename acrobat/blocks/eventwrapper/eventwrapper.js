@@ -59,7 +59,6 @@ export default function init(element) {
   };
 
   const handleEvents = (e, converter, verb) => {
-    console.log('gaga e', e);
     let parser = bowser.getParser(window.navigator.userAgent);
     let browserName = parser.getBrowserName();
     let extID;
@@ -145,10 +144,6 @@ export default function init(element) {
         localStorage.removeItem('fricBrowExt');
         window.modalDisplayed = false;
         break;
-      // case CONVERSION_START:
-      //   setCurrentEvent('conversion');
-      //   if (verb === 'rotate-pages') hideContent();
-      //   break;
       case CONVERSION_COM:
         setCurrentEvent('complete');
         if (verb === 'rotate-pages') showContent('10px');
