@@ -99,7 +99,7 @@ export default function init(element) {
 
     const hideContent = () => {
       const widget = document.querySelector('#dc-converter-widget');
-      const lifecycleOrganizeContainer = widget.querySelector('section');
+      const widgetCid = widget.querySelector('#CID');
       const gnav = document.querySelector('header');
       const gnavHeight = gnav ? gnav.offsetHeight : 0;
       setTimeout(() => {
@@ -107,10 +107,10 @@ export default function init(element) {
         const footerHeight = footer ? footer.offsetHeight : 0;
         widget.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
         widget.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-        lifecycleOrganizeContainer.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight - 10}px)`;
-        lifecycleOrganizeContainer.style.height = `calc(100vh - ${gnavHeight + footerHeight - 10}px)`;
+        const lifecycleOrganizeContainer = widgetCid.querySelector('section');
+        lifecycleOrganizeContainer.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
+        lifecycleOrganizeContainer.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
       }, 2000);
-      const widgetCid = widget.querySelector('#CID');
       widgetCid.style.top = '10px';
       const main = document.getElementsByTagName('main')[0];
       const sections = Array.from(main.children);
@@ -150,7 +150,7 @@ export default function init(element) {
         break;
       case CONVERSION_COM:
         setCurrentEvent('complete');
-        if (verb === 'rotate-pages') showContent('20px');
+        if (verb === 'rotate-pages') showContent('10px');
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case PREVIEW_GEN:
