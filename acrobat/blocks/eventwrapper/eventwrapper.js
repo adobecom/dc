@@ -18,6 +18,7 @@ const PREVIEW_GEN = 'preview-generating';
 const DROPZONE_DIS = 'dropzone-displayed';
 const PREVIEW_DIS = 'preview-displayed';
 const TRY_ANOTHER = 'try-another-file-start';
+const CONVERSION_START = 'conversion-start';
 // const UPSELL_DIS = 'upsell-displayed';
 const FADE = 'review fade-in';
 
@@ -55,10 +56,9 @@ export default function init(element) {
     } else {
       window.dispatchEvent(event);
     };
-
   };
 
-  const handleEvents = (e, jobData, converter, verb) => {
+  const handleEvents = (e, converter, verb) => {
     let parser = bowser.getParser(window.navigator.userAgent);
     let browserName = parser.getBrowserName();
     let extID;
@@ -74,7 +74,7 @@ export default function init(element) {
           extID = 'efaidnbmnnnibpcajpcglclefindmkaj';
           extInstalled(extID, extName, browserName);
         }
-    
+
         if (browserName === 'Microsoft Edge' && !window.modalDisplayed) {
           window.modalDisplayed = true;
           extName = '#edgeext';
@@ -85,6 +85,37 @@ export default function init(element) {
         browserExtAlloy('modalAlready', browserName);
       }
     }
+
+    const showContent = (widgetCidTopPosition = '70px') => {
+      const widget = document.querySelector('#dc-converter-widget');
+      widget.style.minHeight = '570px';
+      widget.style.height = 'auto';
+      const widgetCid = widget.querySelector('#CID');
+      widgetCid.style.top = widgetCidTopPosition;
+      const main = document.getElementsByTagName('main')[0];
+      const sections = Array.from(main.children);
+      sections.forEach((section) => section.classList.remove('hide'));
+    };
+
+    const hideContent = () => {
+      const widget = document.querySelector('#dc-converter-widget');
+      const lifecycleOrganizeContainer = widget.querySelector('section');
+      const gnav = document.querySelector('header');
+      const gnavHeight = gnav ? gnav.offsetHeight : 0;
+      setTimeout(() => {
+        const footer = document.querySelector('.footer');
+        const footerHeight = footer ? footer.offsetHeight : 0;
+        widget.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
+        widget.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
+        lifecycleOrganizeContainer.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
+        lifecycleOrganizeContainer.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
+      }, 2000);
+      const widgetCid = widget.querySelector('#CID');
+      widgetCid.style.top = '10px';
+      const main = document.getElementsByTagName('main')[0];
+      const sections = Array.from(main.children);
+      sections.forEach((section) => section.classList.add('hide'));
+    };
 
     switch (e) {
       case PROCESS_START:
@@ -97,6 +128,7 @@ export default function init(element) {
         break;
       case UPLOAD_START:
         setCurrentEvent('upload');
+        if (verb === 'rotate-pages') hideContent();
         if (reviewBlock[0]) { reviewBlock[0].classList.add('hide'); };
         break;
       case UPLOAD_COMPLETE:
@@ -104,6 +136,7 @@ export default function init(element) {
         break;
       case PROCESS_CANCELED:
         setCurrentEvent('cancel');
+        if (verb === 'rotate-pages') showContent();
         break;
       case TRY_ANOTHER:
         // suppress browser ext;
@@ -111,8 +144,13 @@ export default function init(element) {
         localStorage.removeItem('fricBrowExt');
         window.modalDisplayed = false;
         break;
+      case CONVERSION_START:
+        setCurrentEvent('conversion');
+        if (verb === 'rotate-pages') hideContent();
+        break;
       case CONVERSION_COM:
         setCurrentEvent('complete');
+        if (verb === 'rotate-pages') showContent('20px');
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case PREVIEW_GEN:
@@ -121,6 +159,7 @@ export default function init(element) {
         break;
       case DROPZONE_DIS:
         setCurrentEvent(DROPZONE_DIS);
+        if (verb === 'rotate-pages') showContent();
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DOWNLOAD_START:
@@ -132,9 +171,9 @@ export default function init(element) {
   };
 
   window.addEventListener('DC_Hosted:Ready', () => {
-    // const CONVERTER = document.querySelector('#adobe_dc_sdk_launcher');
-    // const VERB = CONVERTER.dataset.verb;
-    window.dc_hosted.addEventListener((e, jobData) => handleEvents(e, jobData));
+    const CONVERTER = document.querySelector('#adobe_dc_sdk_launcher');
+    const VERB = CONVERTER.dataset.verb;
+    window.dc_hosted.addEventListener((e) => handleEvents(e, CONVERTER, VERB));
   });
 
   // set data attributes

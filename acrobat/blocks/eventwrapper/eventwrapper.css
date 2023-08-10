@@ -50,13 +50,18 @@ body:not([data-current-event]) [data-event-name=onload] {
   animation-name: fade-in;
 }
 
-
-@keyframes fade-in { 
-  0% { 
+@keyframes fade-in {
+  0% {
     opacity: 0;
   }
 
-  100% { 
+  100% {
     opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .wapper-rotate-pages.fsw > div > div {
+    height: auto;
   }
 }
