@@ -95,6 +95,7 @@ const locales = {
   gr_en: { ietf: 'en-GR', tk: 'pps7abe.css' },
   ie: { ietf: 'en-GB', tk: 'pps7abe.css' },
   il_en: { ietf: 'en-IL', tk: 'pps7abe.css' },
+  il_he: { ietf: 'he-IL', tk: 'pps7abe.css' },
   it: { ietf: 'it-IT', tk: 'bbf5pok.css' },
   lv: { ietf: 'lv-LV', tk: 'aaz7dvd.css' },
   lt: { ietf: 'lt-LT', tk: 'aaz7dvd.css' },
