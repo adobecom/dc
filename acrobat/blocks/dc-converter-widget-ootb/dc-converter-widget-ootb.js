@@ -23,6 +23,7 @@ const localeMap = {
   'gr_el': 'el-gr',
   'ie': 'en-ie',
   'il_en': 'en-il',
+  'il_he': 'he-il',
   'it': 'it-it',
   'lv': 'lv-lv',
   'lt': 'lt-lt',
