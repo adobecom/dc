@@ -185,7 +185,11 @@ const CONFIG = {
   locales,
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
-
+  jarvis: {
+    id: 'milo',
+    version: '1.0',
+    onDemand: false,
+  },
 };
 
 // Default to loading the first image as eager.
