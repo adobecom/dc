@@ -151,7 +151,6 @@ export default function init(element) {
         break;
       case CONVERSION_COM:
         setCurrentEvent('complete');
-        if (verb === 'rotate-pages') showContent('10px');
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case PREVIEW_GEN:
