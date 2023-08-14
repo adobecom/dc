@@ -59,6 +59,7 @@ export default function init(element) {
   };
 
   const handleEvents = (e, converter, verb) => {
+    console.log('current event', e);
     let parser = bowser.getParser(window.navigator.userAgent);
     let browserName = parser.getBrowserName();
     let extID;
@@ -137,6 +138,10 @@ export default function init(element) {
       case PROCESS_CANCELED:
         setCurrentEvent('cancel');
         if (verb === 'rotate-pages') showContent();
+        break;
+      case PROCESS_COMPLETE:
+        setCurrentEvent('complete');
+        if (verb === 'rotate-pages') hideContent();
         break;
       case TRY_ANOTHER:
         // suppress browser ext;
