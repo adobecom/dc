@@ -234,7 +234,7 @@ div.how-to {
 /* Full Screen Widget */
 @media (max-width: 600px) {
   .fsw > div > div {
-    height: calc(100vh - 100px);
+    min-height: calc(100vh - 100px);
   }
 }
 
