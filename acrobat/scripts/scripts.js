@@ -185,7 +185,7 @@ const CONFIG = {
   locales,
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
-
+  PostLCPevnt: 'DC_PostLCP:Ready',
 };
 
 // Default to loading the first image as eager.
@@ -204,8 +204,10 @@ const { ietf } = getLocale(locales);
 (async function loadPage() {
   // Fast track the widget
   (async () => {
+
     const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
     if (widgetBlock) {
+      window.PostLCPevnt = true;
       const blockName = widgetBlock.classList.value;
       widgetBlock.removeAttribute('class');
       widgetBlock.id = 'dc-converter-widget';
@@ -249,11 +251,17 @@ const { ietf } = getLocale(locales);
 
   // Import base milo features and run them
   const {
-    loadArea, loadScript, setConfig, loadLana, getMetadata
+    loadArea, loadScript, setConfig, loadLana, getMetadata, loadPostLCP
   } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
+
+  // window.addEventListener('DC_Hosted:Ready', () => {
+  //   console.log('DC hosted loaded loadPostLCP from DC');
+  //   loadPostLCP(CONFIG);
+  // });
+
   // get event back form dc web and then load area
   await loadArea(document, false);
 
@@ -278,13 +286,14 @@ const { ietf } = getLocale(locales);
   }, 1000);
 
   // DC Hosted Ready...
-  const dcHostedReady = setInterval(() => {
-    if (window.dc_hosted) {
-      clearInterval(dcHostedReady);
-      const imsIsReady = new CustomEvent('DC_Hosted:Ready');
-      window.dispatchEvent(imsIsReady);
-    }
-  }, 1000);
+  // const dcHostedReady = setInterval(() => {
+  //   if (window.dc_hosted) {
+  //     clearInterval(dcHostedReady);
+  //     const imsIsReady = new CustomEvent('DC_Hosted:Ready');
+  //     window.dispatchEvent(imsIsReady);
+  //     console.log('EVENT DISPATCHED');
+  //   }
+  // }, 100);
 
   loadScript('/acrobat/scripts/bowser.js');
 }());

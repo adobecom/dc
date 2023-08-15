@@ -201,6 +201,12 @@ export default function init(element) {
   const isReturningUser = window.localStorage.getItem('pdfnow.auth');
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   const preRenderDropZone = !isReturningUser && !isRedirection;
+  const lcpReady = () => {
+    const dcWidgetReady = new CustomEvent('DC_PostLCP:Ready');
+    window.dispatchEvent(dcWidgetReady);
+    window.PostLCPevnt = false;
+    console.log('lcpReady() fired');
+  };
   if (VERB === 'compress-pdf' || preRenderDropZone) {
     (async () => {
       // TODO: Make dynamic
@@ -220,7 +226,16 @@ export default function init(element) {
         default:
           break;
       }
+      // const dcWidgetReady = new CustomEvent('DC_PostLCP:Ready');
+      // window.dispatchEvent(dcWidgetReady);
+      // window.PostLCPevnt = false;
+      lcpReady();
     })();
+  } else {
+      // window.PostLCPevnt = false;
+      // const dcWidgetReady = new CustomEvent('DC_PostLCP:Ready');
+      // window.dispatchEvent(dcWidgetReady);
+      lcpReady();
   }
 
   window.addEventListener('IMS:Ready', async () => {
