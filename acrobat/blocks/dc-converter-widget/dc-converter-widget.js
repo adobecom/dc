@@ -205,7 +205,6 @@ export default function init(element) {
     const dcWidgetReady = new CustomEvent('DC_PostLCP:Ready');
     window.dispatchEvent(dcWidgetReady);
     window.PostLCPevnt = false;
-    console.log('lcpReady() fired');
   };
   if (VERB === 'compress-pdf' || preRenderDropZone) {
     (async () => {
@@ -226,15 +225,9 @@ export default function init(element) {
         default:
           break;
       }
-      // const dcWidgetReady = new CustomEvent('DC_PostLCP:Ready');
-      // window.dispatchEvent(dcWidgetReady);
-      // window.PostLCPevnt = false;
       lcpReady();
     })();
   } else {
-      // window.PostLCPevnt = false;
-      // const dcWidgetReady = new CustomEvent('DC_PostLCP:Ready');
-      // window.dispatchEvent(dcWidgetReady);
       lcpReady();
   }
 
