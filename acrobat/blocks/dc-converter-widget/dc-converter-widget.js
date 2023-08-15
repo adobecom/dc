@@ -147,7 +147,7 @@ export default function init(element) {
 
   if (window.location.hostname === 'www.adobe.com') {
     WIDGET_ENV = `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
-    DC_DOMAIN = 'https://acrobat.adobe.com';
+    DC_DOMAIN = 'https://www.adobe.com/dc';
     ENV = 'prod';
   }
 
