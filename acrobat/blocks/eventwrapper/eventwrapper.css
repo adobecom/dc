@@ -65,3 +65,12 @@ body:not([data-current-event]) [data-event-name=onload] {
     height: auto;
   }
 }
+
+.wapper-rotate-pages .LifecycleOrganizeSettings__organizeSettings___2EChZ {
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.wapper-rotate-pages .LifecycleOrganizeSettings__frictionlessContainer___2yFzQ.LifecycleOrganizeSettings__extendedHeight___7kokh {
+  min-height: auto;
+}

@@ -59,7 +59,7 @@ export default function init(element) {
   };
 
   const handleEvents = (e, converter, verb) => {
-    console.log('current event', e);
+    console.log('gaga event', e);
     let parser = bowser.getParser(window.navigator.userAgent);
     let browserName = parser.getBrowserName();
     let extID;
@@ -87,34 +87,34 @@ export default function init(element) {
       }
     }
 
-    const showContent = (widgetCidTopPosition = '70px') => {
-      const widget = document.querySelector('#dc-converter-widget');
+    const showContent = () => {
+      const widget = document.querySelector('[data-section="widget"]');
       widget.style.minHeight = '570px';
       widget.style.height = 'auto';
-      const widgetCid = widget.querySelector('#CID');
-      widgetCid.style.top = widgetCidTopPosition;
-      const main = document.getElementsByTagName('main')[0];
-      const sections = Array.from(main.children);
+      const sections = document.querySelectorAll('main > div');
       sections.forEach((section) => section.classList.remove('hide'));
     };
 
     const hideContent = () => {
-      const widget = document.querySelector('#dc-converter-widget');
-      const widgetCid = widget.querySelector('#CID');
-      const gnav = document.querySelector('header');
-      const gnavHeight = gnav ? gnav.offsetHeight : 0;
-      setTimeout(() => {
-        const footer = document.querySelector('.footer');
+      const handleResize = ((footer, gnav, widget) => {
+        const gnavHeight = gnav ? gnav.offsetHeight : 0;
         const footerHeight = footer ? footer.offsetHeight : 0;
         widget.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
         widget.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-        const lifecycleOrganizeContainer = widgetCid.querySelector('section');
-        lifecycleOrganizeContainer.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-        lifecycleOrganizeContainer.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-      }, 2000);
-      widgetCid.style.top = '10px';
-      const main = document.getElementsByTagName('main')[0];
-      const sections = Array.from(main.children);
+      });
+
+      const widget = document.querySelector('[data-section="widget"]');
+      const gnav = document.querySelector('header');
+      setTimeout(() => {
+        const footer = document.querySelector('.global-footer');
+        if (footer) {
+          handleResize(footer, gnav, widget);
+        }
+        window.addEventListener('resize', () => {
+          handleResize(footer, gnav, widget);
+        });
+      }, 5000);
+      const sections = document.querySelectorAll('main > div:not([data-section="widget"])');
       sections.forEach((section) => section.classList.add('hide'));
     };
 
@@ -141,7 +141,6 @@ export default function init(element) {
         break;
       case PROCESS_COMPLETE:
         setCurrentEvent('complete');
-        if (verb === 'rotate-pages') hideContent();
         break;
       case TRY_ANOTHER:
         // suppress browser ext;
@@ -155,17 +154,16 @@ export default function init(element) {
         break;
       case PREVIEW_GEN:
         setCurrentEvent('preview');
-        if (verb === 'rotate-pages') showContent('10px');
+        if (verb === 'rotate-pages') showContent();
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case PREVIEW_DIS:
         setCurrentEvent('preview');
-        if (verb === 'rotate-pages') showContent('10px');
+        if (verb === 'rotate-pages') showContent();
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DROPZONE_DIS:
         setCurrentEvent(DROPZONE_DIS);
-        if (verb === 'rotate-pages') showContent();
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DOWNLOAD_START:
