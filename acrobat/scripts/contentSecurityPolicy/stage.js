@@ -248,6 +248,8 @@ const imgSrc = [
   'cdn.honey.io',
   'fonts.gstatic.com',
   'googleads.g.doubleclick.net',
+  's.yimg.jp',
+  'yjtag.yahoo.co.jp',
   ';',
 ];
 
@@ -336,6 +338,9 @@ const scriptSrc = [
   'http://localhost:6456/',
   '*.hlx.page',
   '*.hlx.live',
+  's.tgm.yahoo-net.jp',
+  's.yimg.jp',
+  'yjtag.yahoo.co.jp',
   ';',
 ];
 

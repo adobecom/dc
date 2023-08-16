@@ -1,3 +1,4 @@
+import {createTag} from "../../scripts/miloUtils.js";
 // Could use webpack/rollup. Just manually inline these structures, for now.
 const localeMap = {
   '': 'en-us',
@@ -118,12 +119,17 @@ let langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
 
 export default function init(element) {
-  element.closest('main > div').dataset.section = 'widget';
   const widget = element;
   const DC_WIDGET_VERSION_FALLBACK = '2.40.0_1.172.1';
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.172.1';
   const STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
   const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
+  const HEADING = 'Convert JPG to PDF';
+  const COPY = 'Drag and drop an image file (JPG, PNG, BMP, and more) to use our PDF converter.';
+  const WORD_HEADING = 'Convert PDF to Word';
+  const WORD_COPY = 'Drag and drop a PDF file to use our PDF to Microsoft Word converter.';
+  const LEGAL = 'Your file will be securely handled by Adobe servers and deleted unless you sign in to save it. By using this service, you agree to the Adobe Terms of Use and Privacy Policy.';
+  const BTN = 'Select a file';
 
   let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
   let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
@@ -136,10 +142,7 @@ export default function init(element) {
     DC_WIDGET_VERSION = DC_WIDGET_VERSION_FALLBACK;
     window.lana?.log(`DC WIDGET VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_WIDGET_VERSION_FALLBACK}`, lanaOptions);
   }
-  if (!DC_GENERATE_CACHE_VERSION) {
-    DC_GENERATE_CACHE_VERSION = DC_GENERATE_CACHE_VERSION_FALLBACK;
-    window.lana?.log(`DC GENERATE CACHE VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_GENERATE_CACHE_VERSION_FALLBACK}`, lanaOptions);
-  }
+
   let WIDGET_ENV = `https://dev.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
   let ENV = 'dev';
   let REDIRECT_URL = '';
@@ -147,7 +150,7 @@ export default function init(element) {
 
   if (window.location.hostname === 'www.adobe.com') {
     WIDGET_ENV = `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
-    DC_DOMAIN = 'https://www.adobe.com/dc';
+    DC_DOMAIN = 'https://acrobat.adobe.com';
     ENV = 'prod';
   }
 
@@ -157,13 +160,53 @@ export default function init(element) {
     || window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.stage.adobe.com') {
     WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${STG_DC_WIDGET_VERSION}/dc-app-launcher.js`;
-    DC_DOMAIN = 'https://www.stage.adobe.com/dc';
+    DC_DOMAIN = 'https://stage.acrobat.adobe.com';
     DC_GENERATE_CACHE_VERSION = STG_DC_GENERATE_CACHE_VERSION;
     ENV = 'stage';
   }
 
   widget.querySelector('div').id = 'VERB';
   const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
+      const dynamicHead = VERB === 'jpg-to-pdf' ? HEADING : WORD_HEADING;
+      const dynamicCopy = VERB === 'jpg-to-pdf' ? COPY : WORD_COPY;
+      //Create Fake Widget
+      createTag.then((tag) => {
+        const wrapper = tag('div', {id: 'CID', class: `fsw widget-wrapper wapper-${VERB}` });
+        const heading = tag('h1', { class: 'widget-heading' }, dynamicHead);
+        const center = tag('div', { class: 'widget-center' });
+        const copy = tag('p', { class: 'widget-copy' }, dynamicCopy);
+        const legal = tag('p', { class: 'widget-legal' }, LEGAL);
+        const button = tag('p', { class: 'widget-button' }, BTN);
+        wrapper.append(heading);
+        wrapper.append(center)
+        center.append(copy);
+        center.append(button);
+        wrapper.append(legal);
+        element.append(wrapper);
+
+        const dcWidgetScript = tag('script', {
+          id: 'adobe_dc_sdk_launcher',
+          src: WIDGET_ENV,
+          'data-dropzone_id': 'CID',
+          'data-locale': pageLang,
+          'data-server_env': ENV,
+          'data-verb': VERB,
+          'data-load_typekit': 'false',
+          'data-load_imslib': 'false',
+          'data-enable_unload_prompt': 'true',
+        });
+
+        // element.prepend(dcWidgetScript);
+        document.addEventListener('milo:deferred', ()=> {
+          wrapper.classList.add('widget-loaded');
+          element.prepend(dcWidgetScript);
+        })
+        // setTimeout(() => {
+        //   wrapper.classList.add('widget-loaded');
+        //   console.log('load widget');
+        //   element.prepend(dcWidgetScript);
+        // }, 5000)
+      });
 
   // Redir URL
   const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
@@ -172,7 +215,6 @@ export default function init(element) {
     REDIRECT_URL = REDIRECT_URL_DIV.textContent.trim();
     REDIRECT_URL_DIV.remove();
   }
-
 
     // Generate cache url
     const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
@@ -193,36 +235,6 @@ export default function init(element) {
     }
   };
 
-  const widgetContainer = document.createElement('div');
-  widgetContainer.id = 'CID';
-  widgetContainer.className = `fsw wapper-${VERB}`;
-  widget.appendChild(widgetContainer);
-
-  const isReturningUser = window.localStorage.getItem('pdfnow.auth');
-  const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
-  const preRenderDropZone = !isReturningUser && !isRedirection;
-  if (VERB === 'compress-pdf' || preRenderDropZone) {
-    (async () => {
-      // TODO: Make dynamic
-      const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
-      switch (response.status) {
-        case 200: {
-          const template = await response.text();
-          if (!("rendered" in widgetContainer.dataset)) {
-            widgetContainer.dataset.rendered = "true";
-            const doc = new DOMParser().parseFromString(template, 'text/html');
-            document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
-            widgetContainer.appendChild(doc.body.firstElementChild);
-            performance.mark("milo-insert-snippet");
-          }
-          break;
-        }
-        default:
-          break;
-      }
-    })();
-  }
-
   window.addEventListener('IMS:Ready', async () => {
     // Redirect Usage
     if (window.adobeIMS.isSignedInUser()) {
@@ -234,27 +246,13 @@ export default function init(element) {
     frictionless(VERB);
   });
 
-  const dcScript = document.createElement('script');
-  dcScript.id = 'adobe_dc_sdk_launcher';
-  dcScript.setAttribute('src', WIDGET_ENV);
-  dcScript.dataset.dropzone_id = 'CID';
-  dcScript.dataset.locale = pageLang;
-  dcScript.dataset.server_env = ENV;
-  dcScript.dataset.verb = VERB;
-  dcScript.dataset.load_typekit = 'false';
-  dcScript.dataset.load_imslib = 'false';
-  dcScript.dataset.enable_unload_prompt = 'true';
-  if (preRenderDropZone) {
-    dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
-  }
-
   window.addEventListener('Bowser:Ready', async () => {
     // EOL Redirect
     const { redirectLegacyBrowsers } = await import('../../scripts/legacyBrowser.js');
     redirectLegacyBrowsers();
   })
 
-  widget.appendChild(dcScript);
+  // widget.appendChild(dcScript);
 
   window.addEventListener('IMS:Ready', () => {
     let evt;

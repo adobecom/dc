@@ -1,5 +1,6 @@
 const childSrc = [
   '\'self\'',
+  'blob:',
   ';',
 ];
 
@@ -239,6 +240,8 @@ const imgSrc = [
   'cdn.honey.io',
   'fonts.gstatic.com',
   'googleads.g.doubleclick.net',
+  's.yimg.jp',
+  'yjtag.yahoo.co.jp',
   ';',
 ];
 
@@ -318,6 +321,9 @@ const scriptSrc = [
   'tag.demandbase.com',
   '*.typekit.net',
   'zn3n5vyia1vy8b4ly-adobe.siteintercept.qualtrics.com/',
+  's.yjtag.jp/tag.js',
+  's.yimg.jp',
+  'yjtag.yahoo.co.jp',
   ';',
 ];
 
