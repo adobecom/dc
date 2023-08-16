@@ -150,6 +150,8 @@ const imgSrc = [
   'http://localhost:6456/',
   '*.hlx.page',
   '*.hlx.live',
+  's.yimg.jp',
+  'yjtag.yahoo.co.jp',
   ';',
 ];
 
@@ -238,6 +240,9 @@ const scriptSrc = [
   'http://localhost:6456/',
   '*.hlx.page',
   '*.hlx.live',
+  's.tgm.yahoo-net.jp',
+  's.yimg.jp',
+  'yjtag.yahoo.co.jp',
   ';',
 ];
 
