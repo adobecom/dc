@@ -1,0 +1,88 @@
+ae_ar:
+  ietf: ar-AE
+ae_en:
+  ietf: en
+at:
+  ietf: de-AT
+be_en:
+  ietf: en-BE
+be_fr:
+  ietf: fr-BE
+be_nl:
+  ietf: nl-BE
+bg:
+  ietf: bg-BG
+ch_de:
+  ietf: de-CH
+ch_fr:
+  ietf: fr-CH
+ch_it:
+  ietf: it-CH
+cy_en:
+  ietf: en-CY
+cz:
+  ietf: cs-CZ
+ec:
+  ietf: es-EC
+ee:
+  ietf: et-EE
+eg_ar:
+  ietf: ar-EG
+eg_en:
+  ietf: en-EG
+gr_el:
+  ietf: el-GR
+gr_en:
+  ietf: en-GR
+hu:
+  ietf: hu-HU
+ie:
+  ietf: en-GB
+il_en:
+  ietf: en-IL
+kw_ar:
+  ietf: ar-KW
+kw_en:
+  ietf: en-KW
+lt:
+  ietf: lt-LT
+lu_de:
+  ietf: de-LU
+lu_en:
+  ietf: en-LU
+lu_fr:
+  ietf: fr-LU
+lv:
+  ietf: lv-LV
+mena_ar:
+  ietf: ar
+mena_en:
+  ietf: en
+mt:
+  ietf: en-MT
+pl:
+  ietf: pl-PL
+pr:
+  ietf: es-PR
+pt:
+  ietf: pt-PT
+qa_ar:
+  ietf: ar-QA
+qa_en:
+  ietf: en-QA
+ro:
+  ietf: ro-RO
+ru:
+  ietf: ru-RU
+sa_ar:
+  ietf: ar-SA
+sa_en:
+  ietf: en
+si:
+  ietf: sl-SI
+sk:
+  ietf: sk-SK
+tr:
+  ietf: tr-TR
+ua:
+  ietf: uk-UA
