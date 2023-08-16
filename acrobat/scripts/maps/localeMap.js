@@ -40,6 +40,12 @@ const localeMap = {
   'br': 'pt-BR',
   'la': 'es-ES',
   'mx': 'es-ES',
-  'be_nl': 'nl-NL'
+  'be_nl': 'nl-NL',
+  'bg': 'bg-BG',
+  'ee': 'et-EE',
+  'lt': 'lt-LT',
+  'lv': 'lv-LV',
+  'ua': 'uk-UA',
+  'si': 'sl-SI'
 };
 export default localeMap;

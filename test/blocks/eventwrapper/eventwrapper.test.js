@@ -11,6 +11,7 @@ const { default: init } = await import(
 
 describe('eventwrapper block', () => {
   let browserName = 'Chrome';
+  let chromeRuntimeSendMessage = false;
 
   before(() => {
     window.bowser = {
@@ -50,7 +51,7 @@ describe('eventwrapper block', () => {
     window.chrome = {
       runtime: {
         sendMessage: function (message, version, callback) {
-          callback(false);
+          callback((() => chromeRuntimeSendMessage)());
         },
       },
     };
@@ -88,6 +89,39 @@ describe('eventwrapper block', () => {
     window.modalDisplayed = false;
     window.dc_hosted.dispatchEvent('preview-displayed', {});
     expect(window.modalDisplayed).to.be.true;
+  });
+
+  it('handles modalExist', async function () {
+    document.head.innerHTML = head;
+    document.body.innerHTML = body;
+    window.dc_hosted.listeners = [];
+    localStorage.removeItem('fricBrowExt');
+    window.modalDisplayed = false;
+    chromeRuntimeSendMessage = true;
+    const blocks = document.body.querySelectorAll('.eventwrapper');
+    blocks.forEach((x) => init(x));
+    window.dispatchEvent(new CustomEvent('DC_Hosted:Ready'));
+    window.dc_hosted.dispatchEvent('conversion-complete', {});
+
+    window.modalDisplayed = false;
+    window.dc_hosted.dispatchEvent('preview-displayed', {});
+
+    // modalExist
+    const event = window._satellite.track.args[1][1].data._adobe_corpnew.digitalData.primaryEvent.eventInfo.eventName;
+    expect(event).to.eql('Get the extension-1|viewer-extension-exists|Chrome-extension');
+  });
+
+  it('handles modalAlready', async function () {
+    document.head.innerHTML = head;
+    document.body.innerHTML = body;
+    localStorage.fricBrowExt = 'true';
+    const blocks = document.body.querySelectorAll('.eventwrapper');
+    blocks.forEach((x) => init(x));
+    window.dispatchEvent(new CustomEvent('DC_Hosted:Ready'));
+
+    // modalAlready
+    const event = window._satellite.track.args[1][1].data._adobe_corpnew.digitalData.primaryEvent.eventInfo.eventName;
+    expect(event).to.eql('Get the extension-1|already-closed-viewer-extension|Chrome-extension');
   });
 
   it('shows the ext modal on MS Edge when conversion complete and preview displayed', async function () {
