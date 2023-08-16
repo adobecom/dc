@@ -59,7 +59,6 @@ export default function init(element) {
   };
 
   const handleEvents = (e, converter, verb) => {
-    console.log('gaga event', e);
     let parser = bowser.getParser(window.navigator.userAgent);
     let browserName = parser.getBrowserName();
     let extID;
@@ -87,29 +86,31 @@ export default function init(element) {
       }
     }
 
+    const handleResize = ((footer, gnav, widget) => {
+      const gnavHeight = gnav ? gnav.offsetHeight : 0;
+      const footerHeight = footer ? footer.offsetHeight : 0;
+      widget.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
+      widget.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
+    });
+
     const showContent = () => {
       const widget = document.querySelector('[data-section="widget"]');
       widget.style.minHeight = '570px';
       widget.style.height = 'auto';
+      window.addEventListener('resize', () => {
+        widget.style.minHeight = '570px';
+        widget.style.height = 'auto';
+      });
       const sections = document.querySelectorAll('main > div');
       sections.forEach((section) => section.classList.remove('hide'));
     };
 
     const hideContent = () => {
-      const handleResize = ((footer, gnav, widget) => {
-        const gnavHeight = gnav ? gnav.offsetHeight : 0;
-        const footerHeight = footer ? footer.offsetHeight : 0;
-        widget.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-        widget.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-      });
-
       const widget = document.querySelector('[data-section="widget"]');
       const gnav = document.querySelector('header');
       setTimeout(() => {
         const footer = document.querySelector('.global-footer');
-        if (footer) {
-          handleResize(footer, gnav, widget);
-        }
+        if (footer) handleResize(footer, gnav, widget);
         window.addEventListener('resize', () => {
           handleResize(footer, gnav, widget);
         });
