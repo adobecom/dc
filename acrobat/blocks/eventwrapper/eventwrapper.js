@@ -33,6 +33,12 @@ export default function init(element) {
     }
   };
 
+  let footer;
+  let gnav;
+  let widget;
+  let cid;
+  let sections;
+  let converterWidget;
   const params = new Proxy(new URLSearchParams(window.location.search),{
     get: (searchParams, prop) => searchParams.get(prop),
   });
@@ -86,37 +92,36 @@ export default function init(element) {
       }
     }
 
-    const handleResize = ((footer, gnav, widget) => {
+    if (verb === 'rotate-pages') {
+      gnav = document.querySelector('header');
+      widget = document.querySelector('[data-section="widget"]');
+      cid = document.querySelector('#CID');
+      sections = document.querySelectorAll('main > div');
+      converterWidget = widget.querySelector('#dc-converter-widget');
+    }
+
+    function handleResize() {
       const gnavHeight = gnav ? gnav.offsetHeight : 0;
       const footerHeight = footer ? footer.offsetHeight : 0;
       widget.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
       widget.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-    });
+      converterWidget.style.minHeight = 'auto';
+    };
 
-    const showContent = () => {
-      const widget = document.querySelector('[data-section="widget"]');
+    const showContent = (cidTopPosition = '70px') => {
       widget.style.minHeight = '570px';
       widget.style.height = 'auto';
-      window.addEventListener('resize', () => {
-        widget.style.minHeight = '570px';
-        widget.style.height = 'auto';
-      });
-      const sections = document.querySelectorAll('main > div');
-      sections.forEach((section) => section.classList.remove('hide'));
+      cid.style.top = cidTopPosition;
+      sections?.forEach((section) => section.classList.remove('hide'));
     };
 
     const hideContent = () => {
-      const widget = document.querySelector('[data-section="widget"]');
-      const gnav = document.querySelector('header');
+      if (window.innerHeight < 800) cid.style.top = '10px';
       setTimeout(() => {
-        const footer = document.querySelector('.global-footer');
-        if (footer) handleResize(footer, gnav, widget);
-        window.addEventListener('resize', () => {
-          handleResize(footer, gnav, widget);
-        });
+        footer = document.querySelector('.global-footer');
+        handleResize();
       }, 5000);
-      const sections = document.querySelectorAll('main > div:not([data-section="widget"])');
-      sections.forEach((section) => section.classList.add('hide'));
+      sections?.forEach((section) => section.classList.add('hide'));
     };
 
     switch (e) {
@@ -155,12 +160,12 @@ export default function init(element) {
         break;
       case PREVIEW_GEN:
         setCurrentEvent('preview');
-        if (verb === 'rotate-pages') showContent();
+        if (verb === 'rotate-pages') showContent('20px');
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case PREVIEW_DIS:
         setCurrentEvent('preview');
-        if (verb === 'rotate-pages') showContent();
+        if (verb === 'rotate-pages') showContent('20px');
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DROPZONE_DIS:

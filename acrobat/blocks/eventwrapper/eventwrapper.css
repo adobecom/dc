@@ -66,11 +66,11 @@ body:not([data-current-event]) [data-event-name=onload] {
   }
 }
 
-.wapper-rotate-pages .LifecycleOrganizeSettings__organizeSettings___2EChZ {
+.wapper-rotate-pages [data-test-id="lifecycle-organize-fragment"] {
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
 }
 
-.wapper-rotate-pages .LifecycleOrganizeSettings__frictionlessContainer___2yFzQ.LifecycleOrganizeSettings__extendedHeight___7kokh {
+.wapper-rotate-pages section[class^='LifecycleOrganizeSettings__'] {
   min-height: auto;
 }
