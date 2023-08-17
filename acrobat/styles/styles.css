@@ -16,6 +16,10 @@ div[data-section="widget"] {
   min-height: 570px;
 }
 
+#dc-converter-widget > div:first-of-type {
+  display: none;
+}
+
 #CID {
   width: 75%;
   max-width: 75%;
@@ -421,7 +425,7 @@ div.how-to ol li::before{
 .widget-center {
   justify-content: center;
   flex: 1 1 auto;
-  display: flex;
+  display: flex !important;
   flex-direction: column;
 }
 
@@ -462,4 +466,10 @@ div.how-to ol li::before{
   .widget-loaded > div {
     height: calc(100vh - 110px);
   }
+}
+
+.promotion {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
 }
