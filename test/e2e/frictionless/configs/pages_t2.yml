@@ -1,0 +1,16 @@
+compress-pdf:
+convert-pdf:
+  verb: createpdf
+excel-to-pdf:
+jpg-to-pdf:
+merge-pdf:
+  verb: combine-pdf
+password-protect-pdf:
+  verb: protect-pdf
+pdf-to-excel:
+pdf-to-jpg:
+  verb: pdf-to-image
+pdf-to-ppt:
+pdf-to-word:
+png-to-pdf:
+ppt-to-pdf:

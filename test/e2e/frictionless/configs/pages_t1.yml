@@ -1,0 +1,19 @@
+add-pages-to-pdf:
+  verb: insert-pdf
+crop-pdf:
+  verb: crop-pages
+delete-pdf-pages:
+  verb: delete-pages
+extract-pdf-pages:
+  verb: extract-pages
+pdf-editor:
+  verb: add-comment
+rearrange-pdf:
+  verb: reorder-pages
+request-signature:
+  verb: sendforsignature
+rotate-pdf:
+  verb: rotate-pages
+sign-pdf:
+  verb: fillsign
+split-pdf:
