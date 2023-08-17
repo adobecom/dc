@@ -147,7 +147,7 @@ export default async function init(element) {
 
   if (window.location.hostname === 'www.adobe.com') {
     WIDGET_ENV = `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
-    DC_DOMAIN = 'https://acrobat.adobe.com';
+    DC_DOMAIN = 'https://www.adobe.com/dc';
     ENV = 'prod';
   }
 
@@ -156,7 +156,7 @@ export default async function init(element) {
     || window.location.hostname === 'stage--dc--adobecom.hlx.live'
     || window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.stage.adobe.com') {
-    WIDGET_ENV = `https://www.stage.adobe.com/dc/dc-hosted/${STG_DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${STG_DC_WIDGET_VERSION}/dc-app-launcher.js`;
     DC_DOMAIN = 'https://www.stage.adobe.com/dc';
     DC_GENERATE_CACHE_VERSION = STG_DC_GENERATE_CACHE_VERSION;
     ENV = 'stage';
