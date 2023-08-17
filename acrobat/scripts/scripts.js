@@ -250,8 +250,10 @@ const { ietf } = getLocale(locales);
     loadArea, loadScript, setConfig, loadLana, getMetadata
   } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
+
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
+
   // get event back form dc web and then load area
   await loadArea(document, false);
 
