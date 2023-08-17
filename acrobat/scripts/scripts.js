@@ -257,13 +257,6 @@ const { ietf } = getLocale(locales);
   // get event back form dc web and then load area
   await loadArea(document, false);
 
-  // Promotion from metadata (for FedPub)
-  const promotionMetadata = getMetadata('promotion');
-  if (promotionMetadata && !document.querySelector('main .promotion')) {
-    const { promotionFromMetadata } = await import('../blocks/promotion/promotion.js');
-    promotionFromMetadata(promotionMetadata);
-  }
-
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
