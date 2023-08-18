@@ -60,17 +60,51 @@ body:not([data-current-event]) [data-event-name=onload] {
   }
 }
 
-@media (max-width: 600px) {
-  .wapper-rotate-pages.fsw > div > div {
-    height: auto;
-  }
-}
-
-.wapper-rotate-pages [data-test-id="lifecycle-organize-fragment"] {
+#CID.wapper-rotate-pages div[class^='LifecycleOrganizeSettings__organizeSettings__'] {
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
 }
 
-.wapper-rotate-pages section[class^='LifecycleOrganizeSettings__'] {
+#CID.wapper-rotate-pages section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
   min-height: auto;
+}
+
+@media (min-width: 421px) and (max-width: 600px) {
+  #CID.wapper-rotate-pages.fsw > div > div {
+    height: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  #CID.wapper-rotate-pages.fsw {
+    top: 10px !important;
+    height: calc(100vh - 300px);
+  }
+
+  #CID.wapper-rotate-pages.fsw > div > div {
+    height: calc(100vh - 300px);
+  }
+
+  #CID.wapper-rotate-pages section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    height: calc(100vh - 300px);
+  }
+}
+
+@media only screen and (width: 1024px) and (height: 600px) {
+  #CID.wapper-rotate-pages section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    height: 60vh;
+  }
+
+  #CID.wapper-rotate-pages > div > div > div[class^='DCHosted__container__'] {
+    height: 55vh;
+  }
+
+  #CID.wapper-rotate-pages.fsw {
+    top: -60px !important;
+  }
+}
+
+div[data-section='widget'].widget-default-height {
+  height: auto !important;
+  min-height: auto !important;
 }

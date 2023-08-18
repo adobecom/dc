@@ -109,19 +109,22 @@ export default function init(element) {
     };
 
     const showContent = (cidTopPosition = '70px') => {
-      widget.style.minHeight = '570px';
-      widget.style.height = 'auto';
+      widget.classList.add('widget-default-height');
       cid.style.top = cidTopPosition;
       sections?.forEach((section) => section.classList.remove('hide'));
     };
 
     const hideContent = () => {
+      widget.classList.remove('widget-default-height');
       if (window.innerHeight < 800) cid.style.top = '10px';
       setTimeout(() => {
         footer = document.querySelector('.global-footer');
         handleResize();
       }, 5000);
-      sections?.forEach((section) => section.classList.add('hide'));
+      sections?.forEach((section) => {
+        if (section.getAttribute('data-section') === 'widget') return;
+        section.classList.add('hide');
+      });
     };
 
     switch (e) {
@@ -170,6 +173,7 @@ export default function init(element) {
         break;
       case DROPZONE_DIS:
         setCurrentEvent(DROPZONE_DIS);
+        if (verb === 'rotate-pages') showContent();
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DOWNLOAD_START:
