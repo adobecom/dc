@@ -246,7 +246,7 @@ const { ietf } = getLocale(locales);
   if (STYLES) { paths.push(STYLES); }
   loadStyles(paths);
 
-  // run base milo features
+  // Run base milo features
   const {
     loadArea, loadScript, setConfig, loadLana, getMetadata
   } = await utilsPromise;
