@@ -238,6 +238,7 @@ const { ietf } = getLocale(locales);
 (async function loadPage() {
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
+  const pageName = window.location.pathname.split('/').pop().split('.')[0];
   if (widgetBlock) {
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
     const blockName = widgetBlock.classList.value;
@@ -247,14 +248,18 @@ const { ietf } = getLocale(locales);
     const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
     const dcUrls = [
       `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verb}-${ietf.toLowerCase()}.html`,
-      `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`
     ];
+
+    // Experiment, don't prefetch app-launcher as it competes with fast path
+    if (pageName !== 'compress-pdf') {
+      dcUrls.push(`https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`);
+    }
 
     dcUrls.forEach( url => {
       const link = document.createElement('link');
       link.setAttribute('rel', 'prefetch');
       if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
-      if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');;}
+      if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');}
       link.setAttribute('href', url);
       link.setAttribute('crossorigin', '');
       document.head.appendChild(link);
