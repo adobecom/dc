@@ -26,9 +26,14 @@ export default function lanaLogging() {
     }
   }, 10000);
 
+  window.dcwErrors?.forEach((error) => { 
+    lanaOptions.tags = 'Cat=DxDC_Frictionless,origin=milo';
+    window.lana.log(error, lanaOptions);
+  });
+
   // Content Security Policy Logging
   if (fricPage) {
-    window.cspErrors.forEach((error) => { 
+    window.cspErrors?.forEach((error) => { 
       lanaCspOptions.tags = 'Cat=DxDC_Frictionless_CSP,origin=milo';
       window.lana.log(error, lanaCspOptions);
     })
@@ -36,6 +41,6 @@ export default function lanaLogging() {
     document.addEventListener("securitypolicyviolation", (e) => {
       lanaCspOptions.tags = 'Cat=DxDC_Frictionless_CSP,origin=milo';
       window.lana.log(`${e.violatedDirective} violation ¶ Refused to load content from ${e.blockedURI}`, lanaCspOptions);
-    }); 
+    });
   }
 }

@@ -251,8 +251,10 @@ const { ietf } = getLocale(locales);
     loadArea, loadScript, setConfig, loadLana, getMetadata
   } = await utilsPromise;
   addLocale(ietf);
+
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
+
   // get event back from dc web and then load area
   await loadArea(document, false);
 
