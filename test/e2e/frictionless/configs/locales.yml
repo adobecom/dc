@@ -1,0 +1,185 @@
+# Americas
+ar:
+  ietf: es-AR
+br:
+  ietf: pt-BR
+ca:
+  ietf: en-CA
+ca_fr:
+  ietf: fr-CA
+cl:
+  ietf: es-CL
+co:
+  ietf: es-CO
+cr:
+  ietf: es-CR
+ec:
+  ietf: es-EC
+gt:
+  ietf: es-GT
+la:
+  ietf: es-LA
+mx:
+  ietf: es-MX
+pe:
+  ietf: es-PE
+pr:
+  ietf: es-PR
+"":
+  ietf: en-US
+# EMEA
+africa:
+  ietf: en
+be_fr:
+  ietf: fr-BE
+be_en:
+  ietf: en-BE
+be_nl:
+  ietf: nl-BE
+cy_en:
+  ietf: en-CY
+dk:
+  ietf: da-DK
+de:
+  ietf: de-DE
+ee:
+  ietf: et-EE
+es:
+  ietf: es-ES
+fr:
+  ietf: fr-FR
+gr_el:
+  ietf: el-GR
+gr_en:
+  ietf: en-GR
+ie:
+  ietf: en-GB
+il_en:
+  ietf: en-IL
+it:
+  ietf: it-IT
+lv:
+  ietf: lv-LV
+lt:
+  ietf: lt-LT
+lu_de:
+  ietf: de-LU
+lu_en:
+  ietf: en-LU
+lu_fr:
+  ietf: fr-LU
+hu:
+  ietf: hu-HU
+mt:
+  ietf: en-MT
+mena_en:
+  ietf: en
+ng:
+  ietf: en-NG
+nl:
+  ietf: nl-NL
+no:
+  ietf: no-NO
+pl:
+  ietf: pl-PL
+pt:
+  ietf: pt-PT
+ro:
+  ietf: ro-RO
+sa_en:
+  ietf: en
+ch_de:
+  ietf: de-CH
+si:
+  ietf: sl-SI
+sk:
+  ietf: sk-SK
+ch_fr:
+  ietf: fr-CH
+fi:
+  ietf: fi-FI
+se:
+  ietf: sv-SE
+ch_it:
+  ietf: it-CH
+tr:
+  ietf: tr-TR
+ae_en:
+  ietf: en
+uk:
+  ietf: en-GB
+at:
+  ietf: de-AT
+cz:
+  ietf: cs-CZ
+bg:
+  ietf: bg-BG
+ru:
+  ietf: ru-RU
+ua:
+  ietf: uk-UA
+# il_he:
+#   ietf: he
+ae_ar:
+  ietf: ar-AE
+mena_ar:
+  ietf: ar
+sa_ar:
+  ietf: ar-SA
+eg_ar:
+  ietf: ar-EG
+eg_en:
+  ietf: en-EG
+kw_ar:
+  ietf: ar-KW
+kw_en:
+  ietf: en-KW
+qa_ar:
+  ietf: ar-QA
+qa_en:
+  ietf: en-QA
+za:
+  ietf: en-ZA
+# Asia Pacific
+au:
+  ietf: en-AU
+hk_en:
+  ietf: en-HK
+in:
+  ietf: en-GB
+id_id:
+  ietf: id
+id_en:
+  ietf: en
+my_ms:
+  ietf: ms
+my_en:
+  ietf: en-GB
+nz:
+  ietf: en-GB
+ph_en:
+  ietf: en
+ph_fil:
+  ietf: fil-PH
+sg:
+  ietf: en-SG
+th_en:
+  ietf: en
+in_hi:
+  ietf: hi
+th_th:
+  ietf: th
+vn_en:
+  ietf: en-VN
+vn_vi:
+  ietf: vi-VN
+# cn:
+#   ietf: zh-CN
+hk_zh:
+  ietf: zh-HK
+tw:
+  ietf: zh-TW
+jp:
+  ietf: ja-JP
+kr:
+  ietf: ko-KR

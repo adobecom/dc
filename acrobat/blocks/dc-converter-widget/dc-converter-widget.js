@@ -16,16 +16,17 @@ const localeMap = {
   'cy_en': 'en-cy',
   'dk': 'da-dk',
   'de': 'de-de',
-  'ee': 'en-ee',
+  'ee': 'et-ee',
   'es': 'es-es',
   'fr': 'fr-fr',
   'gr_en': 'en-gr',
   'gr_el': 'el-gr',
   'ie': 'en-ie',
   'il_en': 'en-il',
+  'il_he': 'he-il',
   'it': 'it-it',
-  'lv': 'en-lv',
-  'lt': 'en-lt',
+  'lv': 'lv-lv',
+  'lt': 'lt-lt',
   'lu_de': 'de-lu',
   'lu_en': 'en-lu',
   'lu_fr': 'fr-lu',
@@ -40,7 +41,7 @@ const localeMap = {
   'pt': 'pt-pt',
   'ro': 'ro-ro',
   'ch_de': 'de-ch',
-  'si': 'si-si',
+  'si': 'sl-si',
   'sk': 'sk-sk',
   'ch_fr': 'fr-ch',
   'fi': 'fi-fi',
@@ -48,9 +49,9 @@ const localeMap = {
   'ch_it': 'it-ch',
   'tr': 'tr-tr',
   'uk': 'en-uk',
-  'bg': 'en-bg',
+  'bg': 'bg-bg',
   'ru': 'ru-ru',
-  'ua': 'ua-ua',
+  'ua': 'uk-ua',
   'au': 'en-au',
   'hk_en': 'en-hk',
   'in': 'en-in',
@@ -117,7 +118,7 @@ let url = new URL(window.location.href);
 let langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
 
-export default function init(element) {
+export default async function init(element) {
   redirectLegacyBrowsers();
   element.closest('main > div').dataset.section = 'widget';
   const widget = element;
@@ -148,7 +149,7 @@ export default function init(element) {
 
   if (window.location.hostname === 'www.adobe.com') {
     WIDGET_ENV = `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
-    DC_DOMAIN = 'https://acrobat.adobe.com';
+    DC_DOMAIN = 'https://www.adobe.com/dc';
     ENV = 'prod';
   }
 
@@ -158,7 +159,7 @@ export default function init(element) {
     || window.location.hostname === 'main--dc--adobecom.hlx.live'
     || window.location.hostname === 'www.stage.adobe.com') {
     WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${STG_DC_WIDGET_VERSION}/dc-app-launcher.js`;
-    DC_DOMAIN = 'https://stage.acrobat.adobe.com';
+    DC_DOMAIN = 'https://www.stage.adobe.com/dc';
     DC_GENERATE_CACHE_VERSION = STG_DC_GENERATE_CACHE_VERSION;
     ENV = 'stage';
   }
@@ -202,26 +203,23 @@ export default function init(element) {
   const isReturningUser = window.localStorage.getItem('pdfnow.auth');
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   const preRenderDropZone = !isReturningUser && !isRedirection;
-  if (preRenderDropZone) {
-    (async () => {
-      // TODO: Make dynamic
-      const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
-      switch (response.status) {
-        case 200: {
-          const template = await response.text();
-          if (!("rendered" in widgetContainer.dataset)) {
-            widgetContainer.dataset.rendered = "true";
-            const doc = new DOMParser().parseFromString(template, 'text/html');
-            document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
-            widgetContainer.appendChild(doc.body.firstElementChild);
-            performance.mark("milo-insert-snippet");
-          }
-          break;
+  if (VERB === 'compress-pdf' || preRenderDropZone) {
+    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
+    switch (response.status) {
+      case 200: {
+        const template = await response.text();
+        if (!("rendered" in widgetContainer.dataset)) {
+          widgetContainer.dataset.rendered = "true";
+          const doc = new DOMParser().parseFromString(template, 'text/html');
+          document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
+          widgetContainer.appendChild(doc.body.firstElementChild);
+          performance.mark("milo-insert-snippet");
         }
-        default:
-          break;
+        break;
       }
-    })();
+      default:
+        break;
+    }
   }
 
   window.addEventListener('IMS:Ready', async () => {

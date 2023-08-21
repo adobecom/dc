@@ -143,6 +143,8 @@ const imgSrc = [
   'milo.adobe.com',
   'p.typekit.net',
   's.tgm.yahoo-net.jp',
+  's.yimg.jp',
+  'yjtag.yahoo.co.jp',
   ';',
 ];
 
@@ -222,6 +224,9 @@ const scriptSrc = [
   'tag.demandbase.com',
   '*.typekit.net',
   'zn3n5vyia1vy8b4ly-adobe.siteintercept.qualtrics.com/',
+  's.yjtag.jp/tag.js',
+  's.yimg.jp',
+  'yjtag.yahoo.co.jp',
   ';',
 ];
 

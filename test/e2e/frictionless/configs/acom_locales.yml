@@ -1,0 +1,884 @@
+- name: United States
+  locale: ''
+  region: United States
+  regionHeading: Choose your region
+  language: English
+  author: us/en
+  international: us
+  akamai: us
+  tier: 1
+- name: Brasil
+  locale: br
+  region: Brazil
+  regionHeading: Escolha sua região
+  language: Brazilian Portuguese
+  author: br/pt
+  international: br
+  akamai: br
+  tier: 3
+- name: Canada - English
+  locale: ca
+  region: Canada
+  regionHeading: Choose your region
+  language: English
+  author: ca/en
+  international: ca
+  akamai: ca
+  tier: 1
+- name: Canada - Français
+  locale: ca_fr
+  region: Canada
+  regionHeading: Choisissez votre région
+  language: French
+  author: ca/fr
+  international: ca_fr
+  akamai: ca
+  tier: 1
+- name: México
+  locale: mx
+  region: Mexico
+  regionHeading: Seleccionar región
+  language: Spanish
+  author: mx/es
+  international: mx
+  akamai: mx
+  tier: 3
+- name: Latinoamérica
+  locale: la
+  region: Latin America
+  regionHeading: Seleccionar región
+  language: Spanish
+  author: la/es
+  international: la
+  akamai: la
+  tier: 3
+- name: Africa - English
+  locale: africa
+  region: Africa
+  regionHeading: Choose your region
+  language: English
+  author: africa/en
+  international: africa
+  akamai: africa
+  tier: 4
+- name: South Africa
+  locale: za
+  region: Africa
+  regionHeading: Choose your region
+  language: English
+  author: za/en
+  international: za
+  akamai: za
+  tier: 4
+- name: België - Nederlands
+  locale: be_nl
+  region: Belgium
+  regionHeading: Kies je regio
+  language: Dutch
+  author: be/nl
+  international: be_nl
+  akamai: be
+  tier: 4
+- name: Belgique - Français
+  locale: be_fr
+  region: Belgium
+  regionHeading: Choisissez votre région
+  language: French
+  author: be/fr
+  international: be_fr
+  akamai: be
+  tier: 4
+- name: Belgium - English
+  locale: be_en
+  region: Belgium
+  regionHeading: Choose your region
+  language: English
+  author: be/en
+  international: be_en
+  akamai: be
+  tier: 4
+- name: Česká republika
+  locale: cz
+  region: Czech Republic
+  regionHeading: Zvolte oblast
+  language: Czech
+  author: cz/cs
+  international: cz
+  akamai: cz
+  tier: 4
+- name: Cyprus - English
+  locale: cy_en
+  region: Cyprus
+  regionHeading: Choose your region
+  language: English
+  author: cy/en
+  international: cy_en
+  akamai: cy
+  tier: 4
+- name: Danmark
+  locale: dk
+  region: Denmark
+  regionHeading: Vælg dit område
+  language: Danish
+  author: dk/da
+  international: dk
+  akamai: dk
+  tier: 2
+- name: Deutschland
+  locale: de
+  region: Germany
+  regionHeading: Region wählen
+  language: German
+  author: de/de
+  international: de
+  akamai: de
+  tier: 1
+- name: Estonia - English
+  locale: ee
+  region: Estonia
+  regionHeading: Choose your region
+  language: Estonian
+  author: ee/en
+  international: ee
+  akamai: ee
+  tier: 4
+- name: España
+  locale: es
+  region: Spain
+  regionHeading: Seleccionar región
+  language: Spanish
+  author: es/es
+  international: es
+  akamai: es
+  tier: 2
+- name: France
+  locale: fr
+  region: France
+  regionHeading: Choisissez votre région
+  language: French
+  author: fr/fr
+  international: fr
+  akamai: fr
+  tier: 1
+- name: Greece - English
+  locale: gr_en
+  region: Greece
+  regionHeading: Choose your region
+  language: English
+  author: gr/en
+  international: gr_en
+  akamai: gr
+  tier: 4
+- name: Greece - Greek
+  locale: gr_el
+  region: Greece
+  language: Greek
+  author: gr/el
+  international: gr_el
+  akamai: gr
+  tier: 4
+- name: Ireland
+  locale: ie
+  region: Ireland
+  regionHeading: Choose your region
+  language: English
+  author: ie/en
+  international: ie
+  akamai: ie
+  tier: 4
+- name: Israel - English
+  locale: il_en
+  region: Israel
+  regionHeading: Choose your region
+  language: English
+  author: il/en
+  international: il_en
+  akamai: il
+  tier: 4
+- name: Italia
+  locale: it
+  region: Italy
+  regionHeading: Scegli il paese
+  language: Italian
+  author: it/it
+  international: it
+  akamai: it
+  tier: 2
+- name: Latvia - English
+  locale: lv
+  region: Latvia
+  regionHeading: Choose your region
+  language: Latvian
+  author: lv/en
+  international: lv
+  akamai: lv
+  tier: 4
+- name: Lithuania - English
+  locale: lt
+  region: Lithuania
+  regionHeading: Choose your region
+  language: Lithuanian
+  author: lt/en
+  international: lt
+  akamai: lt
+  tier: 4
+- name: Luxembourg - Deutsch
+  locale: lu_de
+  region: Luxembourg
+  regionHeading: Region wählen
+  language: German
+  author: lu/de
+  international: lu_de
+  akamai: lu
+  tier: 4
+- name: Luxembourg - English
+  locale: lu_en
+  region: Luxembourg
+  regionHeading: Choose your region
+  language: English
+  author: lu/en
+  international: lu_en
+  akamai: lu
+  tier: 4
+- name: Luxembourg - Français
+  locale: lu_fr
+  region: Luxembourg
+  regionHeading: Choisissez votre région
+  language: French
+  author: lu/fr
+  international: lu_fr
+  akamai: lu
+  tier: 4
+- name: Magyarország
+  locale: hu
+  region: Hungary
+  regionHeading: Térségválasztás
+  language: Hungarian
+  author: hu/hu
+  international: hu
+  akamai: hu
+  tier: 4
+- name: Malta - English
+  locale: mt
+  region: Malta
+  regionHeading: Choose your region
+  language: English
+  author: mt/en
+  international: mt
+  akamai: mt
+  tier: 4
+- name: Middle East and North Africa - English
+  locale: mena_en
+  region: Middle East and North Africa
+  regionHeading: Choose your region
+  language: English
+  author: mena/en
+  international: mena_en
+  akamai: mena
+  tier: 4
+- name: Middle East and North Africa - Arabic
+  locale: mena_ar
+  region: Middle East and North Africa
+  regionHeading: Choose your region
+  language: Arabic
+  author: mena/ar
+  international: mena_ar
+  akamai: mena
+  tier: 4
+- name: Nederland
+  locale: nl
+  region: Netherlands
+  regionHeading: Kies je regio
+  language: Dutch
+  author: nl/nl
+  international: nl
+  akamai: nl
+  tier: 2
+- name: Norge
+  locale: no
+  region: Norway
+  regionHeading: Velg ditt område
+  language: Norwegian
+  author: no/no
+  international: 'no'
+  akamai: 'no'
+  tier: 2
+- name: Österreich
+  locale: at
+  region: Austria
+  regionHeading: Region wählen
+  language: German
+  author: at/de
+  international: at
+  akamai: at
+  tier: 4
+- name: Polska
+  locale: pl
+  region: Poland
+  regionHeading: Wybierz region
+  language: Polish
+  author: pl/pl
+  international: pl
+  akamai: pl
+  tier: 4
+- name: Portugal
+  locale: pt
+  region: Portugal
+  regionHeading: Escolha sua região
+  language: Portuguese
+  author: pt/pt
+  international: pt
+  akamai: pt
+  tier: 4
+- name: Romania - English
+  locale: ro
+  region: Romania
+  regionHeading: Selectați regiunea
+  language: Romanian
+  author: ro/ro
+  international: ro
+  akamai: ro
+  tier: 4
+- name: Schweiz
+  locale: ch_de
+  region: Switzerland
+  regionHeading: Region wählen
+  language: German
+  author: ch/de
+  international: ch_de
+  akamai: ch
+  tier: 4
+- name: Slovenia - English
+  locale: si
+  region: Slovenia
+  regionHeading: Izberite regijo
+  language: Slovenian
+  author: si/si
+  international: si
+  akamai: si
+  tier: 4
+- name: Slovakia - English
+  locale: sk
+  region: Slovakia
+  regionHeading: Izberite regijo
+  language: Slovakian
+  author: sk/sk
+  international: sk
+  akamai: sk
+  tier: 4
+- name: Suisse
+  locale: ch_fr
+  region: Switzerland
+  regionHeading: Choisissez votre région
+  language: French
+  author: ch/fr
+  international: ch_fr
+  akamai: ch
+  tier: 4
+- name: Suomi
+  locale: fi
+  region: Finland
+  regionHeading: Valitse oma alueesi
+  language: Finnish
+  author: fi/fi
+  international: fi
+  akamai: fi
+  tier: 2
+- name: Sverige
+  locale: se
+  region: Sweden
+  regionHeading: Ange region
+  language: Swedish
+  author: se/sv
+  international: se
+  akamai: se
+  tier: 2
+- name: Svizzera
+  locale: ch_it
+  region: Switzerland
+  regionHeading: Scegli il paese
+  language: Italian
+  author: ch/it
+  international: ch_it
+  akamai: ch
+  tier: 4
+- name: Türkiye
+  locale: tr
+  region: Turkey
+  regionHeading: Bölgenizi seçin
+  language: Turkish
+  author: tr/tr
+  international: tr
+  akamai: tr
+  tier: 4
+- name: United Kingdom
+  locale: uk
+  region: United Kingdom
+  regionHeading: Choose your region
+  language: English
+  author: uk/en
+  international: uk
+  akamai: uk
+  tier: 1
+- name: Bulgaria - English
+  locale: bg
+  region: Bulgaria
+  regionHeading: Choose your region
+  language: Bulgarian
+  author: bg/en
+  international: bg
+  akamai: bg
+  tier: 4
+- name: Россия
+  locale: ru
+  region: Russia
+  regionHeading: Выбрать регион
+  language: Russian
+  author: ru/ru
+  international: ru
+  akamai: ru
+  tier: 4
+- name: Ukraine - English
+  locale: ua
+  region: Ukraine
+  regionHeading: Оберіть свій регіон
+  language: Ukranian
+  author: ua/ua
+  international: ua
+  akamai: ua
+  tier: 4
+- name: Australia
+  locale: au
+  region: Australia
+  regionHeading: Choose your region
+  language: English
+  author: au/en
+  international: au
+  akamai: au
+  tier: 1
+- name: Hong Kong S.A.R. of China
+  locale: hk_en
+  region: Hong Kong
+  regionHeading: Choose your region
+  language: English
+  author: hk/en
+  international: hk_en
+  akamai: hk
+  tier: 3
+- name: India - English
+  locale: in
+  region: India
+  regionHeading: Choose your region
+  language: English
+  author: in/en
+  international: in
+  akamai: in
+  tier: 3
+- name: भारत
+  locale: in_hi
+  region: India
+  regionHeading: अपना क्षेत्र चुनें
+  language: Hindi
+  author: in/hi
+  international: in_hi
+  akamai: in
+  tier: 3
+- name: New Zealand
+  locale: nz
+  region: New Zealand
+  regionHeading: Choose your region
+  language: English
+  author: nz/en
+  international: nz
+  akamai: nz
+  tier: 1
+# - name: Southeast Asia (Includes Indonesia, Malaysia, Philippines, Singapore, Thailand, and Vietnam) - English
+#   locale: sea
+#   region: South East Asia
+#   regionHeading: Choose your region
+#   language: English
+#   author: sea/en
+#   international: sea
+#   akamai: sea
+#   tier: 3
+- name: 中國香港特別行政區
+  locale: hk_zh
+  region: Hong Kong
+  regionHeading: 選擇您的地區
+  language: Chinese Traditional
+  author: hk/zh-Hant
+  international: hk
+  akamai: hk
+  tier: 3
+- name: 中国
+  locale: cn
+  region: China
+  regionHeading: 选择地区
+  language: Chinese Simplified
+  author: cn/zh-Hans
+  international: cn
+  akamai: cn
+  tier: 3
+- name: 台灣地區
+  locale: tw
+  region: Taiwan area
+  regionHeading: 選擇您的地區
+  language: Chinese Traditional
+  author: tw/zh-Hant
+  international: tw
+  akamai: tw
+  tier: 3
+- name: 日本
+  locale: jp
+  region: Japan
+  regionHeading: 地域を選択してください
+  language: Japanese
+  author: jp/ja
+  international: jp
+  akamai: jp
+  tier: 1
+- name: 한국
+  locale: kr
+  region: Korea
+  regionHeading: 지역 선택
+  language: Korean
+  author: kr/ko
+  international: kr
+  akamai: kr
+  tier: 3
+- name: United Arab Emirates - English
+  locale: ae_en
+  region: United Arab Emirates
+  regionHeading: Change region
+  language: English
+  browser: en_ae
+  akamai: ae
+  author: ae/en
+  international: ae_en
+  tier: 4
+- name: United Arab Emirates - Arabic
+  locale: ae_ar
+  region: United Arab Emirates
+  language: Arabic
+  browser: ar_ae
+  akamai: ae
+  author: ae/ar
+  international: ae_ar
+  tier: 4
+- name: Saudi Arabia - English
+  locale: sa_en
+  region: Saudi Arabia
+  regionHeading: Change region
+  language: English
+  browser: en_sa
+  akamai: sa
+  author: sa/en
+  international: sa_en
+  tier: 4
+- name: Saudi Arabia - Arabic
+  locale: sa_ar
+  region: Saudi Arabia
+  language: Arabic
+  akamai: sa
+  author: sa/ar
+  international: sa_ar
+  tier: 4
+- name: Thailand - English
+  locale: th_en
+  region: Thailand
+  regionHeading: Change region
+  language: English
+  browser: en_th
+  akamai: th
+  author: th/en
+  international: th_en
+  tier: 3
+- name: ประเทศไทย
+  locale: th_th
+  region: Thailand
+  regionHeading: เลือกภูมิภาคของคุณ
+  language: Thai
+  browser: th_th
+  akamai: th
+  author: th/th
+  international: th_th
+  tier: 3
+- name: Singapore
+  locale: sg
+  region: Singapore
+  regionHeading: Change region
+  language: English
+  browser: en_sg
+  akamai: sg
+  author: sg/en
+  international: sg
+  tier: 3
+- name: Chile
+  locale: cl
+  region: Chile
+  regionHeading: Cambiar región
+  language: Spanish
+  browser: cl_es
+  akamai: cl
+  author: cl/es
+  international: cl
+  tier: 3
+- name: Colombia
+  locale: co
+  region: Colombia
+  regionHeading: Cambiar región
+  language: Spanish
+  browser: co_es
+  akamai: co
+  author: co/es
+  international: co
+  tier: 3
+- name: Argentina
+  locale: ar
+  region: Argentina
+  regionHeading: Cambiar región
+  language: Spanish
+  browser: ar_es
+  akamai: ar
+  author: ar/es
+  international: ar
+  tier: 3
+- name: Bahrain
+  locale: bh
+  akamai: bh
+  author: bh/en
+  tier: 4
+- name: Bolivia
+  locale: bo
+  akamai: bo
+  author: bo/es
+  tier: 4
+- name: Costa Rica
+  locale: cr
+  akamai: cr
+  author: cr/es
+  tier: 3
+- name: Dominican Republic
+  locale: do
+  akamai: do
+  author: do/es
+  tier: 4
+- name: Puerto Rico
+  locale: pr
+  akamai: pr
+  author: pr/es
+  tier: 4
+- name: Algeria
+  locale: dz
+  akamai: dz
+  author: dz/en
+  tier: 4
+- name: Ecuador
+  locale: ec
+  akamai: ec
+  author: ec/es
+  tier: 3
+- name: Peru
+  locale: pe
+  region: Peru
+  language: Spanish
+  browser: pe_es
+  akamai: pe
+  author: pe/es
+  international: pe
+  tier: 3
+- name: Egypt - English
+  locale: eg_en
+  akamai: eg
+  author: eg/en
+  tier: 4
+- name: Egypt - Arabic
+  locale: eg_ar
+  akamai: eg
+  author: eg/ar
+  tier: 4
+- name: Guatemala
+  locale: gt
+  akamai: gt
+  author: gt/es
+  tier: 3
+- name: Croatia
+  locale: hr
+  akamai: hr
+  author: hr/hr
+  tier: 4
+- name: Croatia
+  locale: hr
+  akamai: hr
+  author: hr/en
+- name: Indonesia - English
+  region: Indonesia
+  locale: id_en
+  akamai: id
+  author: id/en
+  tier: 3
+- name: Indonesia
+  region: Indonesia
+  locale: id_id
+  akamai: id
+  author: id/id
+  tier: 3
+- name: Philippines - English
+  region: Philippines
+  locale: ph_en
+  akamai: ph
+  author: ph/en
+  tier: 3
+- name: Pilipinas
+  region: Philippines
+  locale: ph_fil
+  akamai: ph
+  author: ph/fil
+  tier: 3
+- name: Malaysia - English
+  region: Malaysia
+  locale: my_en
+  akamai: my
+  author: my/en
+  tier: 3
+- name: Malaysia
+  region: Malaysia
+  locale: my_ms
+  akamai: my
+  author: my/ms
+  tier: 3
+- name: Jordan
+  locale: jo
+  akamai: jo
+  author: jo/en
+  tier: 4
+- name: Kenya
+  locale: ke
+  language: English
+  browser: ke_en
+  akamai: ke
+  international: ke
+  author: ke/en
+  tier: 4
+- name: Kuwait - English
+  locale: kw_en
+  akamai: kw
+  author: kw/en
+  tier: 4
+- name: Kuwait - Arabic
+  locale: kw_ar
+  akamai: kw
+  author: kw/ar
+  tier: 4
+- name: Libya
+  locale: lb
+  akamai: lb
+  author: lb/en
+  tier: 4
+- name: Sri Lanka
+  locale: lk
+  akamai: lk
+  author: lk/en
+  tier: 4
+- name: Morocco
+  locale: ma
+  akamai: ma
+  author: ma/en
+  tier: 4
+- name: Macao - English
+  locale: mo
+  akamai: mo
+  author: mo/en
+  tier: 4
+- name: Mauritius
+  locale: mu
+  akamai: mu
+  author: mu/en
+  tier: 4
+- name: Nigeria
+  locale: ng
+  regionHeading: Change region
+  language: English
+  browser: ng_en
+  akamai: ng
+  author: ng/en
+  international: ng
+  tier: 4
+- name: Oman
+  locale: om
+  akamai: om
+  author: om/en
+  tier: 4
+- name: Panama
+  locale: pa
+  akamai: pa
+  author: pa/es
+  tier: 4
+- name: Paraguay
+  locale: py
+  akamai: py
+  author: py/es
+  tier: 4
+- name: Qatar - English
+  locale: qa_en
+  akamai: qa
+  author: qa/en
+  tier: 4
+- name: Qatar - Arabic
+  locale: qa_ar
+  akamai: qa
+  author: qa/ar
+  tier: 4
+- name: El Salvador
+  locale: sv
+  akamai: sv
+  author: sv/es
+  tier: 4
+- name: Trinidad and Tobago
+  locale: tt
+  regionHeading: Change region
+  language: English
+  browser: tt_en
+  akamai: tt
+  international: tt
+  author: tt/en
+  tier: 4
+- name: Tunisia
+  locale: tn
+  akamai: tn
+  author: tn/en
+  tier: 4
+- name: Uruguay
+  locale: uy
+  akamai: uy
+  author: uy/es
+  tier: 4
+- name: Venezuela
+  locale: ve
+  akamai: ve
+  author: ve/es
+  tier: 3
+- name: Vietnam - English
+  region: Vietnam
+  locale: vn_en
+  akamai: vn
+  author: vn/en
+  tier: 3
+- name: Việt Nam
+  region: Vietnam
+  locale: vn_vi
+  akamai: vn
+  author: vn/vi
+  tier: 3
+- name: Spain - Basque
+  region: Spain
+  locale: es_eu
+  akamai: es
+  author: es/eu
+  tier: 2
+- name: Spain - Catalan
+  region: Spain
+  locale: es_ca
+  akamai: es
+  author: es/ca
+  tier: 2
