@@ -36,9 +36,9 @@ export default function init(element) {
   let footer;
   let gnav;
   let widget;
-  let cid;
   let sections;
   let converterWidget;
+  let body;
   const params = new Proxy(new URLSearchParams(window.location.search),{
     get: (searchParams, prop) => searchParams.get(prop),
   });
@@ -95,7 +95,7 @@ export default function init(element) {
     if (verb === 'rotate-pages') {
       gnav = document.querySelector('header');
       widget = document.querySelector('[data-section="widget"]');
-      cid = document.querySelector('#CID');
+      body = document.querySelector('body');
       sections = document.querySelectorAll('main > div');
       converterWidget = widget.querySelector('#dc-converter-widget');
     }
@@ -108,15 +108,15 @@ export default function init(element) {
       converterWidget.style.minHeight = 'auto';
     };
 
-    const showContent = (cidTopPosition = '70px') => {
+    const showContent = () => {
+      body.classList.remove('hide-content');
       widget.classList.add('widget-default-height');
-      cid.style.top = cidTopPosition;
       sections?.forEach((section) => section.classList.remove('hide'));
     };
 
     const hideContent = () => {
+      body.classList.add('hide-content');
       widget.classList.remove('widget-default-height');
-      if (window.innerHeight < 800) cid.style.top = '10px';
       setTimeout(() => {
         footer = document.querySelector('.global-footer');
         handleResize();
@@ -157,18 +157,21 @@ export default function init(element) {
         localStorage.removeItem('fricBrowExt');
         window.modalDisplayed = false;
         break;
+      case CONVERSION_START:
+        if (verb === 'rotate-pages') handleResize();
+        break;
       case CONVERSION_COM:
         setCurrentEvent('complete');
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case PREVIEW_GEN:
         setCurrentEvent('preview');
-        if (verb === 'rotate-pages') showContent('20px');
+        if (verb === 'rotate-pages') showContent();
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case PREVIEW_DIS:
         setCurrentEvent('preview');
-        if (verb === 'rotate-pages') showContent('20px');
+        if (verb === 'rotate-pages') showContent();
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DROPZONE_DIS:
