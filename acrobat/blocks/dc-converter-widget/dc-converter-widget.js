@@ -1,3 +1,4 @@
+import redirectLegacyBrowsers from '../../scripts/legacyBrowser.js';
 // Could use webpack/rollup. Just manually inline these structures, for now.
 const localeMap = {
   '': 'en-us',
@@ -117,6 +118,7 @@ let langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
 
 export default function init(element) {
+  redirectLegacyBrowsers();
   element.closest('main > div').dataset.section = 'widget';
   const widget = element;
   const DC_WIDGET_VERSION_FALLBACK = '2.40.0_1.172.1';
@@ -246,12 +248,6 @@ export default function init(element) {
   if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
-
-  window.addEventListener('Bowser:Ready', async () => {
-    // EOL Redirect
-    const { redirectLegacyBrowsers } = await import('../../scripts/legacyBrowser.js');
-    redirectLegacyBrowsers();
-  })
 
   widget.appendChild(dcScript);
 

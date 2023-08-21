@@ -1,13 +1,12 @@
 /**
  * @jest-environment jsdom
  */
-import { redirectLegacyBrowsers } from '../../acrobat/scripts/legacyBrowser';
+import redirectLegacyBrowsers from '../../acrobat/scripts/legacyBrowser';
 
 describe('Test redirect for legacy browsers', () => {
   let userAgentGetter;
 
   beforeEach(async () => {
-    window.bowser = await require('../../acrobat/scripts/bowser.js');
     userAgentGetter = jest.spyOn(window.navigator, 'userAgent', 'get');
     Object.defineProperty(window, 'location', {
       writable: true,
@@ -50,7 +49,6 @@ describe('Test redirect for legacy browsers', () => {
     ${'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/113.0'}
   `('modern browsers', async ({userAgent}) => {
     userAgentGetter.mockReturnValue(userAgent);
-    window.bowser = await require('../../acrobat/scripts/bowser.js');
     redirectLegacyBrowsers();
     expect(window.location.assign).not.toHaveBeenCalled();
   });  

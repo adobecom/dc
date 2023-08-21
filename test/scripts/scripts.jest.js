@@ -41,12 +41,6 @@ describe('Test scripts', () => {
       initialized: true,
       isSignedInUser: jest.fn().mockReturnValue(false),
     };
-    window.bowser = {
-      getParser: () => ({
-        getBrowserName: () => 'Chrome',
-        getBrowserVersion: () => '110.0',
-      }),
-    };
     window._satellite = {
       track: jest.fn(),
     };

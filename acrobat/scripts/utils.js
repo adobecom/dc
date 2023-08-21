@@ -35,3 +35,56 @@ export const [setLibs, getLibs] = (() => {
     }, () => libs,
   ];
 })();
+
+export const getBrowserData = () => {
+  const userAgent = navigator.userAgent;
+  if (!userAgent) {
+    return {};
+  }
+  const browser = {
+    ua: userAgent,
+    isMobile: userAgent.includes('Mobile'),
+  };
+
+  const regex = [
+    {
+      browserReg: /edg([ae]|ios)?/i,
+      versionReg: /edg([ae]|ios)?[\s/](\d+(\.?\d+)+)/i,
+      name: 'Microsoft Edge',
+    },
+    {
+      browserReg: /chrome|crios|crmo/i,
+      versionReg: /(?:chrome|crios|crmo)\/(\d+(\.?\d+)+)/i,
+      name: 'Chrome',
+    },
+    {
+      browserReg: /firefox|fxios|iceweasel/i,
+      versionReg: /(?:firefox|fxios|iceweasel)[\s/](\d+(\.?\d+)+)/i,
+      name: 'Firefox',
+    },
+    {
+      browserReg: /msie|trident/i,
+      versionReg: /(?:msie |rv:)(\d+(\.?\d+)+)/i,
+      name: 'Internet Explorer',
+    },
+    {
+      browserReg: /safari|applewebkit/i,
+      versionReg: /(?:version)\/(\d+(\.?\d+)+)/i,
+      name: 'Safari',
+    },
+  ];
+
+  for (const reg of regex) {
+    if (reg.browserReg.test(userAgent)) {
+      browser.name = reg.name;
+      const version = userAgent.match(reg.versionReg);
+      if (version) {
+        browser.version = reg.name === 'Microsoft Edge' ? version[2] : version[1];
+        const versionElements = browser.version.split('.');
+        browser.majorVersion = parseInt(versionElements[0], 10);
+      }
+      return browser;
+    }
+  }
+  return browser;
+}

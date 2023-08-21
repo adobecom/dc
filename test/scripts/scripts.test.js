@@ -29,13 +29,12 @@ describe('Test scripts.js', () => {
       initialized: true,
     };
     window.dc_hosted = true;
-    window.bowser = true;
     window._satellite = {
       track: sinon.spy(),
     };
 
     clock.tick(1100);
   
-    expect(window.bowser).to.be.true;
+    expect(window.dc_hosted).to.be.true;
   });
 });

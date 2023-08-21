@@ -248,7 +248,7 @@ const { ietf } = getLocale(locales);
 
   // Import base milo features and run them
   const {
-    loadArea, loadScript, setConfig, loadLana, getMetadata
+    loadArea, setConfig, loadLana, getMetadata
   } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
   setConfig({ ...CONFIG, miloLibs });
@@ -284,15 +284,4 @@ const { ietf } = getLocale(locales);
       window.dispatchEvent(imsIsReady);
     }
   }, 1000);
-
-  loadScript('/acrobat/scripts/bowser.js');
 }());
-
-// Bowser Ready
-const bowserReady = setInterval(() => {
-  if (window.bowser) {
-    clearInterval(bowserReady);
-    const bowserIsReady = new CustomEvent('Bowser:Ready');
-    window.dispatchEvent(bowserIsReady);
-  }
-}, 100);

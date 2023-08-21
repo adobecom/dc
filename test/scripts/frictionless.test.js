@@ -20,11 +20,6 @@ describe('frictionless script', () => {
     window._satellite = {
       track: sinon.spy(),
     };
-    window.bowser = {
-      getParser: () => ({
-        getBrowserName: () => 'Chrome',
-      }),
-    };
     init('pdf-to-ppt');
   });
 
@@ -115,11 +110,6 @@ describe('frictionless script', () => {
   });
 
   it('handles modal:open with MS Edge', async () => {
-    window.bowser = {
-      getParser: () => ({
-        getBrowserName: () => 'Microsoft Edge',
-      }),
-    };
     document.body.innerHTML = await readFile({
       path: './mocks/frictionless.body.html',
     });
