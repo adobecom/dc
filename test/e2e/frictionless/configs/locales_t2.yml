@@ -1,0 +1,22 @@
+au:
+  ietf: en-AU
+ca:
+  ietf: en-CA
+ca_fr:
+  ietf: fr-CA
+dk:
+  ietf: da-DK
+es:
+  ietf: es-ES
+fi:
+  ietf: fi-FI
+it:
+  ietf: it-IT
+nl:
+  ietf: nl-NL
+no:
+  ietf: no-NO
+nz:
+  ietf: en-GB
+se:
+  ietf: sv-SE

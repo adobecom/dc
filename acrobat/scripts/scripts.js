@@ -202,6 +202,10 @@ const CONFIG = {
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
+  // Load Milo base features
+  const miloLibs = setLibs(LIBS);
+  const utilsPromise = import(`${miloLibs}/utils/utils.js`);
+
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
   if (widgetBlock) {
@@ -237,30 +241,22 @@ const { ietf } = getLocale(locales);
     }
   })();
 
-  // Setup Milo
-  const miloLibs = setLibs(LIBS);
-
   // Milo and site styles
   const paths = [`${miloLibs}/styles/styles.css`];
   if (STYLES) { paths.push(STYLES); }
   loadStyles(paths);
 
-  // Import base milo features and run them
+  // Run base milo features
   const {
     loadArea, loadScript, setConfig, loadLana, getMetadata
-  } = await import(`${miloLibs}/utils/utils.js`);
+  } = await utilsPromise;
   addLocale(ietf);
+
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
-  // get event back form dc web and then load area
-  await loadArea(document, false);
 
-  // Promotion from metadata (for FedPub)
-  const promotionMetadata = getMetadata('promotion');
-  if (promotionMetadata && !document.querySelector('main .promotion')) {
-    const { promotionFromMetadata } = await import('../blocks/promotion/promotion.js');
-    promotionFromMetadata(promotionMetadata);
-  }
+  // get event back from dc web and then load area
+  await loadArea(document, false);
 
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');

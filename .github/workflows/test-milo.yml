@@ -25,3 +25,32 @@ jobs:
           curl -X POST 'https://dc.ci.corp.adobe.com/job/DC%20Release%20-%20Run%20Nala/buildWithParameters?token=${{ secrets.JNK_JOB_TOKEN }}&branch=main' \
               -u '${{ secrets.JNK_USER }}:${{ secrets.JNK_API_TOKEN }}'
 
+  run-tests-gha:
+    name: Smoke Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Run the tests
+        run: xvfb-run -a npx run test/e2e/frictionless -t @smoke-converter
+
+      - name: Save test logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: reports
+          path: reports/         

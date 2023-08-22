@@ -1,0 +1,35 @@
+add-pages-to-pdf:
+  verb: insert-pdf
+compress-pdf:
+convert-pdf:
+  verb: createpdf
+crop-pdf:
+  verb: crop-pages
+delete-pdf-pages:
+  verb: delete-pages
+excel-to-pdf:
+extract-pdf-pages:
+  verb: extract-pages
+jpg-to-pdf:
+merge-pdf:
+  verb: combine-pdf
+password-protect-pdf:
+  verb: protect-pdf
+pdf-editor:
+  verb: add-comment
+pdf-to-excel:
+pdf-to-jpg:
+  verb: pdf-to-image
+pdf-to-ppt:
+pdf-to-word:
+png-to-pdf:
+ppt-to-pdf:
+rearrange-pdf:
+  verb: reorder-pages
+request-signature:
+  verb: sendforsignature
+rotate-pdf:
+  verb: rotate-pages
+sign-pdf:
+  verb: fillsign
+split-pdf:
