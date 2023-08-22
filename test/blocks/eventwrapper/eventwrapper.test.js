@@ -14,15 +14,9 @@ describe('eventwrapper block', () => {
   let chromeRuntimeSendMessage = false;
 
   before(() => {
-    window.bowser = {
-      getParser: () => ({
-        getBrowserName: () => browserName,
-        parsedResult: {
-          platform: {
-            type: 'desktop',
-          },
-        },
-      }),
+    window.browser = {
+      name: browserName,
+      isMobile: false,
     };
     window.dc_hosted = {
       events: [],
@@ -66,11 +60,6 @@ describe('eventwrapper block', () => {
 
   after(() => {
     sinon.restore();
-  });
-
-  it('handles Bowser:Ready', async function () {
-    this.timeout(5000);
-    window.dispatchEvent(new CustomEvent('Bowser:Ready'));
   });
 
   it('shows the ext modal on Chrome when conversion complete and preview displayed', async function () {

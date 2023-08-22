@@ -1,12 +1,6 @@
 import converterAnalytics from '../../scripts/alloy/dc-converter-widget.js';
 import browserExtAlloy from '../../scripts/alloy/browserExt.js'
 
-//TODO: Only have run one time
-window.addEventListener('Bowser:Ready', ()=> {
-  let parser = bowser.getParser(window.navigator.userAgent);
-  let browserName = parser.getBrowserName();
-})
-
 const UPLOAD_START = 'file-upload-start';
 const PROCESS_START = 'processing-start';
 const UPLOAD_COMPLETE = 'file-upload-complete';
@@ -59,12 +53,11 @@ export default function init(element) {
   };
 
   const handleEvents = (e, jobData, converter, verb) => {
-    let parser = bowser.getParser(window.navigator.userAgent);
-    let browserName = parser.getBrowserName();
+    const { name: browserName, isMobile } = window.browser;
     let extID;
     if (e === PROCESS_START) converterAnalytics();
-    if (e === CONVERSION_COM && parser.parsedResult.platform.type === 'desktop'
-        || e === PREVIEW_DIS && parser.parsedResult.platform.type === 'desktop') {
+    if (e === CONVERSION_COM && !isMobile
+        || e === PREVIEW_DIS && !isMobile) {
       // Browser Extension
       if (!localStorage.fricBrowExt) {
         let extName;
