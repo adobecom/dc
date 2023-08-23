@@ -168,7 +168,10 @@ export default async function init(element) {
 
   widget.querySelector('div').id = 'VERB';
   const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
-
+  if (VERB === 'rotate-pages') {
+    const body = document.querySelector('body');
+    body.classList.add('l2-state');
+  }
   // Redir URL
   const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
   if (REDIRECT_URL_DIV) {
@@ -215,7 +218,6 @@ export default async function init(element) {
           widgetContainer.dataset.rendered = "true";
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
-          console.log(doc.body.firstElementChild);
           widgetContainer.appendChild(doc.body.firstElementChild);
           performance.mark("milo-insert-snippet");
         }
