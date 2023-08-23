@@ -123,11 +123,11 @@ export default async function init(element) {
   const DC_WIDGET_VERSION_FALLBACK = '3.7.1_2.14.0';
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '2.14.0';
   const STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
-  const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
+  const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-versionx"]')?.getAttribute('content');
 
   let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
   let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
-  let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
+  let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-versionX"]')?.getAttribute('content');
   const lanaOptions = {
     sampleRate: 1,
     tags: 'Cat=DxDC_Frictionless,origin=milo',
@@ -168,10 +168,6 @@ export default async function init(element) {
 
   widget.querySelector('div').id = 'VERB';
   const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
-  if (VERB === 'rotate-pages') {
-    const body = document.querySelector('body');
-    body.classList.add('l2-state');
-  }
 
   // Redir URL
   const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
@@ -210,8 +206,7 @@ export default async function init(element) {
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   const preRenderDropZone = !isReturningUser && !isRedirection;
   if (VERB === 'compress-pdf' || preRenderDropZone) {
-    const verbFromURL = window.location.pathname.split('/').pop().split('.')[0];
-    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verbFromURL}-${pageLang}.html`);
+    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
         const template = await response.text();
@@ -219,7 +214,8 @@ export default async function init(element) {
           widgetContainer.dataset.rendered = "true";
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
-          widgetContainer.appendChild(doc.body.firstElementChild);
+          console.log(doc.body.firstElementChild);
+          widgetContainer.appendChild(doc.body?.firstElementChild);
           performance.mark("milo-insert-snippet");
         }
         break;
