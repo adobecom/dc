@@ -60,6 +60,21 @@ body:not([data-current-event]) [data-event-name=onload] {
   }
 }
 
+body.l2-state {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+body.l2-state main {
+  margin-bottom: auto;
+}
+
+body.l2-state #dc-converter-widget {
+  height: 570px;
+}
+
 body.l2-state #CID div[class^='LifecycleOrganizeSettings__organizeSettings__'] {
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
@@ -69,7 +84,7 @@ body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContai
   min-height: 77vh;
 }
 
-body.l2-state.hide-content .react-spectrum-provider.spectrum--light {
+body.l2-state.hide-content #CID:not(.wapper-fillsign) .react-spectrum-provider.spectrum--light {
   height: 77vh;
   min-height: 77vh;
 }
@@ -86,18 +101,32 @@ body.l2-state #CID {
   top: 10px;
 }
 
+@media (min-height: 900px) {
+  body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'] {
+    height: 77vh;
+  }
+}
+
+body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
+  max-height: 69vh
+}
+
 body.l2-state div[data-section='widget'].widget-default-height {
   height: auto !important;
   min-height: auto !important;
 }
 
-@media (max-height: 920px) {
+@media (max-height: 900px) {
+  body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
+    max-height: 63vh;
+  }
+
   body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
     min-height: 70vh;
     height: 70vh;
   }
 
-  body.l2-state.hide-content .react-spectrum-provider.spectrum--light {
+  body.l2-state.hide-content #CID:not(.wapper-fillsign) .react-spectrum-provider.spectrum--light {
     height: 70vh;
     min-height: 70vh;
   }
@@ -110,7 +139,7 @@ body.l2-state div[data-section='widget'].widget-default-height {
     margin-top: -35px;
   }
 
-  body.l2-state.hide-content .react-spectrum-provider.spectrum--light {
+  body.l2-state.hide-content #CID:not(.wapper-fillsign) .react-spectrum-provider.spectrum--light {
     height: 65vh;
     min-height: 65vh;
   }
