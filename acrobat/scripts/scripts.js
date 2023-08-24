@@ -45,6 +45,27 @@ const getLocale = (locales, pathname = window.location.pathname) => {
   return locale;
 }
 
+const getBrowserData = () => {
+  let browser = {}
+  if (navigator.userAgentData) {
+    const data = navigator.userAgentData;
+    let name = '';
+    for (const item of data.brands) {
+      if(['Chromium', 'Google Chrome'].includes(item.brand)){
+        name = 'Chrome';
+      }
+
+      if (item.brand === 'Microsoft Edge') {
+        name = 'Microsoft Edge';
+        break;
+      }
+    }
+    browser.name = name;
+    browser.isMobile = data.mobile;
+  }
+
+  return browser;
+};
 
 
 function loadStyles(paths) {
@@ -188,6 +209,19 @@ const CONFIG = {
 
 };
 
+// Feature checking for old browsers
+const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
+try {
+  const testNode = document.createElement('div');
+  testNode.replaceChildren();
+} catch (e) {
+  //EOL Redirect
+  window.location.assign(EOLBrowserPage);
+}
+
+//Get browser data
+window.browser = getBrowserData();
+
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
   const lcpImg = document.querySelector('img');
@@ -279,15 +313,4 @@ const { ietf } = getLocale(locales);
       window.dispatchEvent(imsIsReady);
     }
   }, 1000);
-
-  loadScript('/acrobat/scripts/bowser.js');
 }());
-
-// Bowser Ready
-const bowserReady = setInterval(() => {
-  if (window.bowser) {
-    clearInterval(bowserReady);
-    const bowserIsReady = new CustomEvent('Bowser:Ready');
-    window.dispatchEvent(bowserIsReady);
-  }
-}, 100);
