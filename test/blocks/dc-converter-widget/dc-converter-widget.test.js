@@ -39,11 +39,8 @@ describe('dc-converter-widget block', () => {
     window._satellite = {
       track: sinon.stub(),
     };
-    window.bowser = {
-      getParser: () => ({
-        getBrowserName: () => 'Chrome',
-        getBrowserVersion: () => '110',
-      }),
+    window.browser = {
+      name:'Chrome',
     };
     const widget = await readFile({ path: './mocks/widget.html' });
     sinon.stub(window, 'fetch');
@@ -54,9 +51,5 @@ describe('dc-converter-widget block', () => {
     window.dispatchEvent(new CustomEvent('IMS:Ready'));
     await delay(1000);
     expect(document.querySelector('#CID')).to.be.exist;
-  });
-
-  it('handles Bowser:Ready event', () => {
-    window.dispatchEvent(new CustomEvent('Bowser:Ready'));
   });
 });

@@ -254,12 +254,6 @@ export default async function init(element) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
 
-  window.addEventListener('Bowser:Ready', async () => {
-    // EOL Redirect
-    const { redirectLegacyBrowsers } = await import('../../scripts/legacyBrowser.js');
-    redirectLegacyBrowsers();
-  })
-
   widget.appendChild(dcScript);
 
   window.addEventListener('IMS:Ready', () => {
