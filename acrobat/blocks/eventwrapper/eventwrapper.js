@@ -27,8 +27,6 @@ export default function init(element) {
     }
   };
 
-  let footer;
-  let gnav;
   let widget;
   let sections;
   let converterWidget;
@@ -61,6 +59,8 @@ export default function init(element) {
   const handleEvents = (e, jobData, converter, verb) => {
     const { name: browserName, isMobile } = window.browser;
     let extID;
+    let locale;
+    if (verb === 'fillsign') locale = document.documentElement.lang;
     if (e === PROCESS_START) converterAnalytics();
     if (e === CONVERSION_COM && !isMobile
         || e === PREVIEW_DIS && !isMobile) {
@@ -85,35 +85,22 @@ export default function init(element) {
       }
     }
 
-    if (verb === 'rotate-pages') {
-      gnav = document.querySelector('header');
+    if (verb === 'rotate-pages' || verb === 'fillsign') {
       widget = document.querySelector('[data-section="widget"]');
       body = document.querySelector('body');
       sections = document.querySelectorAll('main > div');
       converterWidget = widget.querySelector('#dc-converter-widget');
     }
 
-    function handleResize() {
-      const gnavHeight = gnav ? gnav.offsetHeight : 0;
-      const footerHeight = footer ? footer.offsetHeight : 0;
-      widget.style.minHeight = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-      widget.style.height = `calc(100vh - ${gnavHeight + footerHeight}px)`;
-      converterWidget.style.minHeight = 'auto';
-    };
-
     const showContent = () => {
-      body.classList.remove('hide-content');
+      body.classList.remove('l2-state', 'hide-content');
       widget.classList.add('widget-default-height');
       sections?.forEach((section) => section.classList.remove('hide'));
     };
 
     const hideContent = () => {
-      body.classList.add('hide-content');
+      body.classList.add('l2-state', 'hide-content');
       widget.classList.remove('widget-default-height');
-      setTimeout(() => {
-        footer = document.querySelector('.global-footer');
-        handleResize();
-      }, 5000);
       sections?.forEach((section) => {
         if (section.getAttribute('data-section') === 'widget') return;
         section.classList.add('hide');
@@ -135,6 +122,7 @@ export default function init(element) {
         if (reviewBlock[0]) { reviewBlock[0].classList.add('hide'); };
         break;
       case UPLOAD_COMPLETE:
+        if (verb === 'fillsign' && locale === 'en-US') hideContent();
         setCurrentEvent('uploadcomplete');
         break;
       case PROCESS_CANCELED:
@@ -149,9 +137,6 @@ export default function init(element) {
         document.querySelector('.dialog-close')?.click();
         localStorage.removeItem('fricBrowExt');
         window.modalDisplayed = false;
-        break;
-      case CONVERSION_START:
-        if (verb === 'rotate-pages') handleResize();
         break;
       case CONVERSION_COM:
         setCurrentEvent('complete');
@@ -169,7 +154,6 @@ export default function init(element) {
         break;
       case DROPZONE_DIS:
         setCurrentEvent(DROPZONE_DIS);
-        if (verb === 'rotate-pages') showContent();
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DOWNLOAD_START:
