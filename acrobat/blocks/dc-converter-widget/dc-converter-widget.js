@@ -120,8 +120,8 @@ const pageLang = localeMap[langFromPath] || 'en-us';
 export default async function init(element) {
   element.closest('main > div').dataset.section = 'widget';
   const widget = element;
-  const DC_WIDGET_VERSION_FALLBACK = '2.40.0_1.172.1';
-  const DC_GENERATE_CACHE_VERSION_FALLBACK = '1.172.1';
+  const DC_WIDGET_VERSION_FALLBACK = '3.7.1_2.14.0';
+  const DC_GENERATE_CACHE_VERSION_FALLBACK = '2.14.0';
   const STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
   const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
 
@@ -132,13 +132,17 @@ export default async function init(element) {
     sampleRate: 1,
     tags: 'Cat=DxDC_Frictionless,origin=milo',
   };
+  // LANA
+  window.dcwErrors = [];
   if (!DC_WIDGET_VERSION) {
     DC_WIDGET_VERSION = DC_WIDGET_VERSION_FALLBACK;
     window.lana?.log(`DC WIDGET VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_WIDGET_VERSION_FALLBACK}`, lanaOptions);
+    dcwErrors.push(`DC WIDGET VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_WIDGET_VERSION_FALLBACK}`);
   }
   if (!DC_GENERATE_CACHE_VERSION) {
     DC_GENERATE_CACHE_VERSION = DC_GENERATE_CACHE_VERSION_FALLBACK;
     window.lana?.log(`DC GENERATE CACHE VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_GENERATE_CACHE_VERSION_FALLBACK}`, lanaOptions);
+    dcwErrors.push(`DC GENERATE CACHE VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_GENERATE_CACHE_VERSION_FALLBACK}`);
   }
   let WIDGET_ENV = `https://dev.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
   let ENV = 'dev';
@@ -164,6 +168,10 @@ export default async function init(element) {
 
   widget.querySelector('div').id = 'VERB';
   const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
+  if (VERB === 'rotate-pages') {
+    const body = document.querySelector('body');
+    body.classList.add('l2-state');
+  }
 
   // Redir URL
   const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
@@ -202,7 +210,8 @@ export default async function init(element) {
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   const preRenderDropZone = !isReturningUser && !isRedirection;
   if (VERB === 'compress-pdf' || preRenderDropZone) {
-    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
+    const verbFromURL = window.location.pathname.split('/').pop().split('.')[0];
+    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verbFromURL}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
         const template = await response.text();

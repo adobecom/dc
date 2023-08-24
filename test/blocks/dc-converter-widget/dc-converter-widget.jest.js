@@ -34,7 +34,7 @@ describe('dc-converter-widget', () => {
     window.location = new URL('https://www.adobe.com');
     const block = document.querySelector('.dc-converter-widget');
     const widget = await init(block);
-    expect(fetchUrl).toMatch(/^https:\/\/acrobat.adobe.com\//);
+    expect(fetchUrl).toMatch(/^https:\/\/www.adobe.com\/dc\//);
   });
 
   it.each`
@@ -60,7 +60,7 @@ describe('dc-converter-widget', () => {
     window.location = new URL(`https://${hostname}`);
     const block = document.querySelector('.dc-converter-widget');
     const widget = await init(block);
-    expect(fetchUrl).toMatch(/^https:\/\/stage.acrobat.adobe.com\//);
+    expect(fetchUrl).toMatch(/^https:\/\/www.stage.adobe.com\/dc\//);
   });
 
   it('loads widget failed from prod env', async () => {
