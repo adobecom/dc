@@ -56,7 +56,7 @@ export default function init(element) {
     };
   };
 
-  const handleEvents = (e, jobData, converter, verb) => {
+  const handleEvents = (e, converter, verb) => {
     const { name: browserName, isMobile } = window.browser;
     let extID;
     let locale;
