@@ -50,13 +50,120 @@ body:not([data-current-event]) [data-event-name=onload] {
   animation-name: fade-in;
 }
 
-
-@keyframes fade-in { 
-  0% { 
+@keyframes fade-in {
+  0% {
     opacity: 0;
   }
 
-  100% { 
+  100% {
     opacity: 1;
+  }
+}
+
+body.l2-state {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+body.l2-state main {
+  margin-bottom: auto;
+}
+
+body.l2-state #dc-converter-widget {
+  height: 570px;
+}
+
+body.l2-state #CID div[class^='LifecycleOrganizeSettings__organizeSettings__'] {
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+  min-height: 77vh;
+}
+
+body.l2-state.hide-content #CID:not(.wapper-fillsign) .react-spectrum-provider.spectrum--light {
+  height: 77vh;
+  min-height: 77vh;
+}
+
+body.l2-state.hide-content .global-footer {
+  background: white;
+}
+
+body.l2-state.hide-content h3[class^='FrictionlessNavBar__topbarTitle'] svg g {
+  stroke: rgb(124, 195, 63);
+}
+
+body.l2-state #CID {
+  top: 10px;
+}
+
+@media (min-height: 900px) {
+  body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'] {
+    height: 77vh;
+  }
+}
+
+body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
+  max-height: 69vh
+}
+
+body.l2-state div[data-section='widget'].widget-default-height {
+  height: auto !important;
+  min-height: auto !important;
+}
+
+@media (max-height: 900px) {
+  body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
+    max-height: 63vh;
+  }
+
+  body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    min-height: 70vh;
+    height: 70vh;
+  }
+
+  body.l2-state.hide-content #CID:not(.wapper-fillsign) .react-spectrum-provider.spectrum--light {
+    height: 70vh;
+    min-height: 70vh;
+  }
+}
+
+@media (max-width: 380px) {
+  body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    min-height: 60vh;
+    height: 60vh;
+    margin-top: -35px;
+  }
+
+  body.l2-state.hide-content #CID:not(.wapper-fillsign) .react-spectrum-provider.spectrum--light {
+    height: 65vh;
+    min-height: 65vh;
+  }
+
+  body.l2-state.hide-content .lifecycle-progress {
+    min-height: auto;
+  }
+
+  body.l2-state.hide-content div[class^='PdfnowLifecycle__'] {
+    min-height: 200px;
+  }
+}
+
+@media only screen and (width: 1024px) and (height: 600px) {
+  body.l2-state #CID {
+    top: 5px;
+  }
+  body.l2-state.hide-content div[class^='PdfnowLifecycle__'] {
+    min-height: 270px;
+  }
+
+  body.l2-state.hide-content .lifecycle-progress {
+    min-height: auto;
+    padding-bottom: 15px !important;
+    padding-top: 15px !important;
   }
 }

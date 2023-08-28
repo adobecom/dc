@@ -45,6 +45,27 @@ const getLocale = (locales, pathname = window.location.pathname) => {
   return locale;
 }
 
+const getBrowserData = () => {
+  let browser = {}
+  if (navigator.userAgentData) {
+    const data = navigator.userAgentData;
+    let name = '';
+    for (const item of data.brands) {
+      if(['Chromium', 'Google Chrome'].includes(item.brand)){
+        name = 'Chrome';
+      }
+
+      if (item.brand === 'Microsoft Edge') {
+        name = 'Microsoft Edge';
+        break;
+      }
+    }
+    browser.name = name;
+    browser.isMobile = data.mobile;
+  }
+
+  return browser;
+};
 
 
 function loadStyles(paths) {
@@ -192,6 +213,19 @@ const CONFIG = {
   },
 };
 
+// Feature checking for old browsers
+const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
+try {
+  const testNode = document.createElement('div');
+  testNode.replaceChildren();
+} catch (e) {
+  //EOL Redirect
+  window.location.assign(EOLBrowserPage);
+}
+
+//Get browser data
+window.browser = getBrowserData();
+
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
   const lcpImg = document.querySelector('img');
@@ -206,34 +240,36 @@ const CONFIG = {
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
+  // Load Milo base features
+  const miloLibs = setLibs(LIBS);
+  const utilsPromise = import(`${miloLibs}/utils/utils.js`);
+
   // Fast track the widget
-  (async () => {
-    const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
-    if (widgetBlock) {
-      const blockName = widgetBlock.classList.value;
-      widgetBlock.removeAttribute('class');
-      widgetBlock.id = 'dc-converter-widget';
-      const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
-      const [,DC_GENERATE_CACHE_VERSION] = DC_WIDGET_VERSION.split('_');
-      const dcUrls = [
-        `https://acrobat.adobe.com/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${window.location.pathname.split('/').pop().split('.')[0]}-${ietf.toLowerCase()}.html`,
-        `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`
-      ];
+  const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
+  if (widgetBlock) {
+    const blockName = widgetBlock.classList.value;
+    widgetBlock.removeAttribute('class');
+    widgetBlock.id = 'dc-converter-widget';
+    const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
+    const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
+    const dcUrls = [
+      `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${window.location.pathname.split('/').pop().split('.')[0]}-${ietf.toLowerCase()}.html`,
+      `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`
+    ];
 
-      dcUrls.forEach( url => {
-        const link = document.createElement('link');
-        link.setAttribute('rel', 'prefetch');
-        if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
-        if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');;}
-        link.setAttribute('href', url);
-        link.setAttribute('crossorigin', '');
-        document.head.appendChild(link);
-      })
+    dcUrls.forEach( url => {
+      const link = document.createElement('link');
+      link.setAttribute('rel', 'prefetch');
+      if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
+      if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');;}
+      link.setAttribute('href', url);
+      link.setAttribute('crossorigin', '');
+      document.head.appendChild(link);
+    })
 
-      const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);
-      dcConverter(widgetBlock);
-    }
-  })();
+    const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);
+    await dcConverter(widgetBlock);
+  }
 
   // Setup CSP
   (async () => {
@@ -243,30 +279,22 @@ const { ietf } = getLocale(locales);
     }
   })();
 
-  // Setup Milo
-  const miloLibs = setLibs(LIBS);
-
   // Milo and site styles
   const paths = [`${miloLibs}/styles/styles.css`];
   if (STYLES) { paths.push(STYLES); }
   loadStyles(paths);
 
-  // Import base milo features and run them
+  // Run base milo features
   const {
     loadArea, loadScript, setConfig, loadLana, getMetadata
-  } = await import(`${miloLibs}/utils/utils.js`);
+  } = await utilsPromise;
   addLocale(ietf);
+
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
-  // get event back form dc web and then load area
-  await loadArea(document, false);
 
-  // Promotion from metadata (for FedPub)
-  const promotionMetadata = getMetadata('promotion');
-  if (promotionMetadata && !document.querySelector('main .promotion')) {
-    const { promotionFromMetadata } = await import('../blocks/promotion/promotion.js');
-    promotionFromMetadata(promotionMetadata);
-  }
+  // get event back from dc web and then load area
+  await loadArea(document, false);
 
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
@@ -289,15 +317,4 @@ const { ietf } = getLocale(locales);
       window.dispatchEvent(imsIsReady);
     }
   }, 1000);
-
-  loadScript('/acrobat/scripts/bowser.js');
 }());
-
-// Bowser Ready
-const bowserReady = setInterval(() => {
-  if (window.bowser) {
-    clearInterval(bowserReady);
-    const bowserIsReady = new CustomEvent('Bowser:Ready');
-    window.dispatchEvent(bowserIsReady);
-  }
-}, 100);

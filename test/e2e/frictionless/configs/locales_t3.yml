@@ -1,0 +1,58 @@
+africa:
+  ietf: en
+ar:
+  ietf: es-AR
+br:
+  ietf: pt-BR
+cl:
+  ietf: es-CL
+co:
+  ietf: es-CO
+cr:
+  ietf: es-CR
+gt:
+  ietf: es-GT
+hk_en:
+  ietf: en-HK
+hk_zh:
+  ietf: zh-HK
+id_en:
+  ietf: en-ID
+id_id:
+  ietf: id-ID
+in:
+  ietf: en-GB
+in_hi:
+  ietf: hi-IN
+kr:
+  ietf: ko-KR
+la:
+  ietf: es-LA
+mx:
+  ietf: es-MX
+my_en:
+  ietf: en-GB
+my_ms:
+  ietf: ms-MY
+ng:
+  ietf: en-NG
+pe:
+  ietf: es-PE
+ph_en:
+  ietf: en-PH
+ph_fil:
+  ietf: fil-PH
+sg:
+  ietf: en-SG
+th_en:
+  ietf: en-TH
+th_th:
+  ietf: th-TH
+tw:
+  ietf: zh-TW
+vn_en:
+  ietf: en-VN
+vn_vi:
+  ietf: vi-VN
+za:
+  ietf: en-ZA

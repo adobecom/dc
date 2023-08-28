@@ -87,6 +87,7 @@ const frameSrc = [
   'accounts.google.com',
   'adobe.demdex.net',
   'bid.g.doubleclick.net',
+  'commerce-stg.adobe.com',
   'dc-api-dev.adobecontent.io',
   'dc.dev.dexilab.acrobat.com',
   'dev.acrobat.adobe.com',

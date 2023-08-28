@@ -91,6 +91,7 @@ const frameSrc = [
   'accounts.google.com',
   'adobe.demdex.net',
   'bid.g.doubleclick.net',
+  'commerce-stg.adobe.com',
   'dc-api-stage.adobecontent.io',
   'dc-api.adobecontent.io',
   'dc.stage.acrobat.com',
@@ -150,6 +151,8 @@ const imgSrc = [
   'http://localhost:6456/',
   '*.hlx.page',
   '*.hlx.live',
+  's.yimg.jp',
+  'yjtag.yahoo.co.jp',
   ';',
 ];
 
@@ -238,6 +241,9 @@ const scriptSrc = [
   'http://localhost:6456/',
   '*.hlx.page',
   '*.hlx.live',
+  's.tgm.yahoo-net.jp',
+  's.yimg.jp',
+  'yjtag.yahoo.co.jp',
   ';',
 ];
 
