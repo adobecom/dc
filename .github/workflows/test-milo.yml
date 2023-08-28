@@ -26,8 +26,12 @@ jobs:
               -u '${{ secrets.JNK_USER }}:${{ secrets.JNK_API_TOKEN }}'
 
   run-tests-gha:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     name: Smoke Test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
