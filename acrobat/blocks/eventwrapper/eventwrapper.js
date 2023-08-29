@@ -16,7 +16,32 @@ const CONVERSION_START = 'conversion-start';
 // const UPSELL_DIS = 'upsell-displayed';
 const FADE = 'review fade-in';
 
+const changeAccordionAnalytics = (fragment, fragmentName, alloy) => {
+  const allButtons = fragment.querySelectorAll('button');
+  allButtons.forEach((button, index) => {
+    button.removeAttribute('daa-ll');
+    button.addEventListener('click', function() {
+      const text = this.textContent.trim();
+      const ctaNumber = index + 1;
+      const state = this.getAttribute('aria-expanded') === 'true' ? 'Expand' : 'Collapse';
+      alloy(fragmentName, state, ctaNumber, text);
+    });
+  });
+};
+
 export default function init(element) {
+  const faqFrag = element.querySelector("a[href*='faq'], div[data-path*='faq']");
+  if (faqFrag) {
+    const waitFragToLoad = setInterval(async () => {
+      const loadedFrag = element.querySelector("div[data-path*='faq'] .accordion-container");
+      if (loadedFrag) {
+        clearInterval(waitFragToLoad);
+        const { default: accordionAlloy } = await import('../../scripts/alloy/accordion.js');
+        changeAccordionAnalytics(loadedFrag, 'faq', accordionAlloy);
+      }
+    },100);
+  }
+
   const wrapper = element;
   const reviewBlock = document.querySelectorAll('.review');
   const setCurrentEvent = (event) => {
