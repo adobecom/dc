@@ -21,6 +21,9 @@ indices:
       description:
         select: head > meta[name="description"]
         value: attribute(el, 'content')
+      robots:
+        select: head > meta[name="robots"]
+        value: attribute(el, 'content')        
       lastModified:
         select: none
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
