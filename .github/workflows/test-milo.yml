@@ -51,7 +51,14 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run the tests
-        run: xvfb-run -a npx run test/e2e/frictionless -t @smoke-converter
+        run:   |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+              xvfb-run -a npx run test/e2e/frictionless -t @smoke-converter
+          else
+              npx run test/e2e/frictionless -t @smoke-converter
+              exit 1
+          fi
+        shell: bash
 
       - name: Save test logs
         uses: actions/upload-artifact@v3
