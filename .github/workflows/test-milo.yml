@@ -56,7 +56,6 @@ jobs:
               xvfb-run -a npx run test/e2e/frictionless -t @smoke-converter
           else
               npx run test/e2e/frictionless -t @smoke-converter
-              exit 1
           fi
         shell: bash
 
