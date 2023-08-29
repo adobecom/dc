@@ -47,14 +47,16 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci --ignore-scripts
 
-      - name: Install Playwright
-        run: npx playwright install --with-deps chromium
-
       - name: Run the tests
         run:   |
           if [ "$RUNNER_OS" == "Linux" ]; then
-              xvfb-run -a npx run test/e2e/frictionless -t @smoke-converter
+              npx playwright install --with-deps firefox
+              xvfb-run -a npx run test/e2e/frictionless -t @smoke-converter --browser firefox
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+              npx playwright install --with-deps webkit
+              npx run test/e2e/frictionless -t @smoke-converter --browser webkit
           else
+              npx playwright install --with-deps chromium
               npx run test/e2e/frictionless -t @smoke-converter
           fi
         shell: bash
