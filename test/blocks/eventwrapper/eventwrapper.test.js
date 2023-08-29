@@ -12,6 +12,8 @@ const { default: init } = await import(
 describe('eventwrapper block', () => {
   let browserName = 'Chrome';
   let chromeRuntimeSendMessage = false;
+  let clock;
+
 
   before(() => {
     window.browser = {
@@ -52,10 +54,12 @@ describe('eventwrapper block', () => {
     window._satellite = {
       track: sinon.stub(),
     };
+    clock = sinon.useFakeTimers();
   });
 
   afterEach(() => {
     sinon.resetHistory();
+    clock.restore();
   });
 
   after(() => {
@@ -78,6 +82,16 @@ describe('eventwrapper block', () => {
     window.modalDisplayed = false;
     window.dc_hosted.dispatchEvent('preview-displayed', {});
     expect(window.modalDisplayed).to.be.true;
+
+    clock.tick(200);
+    const buttons = document.body.querySelectorAll('.accordion-container button');
+    clock.restore();
+    await delay(100);
+    buttons.forEach(x => x.click());  
+    const event1 = window._satellite.track.args[0][1].data._adobe_corpnew.digitalData.primaryEvent.eventInfo.eventName;
+    const event2 = window._satellite.track.args[1][1].data._adobe_corpnew.digitalData.primaryEvent.eventInfo.eventName;
+    expect(event1).to.eql('FAQ|Collapse|1-Item Heading 1');
+    expect(event2).to.eql('FAQ|Expand|2-Item Heading 2');
   });
 
   it('handles modalExist', async function () {
