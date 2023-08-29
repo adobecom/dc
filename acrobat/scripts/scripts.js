@@ -244,7 +244,6 @@ const { ietf } = getLocale(locales);
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
   if (widgetBlock) {
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
-    console.log(`verb from script.js ${verb}`);
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');
     widgetBlock.id = 'dc-converter-widget';
