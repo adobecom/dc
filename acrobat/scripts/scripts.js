@@ -238,7 +238,6 @@ const { ietf } = getLocale(locales);
 (async function loadPage() {
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
-  const pageName = window.location.pathname.split('/').pop().split('.')[0];
   if (widgetBlock) {
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
     const blockName = widgetBlock.classList.value;
@@ -251,7 +250,7 @@ const { ietf } = getLocale(locales);
     ];
 
     // Experiment, don't prefetch app-launcher as it competes with fast path
-    if (pageName !== 'compress-pdf') {
+    if (verb !== 'compress-pdf') {
       dcUrls.push(`https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`);
     }
 
