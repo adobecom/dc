@@ -84,6 +84,7 @@ const frameSrc = [
   '\'self\'',
   'data:',
   'blob:',
+  '*.adobe.io',
   '*.amazonaws.com',
   '*.blob.core.windows.net',
   '*.snapchat.com/',
