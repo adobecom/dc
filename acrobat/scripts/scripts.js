@@ -236,20 +236,17 @@ window.browser = getBrowserData();
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
-  // Load Milo base features
-  const miloLibs = setLibs(LIBS);
-  const utilsPromise = import(`${miloLibs}/utils/utils.js`);
-
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
   if (widgetBlock) {
+    const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');
     widgetBlock.id = 'dc-converter-widget';
     const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
     const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
     const dcUrls = [
-      `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${window.location.pathname.split('/').pop().split('.')[0]}-${ietf.toLowerCase()}.html`,
+      `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verb}-${ietf.toLowerCase()}.html`,
       `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`
     ];
 
@@ -275,21 +272,24 @@ const { ietf } = getLocale(locales);
     }
   })();
 
+  // Setup Milo
+  const miloLibs = setLibs(LIBS);
+
   // Milo and site styles
   const paths = [`${miloLibs}/styles/styles.css`];
   if (STYLES) { paths.push(STYLES); }
   loadStyles(paths);
 
-  // Run base milo features
+  // Import base milo features and run them
   const {
     loadArea, loadScript, setConfig, loadLana, getMetadata
-  } = await utilsPromise;
+  } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
 
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
 
-  // get event back from dc web and then load area
+  // get event back form dc web and then load area
   await loadArea(document, false);
 
   // Setup Logging

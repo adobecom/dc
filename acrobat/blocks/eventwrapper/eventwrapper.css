@@ -96,10 +96,8 @@ body.l2-state #CID {
   top: 10px;
 }
 
-@media (min-height: 800px) {
-  body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'] {
-    height: 77vh;
-  }
+body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'] {
+  height: 77vh;
 }
 
 body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
@@ -111,7 +109,21 @@ body.l2-state div[data-section='widget'].widget-default-height {
   min-height: auto !important;
 }
 
-@media (max-height: 800px) {
+@media (min-height: 900px) and (min-width: 1200px) {
+  body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'] {
+    height: 81vh;
+  }
+
+  body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
+    max-height: calc(81vh - 65px);
+  }
+
+  body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    min-height: 81vh;
+  }
+}
+
+@media (max-height: 700px) {
   body.l2-state #dc-converter-widget {
     height: unset;
     min-height: unset;

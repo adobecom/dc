@@ -166,6 +166,13 @@ export default async function init(element) {
     ENV = 'stage';
   }
 
+  //Special Folder for Prod Widget in all situations
+  if (window.location.pathname.includes('acrobat/online/prod-test')) {
+    WIDGET_ENV = `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
+    DC_DOMAIN = 'https://www.adobe.com/dc';
+    ENV = 'prod';
+  }
+
   widget.querySelector('div').id = 'VERB';
   const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
 
@@ -207,7 +214,7 @@ export default async function init(element) {
   const preRenderDropZone = !isReturningUser && !isRedirection;
   if (VERB === 'compress-pdf' || preRenderDropZone) {
     const verbFromURL = window.location.pathname.split('/').pop().split('.')[0];
-    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verbFromURL}-${pageLang}.html`);
+    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
         const template = await response.text();
