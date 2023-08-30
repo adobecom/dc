@@ -37,10 +37,10 @@ body:not([data-current-event]) [data-event-name=onload] {
 }
 
 [data-current-event=complete] .fake-dc-wrapper,
-[data-current-event=complete] #CID,
-[data-current-event=start] #CID,
+[data-current-event=complete] #CID:not(.wapper-fillsign, .wapper-rotate-pages),
+[data-current-event=start] #CID:not(.wapper-fillsign, .wapper-rotate-pages),
 [data-current-event=uploadcomplete] .fake-dc-wrapper,
-[data-current-event=uploadcomplete] #CID {
+[data-current-event=uploadcomplete] #CID:not(.wapper-fillsign, .wapper-rotate-pages) {
   top: 30px;
   position: relative;
 }
@@ -80,8 +80,9 @@ body.l2-state #CID div[class^='LifecycleOrganizeSettings__organizeSettings__'] {
   border-bottom-left-radius: 8px;
 }
 
-body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
-  min-height: 77vh;
+body.l2-state.hide-content #CID div[class^='PdfnowLifecycle__lifecycle'],
+body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+  min-height: 75vh;
 }
 
 body.l2-state.hide-content .global-footer {
@@ -92,16 +93,17 @@ body.l2-state.hide-content h3[class^='FrictionlessNavBar__topbarTitle'] svg g {
   stroke: rgb(124, 195, 63);
 }
 
-body.l2-state #CID {
-  top: 10px;
+#CID.wapper-rotate-pages,
+#CID.wapper-fillsign {
+  top: 24px;
 }
 
 body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'] {
-  height: 77vh;
+  height: 75vh;
 }
 
 body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
-  max-height: calc(77vh - 65px);
+  max-height: calc(75vh - 65px);
 }
 
 body.l2-state div[data-section='widget'].widget-default-height {
@@ -111,19 +113,19 @@ body.l2-state div[data-section='widget'].widget-default-height {
 
 @media (min-height: 900px) and (min-width: 1200px) {
   body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'] {
-    height: 81vh;
+    height: 80vh;
   }
 
   body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
-    max-height: calc(81vh - 65px);
+    max-height: calc(80vh - 65px);
   }
 
-  body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
-    min-height: 81vh;
+  body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    min-height: 80vh;
   }
 }
 
-@media (max-height: 700px) {
+@media (max-height: 750px) {
   body.l2-state #dc-converter-widget {
     height: unset;
     min-height: unset;
@@ -134,7 +136,13 @@ body.l2-state div[data-section='widget'].widget-default-height {
   }
 
   body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'], 
-  body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+  body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    height: 95%;
+    min-height: 95%;
+  }
+
+  body.l2-state.hide-content #CID div[class^='PdfnowLifecycle__lifecycle'] .lifecycle-progress {
+    flex-grow: 0;
     height: 95%;
     min-height: 95%;
   }
@@ -146,5 +154,36 @@ body.l2-state div[data-section='widget'].widget-default-height {
 
   body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] div[class^='DesktopZoomButtons__zoomButtonContainer'] {
     bottom: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  body.l2-state.hide-content #CID div[class^='PdfnowLifecycle__lifecycle'],
+  body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    min-height: 72vh;
+  }
+
+  body.l2-state .fsw.wapper-rotate-pages > div > div {
+    min-height: 72vh !important;
+  }
+}
+
+@media (max-width: 400px) and (max-height: 740px) {
+  body.l2-state #CID {
+    top: 15px;
+  }
+
+  body.l2-state #dc-converter-widget {
+    height: 65vh;
+    min-height: 65vh;
+  }
+
+  body.l2-state.hide-content #CID div[class^='PdfnowLifecycle__lifecycle'],
+  body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    min-height: 66vh;
+  }
+
+  body.l2-state .fsw.wapper-rotate-pages > div > div {
+    min-height: 66vh !important;
   }
 }
