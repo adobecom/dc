@@ -56,15 +56,11 @@ function getDecoratedBannerRight(createTag, children) {
 function getDecoratedAppDetails(createTag, children) {
   let rating = 0;
   let reviews = 0;
-  let link = '';
-  let mobileOS = getMobileOperatingSystem();
 
   if (mobileOS === 'Android') {
-    link = children[4].textContent.trim();
     rating = children[5].textContent.trim();
     reviews = children[6].textContent.trim();
   } else if (mobileOS === 'iOS') {
-    link = children[7].textContent.trim();
     rating = children[8].textContent.trim();
     reviews = children[9].textContent.trim();
   }
