@@ -249,11 +249,6 @@ const { ietf } = getLocale(locales);
       `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verb}-${ietf.toLowerCase()}.html`,
     ];
 
-    // Experiment, don't prefetch app-launcher as it competes with fast path
-    if (verb !== 'compress-pdf') {
-      dcUrls.push(`https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`);
-    }
-
     dcUrls.forEach( url => {
       const link = document.createElement('link');
       link.setAttribute('rel', 'prefetch');
