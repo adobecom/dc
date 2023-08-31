@@ -127,7 +127,6 @@ export default function init(element) {
         break;
       case PROCESS_CANCELED:
         setCurrentEvent('cancel');
-        if (verb === 'rotate-pages') showContent();
         break;
       case PROCESS_COMPLETE:
         setCurrentEvent('complete');
