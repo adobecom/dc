@@ -236,10 +236,6 @@ window.browser = getBrowserData();
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
-  // Load Milo base features
-  const miloLibs = setLibs(LIBS);
-  const utilsPromise = import(`${miloLibs}/utils/utils.js`);
-
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
   if (widgetBlock) {
@@ -276,21 +272,24 @@ const { ietf } = getLocale(locales);
     }
   })();
 
+  // Setup Milo
+  const miloLibs = setLibs(LIBS);
+
   // Milo and site styles
   const paths = [`${miloLibs}/styles/styles.css`];
   if (STYLES) { paths.push(STYLES); }
   loadStyles(paths);
 
-  // Run base milo features
+  // Import base milo features and run them
   const {
     loadArea, loadScript, setConfig, loadLana, getMetadata
-  } = await utilsPromise;
+  } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
 
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
 
-  // get event back from dc web and then load area
+  // get event back form dc web and then load area
   await loadArea(document, false);
 
   // Setup Logging

@@ -82,6 +82,7 @@ const frameSrc = [
   '\'self\'',
   'data:',
   'blob:',
+  '*.adobe.io',
   '*.amazonaws.com',
   '*.blob.core.windows.net',
   '9212252.fls.doubleclick.net',
