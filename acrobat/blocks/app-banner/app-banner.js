@@ -31,7 +31,7 @@ export default async function init(el) {
 
     el.innerHTML = '';
     //Insert before head element to show it on the top
-    document.head.before(appBanner);
+    document.body.prepend(appBanner);
   });
 }
 
