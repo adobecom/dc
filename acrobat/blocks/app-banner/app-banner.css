@@ -1,0 +1,146 @@
+.app-banner-close {
+  display: inline-block;
+  float: left;
+  width: 24px;
+  padding: 30px 0;
+  text-align: center;
+  color: grey;
+  font-size: 20px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  z-index: 2;
+}
+
+.app-banner-icon {
+  float: left;
+  border-radius: 10px;
+  width: 63px;
+  height: 63px;
+  margin-right: 10px;
+  padding: 10px 0;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  z-index: 2;
+}
+
+.app-banner-icon img {
+  width: 63px;
+  height: 63px;
+  border-radius: 10px;
+}
+
+.app-banner-title {
+  min-height: 2px;
+  font-weight: bold;
+  color: #333333;
+  padding-top: 5px;
+  padding-bottom: 1px;
+  font-size: 12px;
+  height: 14px;
+}
+
+.app-banner-description {
+  min-height: 2px;
+  overflow: hidden;
+  color: #333333;
+  font-size: 11px;
+  height: 18px;
+}
+
+.app-banner-button {
+  font-size: 12px;
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 10px 10px;
+  text-decoration: none;
+  color: #1CADCE;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 1.15px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  position: relative;
+  z-index: 2;
+  height: 14px;
+}
+
+.app-banner-stars {
+  display: inline-block;
+  color: rgba(255, 180, 0, 1);
+  letter-spacing: -2px;
+  font-size: 16px;
+  margin-left: -2px;
+}
+
+.app-banner-reviews {
+  min-height: 10px;
+  min-width: 10px;
+  font-size: 12px;
+  color: #777;
+  display: inline-block;
+  margin-left: 4px;
+  position: relative;
+  top: -1px;
+}
+
+.app-banner-stars span {
+  position: relative;
+}
+
+.app-banner-content {
+  width: 100%;
+  overflow: hidden;
+  height: 76px;
+  background: white;
+  color: #333;
+  border-top: 1px solid #ddd;
+}
+
+.app-banner-left {
+  height: 100%;
+}
+
+.app-banner-details {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+}
+
+.app-banner-right {
+  float: right;
+  height: 100%;
+}
+
+.app-banner-right:before {
+  display: inline-block;
+  vertical-align: middle;
+  content: "";
+  height: 100%;
+}
+
+.app-banner {
+  -webkit-text-size-adjust: 100%;
+  font-family: 'Open Sans', sans-serif;
+  width: 100%;
+  z-index: 99999;
+  -webkit-font-smoothing: antialiased;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.25s ease;
+  transition: all 00.25s ease;
+  position: relative;
+  top: 0;
+  left: 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .35);
+}
+
