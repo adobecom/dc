@@ -6,7 +6,7 @@ var mobileOS = getMobileOperatingSystem();
 
 export default async function init(el) {
   //Exit if not mobile/tablet 
-  if (getMobileOperatingSystem() == 'unknown') {
+  if (mobileOS == 'unknown') {
     el.innerHTML = '';
     return;
   }
