@@ -109,6 +109,7 @@ export default function init(element) {
 
     switch (e) {
       case PROCESS_START:
+        if (verb === 'rotate-pages') hideContent();
         setCurrentEvent('start');
         // eslint-disable-next-line no-case-declarations
         const clsPopIn = document.querySelector('#CLS_POPIN');
@@ -118,7 +119,6 @@ export default function init(element) {
         break;
       case UPLOAD_START:
         setCurrentEvent('upload');
-        if (verb === 'rotate-pages') hideContent();
         if (reviewBlock[0]) { reviewBlock[0].classList.add('hide'); };
         break;
       case UPLOAD_COMPLETE:
@@ -154,6 +154,7 @@ export default function init(element) {
         break;
       case DROPZONE_DIS:
         setCurrentEvent(DROPZONE_DIS);
+        if (verb === 'rotate-pages') showContent();
         if (reviewBlock[0]) { reviewBlock[0].classList = FADE; };
         break;
       case DOWNLOAD_START:
