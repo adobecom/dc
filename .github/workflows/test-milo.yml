@@ -26,8 +26,12 @@ jobs:
               -u '${{ secrets.JNK_USER }}:${{ secrets.JNK_API_TOKEN }}'
 
   run-tests-gha:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     name: Smoke Test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -37,17 +41,25 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci --ignore-scripts
 
-      - name: Install Playwright
-        run: npx playwright install --with-deps chromium
-
       - name: Run the tests
-        run: xvfb-run -a npx run test/e2e/frictionless -t @smoke-converter
+        run:   |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+              npx playwright install --with-deps firefox
+              xvfb-run -a npx run test/e2e/frictionless -t @smoke-converter --browser firefox
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+              npx playwright install --with-deps webkit
+              npx run test/e2e/frictionless -t @smoke-converter --browser webkit
+          else
+              npx playwright install --with-deps chromium
+              npx run test/e2e/frictionless -t @smoke-converter
+          fi
+        shell: bash
 
       - name: Save test logs
         uses: actions/upload-artifact@v3
