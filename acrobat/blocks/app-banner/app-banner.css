@@ -11,6 +11,7 @@
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   z-index: 2;
+  box-sizing: content-box;
 }
 
 .app-banner-icon {
@@ -25,12 +26,14 @@
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   z-index: 2;
+  box-sizing: content-box;
 }
 
 .app-banner-icon img {
   width: 63px;
   height: 63px;
   border-radius: 10px;
+  box-sizing: content-box;
 }
 
 .app-banner-title {
@@ -41,6 +44,7 @@
   padding-bottom: 1px;
   font-size: 12px;
   height: 14px;
+  box-sizing: content-box;
 }
 
 .app-banner-description {
@@ -49,6 +53,7 @@
   color: #333333;
   font-size: 11px;
   height: 18px;
+  box-sizing: content-box;
 }
 
 .app-banner-button {
@@ -67,6 +72,7 @@
   position: relative;
   z-index: 2;
   height: 14px;
+  box-sizing: content-box;
 }
 
 .app-banner-stars {
@@ -75,6 +81,7 @@
   letter-spacing: -2px;
   font-size: 16px;
   margin-left: -2px;
+  box-sizing: content-box;
 }
 
 .app-banner-reviews {
@@ -86,10 +93,12 @@
   margin-left: 4px;
   position: relative;
   top: -1px;
+  box-sizing: content-box;
 }
 
 .app-banner-stars span {
   position: relative;
+  box-sizing: content-box;
 }
 
 .app-banner-content {
@@ -100,6 +109,7 @@
   color: #333;
   border-top: 1px solid #ddd;
   display: flex;
+  box-sizing: content-box;
 }
 
 .app-banner-details {
@@ -109,11 +119,13 @@
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   margin-right: 16px;
+  box-sizing: content-box;
 }
 
 .app-banner-right {
   height: 100%;
   margin-left: auto;
+  box-sizing: content-box;
 }
 
 .app-banner-right:before {
@@ -121,6 +133,7 @@
   vertical-align: middle;
   content: "";
   height: 100%;
+  box-sizing: content-box;
 }
 
 .app-banner {
@@ -139,4 +152,5 @@
   left: 0;
   box-shadow: 0 0 5px #00000059;
   display: none;
+  box-sizing: content-box;
 }
