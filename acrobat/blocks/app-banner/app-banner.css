@@ -71,7 +71,7 @@
 
 .app-banner-stars {
   display: inline-block;
-  color:#ffb400;
+  color: #ffb400;
   letter-spacing: -2px;
   font-size: 16px;
   margin-left: -2px;
@@ -139,4 +139,3 @@
   left: 0;
   box-shadow: 0 0 5px #00000059;
 }
-
