@@ -34,6 +34,8 @@ var getBrowserData = function (userAgent) {
     },
   ];
 
+  browser.name = reg.name;
+
   return browser;
 };
 
