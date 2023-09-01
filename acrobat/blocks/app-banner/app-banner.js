@@ -13,7 +13,6 @@ export default async function init(el) {
   const children = el.querySelectorAll(':scope > div');
 
   createTag.then((createTag) => {
-
     if (mobileOS === 'Android') {
       link = children[4].textContent.trim();
     } else if (mobileOS === 'iOS') {
@@ -28,9 +27,7 @@ export default async function init(el) {
       getDecoratedAppDetails(createTag, children), getDecoratedBannerRight(createTag, children));
     appBanner.append(appBannerContent);
     el.innerHTML = '';
-    //Insert before head element to show it on the top
     document.body.prepend(appBanner);
-
   });
 }
 
