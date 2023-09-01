@@ -34,8 +34,14 @@ var getBrowserData = function (userAgent) {
     },
   ];
 
-  browser.name = reg.name;
-
+  for (var i=0; i < regex.length; i++) {
+    if (regex[i].browserReg.test(userAgent)) {
+      var version = userAgent.match(regex[i].versionReg);
+      var version = userAgent.match(regex[i].versionReg);
+      browser.name = regex[i].name;
+      console.log(browser.name);
+    }
+  }
   return browser;
 };
 
