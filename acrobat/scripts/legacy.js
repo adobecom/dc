@@ -35,18 +35,6 @@ var getBrowserData = function (userAgent) {
     },
   ];
 
-  for (var reg of regex) {
-    if (reg.browserReg.test(userAgent)) {
-      browser.name = reg.name;
-      var version = userAgent.match(reg.versionReg);
-      if (version) {
-        browser.version = reg.name === 'Microsoft Edge' ? version[2] : version[1];
-      }
-
-      return browser;
-    }
-  }
-
   return browser;
 };
 
