@@ -1,13 +1,12 @@
 .app-banner-close {
-  display: inline-block;
-  float: left;
+  display: inline;
   width: 24px;
   padding: 30px 0;
   text-align: center;
   color: grey;
   font-size: 20px;
   position: relative;
-  top: 50%;
+  top: 43%;
   transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
@@ -15,7 +14,6 @@
 }
 
 .app-banner-icon {
-  float: left;
   border-radius: 10px;
   width: 63px;
   height: 63px;
@@ -63,9 +61,9 @@
   font-weight: bold;
   text-align: center;
   letter-spacing: 1.15px;
-  display: inline-block;
+  display: inline;
   vertical-align: middle;
-  margin-right: 10px;
+  margin-right: 9px;
   position: relative;
   z-index: 2;
   height: 14px;
@@ -73,7 +71,7 @@
 
 .app-banner-stars {
   display: inline-block;
-  color: rgba(255, 180, 0, 1);
+  color:#ffb400;
   letter-spacing: -2px;
   font-size: 16px;
   margin-left: -2px;
@@ -101,23 +99,21 @@
   background: white;
   color: #333;
   border-top: 1px solid #ddd;
-}
-
-.app-banner-left {
-  height: 100%;
+  display: flex;
 }
 
 .app-banner-details {
   position: relative;
-  top: 50%;
+  top: 55%;
   transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
+  margin-right: 16px;
 }
 
 .app-banner-right {
-  float: right;
   height: 100%;
+  margin-left: auto;
 }
 
 .app-banner-right:before {
@@ -141,6 +137,6 @@
   position: relative;
   top: 0;
   left: 0;
-  box-shadow: 0 0 5px rgba(0, 0, 0, .35);
+  box-shadow: 0 0 5px #00000059;
 }
 

@@ -13,34 +13,33 @@ export default async function init(el) {
   const children = el.querySelectorAll(':scope > div');
 
   createTag.then((createTag) => {
-    const appBannerLeft = getDecoratedBannerLeft(createTag, children);
-    const appBannerRight = getDecoratedBannerRight(createTag, children);
-    const appBannerContent = createTag('div', { class: 'app-banner-content' }, '');
-    const appBanner = createTag('div', { class: 'app-banner' }, '');
-    appBannerLeft.append(getDecoratedAppDetails(createTag, children));
-    appBannerContent.append(appBannerRight, appBannerLeft);
-    appBanner.append(appBannerContent);
-  
+
     if (mobileOS === 'Android') {
       link = children[4].textContent.trim();
     } else if (mobileOS === 'iOS') {
       link = children[7].textContent.trim();
     }
-
-    appBannerRight.addEventListener('click', openLink);
-
+    const appBanner = createTag('div', { class: 'app-banner' }, '');
+    //Close banner button on the left, also the icon
+    const closeBtn = createTag('div', { class: 'app-banner-close', role: 'text', 'aria-label': 'Close banner' }, '×');
+    closeBtn.addEventListener('click', closeBanner);
+    const appBannerContent = createTag('div', { class: 'app-banner-content' }, '');
+    appBannerContent.append(closeBtn, getDecoratedBannerLeft(createTag, children),
+      getDecoratedAppDetails(createTag, children), getDecoratedBannerRight(createTag, children));
+    appBanner.append(appBannerContent);
     el.innerHTML = '';
     //Insert before head element to show it on the top
     document.body.prepend(appBanner);
+
   });
 }
 
-function openLink(){
+function openLink() {
   window.open(link, "_blank");
   closeBanner();
 }
 
-function closeBanner(){
+function closeBanner() {
   let appBanner = document.querySelector('.app-banner');
   appBanner.remove();
 }
@@ -49,6 +48,7 @@ function getDecoratedBannerRight(createTag, children) {
   const openText = children[3].textContent.trim();
   const appBannerRight = createTag('div', { class: 'app-banner-right' }, '');
   const openButton = createTag('div', { class: 'app-banner-button', role: 'text', 'aria-label': openText }, openText);
+  appBannerRight.addEventListener('click', openLink);
   appBannerRight.append(openButton);
   return appBannerRight;
 }
@@ -85,11 +85,6 @@ function getDecoratedAppDetails(createTag, children) {
 
 function getDecoratedBannerLeft(createTag, children) {
   const appBannerLeft = createTag('div', { class: 'app-banner-left' }, '');
-  //Close banner button on the left, also the icon
-  const closeBtn = createTag('div', { class: 'app-banner-close', role: 'text', 'aria-label': 'Close banner' }, '×');
-  closeBtn.addEventListener('click', closeBanner);
-
-  appBannerLeft.append(closeBtn);
   const picture = children[1].querySelector('img');
   const iconSrc = picture ? picture.getAttribute('src') : '';
   const icon = createTag('div', { class: 'app-banner-icon' }, '');
