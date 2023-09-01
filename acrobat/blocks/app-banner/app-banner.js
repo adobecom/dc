@@ -27,6 +27,7 @@ export default async function init(el) {
       getDecoratedAppDetails(createTag, children), getDecoratedBannerRight(createTag, children));
     appBanner.append(appBannerContent);
     el.innerHTML = '';
+    appBanner.style.display = 'block';
     document.body.prepend(appBanner);
   });
 }
