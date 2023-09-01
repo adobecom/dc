@@ -4,7 +4,6 @@ var getBrowserData = function (userAgent) {
   }
   var browser = {
     ua: userAgent,
-    isMobile: userAgent.includes('Mobile'),
   };
 
   var regex = [
