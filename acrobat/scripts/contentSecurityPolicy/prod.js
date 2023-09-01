@@ -45,6 +45,7 @@ const connectSrc = [
   '*.typekit.net/',
   'trial-eum-clienttons-s.akamaihd.net/',
   '*.akstat.io/',
+  'rum.hlx.page',
   ';',
 ];
 
@@ -227,6 +228,7 @@ const scriptSrc = [
   's.yjtag.jp/tag.js',
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
+  'rum.hlx.page',
   ';',
 ];
 
