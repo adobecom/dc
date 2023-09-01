@@ -187,11 +187,11 @@ export default async function init(element) {
   // Feature checking for old browsers
   const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
   if (window?.browser?.name === 'Internet Explorer' ||
-    window?.browser?.name === 'Microsoft Edge' && window?.browser?.version.split('.')[0] < 86 ||
+    window?.browser?.name === 'Microsoft Edge' && window?.browser?.version?.split('.')[0] < 86 ||
     window?.browser?.name === 'Microsoft Edge' && !window?.browser?.version ||
-    window?.browser?.name === 'Safari' && window?.browser?.version.split('.')[0] < 14 ||
+    window?.browser?.name === 'Safari' && window?.browser?.version?.split('.')[0] < 14 ||
     window?.browser?.name === 'Safari' && !window?.browser?.version ) {
-    window.location.assign(EOLBrowserPage);
+    window.location.href = EOLBrowserPage;
   }
 
     // Generate cache url
