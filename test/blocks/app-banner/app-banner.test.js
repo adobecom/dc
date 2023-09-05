@@ -1,7 +1,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import { setMobileOS } from '../../../acrobat/blocks/app-banner/app-banner';
-import { waitForElement, delay } from '../../helpers/waitfor.js';
+import { waitForElement } from '../../helpers/waitfor.js';
 
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
@@ -53,9 +53,16 @@ describe('app-banner iOS block', () => {
     expect(node).to.exist;
   });
 
+  it('Can close the banner ', async () => {
+    const node = document.body.querySelector('.app-banner-details');
+    node.click();
+    const node1 = document.body.querySelector('.app-banner-details');
+    expect(node1).not.to.exist;
+  });
 
 });
 
+document.body.innerHTML = '';
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 
 describe('app-banner unknown block', () => {
@@ -72,12 +79,13 @@ describe('app-banner unknown block', () => {
 
 });
 
+document.body.innerHTML = '';
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 
 describe('app-banner Andriod block', () => {
   const block = document.body.querySelector('.app-banner');
   before(() => {
-    setMobileOS('Andriod');
+    setMobileOS('Android');
     init(block);
   });
 
@@ -115,6 +123,13 @@ describe('app-banner Andriod block', () => {
     await waitForElement('.app-banner-reviews');
     const node = document.body.querySelector('.app-banner-reviews');
     expect(node).to.exist;
+  });
+
+  it('Can close the banner ', async () => {
+    const node = document.body.querySelector('.app-banner-details');
+    node.click();
+    const node1 = document.body.querySelector('.app-banner-details');
+    expect(node1).not.to.exist;
   });
 
 });
