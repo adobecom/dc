@@ -10,9 +10,11 @@ export default async function init(el) {
     el.innerHTML = '';
     return;
   }
-  const children = el.querySelectorAll(':scope > div');
 
   createTag.then((createTag) => {
+    const bannerPlaceHolder = createTag('div', { class: 'placeholder-banner' }, '');
+    document.body.prepend(bannerPlaceHolder);
+    const children = el.querySelectorAll(':scope > div');
     if (mobileOS === 'Android') {
       link = children[4].textContent.trim();
     } else if (mobileOS === 'iOS') {
@@ -28,6 +30,8 @@ export default async function init(el) {
     appBanner.append(appBannerContent);
     el.innerHTML = '';
     appBanner.style.display = 'block';
+    bannerPlaceHolder.remove();
+    document.body.classList.add('has-app-banner');
     document.body.prepend(appBanner);
   });
 }
@@ -38,7 +42,8 @@ function openLink() {
 }
 
 function closeBanner() {
-  let appBanner = document.querySelector('.app-banner');
+  const appBanner = document.querySelector('.app-banner');
+  document.body.classList.remove('has-app-banner');
   appBanner.remove();
 }
 
