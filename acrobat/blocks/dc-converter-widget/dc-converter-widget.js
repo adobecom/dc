@@ -177,6 +177,15 @@ export default async function init(element) {
     REDIRECT_URL_DIV.remove();
   }
 
+  // Feature checking for old browsers
+  const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
+  if (window?.browser?.name === 'Internet Explorer' ||
+    window?.browser?.name === 'Microsoft Edge' && window?.browser?.version?.split('.')[0] < 86 ||
+    window?.browser?.name === 'Microsoft Edge' && !window?.browser?.version ||
+    window?.browser?.name === 'Safari' && window?.browser?.version?.split('.')[0] < 14 ||
+    window?.browser?.name === 'Safari' && !window?.browser?.version ) {
+    window.location.href = EOLBrowserPage;
+  }
 
     // Generate cache url
     const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
@@ -207,7 +216,7 @@ export default async function init(element) {
   const preRenderDropZone = !isReturningUser && !isRedirection;
   if (VERB === 'compress-pdf' || preRenderDropZone) {
     const verbFromURL = window.location.pathname.split('/').pop().split('.')[0];
-    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verbFromURL}-${pageLang}.html`);
+    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
         const template = await response.text();
