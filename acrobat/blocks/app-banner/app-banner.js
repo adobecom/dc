@@ -117,3 +117,7 @@ function getMobileOperatingSystem() {
   return 'unknown';
 }
 
+export function setMobileOS(testOS) {
+  mobileOS = testOS;
+}
+
