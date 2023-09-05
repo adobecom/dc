@@ -43,7 +43,7 @@ export default function init(element) {
 
   const extInstalled = (extid, extname, browserName) => {
     const event = new CustomEvent('modal:open', { detail: { hash: extname } });
-    if (chrome.runtime && chrome.runtime.sendMessage) {
+    if (chrome?.runtime?.sendMessage) {
       chrome.runtime.sendMessage(extid, 'version', response => {
         if (!response) {
           window.dispatchEvent(event);
