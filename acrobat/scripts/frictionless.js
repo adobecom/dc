@@ -3,10 +3,6 @@ import reviewFeedbackAlloy from './alloy/reviewFeedback.js';
 import browserExtAlloy from './alloy/browserExt.js'
 
 const reviewBlock = document.querySelectorAll('.review')
-const chromeBrowserExt = document.querySelectorAll("meta[name='-chromeext']");
-const edgeBrowserExt = document.querySelectorAll("meta[name='-edgeext']");
-let parser;
-let browserName;
 
 export default function init(verb) {
 
@@ -31,8 +27,6 @@ export default function init(verb) {
             reviewFeedbackAlloy(verb, '5');
           })
         }
-        parser = bowser.getParser(window.navigator.userAgent);
-        browserName = parser.getBrowserName();
       }
     }, 1000);
   }
@@ -40,6 +34,7 @@ export default function init(verb) {
   // Browser Ext. Alloy
   window.addEventListener('modal:open', ()=> {
     let extName;
+    const { name: browserName } = window.browser;
     if (browserName === 'Chrome') {
       extName = '#chromeext';
     }
