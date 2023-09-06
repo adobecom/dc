@@ -6,7 +6,7 @@ var mobileOS = getMobileOperatingSystem();
 
 export default async function init(el) {
   //Exit if not mobile/tablet 
-  if (mobileOS == 'unknown') {
+  if (mobileOS === 'unknown') {
     el.innerHTML = '';
     return;
   }
@@ -14,7 +14,7 @@ export default async function init(el) {
   createTag.then((createTag) => {
     const bannerPlaceHolder = createTag('div', { class: 'placeholder-banner' }, '');
     document.body.prepend(bannerPlaceHolder);
-    const children = el.querySelectorAll(':scope > div');
+    const children = el.children;
     if (mobileOS === 'Android') {
       link = children[4].textContent.trim();
     } else if (mobileOS === 'iOS') {
@@ -50,7 +50,7 @@ function closeBanner() {
 function getDecoratedBannerRight(createTag, children) {
   const openText = children[3].textContent.trim();
   const appBannerRight = createTag('div', { class: 'app-banner-right' }, '');
-  const openButton = createTag('div', { class: 'app-banner-button', role: 'text', 'aria-label': openText }, openText);
+  const openButton = createTag('button', { class: 'app-banner-button', role: 'text', 'aria-label': openText }, openText);
   appBannerRight.addEventListener('click', openLink);
   appBannerRight.append(openButton);
   return appBannerRight;
@@ -68,8 +68,8 @@ function getDecoratedAppDetails(createTag, children) {
     reviews = children[9].textContent.trim();
   }
 
-  const appTitle = createTag('div', { class: 'app-banner-title' }, children[0].textContent.trim());
-  const appDesc = createTag('div', { class: 'app-banner-description' }, children[2].textContent.trim());
+  const appTitle = createTag('h5', { class: 'app-banner-title' }, children[0].textContent.trim());
+  const appDesc = createTag('p', { class: 'app-banner-description' }, children[2].textContent.trim());
   const appStars = createTag('div', { class: 'app-banner-stars', role: 'text', 'aria-label': `Average rating ${rating} stars` }, '');
 
   rating = rating > 5 ? 5 : rating;
