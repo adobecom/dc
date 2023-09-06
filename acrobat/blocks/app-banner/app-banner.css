@@ -40,7 +40,7 @@
   font-weight: bold;
   color: #333333;
   font-size: 12px;
-  height: 14px;
+  height: 11px;
   box-sizing: content-box;
   margin: 0;
 }
@@ -67,7 +67,8 @@
   display: inline;
   vertical-align: middle;
   margin-right: 9px;
-  height: 35px;
+  height: 33px;
+  width: 45px;
   box-sizing: content-box;
   background: transparent;
 }
@@ -109,6 +110,7 @@
 }
 
 .app-banner-details {
+  margin-top: 8px;
   top: 55%;
   margin-right: 16px;
   box-sizing: content-box;
