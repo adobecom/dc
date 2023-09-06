@@ -37,10 +37,10 @@ body:not([data-current-event]) [data-event-name=onload] {
 }
 
 [data-current-event=complete] .fake-dc-wrapper,
-[data-current-event=complete] #CID,
-[data-current-event=start] #CID,
+[data-current-event=complete] #CID:not(.wapper-fillsign, .wapper-rotate-pages),
+[data-current-event=start] #CID:not(.wapper-fillsign, .wapper-rotate-pages),
 [data-current-event=uploadcomplete] .fake-dc-wrapper,
-[data-current-event=uploadcomplete] #CID {
+[data-current-event=uploadcomplete] #CID:not(.wapper-fillsign, .wapper-rotate-pages) {
   top: 30px;
   position: relative;
 }
@@ -80,13 +80,9 @@ body.l2-state #CID div[class^='LifecycleOrganizeSettings__organizeSettings__'] {
   border-bottom-left-radius: 8px;
 }
 
-body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
-  min-height: 77vh;
-}
-
-body.l2-state.hide-content #CID:not(.wapper-fillsign) .react-spectrum-provider.spectrum--light {
-  height: 77vh;
-  min-height: 77vh;
+body.l2-state.hide-content #CID div[class^='PdfnowLifecycle__lifecycle'],
+body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+  min-height: 75vh;
 }
 
 body.l2-state.hide-content .global-footer {
@@ -97,18 +93,17 @@ body.l2-state.hide-content h3[class^='FrictionlessNavBar__topbarTitle'] svg g {
   stroke: rgb(124, 195, 63);
 }
 
-body.l2-state #CID {
-  top: 10px;
+#CID.wapper-rotate-pages,
+#CID.wapper-fillsign {
+  top: 24px;
 }
 
-@media (min-height: 900px) {
-  body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'] {
-    height: 77vh;
-  }
+body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'] {
+  height: 75vh;
 }
 
 body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
-  max-height: 69vh
+  max-height: calc(75vh - 65px);
 }
 
 body.l2-state div[data-section='widget'].widget-default-height {
@@ -116,54 +111,79 @@ body.l2-state div[data-section='widget'].widget-default-height {
   min-height: auto !important;
 }
 
-@media (max-height: 900px) {
+@media (min-height: 900px) and (min-width: 1200px) {
+  body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'] {
+    height: 80vh;
+  }
+
   body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
-    max-height: 63vh;
+    max-height: calc(80vh - 65px);
   }
 
-  body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
-    min-height: 70vh;
-    height: 70vh;
-  }
-
-  body.l2-state.hide-content #CID:not(.wapper-fillsign) .react-spectrum-provider.spectrum--light {
-    height: 70vh;
-    min-height: 70vh;
+  body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    min-height: 80vh;
   }
 }
 
-@media (max-width: 380px) {
-  body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
-    min-height: 60vh;
-    height: 60vh;
-    margin-top: -35px;
+@media (max-height: 750px) {
+  body.l2-state #dc-converter-widget {
+    height: unset;
+    min-height: unset;
   }
 
-  body.l2-state.hide-content #CID:not(.wapper-fillsign) .react-spectrum-provider.spectrum--light {
+  body.l2-state #CID {
+    top: unset;
+  }
+
+  body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'], 
+  body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    height: 95%;
+    min-height: 95%;
+  }
+
+  body.l2-state.hide-content #CID div[class^='PdfnowLifecycle__lifecycle'] .lifecycle-progress {
+    flex-grow: 0;
+    height: 95%;
+    min-height: 95%;
+  }
+
+  body.l2-state.hide-content div[class^='FillSign2Viewer__dropinWrapper'] {
+    max-height: calc(100% - 63px);
+    min-height: calc(100% - 63px);
+  }
+
+  body.l2-state #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] div[class^='DesktopZoomButtons__zoomButtonContainer'] {
+    bottom: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  body.l2-state.hide-content #CID div[class^='PdfnowLifecycle__lifecycle'],
+  body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    min-height: 72vh;
+  }
+
+  body.l2-state .fsw.wapper-rotate-pages > div > div {
+    min-height: 72vh !important;
+  }
+}
+
+@media (max-width: 400px) and (max-height: 740px) {
+  body.l2-state #CID {
+    top: 15px;
+  }
+
+  body.l2-state #dc-converter-widget {
     height: 65vh;
     min-height: 65vh;
   }
 
-  body.l2-state.hide-content .lifecycle-progress {
-    min-height: auto;
+  body.l2-state.hide-content #CID div[class^='PdfnowLifecycle__lifecycle'],
+  body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
+    min-height: 66vh;
   }
 
-  body.l2-state.hide-content div[class^='PdfnowLifecycle__'] {
-    min-height: 200px;
-  }
-}
-
-@media only screen and (width: 1024px) and (height: 600px) {
-  body.l2-state #CID {
-    top: 5px;
-  }
-  body.l2-state.hide-content div[class^='PdfnowLifecycle__'] {
-    min-height: 270px;
-  }
-
-  body.l2-state.hide-content .lifecycle-progress {
-    min-height: auto;
-    padding-bottom: 15px !important;
-    padding-top: 15px !important;
+  body.l2-state .fsw.wapper-rotate-pages > div > div {
+    min-height: 66vh !important;
   }
 }

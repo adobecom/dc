@@ -45,28 +45,60 @@ const getLocale = (locales, pathname = window.location.pathname) => {
   return locale;
 }
 
-const getBrowserData = () => {
-  let browser = {}
-  if (navigator.userAgentData) {
-    const data = navigator.userAgentData;
-    let name = '';
-    for (const item of data.brands) {
-      if(['Chromium', 'Google Chrome'].includes(item.brand)){
-        name = 'Chrome';
+const getBrowserData = function (userAgent) {
+  if (!userAgent) {
+    return {};
+  }
+  const browser = {
+    ua: userAgent,
+    isMobile: userAgent.includes('Mobile'),
+  };
+
+  const regex = [
+    {
+      browserReg: /edg([ae]|ios)?/i,
+      versionReg: /edg([ae]|ios)?[\s/](\d+(\.?\d+)+)/i,
+      name: 'Microsoft Edge',
+    },
+    {
+      browserReg: /chrome|crios|crmo/i,
+      versionReg: /(?:chrome|crios|crmo)\/(\d+(\.?\d+)+)/i,
+      name: 'Chrome',
+    },
+    {
+      browserReg: /firefox|fxios|iceweasel/i,
+      versionReg: /(?:firefox|fxios|iceweasel)[\s/](\d+(\.?\d+)+)/i,
+      name: 'Firefox',
+    },
+    {
+      browserReg: /msie|trident/i,
+      versionReg: /(?:msie |rv:)(\d+(\.?\d+)+)/i,
+      name: 'Internet Explorer',
+    },
+    {
+      browserReg: /safari|applewebkit/i,
+      versionReg: /(?:version)\/(\d+(\.?\d+)+)/i,
+      name: 'Safari',
+    },
+  ];
+
+  for (const reg of regex) {
+    if (reg.browserReg.test(userAgent)) {
+      browser.name = reg.name;
+      const version = userAgent.match(reg.versionReg);
+      if (version) {
+        browser.version = reg.name === 'Microsoft Edge' ? version[2] : version[1];
       }
 
-      if (item.brand === 'Microsoft Edge') {
-        name = 'Microsoft Edge';
-        break;
-      }
+      return browser;
     }
-    browser.name = name;
-    browser.isMobile = data.mobile;
   }
 
   return browser;
 };
 
+//Get browser data
+window.browser = getBrowserData(window.navigator.userAgent);
 
 function loadStyles(paths) {
   paths.forEach((path) => {
@@ -213,19 +245,6 @@ const CONFIG = {
   },
 };
 
-// Feature checking for old browsers
-const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
-try {
-  const testNode = document.createElement('div');
-  testNode.replaceChildren();
-} catch (e) {
-  //EOL Redirect
-  window.location.assign(EOLBrowserPage);
-}
-
-//Get browser data
-window.browser = getBrowserData();
-
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
   const lcpImg = document.querySelector('img');
@@ -240,28 +259,24 @@ window.browser = getBrowserData();
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
-  // Load Milo base features
-  const miloLibs = setLibs(LIBS);
-  const utilsPromise = import(`${miloLibs}/utils/utils.js`);
-
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
   if (widgetBlock) {
+    const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');
     widgetBlock.id = 'dc-converter-widget';
     const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
     const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
     const dcUrls = [
-      `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${window.location.pathname.split('/').pop().split('.')[0]}-${ietf.toLowerCase()}.html`,
-      `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`
+      `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verb}-${ietf.toLowerCase()}.html`,
     ];
 
     dcUrls.forEach( url => {
       const link = document.createElement('link');
       link.setAttribute('rel', 'prefetch');
       if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
-      if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');;}
+      if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');}
       link.setAttribute('href', url);
       link.setAttribute('crossorigin', '');
       document.head.appendChild(link);
@@ -279,21 +294,24 @@ const { ietf } = getLocale(locales);
     }
   })();
 
+  // Setup Milo
+  const miloLibs = setLibs(LIBS);
+
   // Milo and site styles
   const paths = [`${miloLibs}/styles/styles.css`];
   if (STYLES) { paths.push(STYLES); }
   loadStyles(paths);
 
-  // Run base milo features
+  // Import base milo features and run them
   const {
     loadArea, loadScript, setConfig, loadLana, getMetadata
-  } = await utilsPromise;
+  } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
 
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
 
-  // get event back from dc web and then load area
+  // get event back form dc web and then load area
   await loadArea(document, false);
 
   // Setup Logging
