@@ -54,6 +54,7 @@ const connectSrc = [
   '*.hlx.page',
   '*.hlx.live',
   'cdn.linkedin.oribi.io',
+  'adobedc.demdex.net/',
   ';',
 ];
 
@@ -101,6 +102,7 @@ const frameSrc = [
   'www.facebook.com',
   'www.youtube.com',
   's.company-target.com',
+  'stage-ui.messaging.adobe.com/',
   ';',
 ];
 
@@ -147,6 +149,7 @@ const imgSrc = [
   'fast-track--milo--adobecom.hlx.live',
   '*.hlx.page',
   '*.hlx.live',
+  'client.messaging.adobe.com/',
   ';',
 ];
 
