@@ -3,7 +3,7 @@ Feature: Analytics - Frictionless Pages
   Background:
     Given I have a new browser context
 
-  @MWPW-130083 @smoke-analytics
+  @MWPW-130083 @smoke @analytics
   Scenario Outline: Analytics - Frictionless page load
     Given I go to the <Verb> page
      Then I load expected analytics data from wiki page "2871483205" with replacements "<Replacements>"

@@ -1,8 +1,8 @@
 import { classes } from "polytype";
-import { GnavPage } from "@amwp/platform-ui-lib-adobe/lib/common/page-objects/gnav.page";
+import { DcGnavPage } from "./dcgnav.page";
 import { PdfWidgetSection } from "./pdfwidget.section";
 
-export class FrictionlessPage extends classes(GnavPage, PdfWidgetSection) {
+export class FrictionlessPage extends classes(DcGnavPage, PdfWidgetSection) {
   constructor(contentPath) {
     let locContentPath = contentPath;
     // if locale is specified, add to the path
@@ -15,7 +15,7 @@ export class FrictionlessPage extends classes(GnavPage, PdfWidgetSection) {
       }
     }
     super({
-      super: GnavPage,
+      super: DcGnavPage,
       arguments: [locContentPath],
     });
     this.buildProps({
@@ -30,7 +30,7 @@ export class FrictionlessPage extends classes(GnavPage, PdfWidgetSection) {
       reviewInputField: 'fieldset.hlx-Review-ratingFields input',
       signUp: '[href*="https://auth.services.adobe.com"][href*="signup"]',
       extensionModal: '#chromeext',
-      closeExtensionModal: '#chromeext .dialog-close'
+      closeExtensionModal: '#chromeext .dialog-close',
     });
   }
 
