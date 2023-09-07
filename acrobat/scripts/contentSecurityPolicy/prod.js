@@ -96,6 +96,7 @@ const frameSrc = [
   'www.facebook.com',
   'www.youtube.com',
   's.company-target.com',
+  'ui.messaging.adobe.com/',
   ';',
 ];
 
@@ -146,6 +147,7 @@ const imgSrc = [
   's.tgm.yahoo-net.jp',
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
+  'client.messaging.adobe.com/',
   ';',
 ];
 
