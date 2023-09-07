@@ -13,8 +13,8 @@ Feature: Frictionless Converter Block
      Then I should see the address bar contains ".services.adobe.com"
 
   Examples:
-      | Verb     | File                |
-      | sign-pdf | test-files/test.pdf |
+      | Verb              | File                |
+      | request-signature | test-files/test.pdf |
 
   @MWPW-130447 @smoke-converter
   Scenario Outline: L2 Verb - Upload and download
