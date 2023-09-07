@@ -119,7 +119,7 @@
   box-sizing: content-box;
 }
 
-.app-banner-right:before {
+.app-banner-right::before {
   display: inline-block;
   vertical-align: middle;
   content: "";
