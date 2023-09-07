@@ -1,14 +1,12 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { setMobileOS } from '../../../acrobat/blocks/app-banner/app-banner';
+import { setMobileOS } from '../../../acrobat/blocks/app-banner/app-banner.js';
 import { waitForElement } from '../../helpers/waitfor.js';
-
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const { default: init } = await import(
-  '../../../acrobat/blocks/app-banner/app-banner'
+  '../../../acrobat/blocks/app-banner/app-banner.js'
 );
-
 
 describe('app-banner iOS block', () => {
   const block = document.body.querySelector('.app-banner');

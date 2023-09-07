@@ -36,7 +36,7 @@
 .app-banner-title {
   min-height: 2px;
   font-weight: bold;
-  color: #333333;
+  color: #333;
   font-size: 12px;
   height: 11px;
   box-sizing: content-box;
@@ -46,7 +46,7 @@
 .app-banner-description {
   min-height: 2px;
   overflow: hidden;
-  color: #333333;
+  color: #333;
   font-size: 11px;
   height: 18px;
   box-sizing: content-box;
@@ -128,14 +128,10 @@
 }
 
 .app-banner {
-  -webkit-text-size-adjust: 100%;
   font-family: 'Open Sans', sans-serif;
   width: 100%;
   -webkit-font-smoothing: antialiased;
-  -webkit-user-select: none;
-  -moz-user-select: none;
   user-select: none;
-  -webkit-transition: all 0.25s ease;
   transition: all 00.25s ease;
   position: sticky;
   top: 0;
