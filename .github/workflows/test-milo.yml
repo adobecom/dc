@@ -51,13 +51,13 @@ jobs:
         run:   |
           if [ "$RUNNER_OS" == "Linux" ]; then
               npx playwright install --with-deps firefox
-              xvfb-run -a npx run test/e2e/frictionless -t @smoke-converter --browser firefox
+              xvfb-run -a npx run test/e2e/frictionless -t "@smoke and not @analytics" --browser firefox
           elif [ "$RUNNER_OS" == "macOS" ]; then
               npx playwright install --with-deps webkit
-              npx run test/e2e/frictionless -t @smoke-converter --browser webkit
+              npx run test/e2e/frictionless -t "@smoke and not @analytics" --browser webkit
           else
               npx playwright install --with-deps chromium
-              npx run test/e2e/frictionless -t @smoke-converter
+              npx run test/e2e/frictionless -t "@smoke and not @analytics"
           fi
         shell: bash
 
