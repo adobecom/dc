@@ -7,7 +7,7 @@ export class DcGnavPage extends GnavPage {
     // US uses the new gnav. Other locales use the old one.
     // Same in SubMenu()
     this.buildProps({
-      buyNow: '.feds-cta-wrapper a, .gnav-cta a',
+      buyNow: '.feds-cta-wrapper a, .gnav-cta a >> visible=true',
       fedsPopup: '.feds-popup, .gnav-navitem-menu.large-Variant, .gnav-navitem-menu.small-Variant >> visible=true',
     });
   }
