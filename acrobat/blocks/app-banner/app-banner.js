@@ -1,18 +1,17 @@
 import { createTag } from "../../scripts/miloUtils.js";
 
-var link = '';
-var mobileOS = getMobileOperatingSystem();
+let link = '';
+let mobileOS = getMobileOperatingSystem();
 
 
 export default async function init(el) {
-  //Exit if not mobile/tablet 
   if (mobileOS === 'unknown') {
     el.innerHTML = '';
     return;
   }
 
   createTag.then((createTag) => {
-    const bannerPlaceHolder = createTag('div', { class: 'placeholder-banner' }, '');
+    const bannerPlaceHolder = createTag('div', { class: 'placeholder-banner' });
     document.body.prepend(bannerPlaceHolder);
     const children = el.children;
     if (mobileOS === 'Android') {
@@ -20,11 +19,11 @@ export default async function init(el) {
     } else if (mobileOS === 'iOS') {
       link = children[7].textContent.trim();
     }
-    const appBanner = createTag('div', { class: 'app-banner' }, '');
+    const appBanner = createTag('div', { class: 'app-banner' });
     //Close banner button on the left, also the icon
     const closeBtn = createTag('div', { class: 'app-banner-close', role: 'text', 'aria-label': 'Close banner' }, '×');
     closeBtn.addEventListener('click', closeBanner);
-    const appBannerContent = createTag('div', { class: 'app-banner-content' }, '');
+    const appBannerContent = createTag('div', { class: 'app-banner-content' });
     appBannerContent.append(closeBtn, getDecoratedBannerLeft(createTag, children),
       getDecoratedAppDetails(createTag, children), getDecoratedBannerRight(createTag, children));
     appBanner.append(appBannerContent);
@@ -49,7 +48,7 @@ function closeBanner() {
 
 function getDecoratedBannerRight(createTag, children) {
   const openText = children[3].textContent.trim();
-  const appBannerRight = createTag('div', { class: 'app-banner-right' }, '');
+  const appBannerRight = createTag('div', { class: 'app-banner-right' });
   const openButton = createTag('button', { class: 'app-banner-button', role: 'text', 'aria-label': openText }, openText);
   appBannerRight.addEventListener('click', openLink);
   appBannerRight.append(openButton);
@@ -70,7 +69,7 @@ function getDecoratedAppDetails(createTag, children) {
 
   const appTitle = createTag('h5', { class: 'app-banner-title' }, children[0].textContent.trim());
   const appDesc = createTag('p', { class: 'app-banner-description' }, children[2].textContent.trim());
-  const appStars = createTag('div', { class: 'app-banner-stars', role: 'text', 'aria-label': `Average rating ${rating} stars` }, '');
+  const appStars = createTag('div', { class: 'app-banner-stars', role: 'text', 'aria-label': `Average rating ${rating} stars` });
 
   rating = rating > 5 ? 5 : rating;
   rating = rating < 0 ? 0 : rating;
@@ -79,7 +78,7 @@ function getDecoratedAppDetails(createTag, children) {
     appStars.append(createTag('span', {}, '★'));
   }
 
-  const appBannerDetails = createTag('div', { class: 'app-banner-details' }, '');
+  const appBannerDetails = createTag('div', { class: 'app-banner-details' });
   const appReviews = createTag('div', { class: 'app-banner-reviews', 'aria-label': '' }, `(${reviews})`);
   appBannerDetails.append(appTitle, appDesc, appStars, appReviews);
   appBannerDetails.addEventListener('click', openLink);
@@ -87,11 +86,11 @@ function getDecoratedAppDetails(createTag, children) {
 }
 
 function getDecoratedBannerLeft(createTag, children) {
-  const appBannerLeft = createTag('div', { class: 'app-banner-left' }, '');
+  const appBannerLeft = createTag('div', { class: 'app-banner-left' });
   const picture = children[1].querySelector('img');
   const iconSrc = picture ? picture.getAttribute('src') : '';
-  const icon = createTag('div', { class: 'app-banner-icon' }, '');
-  const appIcon = createTag('img', { src: `${iconSrc}` }, '');
+  const icon = createTag('div', { class: 'app-banner-icon' });
+  const appIcon = createTag('img', { src: `${iconSrc}` });
   icon.append(appIcon);
   icon.addEventListener('click', openLink);
   appBannerLeft.append(icon);

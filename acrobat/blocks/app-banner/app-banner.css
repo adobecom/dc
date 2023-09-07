@@ -2,11 +2,11 @@
   position: relative;
   top: 0;
   left: 0;
-  height: 82px;
+  height: 76px;
 }
 
 .has-app-banner header.global-navigation {
-  top: 82px;
+  top: 76px;
 }
 
 .app-banner-close {
@@ -143,4 +143,5 @@
   box-shadow: 0 0 5px #00000059;
   display: none;
   box-sizing: content-box;
+  z-index: 11;
 }
