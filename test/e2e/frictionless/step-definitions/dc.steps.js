@@ -19,7 +19,9 @@ import { AddPagesToPdfPage } from "../page-objects/addpagestopdf.page";
 import { ExtractPdfPagesPage } from "../page-objects/extractpdfpages.page";
 import { PdfEditorPage } from "../page-objects/pdfeditor.page";
 import { MergePdfPage } from "../page-objects/mergepdf.page";
+import { CompressPdfPage } from "../page-objects/compresspdf.page";
 import { FrictionlessPage } from "../page-objects/frictionless.page";
+import { cardinal } from "../support/cardinal";
 import { expect } from "@playwright/test";
 const path = require("path");
 const fs = require("fs");
@@ -64,6 +66,7 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
     "extract-pdf-pages": ExtractPdfPagesPage,
     "pdf-editor": PdfEditorPage,
     "merge-pdf": MergePdfPage,
+    "compress-pdf": CompressPdfPage,
   }[verb];
   this.page = new pageClass();
 
@@ -78,16 +81,23 @@ Then(/^I upload the (?:PDF|file|files) "([^\"]*)"$/, async function (filePath) {
   const absPaths = filePaths.map((x) =>
     path.resolve(global.config.profile.site, x)
   );
-  await expect(this.page.selectButton).toHaveCount(1, { timeout: 15000 });
-  await this.page.native.waitForTimeout(2000);
-  await this.page.uploadFiles(absPaths);
+  let retry = 3;
+  while (retry > 0) {
+    await expect(this.page.selectButton).toHaveCount(1, { timeout: 15000 });
+    await this.page.native.waitForTimeout(2000);
+    try {
+      await this.page.uploadFiles(absPaths);
+      await this.page.native.waitForTimeout(2000);
+      await expect(this.page.selectButton).toHaveCount(0, { timeout: 15000 });
+      retry = 0;
+    } catch {
+      retry--;
+    }
+  }
 });
 
 Then(/^I download the converted file$/, { timeout: 200000 }, async function () {
   this.context(FrictionlessPage);
-  await this.page.downloadButton.waitFor({ timeout: 180000 });
-
-  let convertedName = await this.page.filenameHeader.getAttribute("title");
 
   // Prepare waiting for the download event
   const downloadPromise = this.page.native.waitForEvent("download");
@@ -100,6 +110,9 @@ Then(/^I download the converted file$/, { timeout: 200000 }, async function () {
   // the original file name.
   const download = await downloadPromise;
   console.log("Downloaded file: " + (await download.path()));
+
+  let convertedName = await this.page.filenameHeader.getAttribute("title");
+
   let saveAsName = path.resolve(
     require("os").homedir(),
     "Downloads",
@@ -238,4 +251,59 @@ Then(/^I should (|not )see a modal promoting the browser extension$/, { timeout:
 
 Then(/^I dismiss the extension modal$/, async function () {
   await this.page.closeExtensionModal.click();
+});
+
+Then(/^I should be able to open the submenu of the (.*) menu item(?:|s)$/, async function (items) {
+  this.context(FrictionlessPage);
+  let menuItems = items.replace(/ and /g, ",").split(",");
+  menuItems = menuItems.map((x) => x.trim()).filter((x) => x.length > 0);
+  for (let item of menuItems) {
+    const index = cardinal(item);
+    await this.page.openSubMenu(index);
+    await expect(this.page.fedsPopup).toBeVisible();
+    await this.page.fedsPopup.screenshot({path: `fedsPopup-${item}.png`});
+    await this.page.closeSubMenu(index);
+    await expect(this.page.fedsPopup).not.toBeVisible();
+  }
+});
+
+Then(/^I should be able to use the "([^\"]*)" submenu$/, async function (menu) {
+  this.context(FrictionlessPage);
+  await this.page.openSubMenu(menu);
+  await expect(this.page.fedsPopup).toBeVisible();
+  await this.page.closeSubMenu(menu);
+  await expect(this.page.fedsPopup).not.toBeVisible();
+});
+
+Then(/^I select the last item of the submenu of the ([^\"]*) menu item$/, async function (menu) {
+  this.context(FrictionlessPage); 
+  await this.page.openSubMenu(cardinal(menu));
+  await this.page.selectFedsPopupItem(-1);
+});
+
+Then(/^I click "Buy now" button in the header$/, async function () {
+  this.context(FrictionlessPage);
+  this.page.buyNow.click()
+});
+
+Then(/^I switch to the new page after clicking "Buy now" button in the header$/, async function () {
+  this.context(FrictionlessPage);
+  const [newPage] = await Promise.all([
+    PW.context.waitForEvent('page'),
+    this.page.buyNow.click()
+  ]);
+  await newPage.waitForLoadState();
+  this.page.native = newPage; 
+});
+
+Then(
+  /^I should not see the address bar contains "([^\"]*)"$/,
+  async function (fragment) {
+    const pattern = fragment.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
+    await expect(this.page.native).not.toHaveURL(new RegExp(pattern), {timeout: 10000});
+  }
+);
+
+Then(/^I go back$/, async function () {
+  await this.page.native.goBack();
 });
