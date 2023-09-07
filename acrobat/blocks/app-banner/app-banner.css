@@ -15,7 +15,6 @@
   text-align: center;
   color: grey;
   font-size: 20px;
-  top: 43%;
   box-sizing: content-box;
 }
 
@@ -24,7 +23,6 @@
   width: 63px;
   height: 63px;
   margin-right: 10px;
-  top: 50%;
   box-sizing: content-box;
 }
 
@@ -111,7 +109,6 @@
 
 .app-banner-details {
   margin-top: 8px;
-  top: 55%;
   margin-right: 16px;
   box-sizing: content-box;
 }
