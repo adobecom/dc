@@ -3,7 +3,7 @@ Feature: Frictionless Converter Block
   Background:
     Given I have a new browser context
 
-  @MWPW-130446 @smoke-converter
+  @MWPW-130446 @smoke @converter
   Scenario Outline: L1 Verb - Upload and sign-in
     Given I go to the <Verb> page
      Then I upload the file "<File>"
@@ -16,7 +16,7 @@ Feature: Frictionless Converter Block
       | Verb              | File                |
       | request-signature | test-files/test.pdf |
 
-  @MWPW-130447 @smoke-converter
+  @MWPW-130447 @smoke @converter
   Scenario Outline: L2 Verb - Upload and download
     Given I go to the <Verb> page
      Then I upload the file "<File>"
