@@ -329,11 +329,12 @@ export default async function init(element) {
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
           cacheLoad = true;
-          skeletonLoad = true;
           if (skeletonLoad) {
+            console.log('loaded skel');
             // const skel = widgetContainer.querySelector('.skeleton-wrapper');
             // skel.replaceWith(doc.body.firstElementChild);
           } else {
+          console.log('loaded dc snap');
           widgetContainer.appendChild(doc.body.firstElementChild);
           }
           performance.mark("milo-insert-snippet");
