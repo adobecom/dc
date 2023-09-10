@@ -469,6 +469,17 @@ div.how-to ol li::before{
   border-radius: 8px;
   display: flex;
   justify-content: center;
+
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.skeleton-wrapper.fade-out {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 300ms, opacity 300ms;
+
 }
 
 .skeleton-inner {

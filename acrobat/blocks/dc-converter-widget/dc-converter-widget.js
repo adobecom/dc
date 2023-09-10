@@ -4,13 +4,11 @@ let cacheLoad = false;
 setTimeout(() => {
   const skeletonLoader = new CustomEvent('DC_Skeleton:Ready');
   window.dispatchEvent(skeletonLoader);
-  console.log('skeletonLoader @@@');
 }, 2000);
 
 setTimeout(() => {
   const skeletonLoader = new CustomEvent('DC_SkeletonShimmer:Ready');
   window.dispatchEvent(skeletonLoader);
-  console.log('skeletonLoader + Shimmer @@@');
 }, 8000);
 
 const localeMap = {
@@ -230,7 +228,7 @@ export default async function init(element) {
   const preRenderDropZone = !isReturningUser && !isRedirection;
 
   //Skeleton 
-  if (window.browser?.isMobile) {
+  if (window.browser?.isMobile && location.pathname.includes('rearrange-pdf')) {
     window.addEventListener('DC_Skeleton:Ready', () => {
       const skeletonWrapper = document.createElement('div');
       const skeletonInnerWrapper = document.createElement('div');
@@ -266,22 +264,18 @@ export default async function init(element) {
       skeletonDropzone.appendChild(skeletonCopyTwo);
       skeletonDropzone.appendChild(skeletonCopyThree);
       skeletonDropzone.appendChild(skeletonButton);
-      console.log('cacheLoad');
-      console.log(cacheLoad);
+
       if (!cacheLoad) {
         widgetContainer.appendChild(skeletonWrapper);
-        console.log('skel appended');
+
         setTimeout( () => {
-          console.log('Add shimmer to show loading...');
           skeletonInnerWrapper.className = 'shimmer skeleton-inner';
         }, 6000);
-
       }
       skeletonLoad = true;
     })
 
     window.addEventListener('DC_SkeletonShimmer:Ready', () => {
-      console.log(widgetContainer);
       const skeletonWrapper = document.createElement('div');
       const skeletonInnerWrapper = document.createElement('div');
       const skeletonHead = document.createElement('div');
@@ -316,18 +310,15 @@ export default async function init(element) {
       skeletonDropzone.appendChild(skeletonCopyTwo);
       skeletonDropzone.appendChild(skeletonCopyThree);
       skeletonDropzone.appendChild(skeletonButton);
-      console.log('cacheLoad');
-      console.log(cacheLoad);
+
       if (!window.dc_hosted) {
         widgetContainer.firstChild.replaceWith(skeletonWrapper);
-        console.log('skel appended');
-
       }
       skeletonLoad = true;
     })
   }
 
-  if (VERB === 'compress-pdf' || preRenderDropZone) {
+  if (VERB === 'compress-pdf' || VERB === 'reorder-pages' || preRenderDropZone) {
     const verbFromURL = window.location.pathname.split('/').pop().split('.')[0];
     const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
@@ -338,11 +329,10 @@ export default async function init(element) {
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
           cacheLoad = true;
-          console.log('skeletonLoad');
-          console.log(skeletonLoad);
+          skeletonLoad = true;
           if (skeletonLoad) {
-            const skel = widgetContainer.querySelector('.skeleton-wrapper');
-            skel.replaceWith(doc.body.firstElementChild);
+            // const skel = widgetContainer.querySelector('.skeleton-wrapper');
+            // skel.replaceWith(doc.body.firstElementChild);
           } else {
           widgetContainer.appendChild(doc.body.firstElementChild);
           }
@@ -380,6 +370,11 @@ export default async function init(element) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
 
+  if (skeletonLoad) {
+    window.addEventListener('DC_Hosted:Ready', () => {
+      document.querySelector('.skeleton-wrapper').classList.add('fade-out')
+    })
+  }
   widget.appendChild(dcScript);
 
   window.addEventListener('IMS:Ready', () => {
