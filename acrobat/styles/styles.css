@@ -15,6 +15,11 @@ div[data-section="widget"] {
   background-color: #fc6767;
   min-height: 570px;
 }
+@media (max-width: 600px) {
+  #dc-converter-widget {
+    height: calc(100vh - 110px);
+  }
+}
 
 #CID {
   width: 75%;
