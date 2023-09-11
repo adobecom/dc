@@ -57,7 +57,6 @@ describe('app-banner iOS block', () => {
     const node1 = document.body.querySelector('.app-banner-details');
     expect(node1).not.to.exist;
   });
-
 });
 
 document.body.innerHTML = '';
@@ -74,7 +73,6 @@ describe('app-banner unknown block', () => {
     const icon = block.querySelector('.app-banner-icon');
     expect(icon).to.be.null;
   });
-
 });
 
 document.body.innerHTML = '';
@@ -129,5 +127,4 @@ describe('app-banner Andriod block', () => {
     const node1 = document.body.querySelector('.app-banner-details');
     expect(node1).not.to.exist;
   });
-
 });
