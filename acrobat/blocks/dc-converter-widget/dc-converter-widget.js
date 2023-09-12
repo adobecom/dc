@@ -228,7 +228,7 @@ export default async function init(element) {
   const preRenderDropZone = !isReturningUser && !isRedirection;
 
   //Skeleton 
-  if (window.browser?.isMobile && location.pathname.includes('rearrange-pdf')) {
+  if (window.browser?.isMobile && !window.navigator.userAgent.includes('iPad') && location.pathname.includes('rearrange-pdf')) {
     window.addEventListener('DC_Skeleton:Ready', () => {
       const skeletonWrapper = document.createElement('div');
       const skeletonInnerWrapper = document.createElement('div');
