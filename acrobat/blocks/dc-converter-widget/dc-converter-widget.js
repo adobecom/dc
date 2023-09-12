@@ -4,7 +4,7 @@ let cacheLoad = false;
 setTimeout(() => {
   const skeletonLoader = new CustomEvent('DC_Skeleton:Ready');
   window.dispatchEvent(skeletonLoader);
-}, 2000);
+}, 250);
 
 setTimeout(() => {
   const skeletonLoader = new CustomEvent('DC_SkeletonShimmer:Ready');
