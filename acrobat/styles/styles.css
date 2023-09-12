@@ -15,6 +15,11 @@ div[data-section="widget"] {
   background-color: #fc6767;
   min-height: 570px;
 }
+@media (max-width: 600px) {
+  #dc-converter-widget {
+    height: calc(100vh - 110px);
+  }
+}
 
 #dc-converter-widget > div:first-of-type {
   display: none;
@@ -466,6 +471,88 @@ div.how-to ol li::before{
   .widget-loaded > div {
     height: calc(100vh - 110px);
   }
+}
+
+.skeleton-wrapper {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.skeleton-wrapper.fade-out {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 300ms, opacity 300ms;
+
+}
+
+.skeleton-inner {
+  width: 100%;
+}
+
+.skeleton-head {
+  background-color: #909090;
+  height: 15px;
+  width: 180px;
+  margin: 30px auto;
+  border-radius: 10px;
+}
+
+.skeleton-dropzone {
+  border: 3px #909090 dashed;
+  width: calc(100% - 48px);
+  margin: auto;
+  height: 70%;
+  border-radius: 8px;
+}
+
+.skeleton-icon {
+  width: 70px;
+  height: 70px;
+  background-color: #909090;
+  margin: 60% auto 40px;
+  border-radius: 8px;
+}
+
+.skeleton-copy {
+  background-color: #909090;
+  height: 15px;
+  width: 150px;
+  margin: 10px auto;
+  border-radius: 10px;
+}
+
+.skeleton-copy.two {
+  width: 200px;
+  height: 10px;
+}
+
+.skeleton-copy.three {
+  width: 100px;
+  height: 10px;
+}
+
+.skeleton-button {
+  background-color: #d5d5d5;
+  height: 10px;
+  width: 75px;
+  margin: 60px auto;
+  border-radius: 17px;
+  border: 10px #909090 solid;
+}
+
+.shimmer {
+  animation: shimmer 2.5s infinite;
+  -webkit-mask:linear-gradient(-270deg,#000 30%,#0005,#000 70%) right/300% 100%;
+}
+
+@keyframes shimmer {
+  100% {-webkit-mask-position:left}
 }
 
 .promotion {
