@@ -330,11 +330,9 @@ export default async function init(element) {
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
           cacheLoad = true;
           if (skeletonLoad) {
-            console.log('loaded skel');
             // const skel = widgetContainer.querySelector('.skeleton-wrapper');
             // skel.replaceWith(doc.body.firstElementChild);
           } else {
-          console.log('loaded dc snap');
           widgetContainer.appendChild(doc.body.firstElementChild);
           }
           performance.mark("milo-insert-snippet");
