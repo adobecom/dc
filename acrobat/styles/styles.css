@@ -370,6 +370,9 @@ div.how-to ol li::before{
   fill: #fa0f00;
 }
 
+.hlx-Review-ratingFields input[name='rating'] {
+  background-image: url('/acrobat/img/icons/star-outline.svg') !important;
+}
 .hlx-Review-ratingFields input[name='rating'].is-Active {
   background-image: url('/acrobat/img/icons/star-filled.svg') !important;
 }
