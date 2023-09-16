@@ -58,7 +58,7 @@ jobs:
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Run the tests
-        run: npx run test/e2e/frictionless -t "@smoke and not @analytics" -h -p prod -b ${{ matrix.browser }}
+        run: npx run test/e2e/frictionless -t "@smoke and not @analytics" -h -p prod -b ${{ matrix.browser }} --bypassBotDetection
 
       - name: Save test logs
         if: ${{ always() }}
