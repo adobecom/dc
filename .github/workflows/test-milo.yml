@@ -59,6 +59,8 @@ jobs:
 
       - name: Run the tests
         run: npx run test/e2e/frictionless -t "@smoke and not @analytics" -h -p prod -b ${{ matrix.browser }} --bypassBotDetection
+        env:
+          USER_AGENT_SUFFIX: "${{ secrets.USER_AGENT_SUFFIX }}"
 
       - name: Save test logs
         if: ${{ always() }}
