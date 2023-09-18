@@ -1,8 +1,7 @@
-import {createTag} from "./miloUtils.js";
+import { createTag } from './miloUtils.js';
 
 export default async function replacePlaceholdersWithImages(elements) {
   createTag.then((tag) => {
-
     elements.forEach((p) => {
       const elementId = p.getAttribute('id');
       const elementDOM = document.getElementById(elementId);
@@ -10,11 +9,10 @@ export default async function replacePlaceholdersWithImages(elements) {
       const imageName = `credit-cards-${cardName}.jpg`;
       const imagePath = `/acrobat/img/icons/${imageName}`;
       const imgAttributes = {
-        'src': imagePath,
-        'loading': 'lazy',
-        'data-local': 'credit-cards'
+        src: imagePath,
+        loading: 'lazy',
+        'data-local': 'credit-cards',
       };
-      
       const imgElement = tag('img', imgAttributes);
       // Attach the onerror event handler
       imgElement.onerror = () => {
@@ -23,6 +21,5 @@ export default async function replacePlaceholdersWithImages(elements) {
       };
       elementDOM.replaceWith(imgElement);
     });
-
   });
 }
