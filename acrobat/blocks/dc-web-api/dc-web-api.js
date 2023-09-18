@@ -1,5 +1,5 @@
 import {createTag} from "../../scripts/miloUtils.js";
-const {loadScript} = await import(`https://main--milo--adobecom.hlx.page/libs/utils/utils.js`);
+// const {loadScript} = await import(`https://main--milo--adobecom.hlx.page/libs/utils/utils.js`);
 
 const handleDragOver = (e) => {
   e.preventDefault();
@@ -53,8 +53,22 @@ export default function init(element) {
           wrapper.append(legal);
           element.append(wrapper);
 
+
+          const dcWidgetScript = tag('script', {
+            id: 'adobe_dc_sdk_launcher',
+            src: 'https://stage.acrobat.adobe.com/dc-hosted/3.10.0_2.16.2/dc-app-launcher.js',
+            'data-dropzone_id': 'CID',
+            'data-locale': 'us-en',
+            'data-server_env': 'stage',
+            'data-verb': 'word-to-pdf',
+            'data-load_typekit': 'false',
+            'data-load_imslib': 'false',
+            'data-enable_unload_prompt': 'true',
+          });
+
           dropZone.addEventListener('dragover', (file) => {
             handleDragOver(file);
+            element.append(dcWidgetScript);
           })
 
           dropZone.addEventListener('drop', (file) => {
@@ -62,17 +76,6 @@ export default function init(element) {
             //make call to dc web and pass over file 
             //https://api-ninjas.com/signin
 
-            const dcWidgetScript = tag('script', {
-              id: 'adobe_dc_sdk_launcher',
-              src: 'https://stage.acrobat.adobe.com/dc-hosted/3.10.0_2.16.2/dc-app-launcher.js',
-              'data-dropzone_id': 'CID',
-              'data-locale': 'us-en',
-              'data-server_env': 'stage',
-              'data-verb': 'word-to-pdf',
-              'data-load_typekit': 'false',
-              'data-load_imslib': 'false',
-              'data-enable_unload_prompt': 'true',
-            });
             element.append(dcWidgetScript);
             // loadScript('https://stage.acrobat.adobe.com/dc-hosted/3.10.0_2.16.2/dc-app-launcher.js');
 
