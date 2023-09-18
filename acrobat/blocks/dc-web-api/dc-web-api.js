@@ -68,7 +68,6 @@ export default function init(element) {
 
           dropZone.addEventListener('dragover', (file) => {
             handleDragOver(file);
-            element.append(dcWidgetScript);
           })
 
           dropZone.addEventListener('drop', (file) => {
