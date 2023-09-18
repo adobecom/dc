@@ -1,0 +1,17 @@
+.dc-web-api {
+  background-color: #fc6767;
+  min-height: 570px;
+}
+
+.widget-sub {
+  text-align: center;
+}
+
+.widget-center {
+  border: 3px #909090 dashed;
+  width: calc(100% - 48px);
+  margin: auto;
+  height: 70%;
+  border-radius: 8px;
+}
+
