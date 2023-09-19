@@ -1,4 +1,5 @@
 import {createTag} from "../../scripts/miloUtils.js";
+let loadDC;
 // const {loadScript} = await import(`https://main--milo--adobecom.hlx.page/libs/utils/utils.js`);
 
 const handleDragOver = (e) => {
@@ -13,12 +14,24 @@ const handleDrop = (e) => {
     [...e.dataTransfer.items].forEach((item, i) => {
       if (item.kind === "file") {
         const file = item.getAsFile();
-        console.log(`… file[${i}].name = ${file.name}`);
+        if (file.type != 'application/pdf') {
+          alert('Please try a PDF');
+          return
+        } else {
+          loadDC = true;
+        }
+        console.log(`KIND = file, file[${i}].name = ${file.name}`);
       }
     });
   } else {
     [...e.dataTransfer.files].forEach((file, i) => {
-      console.log(`… file[${i}].name = ${file.name}`);
+      if (file.type != 'application/pdf') {
+        alert('Please try a PDF');
+        return
+      } else {
+        loadDC = true;
+      }
+      console.log(`file[${i}].name = ${file.name}`);
     });
   }
 
@@ -75,12 +88,14 @@ export default function init(element) {
           dropZone.addEventListener('drop', (file) => {
             handleDrop(file);
             //make call to dc web and pass over file 
-            element.append(dcWidgetScript);
+            if (loadDC) {element.append(dcWidgetScript) }
             // loadScript('https://stage.acrobat.adobe.com/dc-hosted/3.10.0_2.16.2/dc-app-launcher.js');
           })
 
-          button.addEventListener('change', () => {
-            element.append(dcWidgetScript);
+          button.addEventListener('change', (e) => {
+            // const selectedFile = document.getElementById("file-upload").files[0];
+            console.log(selectedFile);
+            if (loadDC) {element.append(dcWidgetScript) }
           })
         })
 
