@@ -62,7 +62,7 @@ export default function init(element) {
             'data-dropzone_id': 'CID',
             'data-locale': 'us-en',
             'data-server_env': 'prod',
-            'data-verb': 'pdf-to-ppt ',
+            'data-verb': 'pdf-to-ppt',
             'data-load_typekit': 'false',
             'data-load_imslib': 'false',
             'data-enable_unload_prompt': 'true',
