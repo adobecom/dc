@@ -58,7 +58,7 @@ export default function init(element) {
 
           const dcWidgetScript = tag('script', {
             id: 'adobe_dc_sdk_launcher',
-            src: 'https://acrobat.adobe.com/dc-hosted/3.8.0_2.15.2/dc-app-launcher.js',
+            src: 'https://stage.acrobat.adobe.com/dc-hosted/3.8.0_2.15.2/dc-app-launcher.js',
             'data-dropzone_id': 'CID',
             'data-locale': 'us-en',
             'data-server_env': 'prod',
