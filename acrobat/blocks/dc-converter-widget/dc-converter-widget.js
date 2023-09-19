@@ -318,7 +318,7 @@ export default async function init(element) {
     })
   }
 
-  if (VERB === 'compress-pdf' || VERB === 'reorder-pages' || preRenderDropZone) {
+  if (window.browser?.isMobile && (VERB === 'fillsign' || VERB === 'sendforsignature' || VERB === 'add-comment' || VERB === 'crop-pages' || VERB === 'number-pages')) {
     const verbFromURL = window.location.pathname.split('/').pop().split('.')[0];
     const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
