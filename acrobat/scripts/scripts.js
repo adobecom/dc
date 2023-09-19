@@ -260,30 +260,32 @@ const { ietf } = getLocale(locales);
 
 (async function loadPage() {
   // Fast track the widget
-  // const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
+  // acrobat/blocks/dc-web-api/dc-web-api.js
+  // const widgetBlock = document.querySelector('[class*="dc-web-api"]');
   // if (widgetBlock) {
-  //   const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
-  //   const blockName = widgetBlock.classList.value;
-  //   widgetBlock.removeAttribute('class');
-  //   widgetBlock.id = 'dc-converter-widget';
-  //   const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
-  //   const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
-  //   const dcUrls = [
-  //     `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verb}-${ietf.toLowerCase()}.html`,
-  //   ];
+    // const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
+    // const blockName = widgetBlock.classList.value;
+    // console.log(blockName);
+    // widgetBlock.removeAttribute('class');
+    // widgetBlock.id = 'dc-converter-widget';
+    // const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
+    // const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
+    // const dcUrls = [
+    //   `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verb}-${ietf.toLowerCase()}.html`,
+    // ];
 
-  //   dcUrls.forEach( url => {
-  //     const link = document.createElement('link');
-  //     link.setAttribute('rel', 'prefetch');
-  //     if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
-  //     if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');}
-  //     link.setAttribute('href', url);
-  //     link.setAttribute('crossorigin', '');
-  //     document.head.appendChild(link);
-  //   })
+    // dcUrls.forEach( url => {
+    //   const link = document.createElement('link');
+    //   link.setAttribute('rel', 'prefetch');
+    //   if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
+    //   if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');}
+    //   link.setAttribute('href', url);
+    //   link.setAttribute('crossorigin', '');
+    //   document.head.appendChild(link);
+    // })
 
-  //   const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);
-  //   await dcConverter(widgetBlock);
+    // const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);
+    // await dcConverter(widgetBlock);
   // }
 
   // Setup CSP

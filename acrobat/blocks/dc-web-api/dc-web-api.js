@@ -72,6 +72,8 @@ export default function init(element) {
           })
 
           element.classList.add('ready');
+          // element.setAttribute('ready', '')
+
 
           const wrapper = createTag('div', {id: 'CID', class: `fsw widget-wrapper ` });
           const heading = createTag('h1', { class: 'widget-heading' }, `${content[1].textContent}`);
