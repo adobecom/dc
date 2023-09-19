@@ -63,7 +63,7 @@ export default function init(element) {
           const buttonLabel = tag('label', { for: 'file-upload', class: 'widget-button' }, `${content[3].textContent}`);
           const legal = tag('p', { class: 'widget-legal' }, `${content[4].textContent}`);
           const icon = tag('p',{ class: 'widget-sub' } , 'Adobe Acrobat');
-          const upsell = content[5];
+          const upsell = tag('p',{ class: 'demo-text' } , content[5].textContent);
 
           if (Number(window.localStorage.limit) > 1) {
             upsell.classList.remove('hide')
