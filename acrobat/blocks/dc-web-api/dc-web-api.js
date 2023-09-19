@@ -1,11 +1,29 @@
-import {createTag} from "../../scripts/miloUtils.js";
+// import {createTag} from "../../scripts/miloUtils.js";
+const createTag = function createTag(tag, attributes, html) {
+  const el = document.createElement(tag);
+  if (html) {
+    if (html instanceof HTMLElement
+      || html instanceof SVGElement
+      || html instanceof DocumentFragment) {
+      el.append(html);
+    } else if (Array.isArray(html)) {
+      el.append(...html);
+    } else {
+      el.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (attributes) {
+    Object.entries(attributes).forEach(([key, val]) => {
+      el.setAttribute(key, val);
+    });
+  }
+  return el;
+}
+
 let loadDC;
 if (!window.localStorage.limit) {
   window.localStorage.limit = 0
 }
-
-
-// const {loadScript} = await import(`https://main--milo--adobecom.hlx.page/libs/utils/utils.js`);
 
 const handleDragOver = (e) => {
   e.preventDefault();
@@ -46,7 +64,7 @@ const handleDrop = (e) => {
 export default function init(element) {
   console.log(element.querySelectorAll(':scope > div'));
         //Create Fake Widget
-        createTag.then((tag) => {
+        // createTag.then((tag) => {
           const content = element.querySelectorAll(':scope > div');
 
           Array.from(content).forEach( (con) => {
@@ -55,15 +73,15 @@ export default function init(element) {
 
           element.classList.add('ready');
 
-          const wrapper = tag('div', {id: 'CID', class: `fsw widget-wrapper ` });
-          const heading = tag('h1', { class: 'widget-heading' }, `${content[1].textContent}`);
-          const dropZone = tag('div', { id: 'dZone', class: 'widget-center' });
-          const copy = tag('p', { class: 'widget-copy' }, `${content[2].textContent}`);
-          const button = tag('input', { type: 'file', id: 'file-upload', class: 'hide' }, `${content[3].textContent}`);
-          const buttonLabel = tag('label', { for: 'file-upload', class: 'widget-button' }, `${content[3].textContent}`);
-          const legal = tag('p', { class: 'widget-legal' }, `${content[4].textContent}`);
-          const icon = tag('p',{ class: 'widget-sub' } , 'Adobe Acrobat');
-          const upsell = tag('p',{ class: 'demo-text' } , content[5].textContent);
+          const wrapper = createTag('div', {id: 'CID', class: `fsw widget-wrapper ` });
+          const heading = createTag('h1', { class: 'widget-heading' }, `${content[1].textContent}`);
+          const dropZone = createTag('div', { id: 'dZone', class: 'widget-center' });
+          const copy = createTag('p', { class: 'widget-copy' }, `${content[2].textContent}`);
+          const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' }, `${content[3].textContent}`);
+          const buttonLabel = createTag('label', { for: 'file-upload', class: 'widget-button' }, `${content[3].textContent}`);
+          const legal = createTag('p', { class: 'widget-legal' }, `${content[4].textContent}`);
+          const icon = createTag('p',{ class: 'widget-sub' } , 'Adobe Acrobat');
+          const upsell = createTag('p',{ class: 'demo-text' } , content[5].textContent);
 
           if (Number(window.localStorage.limit) > 1) {
             upsell.classList.remove('hide')
@@ -81,11 +99,11 @@ export default function init(element) {
           }
 
           if (Number(window.localStorage.limit) === 1 ) {
-            const secondConversion = tag('p',{ class: 'demo-text' } , 'Returning Visitor');
+            const secondConversion = createTag('p',{ class: 'demo-text' } , 'Returning Visitor');
             heading.prepend(secondConversion);
           }
 
-          const dcWidgetScript = tag('script', {
+          const dcWidgetScript = createTag('script', {
             id: 'adobe_dc_sdk_launcher',
             src: 'https://stage.acrobat.adobe.com/dc-hosted/3.8.0_2.15.2/dc-app-launcher.js',
             'data-dropzone_id': 'CID',
@@ -120,6 +138,6 @@ export default function init(element) {
             if (loadDC) {element.append(dcWidgetScript) }
             if (loadDC) {window.localStorage.limit = 1 + Number(window.localStorage.limit) }
           })
-        })
+        // })
 
 }
