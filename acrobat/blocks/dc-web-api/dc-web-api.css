@@ -4,6 +4,13 @@
   color: transparent;
 }
 
+.demo-text {
+  text-align: center;
+  font-size: 8px;
+  margin: 0;
+  background: #7396ff;
+}
+
 .dc-web-api.ready {
   color: initial;
 }
@@ -18,6 +25,10 @@
   margin: auto;
   height: 70%;
   border-radius: 8px;
+}
+
+.widget-center.dragging {
+  border: 3px #7396ff solid;
 }
 
 .widget-legal {

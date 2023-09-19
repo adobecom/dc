@@ -1,5 +1,10 @@
 import {createTag} from "../../scripts/miloUtils.js";
 let loadDC;
+if (!window.localStorage.limit) {
+  window.localStorage.limit = 0
+}
+
+
 // const {loadScript} = await import(`https://main--milo--adobecom.hlx.page/libs/utils/utils.js`);
 
 const handleDragOver = (e) => {
@@ -34,7 +39,6 @@ const handleDrop = (e) => {
       console.log(`file[${i}].name = ${file.name}`);
     });
   }
-
 }
 
 
@@ -59,15 +63,27 @@ export default function init(element) {
           const buttonLabel = tag('label', { for: 'file-upload', class: 'widget-button' }, `${content[3].textContent}`);
           const legal = tag('p', { class: 'widget-legal' }, `${content[4].textContent}`);
           const icon = tag('p',{ class: 'widget-sub' } , 'Adobe Acrobat');
-          wrapper.append(icon);
-          wrapper.append(heading);
-          wrapper.append(dropZone)
-          dropZone.append(copy);
-          dropZone.append(button);
-          dropZone.append(buttonLabel);
-          wrapper.append(legal);
-          element.append(wrapper);
+          const upsell = content[5];
 
+          if (Number(window.localStorage.limit) > 1) {
+            upsell.classList.remove('hide')
+            wrapper.append(upsell);
+            element.append(wrapper);
+          } else {
+            wrapper.append(icon);
+            wrapper.append(heading);
+            wrapper.append(dropZone)
+            dropZone.append(copy);
+            dropZone.append(button);
+            dropZone.append(buttonLabel);
+            wrapper.append(legal);
+            element.append(wrapper);
+          }
+
+          if (Number(window.localStorage.limit) === 1 ) {
+            const secondConversion = tag('p',{ class: 'demo-text' } , 'Returning Visitor');
+            heading.prepend(secondConversion);
+          }
 
           const dcWidgetScript = tag('script', {
             id: 'adobe_dc_sdk_launcher',
@@ -83,12 +99,18 @@ export default function init(element) {
 
           dropZone.addEventListener('dragover', (file) => {
             handleDragOver(file);
+            dropZone.classList.add('dragging');
+          });
+          dropZone.addEventListener('dragleave', (file) => {
+            dropZone.classList.remove('dragging');
           })
 
           dropZone.addEventListener('drop', (file) => {
             handleDrop(file);
+            dropZone.classList.remove('dragging');
             //make call to dc web and pass over file 
             if (loadDC) {element.append(dcWidgetScript) }
+            if (loadDC) {window.localStorage.limit = 1 + Number(window.localStorage.limit) }
             // loadScript('https://stage.acrobat.adobe.com/dc-hosted/3.10.0_2.16.2/dc-app-launcher.js');
           })
 
@@ -96,6 +118,7 @@ export default function init(element) {
             // const selectedFile = document.getElementById("file-upload").files[0];
             console.log(selectedFile);
             if (loadDC) {element.append(dcWidgetScript) }
+            if (loadDC) {window.localStorage.limit = 1 + Number(window.localStorage.limit) }
           })
         })
 
