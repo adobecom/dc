@@ -60,7 +60,7 @@ export default function init(element) {
             'data-dropzone_id': 'CID',
             'data-locale': 'us-en',
             'data-server_env': 'prod',
-            'data-verb': 'word-to-pdf',
+            'data-verb': 'pdf-to-ppt ',
             'data-load_typekit': 'false',
             'data-load_imslib': 'false',
             'data-enable_unload_prompt': 'true',
@@ -73,12 +73,12 @@ export default function init(element) {
           dropZone.addEventListener('drop', (file) => {
             handleDrop(file);
             //make call to dc web and pass over file 
-            //https://api-ninjas.com/signin
-
             element.append(dcWidgetScript);
             // loadScript('https://stage.acrobat.adobe.com/dc-hosted/3.10.0_2.16.2/dc-app-launcher.js');
+          })
 
-
+          button.addEventListener('change', () => {
+            element.append(dcWidgetScript);
           })
         })
 
