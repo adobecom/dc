@@ -1,6 +1,11 @@
 .dc-web-api {
   background-color: #fc6767;
   min-height: 570px;
+  color: transparent;
+}
+
+.dc-web-api.ready {
+  color: initial;
 }
 
 .widget-sub {

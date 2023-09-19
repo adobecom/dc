@@ -32,9 +32,11 @@ export default function init(element) {
         createTag.then((tag) => {
           const content = element.querySelectorAll(':scope > div');
 
-          Array.from(content).forEach( (con) =>{
+          Array.from(content).forEach( (con) => {
             con.classList.add('hide')
           })
+
+          element.classList.add('ready');
 
           const wrapper = tag('div', {id: 'CID', class: `fsw widget-wrapper ` });
           const heading = tag('h1', { class: 'widget-heading' }, `${content[1].textContent}`);
