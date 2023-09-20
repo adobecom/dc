@@ -322,7 +322,6 @@ export default async function init(element) {
     'delete-pages', 'reorder-pages', 'split-pdf', 'insert-pdf', 'extract-pages', 'crop-pages', 'number-pages'];
 
   if (verbIncludeList.includes(VERB) || preRenderDropZone) {
-    const verbFromURL = window.location.pathname.split('/').pop().split('.')[0];
     const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
@@ -332,12 +331,7 @@ export default async function init(element) {
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
           cacheLoad = true;
-          if (skeletonLoad) {
-            console.log('loaded skel');
-            // const skel = widgetContainer.querySelector('.skeleton-wrapper');
-            // skel.replaceWith(doc.body.firstElementChild);
-          } else {
-            console.log('loaded dc snap');
+          if (!skeletonLoad) {
             widgetContainer.appendChild(doc.body.firstElementChild);
           }
           performance.mark("milo-insert-snippet");
