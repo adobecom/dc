@@ -38,10 +38,6 @@ div[data-section="widget"] {
   display: none;
 }
 
-#CID li {
-  margin-bottom: 8px;
-}
-
 @media (min-width: 48rem ) and (max-width: 57.5rem) {
   #CID {
     max-width: 90%;
@@ -51,8 +47,8 @@ div[data-section="widget"] {
 
 @media (max-width: 600px) {
   #CID {
-    width: 91.666667%;
-    max-width: 91.666667%;
+    width: 91.6667%;
+    max-width: 91.6667%;
     top: 40px;
   }
 }
@@ -60,7 +56,7 @@ div[data-section="widget"] {
 .dialog-modal.extension-modal {
   top: unset;
   left: unset;
-  box-shadow: 0 .5em 1em -.125em hsla(0,0%,4%,.1),0 0 0 1px hsla(0,0%,4%,.02);
+  box-shadow: 0 .5em 1em -.125em hsl(0deg 0% 4% / 10%),0 0 0 1px hsl(0deg 0% 4% / 2%);
   margin-bottom: 20px;
   margin-right: 20px;
 }
@@ -70,12 +66,11 @@ div[data-section="widget"] {
   display: flex;
   flex-direction: row;
 }
-.hlx-ReviewWrapper {
-  justify-content: center;
-}
+
 .verb-subfooter {
   padding-bottom: 50px;
 }
+
 .verb-subfooter h3 {
   font-size: 16px;
   font-weight: 600;
@@ -83,14 +78,17 @@ div[data-section="widget"] {
   padding-top: 25px;
   margin-top: 0;
 }
+
 .verb-subfooter ul {
   list-style-type: none;
   padding-left: 0;
   padding-right: 0;
 }
+
 .verb-subfooter ul li {
   padding-top: 15px;
 }
+
 .verb-subfooter ul li a {
   font-size: 16px;
   font-weight: 500;
@@ -127,6 +125,13 @@ div[data-section="widget"] {
   padding: 0;
 }
 
+.how-to .text ol li {
+  list-style-type: none;
+  counter-increment: custom-counter;
+  margin: 1rem;
+  padding-left: 1.5rem;
+}
+
 .accordion-container.verb-subfooter-moblie .accordion ul {
   padding-left: 20px;
 }
@@ -153,21 +158,22 @@ div[data-section="widget"] {
   display: none;
   padding: 0;
 }
+
 .footer {
   background-color: #fbfbfb;
 
 }
+
 .how-to .text ol {
   padding-left: 0;
   list-style: none;
   counter-reset: custom-counter;
 }
-.how-to .text ol li {
-  list-style-type: none;
-  counter-increment: custom-counter;
-  margin: 1rem;
-  padding-left: 1.5rem;
+
+#CID li {
+  margin-bottom: 8px;
 }
+
 .how-to .text ol li::marker {
   display: none;
 }
@@ -216,6 +222,7 @@ div.how-to {
     "list" !important;
     grid-template-columns: 1fr !important;
   }
+
   /* Moblie HowTo word-to-pdf US ONLY */
   [data-path="/dc-shared/fragments/frictionless-personalization-xfs/word-to-pdf-xfs/how-to/default"] .how-to.large-image {
     grid-template-areas:
@@ -223,10 +230,12 @@ div.how-to {
     "list"
     "image" !important;
   }
+
   .eventwrapper .how-to-heading {
     padding-top: 44px;
     margin-right: 0;
   }
+
   .how-to-image.how-to-image-large {
     margin-left: 0;
   }
@@ -246,9 +255,10 @@ div.how-to {
 div.how-to ol li::before{
   vertical-align: bottom;
 }
+
 .how-to .text ol li::before {
   content: counter(custom-counter);
-  background: rgba(13,102,208,.13);
+  background: rgb(13 102 208 / 13%);
   width: 1.5rem;
   height: 1.5rem;
   font-size: .6875rem;
@@ -262,11 +272,6 @@ div.how-to ol li::before{
   margin-top: 10px;
 }
 
-/* browser extension modal */
-@keyframes modalSlideIn-frictionlessBrowserExtension {
-  from { right: -50rem !important; }
-  to { right: 0; }
-}
 .dialog-modal.extension-modal.backdrop-off {
   width: 30rem;
   max-height: 188px;
@@ -277,14 +282,25 @@ div.how-to ol li::before{
   overflow: hidden;
   box-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 4% / 10%), 0 0 0 1px hsl(0deg 0% 4% / 2%);
 }
-.section .columns.browser-extension {
-  padding: 20px;
-  width:480px;
-  font-size: 16px;
+
+.dialog-modal {
   animation-name: modalSlideIn-frictionlessBrowserExtension;
   transition: opacity 125ms ease-in-out,background-color 125ms ease-in-out,backdrop-filter 125ms ease-in-out,-webkit-backdrop-filter 125ms ease-in-out,transform 125ms ease-in-out;
   animation-duration: 2s;
 }
+
+.section .columns.browser-extension {
+  padding: 20px;
+  width: 480px;
+  font-size: 16px;
+}
+
+/* browser extension modal */
+@keyframes modalSlideIn-frictionlessBrowserExtension {
+  from { right: -50rem }
+  to { right: 0; }
+}
+
 .section .columns.browser-extension p {
   margin-top: 0;
   margin-right: 20px;
@@ -297,20 +313,24 @@ div.how-to ol li::before{
 .section .columns.browser-extension > .row {
   display: flex;
   margin-bottom: 0;
-  gap: 0px;
+  gap: 0;
 }
+
 .section .columns.browser-extension picture {
   width: initial;
 }
+
 .section .columns.browser-extension picture img {
   width: 90px;
   height: 90px;
   margin: auto;
   display: block;
 }
+
 .section .columns.browser-extension .row .col-1 {
-  width: 66.666666%;
+  width: 66.6667%;
 }
+
 .section .columns.browser-extension .row .col-1 a {
   border-width: 2px;
   border-style: solid;
@@ -325,14 +345,15 @@ div.how-to ol li::before{
   border-color: #505050;
   color: #505050;
 }
+
 .section .columns.browser-extension .row .col-1 a:hover {
   background-color: #505050;
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
 }
 
 .section .columns.browser-extension .row .col-2 {
-  width: 33.333333%;
+  width: 33.3333%;
   border-left: solid 2px #EAEAEA;
   display: flex;
   justify-content: center;
@@ -347,6 +368,7 @@ div.how-to ol li::before{
   -ms-transition: min-height 1s;
   -o-transition: min-height 1s;
   transition: min-height 1s;
+
   /* overflow: hidden; */
 }
 
@@ -357,6 +379,7 @@ div.how-to ol li::before{
   -ms-transition: min-height 1s;
   -o-transition: min-height 1s;
   transition: min-height 1s;
+
   /* overflow: hidden; */
 }
 
@@ -373,9 +396,11 @@ div.how-to ol li::before{
 .hlx-Review-ratingFields input[name='rating'] {
   background-image: url('/acrobat/img/icons/star-outline.svg') !important;
 }
+
 .hlx-Review-ratingFields input[name='rating'].is-Active {
   background-image: url('/acrobat/img/icons/star-filled.svg') !important;
 }
+
 .hlx-Review-ratingFields input[name='rating']::after {
   background-image: url('/acrobat/img/icons/star-filled.svg');
 }
@@ -383,16 +408,21 @@ div.how-to ol li::before{
 .hlx-ReviewWrapper {
   color: #505050;
   line-height: 1.5;
+  justify-content: center;
 }
+
 .hlx-ReviewWrapper .hlx-reviewTitle {
   line-height: 1.25;
 }
+
 .hlx-ReviewWrapper #rating-comments {
   font-family: sans-serif;
 }
+
 .hlx-Review-commentFields input {
   line-height: normal;
 }
+
 .hlx-Review-commentFields #ctaCover .comment-counter {
   position: absolute;
   top: 0;
@@ -443,7 +473,7 @@ div.how-to ol li::before{
 .widget-wrapper {
   margin: 5px;
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: #fff;
   min-height: 570px;
   height: 100%;
   width: 100%;
@@ -477,7 +507,6 @@ div.how-to ol li::before{
   border-radius: 8px;
   display: flex;
   justify-content: center;
-
   position: absolute;
   top: 0;
   width: 100%;
