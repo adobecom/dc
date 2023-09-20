@@ -12,3 +12,6 @@ live:
 
 preview:
   baseUrl: https://${branch}--dc--adobecom.hlx.page
+
+local:
+  baseUrl: http://localhost:3000
