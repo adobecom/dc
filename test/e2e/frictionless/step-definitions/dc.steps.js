@@ -23,8 +23,10 @@ import { CompressPdfPage } from "../page-objects/compresspdf.page";
 import { FrictionlessPage } from "../page-objects/frictionless.page";
 import { cardinal } from "../support/cardinal";
 import { expect } from "@playwright/test";
+const os = require("os");
 const path = require("path");
 const fs = require("fs");
+import { getComparator } from 'playwright-core/lib/utils';
 
 async function enableNetworkLogging(page) {
   if (global.config.profile.enableAnalytics) {
@@ -253,17 +255,60 @@ Then(/^I dismiss the extension modal$/, async function () {
   await this.page.closeExtensionModal.click();
 });
 
-Then(/^I should be able to open the submenu of the (.*) menu item(?:|s)$/, async function (items) {
+Then(/^I (screenshot|should be able to open) the submenu of the (.*) menu item(?:|s)$/, async function (action, items) {
   this.context(FrictionlessPage);
+
   let menuItems = items.replace(/ and /g, ",").split(",");
   menuItems = menuItems.map((x) => x.trim()).filter((x) => x.length > 0);
-  for (let item of menuItems) {
+  for (let item of menuItems) {  
     const index = cardinal(item);
     await this.page.openSubMenu(index);
     await expect(this.page.fedsPopup).toBeVisible();
-    await this.page.fedsPopup.screenshot({path: `fedsPopup-${item}.png`});
+    if (action === 'screenshot') {
+      const profile = global.config.profile;
+      let outputDir = this.gherkinDocument.uri.split('/features/')[1].replace('.feature', '');
+      outputDir = `${profile.reportDir}/screenshots/${outputDir}/${os.platform()}/${profile.browser}`;
+      await this.page.fedsPopup.screenshot({path: `${outputDir}/gnav-submenu-${item}.png`});
+    }
     await this.page.closeSubMenu(index);
     await expect(this.page.fedsPopup).not.toBeVisible();
+  }
+});
+
+/***
+ * This step is used to compare the current screenshots with the baseline
+ * screenshots. 
+ * 
+ * Baseline Folder: features/${feature-name}/${platform}/${browser}
+ * Current Folder: ${report-dir}/screenshots/${feature-name}/${platform}/${browser} 
+ * Diff Image: ${report-dir}/${platform}_${browser}_${image-name}.png
+ * 
+ * Command line options:
+ * --baseBrowser: Use a different browser to compare with the current browser
+*/
+Then(/^I should see the same screenshots as baseline$/, async function () {
+  const comparator = getComparator('image/png');
+  let baseDir = this.gherkinDocument.uri.replace('.feature', '');
+
+  const profile = global.config.profile;
+  let outputDir = this.gherkinDocument.uri.split('/features/')[1].replace('.feature', '');
+  outputDir = `${profile.reportDir}/screenshots/${outputDir}/${os.platform()}/${profile.browser}`;
+  const images = fs.readdirSync(outputDir).filter(x => x.endsWith('.png'));
+
+  const baseBrowser = profile.baseBrowser || profile.browser;
+
+  const errors = [];
+  for (let image of images) {
+    const baseImage = fs.readFileSync(`${baseDir}/${os.platform()}/${baseBrowser}/${image}`);
+    const currImage = fs.readFileSync(`${outputDir}/${image}`);
+    let diffImage = comparator(baseImage, currImage);
+    if (diffImage) {
+      errors.push(image);
+      fs.writeFileSync(`${profile.reportDir}/${os.platform()}_${profile.browser}_${image}`, diffImage.diff);
+    }
+  }
+  if (errors.length > 0) {
+    throw `Differences found: ${errors.join(', ')}`;
   }
 });
 
@@ -296,14 +341,3 @@ Then(/^I switch to the new page after clicking "Buy now" button in the header$/,
   this.page.native = newPage; 
 });
 
-Then(
-  /^I should not see the address bar contains "([^\"]*)"$/,
-  async function (fragment) {
-    const pattern = fragment.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-    await expect(this.page.native).not.toHaveURL(new RegExp(pattern), {timeout: 10000});
-  }
-);
-
-Then(/^I go back$/, async function () {
-  await this.page.native.goBack();
-});
