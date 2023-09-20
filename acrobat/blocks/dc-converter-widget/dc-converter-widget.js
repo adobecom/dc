@@ -195,24 +195,24 @@ export default async function init(element) {
     window?.browser?.name === 'Microsoft Edge' && window?.browser?.version?.split('.')[0] < 86 ||
     window?.browser?.name === 'Microsoft Edge' && !window?.browser?.version ||
     window?.browser?.name === 'Safari' && window?.browser?.version?.split('.')[0] < 14 ||
-    window?.browser?.name === 'Safari' && !window?.browser?.version) {
+    window?.browser?.name === 'Safari' && !window?.browser?.version ) {
     window.location.href = EOLBrowserPage;
   }
 
-  // Generate cache url
-  const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
-  if (GENERATE_CACHE_URL_DIV) {
-    // GENERATE_CACHE_URL_DIV.id = 'GENERATE_CACHE_URL';
-    DC_GENERATE_CACHE_URL = GENERATE_CACHE_URL_DIV.textContent.trim();
-    GENERATE_CACHE_URL_DIV.remove();
-  }
+    // Generate cache url
+    const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
+    if (GENERATE_CACHE_URL_DIV) {
+      // GENERATE_CACHE_URL_DIV.id = 'GENERATE_CACHE_URL';
+      DC_GENERATE_CACHE_URL = GENERATE_CACHE_URL_DIV.textContent.trim();
+      GENERATE_CACHE_URL_DIV.remove();
+    }
 
   // Redirect
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
     if (window.location.hostname != 'main--dc--adobecom.hlx.live'
-      && window.location.hostname != 'www.adobe.com') {
-      window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}` || REDIRECT_URL;
+      && window.location.hostname != 'www.adobe.com' ) {
+      window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
     } else {
       window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
     }
@@ -268,7 +268,7 @@ export default async function init(element) {
       if (!cacheLoad) {
         widgetContainer.appendChild(skeletonWrapper);
 
-        setTimeout(() => {
+        setTimeout( () => {
           skeletonInnerWrapper.className = 'shimmer skeleton-inner';
         }, 6000);
       }
@@ -383,7 +383,7 @@ export default async function init(element) {
 
   window.addEventListener('IMS:Ready', () => {
     let evt;
-    evt = new CustomEvent('dc.imslib.ready', { detail: { instance: window.adobeIMS } });
+    evt = new CustomEvent('dc.imslib.ready', { detail: { instance: window.adobeIMS }});
     evt.initEvent('dc.imslib.ready', true, true);
     document.dispatchEvent(evt);
     // window.adobe_dc_sdk.imsReady = true;
