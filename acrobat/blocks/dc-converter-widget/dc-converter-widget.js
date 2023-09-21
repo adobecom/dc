@@ -125,7 +125,7 @@ const verbRedirMap = {
   'number-pages': 'number',
 };
 
-const url = new URL(window.location.href);
+const url = window.location;
 const langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
 
