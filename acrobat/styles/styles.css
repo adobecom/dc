@@ -7,6 +7,10 @@
  *
  */
 
+body.waitForGnav {
+  padding-top: 97px;
+}
+
 div[data-section="widget"] {
   display: block !important;
 }

@@ -261,6 +261,9 @@ const { ietf } = getLocale(locales);
 (async function loadPage() {
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
+
+  document.body.classList.add('waitForGnav');
+
   if (widgetBlock) {
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
     const blockName = widgetBlock.classList.value;
@@ -311,8 +314,10 @@ const { ietf } = getLocale(locales);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
 
+  document.body.classList.remove('waitForGnav');
   // get event back form dc web and then load area
   await loadArea(document, false);
+  
 
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
