@@ -12,7 +12,7 @@
     "lcov": "lcov -a coverage/jest/lcov.info -a coverage/wtr/lcov.info -o coverage/lcov.info",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint .",
-    "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css'",
+    "lint:css": "stylelint 'acrobat/blocks/**/*.css' 'acrobat/styles/*.css'",
     "update-csp": "node ./tools/cspUpdate/cspUpdate.js"
   },
   "repository": {
