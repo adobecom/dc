@@ -32,6 +32,7 @@ indices:
     <<: *def
     include:
       - '/de/acrobat/**'
+      - '/de/sign/**'
     exclude:
       - '/de/dc-shared/*'
     target: /de/dc-shared/assets/query-index.xlsx
@@ -49,6 +50,7 @@ indices:
     <<: *def
     include:
       - '/ar/acrobat/**'
+      - '/ar/sign/**'
     exclude:
       - '/ar/dc-shared/*'
     target: /ar/dc-shared/assets/query-index.xlsx
@@ -57,6 +59,7 @@ indices:
     <<: *def
     include:
       - '/br/acrobat/**'
+      - '/br/sign/**'
     exclude:
       - '/br/dc-shared/*'
     target: /br/dc-shared/assets/query-index.xlsx
@@ -65,6 +68,7 @@ indices:
     <<: *def
     include:
       - '/ca/acrobat/**'
+      - '/ca/sign/**'
     exclude:
       - '/ca/dc-shared/*'
     target: /ca/dc-shared/assets/query-index.xlsx
@@ -73,6 +77,7 @@ indices:
     <<: *def
     include:
       - '/ca_fr/acrobat/**'
+      - '/ca_fr/sign/**'
     exclude:
       - '/ca_fr/dc-shared/*'
     target: /ca_fr/dc-shared/assets/query-index.xlsx
@@ -81,6 +86,7 @@ indices:
     <<: *def
     include:
       - '/cl/acrobat/**'
+      - '/cl/sign/**'
     exclude:
       - '/cl/dc-shared/*'
     target: /cl/dc-shared/assets/query-index.xlsx
@@ -89,6 +95,7 @@ indices:
     <<: *def
     include:
       - '/co/acrobat/**'
+      - '/co/sign/**'
     exclude:
       - '/co/dc-shared/*'
     target: /co/dc-shared/assets/query-index.xlsx
@@ -97,6 +104,7 @@ indices:
     <<: *def
     include:
       - '/la/acrobat/**'
+      - '/la/sign/**'
     exclude:
       - '/la/dc-shared/*'
     target: /la/dc-shared/assets/query-index.xlsx
@@ -105,6 +113,7 @@ indices:
     <<: *def
     include:
       - '/mx/acrobat/**'
+      - '/mx/sign/**'
     exclude:
       - '/mx/dc-shared/*'
     target: /mx/dc-shared/assets/query-index.xlsx
@@ -113,6 +122,7 @@ indices:
     <<: *def
     include:
       - '/pe/acrobat/**'
+      - '/pe/sign/**'
     exclude:
       - '/pe/dc-shared/*'
     target: /pe/dc-shared/assets/query-index.xlsx
@@ -121,6 +131,7 @@ indices:
     <<: *def
     include:
       - '/africa/acrobat/**'
+      - '/africa/sign/**'
     exclude:
       - '/africa/dc-shared/*'
     target: /africa/dc-shared/assets/query-index.xlsx
@@ -129,6 +140,7 @@ indices:
     <<: *def
     include:
       - '/be_fr/acrobat/**'
+      - '/be_fr/sign/**'
     exclude:
       - '/be_fr/dc-shared/*'
     target: /be_fr/dc-shared/assets/query-index.xlsx
@@ -137,6 +149,7 @@ indices:
     <<: *def
     include:
       - '/be_en/acrobat/**'
+      - '/be_en/sign/**'
     exclude:
       - '/be_en/dc-shared/*'
     target: /be_en/dc-shared/assets/query-index.xlsx
@@ -145,6 +158,7 @@ indices:
     <<: *def
     include:
       - '/be_nl/acrobat/**'
+      - '/be_nl/sign/**'
     exclude:
       - '/be_nl/dc-shared/*'
     target: /be_nl/dc-shared/assets/query-index.xlsx
@@ -153,6 +167,7 @@ indices:
     <<: *def
     include:
       - '/cy_en/acrobat/**'
+      - '/cy_en/sign/**'
     exclude:
       - '/cy_en/dc-shared/*'
     target: /cy_en/dc-shared/assets/query-index.xlsx
@@ -161,6 +176,7 @@ indices:
     <<: *def
     include:
       - '/dk/acrobat/**'
+      - '/dk/sign/**'
     exclude:
       - '/dk/dc-shared/*'
     target: /dk/dc-shared/assets/query-index.xlsx
@@ -169,6 +185,7 @@ indices:
     <<: *def
     include:
       - '/ee/acrobat/**'
+      - '/ee/sign/**'
     exclude:
       - '/ee/dc-shared/*'
     target: /ee/dc-shared/assets/query-index.xlsx
@@ -177,6 +194,7 @@ indices:
     <<: *def
     include:
       - '/es/acrobat/**'
+      - '/es/sign/**'
     exclude:
       - '/es/dc-shared/*'
     target: /es/dc-shared/assets/query-index.xlsx
@@ -185,6 +203,7 @@ indices:
     <<: *def
     include:
       - '/gr_en/acrobat/**'
+      - '/gr_en/sign/**'
     exclude:
       - '/gr_en/dc-shared/*'
     target: /gr_en/dc-shared/assets/query-index.xlsx
@@ -193,6 +212,7 @@ indices:
     <<: *def
     include:
       - '/ie/acrobat/**'
+      - '/ie/sign/**'
     exclude:
       - '/ie/dc-shared/*'
     target: /ie/dc-shared/assets/query-index.xlsx
@@ -201,6 +221,7 @@ indices:
     <<: *def
     include:
       - '/il_en/acrobat/**'
+      - '/il_en/sign/**'
     exclude:
       - '/il_en/dc-shared/*'
     target: /il_en/dc-shared/assets/query-index.xlsx
@@ -209,6 +230,7 @@ indices:
     <<: *def
     include:
       - '/it/acrobat/**'
+      - '/it/sign/**'
     exclude:
       - '/it/dc-shared/*'
     target: /it/dc-shared/assets/query-index.xlsx
@@ -217,6 +239,7 @@ indices:
     <<: *def
     include:
       - '/lv/acrobat/**'
+      - '/lv/sign/**'
     exclude:
       - '/lv/dc-shared/*'
     target: /lv/dc-shared/assets/query-index.xlsx
@@ -225,6 +248,7 @@ indices:
     <<: *def
     include:
       - '/lt/acrobat/**'
+      - '/lt/sign/**'
     exclude:
       - '/lt/dc-shared/*'
     target: /lt/dc-shared/assets/query-index.xlsx
@@ -233,6 +257,7 @@ indices:
     <<: *def
     include:
       - '/lu_de/acrobat/**'
+      - '/lu_de/sign/**'
     exclude:
       - '/lu_de/dc-shared/*'
     target: /lu_de/dc-shared/assets/query-index.xlsx
@@ -241,6 +266,7 @@ indices:
     <<: *def
     include:
       - '/lu_en/acrobat/**'
+      - '/lu_en/sign/**'
     exclude:
       - '/lu_en/dc-shared/*'
     target: /lu_en/dc-shared/assets/query-index.xlsx
@@ -249,6 +275,7 @@ indices:
     <<: *def
     include:
       - '/lu_fr/acrobat/**'
+      - '/lu_fr/sign/**'
     exclude:
       - '/lu_fr/dc-shared/*'
     target: /lu_fr/dc-shared/assets/query-index.xlsx
@@ -257,6 +284,7 @@ indices:
     <<: *def
     include:
       - '/hu/acrobat/**'
+      - '/hu/sign/**'
     exclude:
       - '/hu/dc-shared/*'
     target: /hu/dc-shared/assets/query-index.xlsx
@@ -265,6 +293,7 @@ indices:
     <<: *def
     include:
       - '/mt/acrobat/**'
+      - '/mt/sign/**'
     exclude:
       - '/mt/dc-shared/*'
     target: /mt/dc-shared/assets/query-index.xlsx
@@ -273,6 +302,7 @@ indices:
     <<: *def
     include:
       - '/mena_en/acrobat/**'
+      - '/mena_en/sign/**'
     exclude:
       - '/mena_en/dc-shared/*'
     target: /mena_en/dc-shared/assets/query-index.xlsx
@@ -281,6 +311,7 @@ indices:
     <<: *def
     include:
       - '/nl/acrobat/**'
+      - '/nl/sign/**'
     exclude:
       - '/nl/dc-shared/*'
     target: /nl/dc-shared/assets/query-index.xlsx
@@ -289,6 +320,7 @@ indices:
     <<: *def
     include:
       - '/no/acrobat/**'
+      - '/no/sign/**'
     exclude:
       - '/no/dc-shared/*'
     target: /no/dc-shared/assets/query-index.xlsx
@@ -297,6 +329,7 @@ indices:
     <<: *def
     include:
       - '/pl/acrobat/**'
+      - '/pl/sign/**'
     exclude:
       - '/pl/dc-shared/*'
     target: /pl/dc-shared/assets/query-index.xlsx
@@ -305,6 +338,7 @@ indices:
     <<: *def
     include:
       - '/pt/acrobat/**'
+      - '/pt/sign/**'
     exclude:
       - '/pt/dc-shared/*'
     target: /pt/dc-shared/assets/query-index.xlsx
@@ -313,6 +347,7 @@ indices:
     <<: *def
     include:
       - '/ro/acrobat/**'
+      - '/ro/sign/**'
     exclude:
       - '/ro/dc-shared/*'
     target: /ro/dc-shared/assets/query-index.xlsx
@@ -321,6 +356,7 @@ indices:
     <<: *def
     include:
       - '/sa_en/acrobat/**'
+      - '/sa_en/sign/**'
     exclude:
       - '/sa_en/dc-shared/*'
     target: /sa_en/dc-shared/assets/query-index.xlsx
@@ -329,6 +365,7 @@ indices:
     <<: *def
     include:
       - '/ch_de/acrobat/**'
+      - '/ch_de/sign/**'
     exclude:
       - '/ch_de/dc-shared/*'
     target: /ch_de/dc-shared/assets/query-index.xlsx
@@ -337,6 +374,7 @@ indices:
     <<: *def
     include:
       - '/si/acrobat/**'
+      - '/si/sign/**'
     exclude:
       - '/si/dc-shared/*'
     target: /si/dc-shared/assets/query-index.xlsx
@@ -345,6 +383,7 @@ indices:
     <<: *def
     include:
       - '/sk/acrobat/**'
+      - '/sk/sign/**'
     exclude:
       - '/sk/dc-shared/*'
     target: /sk/dc-shared/assets/query-index.xlsx
@@ -353,6 +392,7 @@ indices:
     <<: *def
     include:
       - '/ch_fr/acrobat/**'
+      - '/ch_fr/sign/**'
     exclude:
       - '/ch_fr/dc-shared/*'
     target: /ch_fr/dc-shared/assets/query-index.xlsx
@@ -361,6 +401,7 @@ indices:
     <<: *def
     include:
       - '/fi/acrobat/**'
+      - '/fi/sign/**'
     exclude:
       - '/fi/dc-shared/*'
     target: /fi/dc-shared/assets/query-index.xlsx
@@ -369,6 +410,7 @@ indices:
     <<: *def
     include:
       - '/se/acrobat/**'
+      - '/se/sign/**'
     exclude:
       - '/se/dc-shared/*'
     target: /se/dc-shared/assets/query-index.xlsx
@@ -377,6 +419,7 @@ indices:
     <<: *def
     include:
       - '/ch_it/acrobat/**'
+      - '/ch_it/sign/**'
     exclude:
       - '/ch_it/dc-shared/*'
     target: /ch_it/dc-shared/assets/query-index.xlsx
@@ -385,6 +428,7 @@ indices:
     <<: *def
     include:
       - '/tr/acrobat/**'
+      - '/tr/sign/**'
     exclude:
       - '/tr/dc-shared/*'
     target: /tr/dc-shared/assets/query-index.xlsx
@@ -393,6 +437,7 @@ indices:
     <<: *def
     include:
       - '/ae_en/acrobat/**'
+      - '/ae_en/sign/**'
     exclude:
       - '/ae_en/dc-shared/*'
     target: /ae_en/dc-shared/assets/query-index.xlsx
@@ -401,6 +446,7 @@ indices:
     <<: *def
     include:
       - '/uk/acrobat/**'
+      - '/uk/sign/**'
     exclude:
       - '/uk/dc-shared/*'
     target: /uk/dc-shared/assets/query-index.xlsx
@@ -409,6 +455,7 @@ indices:
     <<: *def
     include:
       - '/at/acrobat/**'
+      - '/at/sign/**'
     exclude:
       - '/at/dc-shared/*'
     target: /at/dc-shared/assets/query-index.xlsx
@@ -417,6 +464,7 @@ indices:
     <<: *def
     include:
       - '/cz/acrobat/**'
+      - '/cz/sign/**'
     exclude:
       - '/cz/dc-shared/*'
     target: /cz/dc-shared/assets/query-index.xlsx
@@ -425,6 +473,7 @@ indices:
     <<: *def
     include:
       - '/bg/acrobat/**'
+      - '/bg/sign/**'
     exclude:
       - '/bg/dc-shared/*'
     target: /bg/dc-shared/assets/query-index.xlsx
@@ -433,7 +482,7 @@ indices:
     <<: *def
     include:
       - '/ru/acrobat/**'
-      - '/sign/**'
+      - '/ru/sign/**'
     exclude:
       - '/ru/dc-shared/*'
     target: /ru/dc-shared/assets/query-index.xlsx
@@ -442,6 +491,7 @@ indices:
     <<: *def
     include:
       - '/ua/acrobat/**'
+      - '/ua/sign/**'
     exclude:
       - '/ua/dc-shared/*'
     target: /ua/dc-shared/assets/query-index.xlsx
@@ -451,6 +501,7 @@ indices:
     <<: *def
     include:
       - '/ae_ar/acrobat/**'
+      - '/ae_ar/sign/**'
     exclude:
       - '/ae_ar/dc-shared/*'
     target: /ae_ar/dc-shared/assets/query-index.xlsx
@@ -459,6 +510,7 @@ indices:
     <<: *def
     include:
       - '/mena_ar/acrobat/**'
+      - '/mena_ar/sign/**'
     exclude:
       - '/mena_ar/dc-shared/*'
     target: /mena_ar/dc-shared/assets/query-index.xlsx
@@ -467,6 +519,7 @@ indices:
     <<: *def
     include:
       - '/sa_ar/acrobat/**'
+      - '/sa_ar/sign/**'
     exclude:
       - '/sa_ar/dc-shared/*'
     target: /sa_ar/dc-shared/assets/query-index.xlsx
@@ -475,6 +528,7 @@ indices:
     <<: *def
     include:
       - '/au/acrobat/**'
+      - '/au/sign/**'
     exclude:
       - '/au/dc-shared/*'
     target: /au/dc-shared/assets/query-index.xlsx
@@ -483,6 +537,7 @@ indices:
     <<: *def
     include:
       - '/hk_en/acrobat/**'
+      - '/hk_en/sign/**'
     exclude:
       - '/hk_en/dc-shared/*'
     target: /hk_en/dc-shared/assets/query-index.xlsx
@@ -491,6 +546,7 @@ indices:
     <<: *def
     include:
       - '/in/acrobat/**'
+      - '/in/sign/**'
     exclude:
       - '/in/dc-shared/*'
     target: /in/dc-shared/assets/query-index.xlsx
@@ -499,6 +555,7 @@ indices:
     <<: *def
     include:
       - '/id_id/acrobat/**'
+      - '/id_id/sign/**'
     exclude:
       - '/id_id/dc-shared/*'
     target: /id_id/dc-shared/assets/query-index.xlsx
@@ -507,6 +564,7 @@ indices:
     <<: *def
     include:
       - '/id_en/acrobat/**'
+      - '/id_en/sign/**'
     exclude:
       - '/id_en/dc-shared/*'
     target: /id_en/dc-shared/assets/query-index.xlsx
@@ -515,6 +573,7 @@ indices:
     <<: *def
     include:
       - '/my_ms/acrobat/**'
+      - '/my_ms/sign/**'
     exclude:
       - '/my_ms/dc-shared/*'
     target: /my_ms/dc-shared/assets/query-index.xlsx
@@ -523,6 +582,7 @@ indices:
     <<: *def
     include:
       - '/my_en/acrobat/**'
+      - '/my_en/sign/**'
     exclude:
       - '/my_en/dc-shared/*'
     target: /my_en/dc-shared/assets/query-index.xlsx
@@ -531,6 +591,7 @@ indices:
     <<: *def
     include:
       - '/nz/acrobat/**'
+      - '/nz/sign/**'
     exclude:
       - '/nz/dc-shared/*'
     target: /nz/dc-shared/assets/query-index.xlsx
@@ -539,6 +600,7 @@ indices:
     <<: *def
     include:
       - '/ph_en/acrobat/**'
+      - '/ph_en/sign/**'
     exclude:
       - '/ph_en/dc-shared/*'
     target: /ph_en/dc-shared/assets/query-index.xlsx
@@ -547,6 +609,7 @@ indices:
     <<: *def
     include:
       - '/ph_fil/acrobat/**'
+      - '/ph_fil/sign/**'
     exclude:
       - '/ph_fil/dc-shared/*'
     target: /ph_fil/dc-shared/assets/query-index.xlsx
@@ -555,6 +618,7 @@ indices:
     <<: *def
     include:
       - '/sg/acrobat/**'
+      - '/sg/sign/**'
     exclude:
       - '/sg/dc-shared/*'
     target: /sg/dc-shared/assets/query-index.xlsx
@@ -563,6 +627,7 @@ indices:
     <<: *def
     include:
       - '/th_en/acrobat/**'
+      - '/th_en/sign/**'
     exclude:
       - '/th_en/dc-shared/*'
     target: /th_en/dc-shared/assets/query-index.xlsx
@@ -571,6 +636,7 @@ indices:
     <<: *def
     include:
       - '/in_hi/acrobat/**'
+      - '/in_hi/sign/**'
     exclude:
       - '/in_hi/dc-shared/*'
     target: /in_hi/dc-shared/assets/query-index.xlsx
@@ -579,6 +645,7 @@ indices:
     <<: *def
     include:
       - '/th_th/acrobat/**'
+      - '/th_th/sign/**'
     exclude:
       - '/th_th/dc-shared/*'
     target: /th_th/dc-shared/assets/query-index.xlsx
@@ -587,6 +654,7 @@ indices:
     <<: *def
     include:
       - '/cn/acrobat/**'
+      - '/cn/sign/**'
     exclude:
       - '/cn/dc-shared/*'
     target: /cn/dc-shared/assets/query-index.xlsx
@@ -595,6 +663,7 @@ indices:
     <<: *def
     include:
       - '/hk_zh/acrobat/**'
+      - '/hk_zh/sign/**'
     exclude:
       - '/hk_zh/dc-shared/*'
     target: /hk_zh/dc-shared/assets/query-index.xlsx
@@ -603,6 +672,7 @@ indices:
     <<: *def
     include:
       - '/tw/acrobat/**'
+      - '/tw/sign/**'
     exclude:
       - '/tw/dc-shared/*'
     target: /tw/dc-shared/assets/query-index.xlsx
@@ -611,6 +681,7 @@ indices:
     <<: *def
     include:
       - '/jp/acrobat/**'
+      - '/jp/sign/**'
     exclude:
       - '/jp/dc-shared/*'
     target: /jp/dc-shared/assets/query-index.xlsx
@@ -619,6 +690,7 @@ indices:
     <<: *def
     include:
       - '/kr/acrobat/**'
+      - '/kr/sign/**'
     exclude:
       - '/kr/dc-shared/*'
     target: /kr/dc-shared/assets/query-index.xlsx
@@ -627,6 +699,7 @@ indices:
     <<: *def
     include:
       - '/za/acrobat/**'
+      - '/za/sign/**'
     exclude:
       - '/za/dc-shared/*'
     target: /za/dc-shared/assets/query-index.xlsx
@@ -635,6 +708,7 @@ indices:
     <<: *def
     include:
       - '/ng/acrobat/**'
+      - '/ng/sign/**'
     exclude:
       - '/ng/dc-shared/*'
     target: /ng/dc-shared/assets/query-index.xlsx
@@ -643,6 +717,7 @@ indices:
     <<: *def
     include:
       - '/cr/acrobat/**'
+      - '/cr/sign/**'
     exclude:
       - '/cr/dc-shared/*'
     target: /cr/dc-shared/assets/query-index.xlsx
@@ -651,6 +726,7 @@ indices:
     <<: *def
     include:
       - '/ec/acrobat/**'
+      - '/ec/sign/**'
     exclude:
       - '/ec/dc-shared/*'
     target: /ec/dc-shared/assets/query-index.xlsx
@@ -659,6 +735,7 @@ indices:
     <<: *def
     include:
       - '/pr/acrobat/**'
+      - '/pr/sign/**'
     exclude:
       - '/pr/dc-shared/*'
     target: /pr/dc-shared/assets/query-index.xlsx
@@ -667,6 +744,7 @@ indices:
     <<: *def
     include:
       - '/gt/acrobat/**'
+      - '/gt/sign/**'
     exclude:
       - '/gt/dc-shared/*'
     target: /gt/dc-shared/assets/query-index.xlsx
@@ -675,6 +753,7 @@ indices:
     <<: *def
     include:
       - '/eg_ar/acrobat/**'
+      - '/eg_ar/sign/**'
     exclude:
       - '/eg_ar/dc-shared/*'
     target: /eg_ar/dc-shared/assets/query-index.xlsx
@@ -683,6 +762,7 @@ indices:
     <<: *def
     include:
       - '/kw_ar/acrobat/**'
+      - '/kw_ar/sign/**'
     exclude:
       - '/kw_ar/dc-shared/*'
     target: /kw_ar/dc-shared/assets/query-index.xlsx
@@ -691,6 +771,7 @@ indices:
     <<: *def
     include:
       - '/qa_ar/acrobat/**'
+      - '/qa_ar/sign/**'
     exclude:
       - '/qa_ar/dc-shared/*'
     target: /qa_ar/dc-shared/assets/query-index.xlsx
@@ -699,6 +780,7 @@ indices:
     <<: *def
     include:
       - '/eg_en/acrobat/**'
+      - '/eg_en/sign/**'
     exclude:
       - '/eg_en/dc-shared/*'
     target: /eg_en/dc-shared/assets/query-index.xlsx
@@ -707,6 +789,7 @@ indices:
     <<: *def
     include:
       - '/kw_en/acrobat/**'
+      - '/kw_en/sign/**'
     exclude:
       - '/kw_en/dc-shared/*'
     target: /kw_en/dc-shared/assets/query-index.xlsx
@@ -715,6 +798,7 @@ indices:
     <<: *def
     include:
       - '/qa_en/acrobat/**'
+      - '/qa_en/sign/**'
     exclude:
       - '/qa_en/dc-shared/*'
     target: /qa_en/dc-shared/assets/query-index.xlsx
@@ -723,6 +807,7 @@ indices:
     <<: *def
     include:
       - '/gr_el/acrobat/**'
+      - '/gr_el/sign/**'
     exclude:
       - '/gr_el/dc-shared/*'
     target: /gr_el/dc-shared/assets/query-index.xlsx
@@ -731,6 +816,7 @@ indices:
     <<: *def
     include:
       - '/vn_en/acrobat/**'
+      - '/vn_en/sign/**'
     exclude:
       - '/vn_en/dc-shared/*'
     target: /vn_en/dc-shared/assets/query-index.xlsx
@@ -739,6 +825,7 @@ indices:
     <<: *def
     include:
       - '/vn_vi/acrobat/**'
+      - '/vn_vi/sign/**'
     exclude:
       - '/vn_vi/dc-shared/*'
     target: /vn_vi/dc-shared/assets/query-index.xlsx  
