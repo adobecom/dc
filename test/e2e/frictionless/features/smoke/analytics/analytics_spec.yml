@@ -1,0 +1,11 @@
+Page load:	
+  - c.digitalData.primaryEvent.eventInfo.eventName: acrobat:<verb-id>:dropzone:shown
+  - c.digitalData.primaryEvent.eventInfo.eventName: acrobat:<verb-id>:landing:shown
+  - c.digitalData.primaryEvent.eventInfo.eventName: productRating
+
+Download:	
+  - c.digitalData.primaryEvent.eventInfo.eventName: acrobat:<verb-id>:complete:download-success
+
+Leave a review:
+  - c.digitalData.primaryEvent.eventInfo.interaction.comment: <comment>
+  - c.digitalData.primaryEvent.eventInfo.interaction.rating: <rating>
