@@ -413,9 +413,11 @@ div.how-to ol li::before{
 
 .widget-heading {
   font-size: 36px;
-  margin: 40px 10px;
+  margin: 0 0 30px;
   text-align: center;
 }
+
+
 
 .widget-copy {
   font-size: 16px;
@@ -450,12 +452,13 @@ div.how-to ol li::before{
 }
 
 .widget-button {
-    border-radius: 24px;
-    width: 252px;
-    padding: 10px;
-    background: grey;
-    margin: 0 auto;
-    text-align: center;
+  border-radius: 24px;
+  width: 441px;
+  padding: 10px;
+  background: #0265dc;
+  margin: 16px auto;
+  text-align: center;
+  color: #fff;
 }
 
 @media (max-width: 600px) {

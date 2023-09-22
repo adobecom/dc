@@ -16,12 +16,15 @@
 }
 
 .widget-sub {
-  margin-top: 42px;
+  margin: 42px auto 0;
   text-align: center;
+  display: flex;
+  align-items: center;
+  max-width: 300px;
 }
 
 .widget-center {
-  border: 3px #909090 dashed;
+  border: 3px #e1e1e1 dashed;
   width: calc(100% - 48px);
   margin: auto;
   height: 70%;
@@ -35,5 +38,41 @@
 .widget-legal {
   margin-top: 30px;
   font-size: 11px;
-  line-height: 11px;
+  line-height: 20px;
+  max-width: 420px;
+  text-align: left;
+}
+
+.widget-icon {
+  width: 20px;
+  height: 20px;
+
+  background-image: url('../../img/icons/widget-icon.png');
+  background-size: cover;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.widget-big-icon {
+  width: 140px;
+  height: 140px;
+  background-image: url(../../img/icons/widget-dz.png);
+  background-size: contain;
+  margin: auto;
+  background-repeat: no-repeat;
+}
+
+.security-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url(../../img/icons/widget-sec.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.widget-footer {
+  align-items: center;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
 }
