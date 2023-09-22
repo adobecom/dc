@@ -259,10 +259,13 @@ const CONFIG = {
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
+  const breadcrumbs = document.querySelector('.breadcrumbs');
+  const header = document.querySelector('header');
+  if (header && breadcrumbs) {
+    header.classList.add('with-breadcrumbs');
+  }
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
-
-  document.body.classList.add('waitForGnav');
 
   if (widgetBlock) {
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
@@ -314,11 +317,9 @@ const { ietf } = getLocale(locales);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
 
-  document.body.classList.remove('waitForGnav');
   // get event back form dc web and then load area
   await loadArea(document, false);
-  
-
+ 
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();

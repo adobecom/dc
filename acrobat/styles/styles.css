@@ -6,9 +6,14 @@
  *
  *
  */
+header {
+  min-height: 64px;
+}
 
-body.waitForGnav {
-  padding-top: 97px;
+@media (min-width: 900px) {
+  header.with-breadcrumbs {
+    padding-bottom: 33px;
+  }
 }
 
 div[data-section="widget"] {
