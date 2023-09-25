@@ -21,7 +21,7 @@ const setLibs = (prodLibs, location) => {
   if (branch === 'local') return 'http://localhost:6456/libs';
   const tld = hostname.includes('live') ? 'live' : 'page';
   return branch.includes('--') ? `https://${branch}.hlx.${tld}/libs` : `https://${branch}--milo--adobecom.hlx.${tld}/libs`;
-}
+};
 
 const getLocale = (locales, pathname = window.location.pathname) => {
   if (!locales) {
@@ -43,9 +43,9 @@ const getLocale = (locales, pathname = window.location.pathname) => {
   locale.prefix = isUS ? '' : `/${localeString}`;
   locale.region = isUS ? 'us' : localeString.split('_')[0];
   return locale;
-}
+};
 
-const getBrowserData = function (userAgent) {
+const getBrowserData = (userAgent) => {
   if (!userAgent) {
     return {};
   }
@@ -97,7 +97,7 @@ const getBrowserData = function (userAgent) {
   return browser;
 };
 
-//Get browser data
+// Get browser data
 window.browser = getBrowserData(window.navigator.userAgent);
 
 function loadStyles(paths) {
@@ -231,7 +231,7 @@ const CONFIG = {
   local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga' },
   stage: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
-    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js'
+    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
   },
   live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   prod: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
@@ -272,21 +272,20 @@ const { ietf } = getLocale(locales);
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');
     widgetBlock.id = 'dc-converter-widget';
-    const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
     const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
     const dcUrls = [
       `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verb}-${ietf.toLowerCase()}.html`,
     ];
 
-    dcUrls.forEach( url => {
+    dcUrls.forEach((url) => {
       const link = document.createElement('link');
       link.setAttribute('rel', 'prefetch');
-      if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
-      if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');}
+      if (url.split('.').pop() === 'html') { link.setAttribute('as', 'fetch'); }
+      if (url.split('.').pop() === 'js') { link.setAttribute('as', 'script'); }
       link.setAttribute('href', url);
       link.setAttribute('crossorigin', '');
       document.head.appendChild(link);
-    })
+    });
 
     const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);
     await dcConverter(widgetBlock);
@@ -309,9 +308,7 @@ const { ietf } = getLocale(locales);
   loadStyles(paths);
 
   // Import base milo features and run them
-  const {
-    loadArea, loadScript, setConfig, loadLana, getMetadata
-  } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
 
   setConfig({ ...CONFIG, miloLibs });
@@ -319,7 +316,7 @@ const { ietf } = getLocale(locales);
 
   // get event back form dc web and then load area
   await loadArea(document, false);
- 
+
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
