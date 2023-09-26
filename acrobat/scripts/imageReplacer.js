@@ -2,15 +2,15 @@ import { createTag } from './miloUtils.js';
 
 // Array of image names
 const imageNames = [
-  'credit-cards-amex_v_mc_d_du_jcb_pp.jpg',
-  'credit-cards-amex_v_mc_jcb_jpbank.png',
-  'credit-cards-amex_v_mc_pp.jpg',
-  'credit-cards-amex_visa_mc_d_du_elc_pp_boleto.jpg',
-  'credit-cards-amex_visa_mc_d_du_jcb_paypal.jpg',
-  'credit-cards-amex_visa_mc_d_paypal.jpg',
-  'credit-cards-amex_visa_mc_jcb_jpbank_jpstore.png',
-  'credit-cards-v_mc_dd_pp.jpg',
-  'credit-cards-v_mc.jpg',
+  'amex_v_mc_d_du_jcb_pp.jpg',
+  'amex_v_mc_jcb_jpbank.png',
+  'amex_v_mc_pp.jpg',
+  'amex_visa_mc_d_du_elc_pp_boleto.jpg',
+  'amex_visa_mc_d_du_jcb_paypal.jpg',
+  'amex_visa_mc_d_paypal.jpg',
+  'amex_visa_mc_jcb_jpbank_jpstore.png',
+  'v_mc_dd_pp.jpg',
+  'v_mc.jpg',
 ];
 
 export default async function replacePlaceholdersWithImages(elements) {
@@ -20,13 +20,12 @@ export default async function replacePlaceholdersWithImages(elements) {
       const elementDOM = document.getElementById(elementId);
       const cardName = elementDOM.innerHTML.toLowerCase();
       const matchedImage = imageNames.find((image) => image.includes(cardName));
-
       if (!matchedImage) {
         window.lana?.log(`No image available for credit-card placeholder: ${cardName}`);
         return;
       }
 
-      const imagePath = `/acrobat/img/icons/${matchedImage}`;
+      const imagePath = `/acrobat/img/icons/credit-cards-${matchedImage}`;
       const imgAttributes = {
         src: imagePath,
         loading: 'lazy',
