@@ -6,6 +6,15 @@
  *
  *
  */
+header {
+  min-height: 64px;
+}
+
+@media (min-width: 900px) {
+  header.with-breadcrumbs {
+    padding-bottom: 33px;
+  }
+}
 
 div[data-section="widget"] {
   display: block !important;
@@ -434,7 +443,7 @@ div.how-to ol li::before{
 }
 
 .reading-width {
-  max-width: 600px;
+  max-width: 800px;
   margin: auto;
   padding: 20px;
 }
@@ -576,7 +585,8 @@ div.how-to ol li::before{
 
 .shimmer {
   animation: shimmer 2.5s infinite;
-  -webkit-mask:linear-gradient(-270deg,#000 30%,#0005,#000 70%) right/300% 100%;
+  -webkit-mask: linear-gradient(-270deg,#000 30%,#0005,#000 70%) right/300% 100%;
+  mask: linear-gradient(-270deg,#000 30%,#0005,#000 70%) right/300% 100%;
 }
 
 @keyframes shimmer {
