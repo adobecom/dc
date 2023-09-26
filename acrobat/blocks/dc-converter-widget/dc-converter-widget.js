@@ -13,100 +13,100 @@ setTimeout(() => {
 
 const localeMap = {
   '': 'en-us',
-  'br': 'pt-br',
-  'ca': 'en-ca',
-  'ca_fr': 'fr-ca',
-  'mx': 'es-mx',
-  'la': 'es-la',
-  'africa': 'en-africa',
-  'za': 'en-za',
-  'be_nl': 'nl-be',
-  'be_fr': 'fr-be',
-  'be_en': 'en-be',
-  'cz': 'cs-cz',
-  'cy_en': 'en-cy',
-  'dk': 'da-dk',
-  'de': 'de-de',
-  'ee': 'et-ee',
-  'es': 'es-es',
-  'fr': 'fr-fr',
-  'gr_en': 'en-gr',
-  'gr_el': 'el-gr',
-  'ie': 'en-ie',
-  'il_en': 'en-il',
-  'il_he': 'he-il',
-  'it': 'it-it',
-  'lv': 'lv-lv',
-  'lt': 'lt-lt',
-  'lu_de': 'de-lu',
-  'lu_en': 'en-lu',
-  'lu_fr': 'fr-lu',
-  'hu': 'hu-hu',
-  'mt': 'en-mt',
-  'mena_en': 'en-mena',
-  'mena_ar': 'ar-mena',
-  'nl': 'nl-nl',
-  'no': 'nb-no',
-  'at': 'de-at',
-  'pl': 'pl-pl',
-  'pt': 'pt-pt',
-  'ro': 'ro-ro',
-  'ch_de': 'de-ch',
-  'si': 'sl-si',
-  'sk': 'sk-sk',
-  'ch_fr': 'fr-ch',
-  'fi': 'fi-fi',
-  'se': 'sv-se',
-  'ch_it': 'it-ch',
-  'tr': 'tr-tr',
-  'uk': 'en-uk',
-  'bg': 'bg-bg',
-  'ru': 'ru-ru',
-  'ua': 'uk-ua',
-  'au': 'en-au',
-  'hk_en': 'en-hk',
-  'in': 'en-in',
-  'in_hi': 'hi-in',
-  'nz': 'en-nz',
-  'hk_zh': 'zh-hant-hk',
-  'tw': 'zh-hant-tw',
-  'jp': 'ja-jp',
-  'kr': 'ko-kr',
-  'ae_en': 'en-ae',
-  'ae_ar': 'ar-ae',
-  'sa_en': 'en-sa',
-  'sa_ar': 'ar-sa',
-  'th_en': 'en-th',
-  'th_th': 'th-th',
-  'sg': 'en-sg',
-  'cl': 'es-cl',
-  'co': 'es-co',
-  'ar': 'es-ar',
-  'cr': 'es-cr',
-  'pr': 'es-pr',
-  'ec': 'es-ec',
-  'pe': 'es-pe',
-  'eg_en': 'en-eg',
-  'eg_ar': 'ar-eg',
-  'gt': 'es-gt',
-  'id_en': 'en-id',
-  'id_id': 'in-id',
-  'ph_en': 'en-ph',
-  'ph_fil': 'fil-ph',
-  'my_en': 'en-my',
-  'my_ms': 'ms-my',
-  'kw_en': 'en-kw',
-  'kw_ar': 'ar-kw',
-  'ng': 'en-ng',
-  'qa_en': 'en-qa',
-  'qa_ar': 'ar-qa',
-  'vn_en': 'en-vn',
-  'vn_vi': 'vi-vn'
+  br: 'pt-br',
+  ca: 'en-ca',
+  ca_fr: 'fr-ca',
+  mx: 'es-mx',
+  la: 'es-la',
+  africa: 'en-africa',
+  za: 'en-za',
+  be_nl: 'nl-be',
+  be_fr: 'fr-be',
+  be_en: 'en-be',
+  cz: 'cs-cz',
+  cy_en: 'en-cy',
+  dk: 'da-dk',
+  de: 'de-de',
+  ee: 'et-ee',
+  es: 'es-es',
+  fr: 'fr-fr',
+  gr_en: 'en-gr',
+  gr_el: 'el-gr',
+  ie: 'en-ie',
+  il_en: 'en-il',
+  il_he: 'he-il',
+  it: 'it-it',
+  lv: 'lv-lv',
+  lt: 'lt-lt',
+  lu_de: 'de-lu',
+  lu_en: 'en-lu',
+  lu_fr: 'fr-lu',
+  hu: 'hu-hu',
+  mt: 'en-mt',
+  mena_en: 'en-mena',
+  mena_ar: 'ar-mena',
+  nl: 'nl-nl',
+  no: 'nb-no',
+  at: 'de-at',
+  pl: 'pl-pl',
+  pt: 'pt-pt',
+  ro: 'ro-ro',
+  ch_de: 'de-ch',
+  si: 'sl-si',
+  sk: 'sk-sk',
+  ch_fr: 'fr-ch',
+  fi: 'fi-fi',
+  se: 'sv-se',
+  ch_it: 'it-ch',
+  tr: 'tr-tr',
+  uk: 'en-uk',
+  bg: 'bg-bg',
+  ru: 'ru-ru',
+  ua: 'uk-ua',
+  au: 'en-au',
+  hk_en: 'en-hk',
+  in: 'en-in',
+  in_hi: 'hi-in',
+  nz: 'en-nz',
+  hk_zh: 'zh-hant-hk',
+  tw: 'zh-hant-tw',
+  jp: 'ja-jp',
+  kr: 'ko-kr',
+  ae_en: 'en-ae',
+  ae_ar: 'ar-ae',
+  sa_en: 'en-sa',
+  sa_ar: 'ar-sa',
+  th_en: 'en-th',
+  th_th: 'th-th',
+  sg: 'en-sg',
+  cl: 'es-cl',
+  co: 'es-co',
+  ar: 'es-ar',
+  cr: 'es-cr',
+  pr: 'es-pr',
+  ec: 'es-ec',
+  pe: 'es-pe',
+  eg_en: 'en-eg',
+  eg_ar: 'ar-eg',
+  gt: 'es-gt',
+  id_en: 'en-id',
+  id_id: 'in-id',
+  ph_en: 'en-ph',
+  ph_fil: 'fil-ph',
+  my_en: 'en-my',
+  my_ms: 'ms-my',
+  kw_en: 'en-kw',
+  kw_ar: 'ar-kw',
+  ng: 'en-ng',
+  qa_en: 'en-qa',
+  qa_ar: 'ar-qa',
+  vn_en: 'en-vn',
+  vn_vi: 'vi-vn',
 };
 
 // import verbToRedirectLinkSuffix from './verbRedirMap.js'
 const verbRedirMap = {
-  'createpdf': 'createpdf',
+  createpdf: 'createpdf',
   'crop-pages': 'crop',
   'delete-pages': 'deletepages',
   'extract-pages': 'extract',
@@ -115,9 +115,9 @@ const verbRedirMap = {
   'add-comment': 'addcomment',
   'pdf-to-image': 'pdftoimage',
   'reorder-pages': 'reorderpages',
-  'sendforsignature': 'sendforsignature',
+  sendforsignature: 'sendforsignature',
   'rotate-pages': 'rotatepages',
-  'fillsign': 'fillsign',
+  fillsign: 'fillsign',
   'split-pdf': 'split',
   'insert-pdf': 'insert',
   'compress-pdf': 'compress',
@@ -125,8 +125,8 @@ const verbRedirMap = {
   'number-pages': 'number',
 };
 
-let url = new URL(window.location.href);
-let langFromPath = url.pathname.split('/')[1];
+const url = window.location;
+const langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
 
 export default async function init(element) {
@@ -149,12 +149,12 @@ export default async function init(element) {
   if (!DC_WIDGET_VERSION) {
     DC_WIDGET_VERSION = DC_WIDGET_VERSION_FALLBACK;
     window.lana?.log(`DC WIDGET VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_WIDGET_VERSION_FALLBACK}`, lanaOptions);
-    dcwErrors.push(`DC WIDGET VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_WIDGET_VERSION_FALLBACK}`);
+    window.dcwErrors.push(`DC WIDGET VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_WIDGET_VERSION_FALLBACK}`);
   }
   if (!DC_GENERATE_CACHE_VERSION) {
     DC_GENERATE_CACHE_VERSION = DC_GENERATE_CACHE_VERSION_FALLBACK;
     window.lana?.log(`DC GENERATE CACHE VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_GENERATE_CACHE_VERSION_FALLBACK}`, lanaOptions);
-    dcwErrors.push(`DC GENERATE CACHE VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_GENERATE_CACHE_VERSION_FALLBACK}`);
+    window.dcwErrors.push(`DC GENERATE CACHE VERSION IS NOT SET, USING FALLBACK VERSION: ${DC_GENERATE_CACHE_VERSION_FALLBACK}`);
   }
   let WIDGET_ENV = `https://dev.acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
   let ENV = 'dev';
@@ -191,28 +191,28 @@ export default async function init(element) {
 
   // Feature checking for old browsers
   const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
-  if (window?.browser?.name === 'Internet Explorer' ||
-    window?.browser?.name === 'Microsoft Edge' && window?.browser?.version?.split('.')[0] < 86 ||
-    window?.browser?.name === 'Microsoft Edge' && !window?.browser?.version ||
-    window?.browser?.name === 'Safari' && window?.browser?.version?.split('.')[0] < 14 ||
-    window?.browser?.name === 'Safari' && !window?.browser?.version ) {
+  if (window?.browser?.name === 'Internet Explorer'
+    || (window?.browser?.name === 'Microsoft Edge' && window?.browser?.version?.split('.')[0] < 86)
+    || (window?.browser?.name === 'Microsoft Edge' && !window?.browser?.version)
+    || (window?.browser?.name === 'Safari' && window?.browser?.version?.split('.')[0] < 14)
+    || (window?.browser?.name === 'Safari' && !window?.browser?.version)) {
     window.location.href = EOLBrowserPage;
   }
 
-    // Generate cache url
-    const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
-    if (GENERATE_CACHE_URL_DIV) {
-      // GENERATE_CACHE_URL_DIV.id = 'GENERATE_CACHE_URL';
-      DC_GENERATE_CACHE_URL = GENERATE_CACHE_URL_DIV.textContent.trim();
-      GENERATE_CACHE_URL_DIV.remove();
-    }
+  // Generate cache url
+  const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
+  if (GENERATE_CACHE_URL_DIV) {
+    // GENERATE_CACHE_URL_DIV.id = 'GENERATE_CACHE_URL';
+    DC_GENERATE_CACHE_URL = GENERATE_CACHE_URL_DIV.textContent.trim();
+    GENERATE_CACHE_URL_DIV.remove();
+  }
 
   // Redirect
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
-    if (window.location.hostname != 'main--dc--adobecom.hlx.live'
-      && window.location.hostname != 'www.adobe.com' ) {
-      window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
+    if (window.location.hostname !== 'main--dc--adobecom.hlx.live'
+      && window.location.hostname !== 'www.adobe.com') {
+      window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}` || REDIRECT_URL;
     } else {
       window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
     }
@@ -227,8 +227,8 @@ export default async function init(element) {
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   const preRenderDropZone = !isReturningUser && !isRedirection;
 
-  //Skeleton 
-  if (window.browser?.isMobile && location.pathname.includes('rearrange-pdf')) {
+  // Skeleton
+  if (window.browser?.isMobile && window.location.pathname.includes('rearrange-pdf')) {
     window.addEventListener('DC_Skeleton:Ready', () => {
       const skeletonWrapper = document.createElement('div');
       const skeletonInnerWrapper = document.createElement('div');
@@ -252,7 +252,6 @@ export default async function init(element) {
       skeletonCopyThree.className = 'skeleton-copy three';
       skeletonButton.className = 'skeleton-button';
 
-
       widgetContainer.classList.add('widget-loaded');
 
       skeletonWrapper.appendChild(skeletonInnerWrapper);
@@ -268,12 +267,12 @@ export default async function init(element) {
       if (!cacheLoad) {
         widgetContainer.appendChild(skeletonWrapper);
 
-        setTimeout( () => {
+        setTimeout(() => {
           skeletonInnerWrapper.className = 'shimmer skeleton-inner';
         }, 6000);
       }
       skeletonLoad = true;
-    })
+    });
 
     window.addEventListener('DC_SkeletonShimmer:Ready', () => {
       const skeletonWrapper = document.createElement('div');
@@ -298,7 +297,6 @@ export default async function init(element) {
       skeletonCopyThree.className = 'skeleton-copy three';
       skeletonButton.className = 'skeleton-button';
 
-
       widgetContainer.classList.add('widget-loaded');
 
       skeletonWrapper.appendChild(skeletonInnerWrapper);
@@ -315,29 +313,26 @@ export default async function init(element) {
         widgetContainer.firstChild.replaceWith(skeletonWrapper);
       }
       skeletonLoad = true;
-    })
+    });
   }
 
-  if (VERB === 'compress-pdf' || VERB === 'reorder-pages' || preRenderDropZone) {
-    const verbFromURL = window.location.pathname.split('/').pop().split('.')[0];
+  const verbIncludeList = ['compress-pdf', 'fillsign', 'sendforsignature', 'add-comment',
+    'delete-pages', 'reorder-pages', 'split-pdf', 'insert-pdf', 'extract-pages', 'crop-pages', 'number-pages'];
+
+  if (verbIncludeList.includes(VERB) || preRenderDropZone) {
     const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
         const template = await response.text();
-        if (!("rendered" in widgetContainer.dataset)) {
-          widgetContainer.dataset.rendered = "true";
+        if (!('rendered' in widgetContainer.dataset)) {
+          widgetContainer.dataset.rendered = 'true';
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
           cacheLoad = true;
-          if (skeletonLoad) {
-            console.log('loaded skel');
-            // const skel = widgetContainer.querySelector('.skeleton-wrapper');
-            // skel.replaceWith(doc.body.firstElementChild);
-          } else {
-          console.log('loaded dc snap');
-          widgetContainer.appendChild(doc.body.firstElementChild);
+          if (!skeletonLoad) {
+            widgetContainer.appendChild(doc.body.firstElementChild);
           }
-          performance.mark("milo-insert-snippet");
+          performance.mark('milo-insert-snippet');
         }
         break;
       }
@@ -373,18 +368,17 @@ export default async function init(element) {
 
   if (skeletonLoad) {
     window.addEventListener('DC_Hosted:Ready', () => {
-      document.querySelector('.skeleton-wrapper').classList.add('fade-out')
-    })
+      document.querySelector('.skeleton-wrapper').classList.add('fade-out');
+    });
   }
   widget.appendChild(dcScript);
 
   window.addEventListener('IMS:Ready', () => {
-    let evt;
-    evt = new CustomEvent('dc.imslib.ready', { detail: { instance: window.adobeIMS }});
+    const evt = new CustomEvent('dc.imslib.ready', { detail: { instance: window.adobeIMS } });
     evt.initEvent('dc.imslib.ready', true, true);
     document.dispatchEvent(evt);
     // window.adobe_dc_sdk.imsReady = true;
-  })
+  });
 
   // DC Personalization
   window.addEventListener('DC_Hosted:Ready', () => {
