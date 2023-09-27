@@ -257,7 +257,6 @@ div.how-to {
 
   header:not(.global-navigation)  ~ main {
     margin-top: 64px;
-    background-color: #fa0f00;
   }
 }
 
