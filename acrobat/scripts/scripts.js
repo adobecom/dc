@@ -337,39 +337,14 @@ const { ietf } = getLocale(locales);
   }, 1000);
 }());
 
-// Process placeholders in the document
-const processPlaceholders = (documentElement) => {
-  const placeholderRegex = /{{(.*?)}}/g;
-  const matches = [...documentElement.innerHTML.matchAll(placeholderRegex)];
-  const matchingElements = [];
-  if (matches.length > 0) {
-    const paragraphs = documentElement.querySelectorAll('p');
-    paragraphs.forEach((p, index) => {
-      if (p.innerHTML.match(placeholderRegex)) {
-        const translationLabel = p.innerHTML.match(placeholderRegex)[0];
-        const label = translationLabel.slice(2, -2);
-        p.setAttribute('data-local', label);
-        p.setAttribute('id', `para-${index}`);
-        if (label === 'credit-cards') {
-          matchingElements.push(p);
-        }
-      }
-    });
-  }
-  return matchingElements;
-};
-
-// Check if the meta tag named 'commerce' exists and is set to 'true'
 const isCommerceActive = () => {
   const metaTag = document.querySelector('meta[name="commerce"]');
   return metaTag && metaTag.content === 'true';
 };
 
-// Initialize replacePlaceholdersWithImages() after checking for the commerce meta tag
 if (isCommerceActive()) {
-  const creditCardElements = processPlaceholders(document.documentElement);
   const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
   document.addEventListener('milo:deferred', () => {
-    replacePlaceholdersWithImages(creditCardElements);
+    replacePlaceholdersWithImages();
   });
 }
