@@ -254,6 +254,10 @@ div.how-to {
   .fsw > div > div {
     min-height: calc(100vh - 100px) !important;
   }
+
+  header:not(.global-navigation)  ~ main {
+    margin-top: 64px;
+  }
 }
 
 div.how-to ol li::before{
