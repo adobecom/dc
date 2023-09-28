@@ -63,7 +63,7 @@ async function enableNetworkLogging(page) {
       networklogs.push(route.request());
       route.continue();
     });
-  }  
+  }
 }
 }
 
@@ -161,6 +161,50 @@ Then(/^I merge the uploaded files$/, async function () {
   await this.page.mergeButton.click({ timeout: 120000 });
 });
 
+Then(/^I save rotated files$/, async function () {
+  this.context(FrictionlessPage);
+  await this.page.mergeButton.click({ timeout: 120000 });
+});
+
+Then(/^I rotate right the uploaded files$/, async function () {
+  this.context(FrictionlessPage);
+  await this.page.rotateRightButton.click({ timeout: 120000 });
+});
+
+Then(/^I rotate left first uploaded file$/, async function () {
+  let file = "//div[@data-test-id='grid-item-wrapper-0']";
+  let fileLeftRotateBtn = `${file}//button[@data-test-id='rotate-left-button']`;
+  await this.page.native.locator(file).click({timeout: 2000});
+  await this.page.native.locator(fileLeftRotateBtn).click({timeout: 2000});
+});
+
+Then(/^I click "Add (signature|initials)"$/, async function (sign) {
+  this.context(FrictionlessPage);
+  const elementToClick = sign === 'signature' ? this.page.addSignature : this.page.addInitials;
+  await elementToClick.click({ timeout: 120000 });
+});
+
+Then(/^I fill up signature input$/, async function () {
+  let signature = "//input[@data-test-id='type-sign-canvas']";
+  await this.page.native.locator(signature).fill('Test signature');
+  await this.page.applyButton.click({timeout: 2000});
+});
+
+Then(/^I sign up the document$/, async function () {
+  let document = '#pageview-current-page';
+  await this.page.native.locator(document).click({timeout: 2000});
+});
+
+Then(/^I should see (signature|initials)$/, async function (sign) {
+  const element = sign === 'signature' ? "//div[@data-testid='fns-field-0']" : "//div[@data-testid='fns-field-1']";
+  await expect(this.page.native.locator(element)).toBeVisible();
+});
+
+Then(/^I click "Sign in to download"$/, async function () {
+  this.context(FrictionlessPage);
+  await this.page.signInButton.click({ timeout: 120000 });
+});
+
 Then(/^I should not see any browser console errors$/, async function () {
   if (this.page.consoleMessages) {
     const errors = this.page.consoleMessages.filter(
@@ -204,17 +248,17 @@ Then(/^I submit review feedback$/, async function () {
   await this.page.reviewStartInput(3).click({timeout: 5000});
   await this.page.reviewCommentField.fill("Test");
   await this.page.reviewStartInput(5).click();
-  await this.page.reviewCommentSubmit.click();   
+  await this.page.reviewCommentSubmit.click();
 });
 
 Then(/^I should see the review stats$/, async function () {
   this.context(FrictionlessPage);
-  await expect(this.page.reviewStats).toBeVisible({timeout: 5000});  
+  await expect(this.page.reviewStats).toBeVisible({timeout: 5000});
 });
 
 Then(/^I should see the review submit response$/, async function () {
   this.context(FrictionlessPage);
-  await expect(this.page.reviewSubmitResponse).toBeVisible({timeout: 5000});  
+  await expect(this.page.reviewSubmitResponse).toBeVisible({timeout: 5000});
 });
 
 Then(/^I download the pdf from DC web$/, async function () {
@@ -285,7 +329,7 @@ Then(/^I (screenshot|should be able to open) the submenu of the (.*) menu item(?
 
   let menuItems = items.replace(/ and /g, ",").split(",");
   menuItems = menuItems.map((x) => x.trim()).filter((x) => x.length > 0);
-  for (let item of menuItems) {  
+  for (let item of menuItems) {
     const index = cardinal(item);
     await this.page.openSubMenu(index);
     await expect(this.page.fedsPopup).toBeVisible();
@@ -302,12 +346,12 @@ Then(/^I (screenshot|should be able to open) the submenu of the (.*) menu item(?
 
 /***
  * This step is used to compare the current screenshots with the baseline
- * screenshots. 
- * 
+ * screenshots.
+ *
  * Baseline Folder: features/${feature-name}/${platform}/${browser}
- * Current Folder: ${report-dir}/screenshots/${feature-name}/${platform}/${browser} 
+ * Current Folder: ${report-dir}/screenshots/${feature-name}/${platform}/${browser}
  * Diff Image: ${report-dir}/${platform}_${browser}_${image-name}.png
- * 
+ *
  * Command line options:
  * --baseBrowser: Use a different browser to compare with the current browser
 */
@@ -346,7 +390,7 @@ Then(/^I should be able to use the "([^\"]*)" submenu$/, async function (menu) {
 });
 
 Then(/^I select the last item of the submenu of the ([^\"]*) menu item$/, async function (menu) {
-  this.context(FrictionlessPage); 
+  this.context(FrictionlessPage);
   await this.page.openSubMenu(cardinal(menu));
   await this.page.selectFedsPopupItem(-1);
 });
@@ -363,7 +407,7 @@ Then(/^I switch to the new page after clicking "Buy now" button in the header$/,
     this.page.buyNow.click()
   ]);
   await newPage.waitForLoadState();
-  this.page.native = newPage; 
+  this.page.native = newPage;
 });
 
 Then(/^I read expected analytics data with replacements "([^"]*)"$/, async function (replacements) {
