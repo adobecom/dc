@@ -84,7 +84,7 @@ Feature: Frictionless Converter Block
       | Verb     | File                |
       | sign-pdf | test-files/test.pdf |
 
-  @MWPW-135907 @regression @converter
+  @MWPW-137180 @regression @converter
   Scenario Outline: L2 Verbs - Upload, rotate and download
     Given I go to the <Verb> page
     Then I upload the files "<Files>"
@@ -98,7 +98,7 @@ Feature: Frictionless Converter Block
       | Verb       | Files                                    |
       | rotate-pdf | test-files/test.pdf,test-files/test2.pdf |
 
-  @MWPW-135907 @regression @converter
+  @MWPW-137251 @regression @converter
   Scenario Outline: L2 Verbs - Upload and sign in
     Given I go to the <Verb> page
     Then I upload the file "<File>"
