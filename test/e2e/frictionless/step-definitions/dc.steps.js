@@ -26,20 +26,45 @@ import { expect } from "@playwright/test";
 const os = require("os");
 const path = require("path");
 const fs = require("fs");
+const YAML = require('js-yaml');
 import { getComparator } from 'playwright-core/lib/utils';
 
 async function enableNetworkLogging(page) {
   if (global.config.profile.enableAnalytics) {
-    let networklogs = [];
+    const networklogs = [];
     page.networklogs = networklogs;
+
     console.log('Before all tests: Enable network logging');
+
     // Enable network logging
+    if (/chromium|msedge|chrome/.test(global.config.profile.browser)) {
+      const client = await page.native.context().newCDPSession(page.native);
+      await client.send('Network.enable');
+      const handleNetworkRequest = async (x) => {
+        if ('hasPostData' in x.request) {
+          if (!x.request.postData) {
+            try {
+              const res = await client.send('Network.getRequestPostData', { requestId: x.requestId });
+              x.request.postData = res.postData;
+            } catch (err) {
+              console.log(err);
+            }
+          }
+          networklogs.push({
+            url: () => x.request.url,
+            postData: () => x.request.postData,
+          });
+        }
+      };
+
+      client.on('Network.requestWillBeSent', handleNetworkRequest);
+    } else {
     await page.native.route('**', (route) => {
-      const url = route.request().url();
       networklogs.push(route.request());
       route.continue();
     });
   }  
+}
 }
 
 Then(/^I have a new browser context$/, async function () {
@@ -341,3 +366,37 @@ Then(/^I switch to the new page after clicking "Buy now" button in the header$/,
   this.page.native = newPage; 
 });
 
+Then(/^I read expected analytics data with replacements "([^"]*)"$/, async function (replacements) {
+  const baseDir = this.gherkinDocument.uri.replace('.feature', '');
+
+  let ymlRaw = fs.readFileSync(`${baseDir}/analytics_spec.yml`, 'utf8');
+
+  const kvs = replacements.split(',').map((x) => x.trim());
+  for (const kv of kvs) {
+    const keyValue = kv.split('=').map((x) => x.trim());
+    if (keyValue.length === 1) {
+      if (keyValue[0] === 'browser') {
+        keyValue.push({chromium: 'Chrome', chrome: 'Chrome', msedge: 'MSFT-Edge'}[global.config.profile.browser]);
+      }
+    }
+    ymlRaw = ymlRaw.replace(new RegExp(`<${keyValue[0]}>`, 'g'), keyValue[1]);
+  }
+
+  const events = YAML.load(ymlRaw);
+  for (const event in events) {
+    const normalizeLogs = [];
+    if (events[event]) {
+      for (const log of events[event]) {
+        const normalizeLog = {};
+        for (const key in log) {
+          normalizeLog.key = key;
+          normalizeLog.value = log[key];
+        }
+        normalizeLogs.push(normalizeLog);
+      }
+    }
+    events[event] = normalizeLogs;
+  }
+
+  this.page.wikiAnalyticsData = events;
+});

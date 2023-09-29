@@ -29,8 +29,8 @@ export class FrictionlessPage extends classes(DcGnavPage, PdfWidgetSection) {
       reviewCommentSubmit: '.hlx-Review-commentFields input[type="submit"]',
       reviewInputField: 'fieldset.hlx-Review-ratingFields input',
       signUp: '[href*="https://auth.services.adobe.com"][href*="signup"]',
-      extensionModal: '#chromeext',
-      closeExtensionModal: '#chromeext .dialog-close',
+      extensionModal: '#chromeext, #edgeext',
+      closeExtensionModal: '#chromeext .dialog-close, #edgeext .dialog-close',
     });
   }
 
