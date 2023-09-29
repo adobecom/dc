@@ -340,8 +340,8 @@ const { ietf } = getLocale(locales);
     }
   }, 1000);
 
-  if (getMetadata('commerce') === 'true') {
+  if (getMetadata('commerce')) {
     const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
-    replacePlaceholdersWithImages();
+    replacePlaceholdersWithImages(document);
   }
 }());

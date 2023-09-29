@@ -12,9 +12,9 @@ const cardImageMappings = [
   { name: 'V_MC', filename: 'v_mc.jpg' },
 ];
 
-export default async function replacePlaceholdersWithImages() {
-  const paragraphs = document.querySelectorAll('p');
-  createTag.then((tag) => {
+export default async function replacePlaceholdersWithImages(documentElement) {
+  const paragraphs = documentElement.querySelectorAll('p');
+  await createTag.then((tag) => {
     paragraphs.forEach((p) => {
       cardImageMappings.forEach((mapping) => {
         const cardName = p.innerHTML.trim();
@@ -27,7 +27,7 @@ export default async function replacePlaceholdersWithImages() {
             'data-local': 'credit-cards',
           };
           const imgElement = tag('img', imgAttributes);
-          imgElement.onerror = () => {
+          imgElement.onerror = async () => {
             window.lana?.log(`Error loading image for credit-card placeholder: ${cardName}`);
             imgElement.remove();
           };
