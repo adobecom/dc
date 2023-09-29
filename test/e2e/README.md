@@ -32,3 +32,23 @@ It can also compare the rendering of two different browers. For exmaple, the fol
 ```
 npx run test/e2e/frictionless -t "@visual and @gnav" -b webkit --baseBrowser firefox
 ```
+
+## Anaytics Test
+
+An analytics test captures network post data to the service endpoints and verifies the events are as expected.
+
+For example, the feature file `test/e2e/frictionless/features/smoke/analytics.feature` should have an analytics spec file `test/e2e/frictionless/features/smoke/analytics/analytics_spec.yml`
+
+The command line should have the argument `--enableAnalytics` to turn on network logging
+
+Chromium-based and Firefox browsers are supported. Currently Chromium has [the bug](https://bugs.chromium.org/p/chromium/issues/detail?id=1058404), which causes some post data not captured. The workaround is to bypess Playwright and use a CDP session to retrieve post data. 
+
+```
+npx run test/e2e/frictionless -t "@smoke and @analytics" --enableAnalytics
+```
+
+To debug analytics logs, add the argument `--printAnalyticsLogs` to dump collected logs.
+
+```
+npx run test/e2e/frictionless -t "@smoke and @analytics" --enableAnalytics --printAnalyticsLogs
+```
