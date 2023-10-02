@@ -309,7 +309,7 @@ const { ietf } = getLocale(locales);
   loadStyles(paths);
 
   // Import base milo features and run them
-  const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
 
   setConfig({ ...CONFIG, miloLibs });
@@ -339,4 +339,9 @@ const { ietf } = getLocale(locales);
       window.dispatchEvent(imsIsReady);
     }
   }, 1000);
+
+  if (getMetadata('commerce')) {
+    const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
+    replacePlaceholdersWithImages(document);
+  }
 }());
