@@ -25,6 +25,10 @@ div[data-section="widget"] {
   min-height: 570px;
 }
 
+#dc-converter-widget * {
+  font-family: unset;
+}
+
 #CID {
   width: 75%;
   max-width: 75%;
