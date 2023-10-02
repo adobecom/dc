@@ -83,3 +83,38 @@ Feature: Frictionless Converter Block
   Examples:
       | Verb     | File                |
       | sign-pdf | test-files/test.pdf |
+
+  @MWPW-137180 @regression @converter
+  Scenario Outline: L2 Verbs - Upload, rotate and download
+    Given I go to the <Verb> page
+    Then I upload the files "<Files>"
+    Then I rotate right the uploaded files
+    Then I rotate left first uploaded file
+    Then I wait for 2 seconds
+    Then I save rotated files
+    Then I download the converted file
+
+    Examples:
+      | Verb       | Files                                    |
+      | rotate-pdf | test-files/test.pdf,test-files/test2.pdf |
+
+  @MWPW-137251 @regression @converter
+  Scenario Outline: L2 Verbs - Upload and sign in
+    Given I go to the <Verb> page
+    Then I upload the file "<File>"
+    Then I click "Add signature"
+    Then I fill up signature input
+    Then I click "Add initials"
+    Then I fill up signature input
+    Then I click "Add signature"
+    Then I sign up the document
+    Then I should see signature
+    Then I click "Add initials"
+    Then I sign up the document
+    Then I should see initials
+    Then I wait for 2 seconds
+    Then I click "Sign in to download"
+
+    Examples:
+      | Verb       | File                 |
+      | sign-pdf   | test-files/test.pdf  |
