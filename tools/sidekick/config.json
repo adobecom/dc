@@ -31,7 +31,7 @@
       "url": "https://main--milo--adobecom.hlx.page/tools/loc/index.html?project=dc--adobecom",
       "passReferrer": true,
       "passConfig": true,
-      // "excludePaths": [ "/**" ],
+      "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
     },
     {
