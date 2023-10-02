@@ -31,8 +31,6 @@ export class FrictionlessPage extends classes(DcGnavPage, PdfWidgetSection) {
       signUp: '[href*="https://auth.services.adobe.com"][href*="signup"]',
       extensionModal: '#chromeext, #edgeext',
       closeExtensionModal: '#chromeext .dialog-close, #edgeext .dialog-close',
-      caas: '[data-path$="/caas/default"]>>nth=0',
-      caasButton: 'a[data-testid="consonant-BtnInfobit"]'
     });
   }
 

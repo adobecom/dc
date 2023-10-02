@@ -22,6 +22,7 @@ import { MergePdfPage } from "../page-objects/mergepdf.page";
 import { CompressPdfPage } from "../page-objects/compresspdf.page";
 import { FrictionlessPage } from "../page-objects/frictionless.page";
 import { PasswordProtectPdfPage } from "../page-objects/passwordprotectpdf.page";
+import { CaaSPage } from "../page-objects/caas.page";
 import { cardinal } from "../support/cardinal";
 import { expect } from "@playwright/test";
 const os = require("os");
@@ -404,13 +405,15 @@ Then(/^I read expected analytics data with replacements "([^"]*)"$/, async funct
 });
 
 Then(/^I should see the CaaS block$/, async function () {
-  this.context(FrictionlessPage);
-  await expect(this.page.caas).toBeVisible({timeout: 30000});
+  this.context(CaaSPage);
+  await expect(this.page.caasFragment).toBeVisible({timeout: 30000});
   await this.page.native.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect(this.page.caas).toBeVisible({timeout: 30000});
 });
 
-Then(/^I should see the CaaS block header$/, async function () {
-  await expect(this.page.caas.locator('h2')).toBeVisible({timeout: 10000});
+Then(/^I should see the 'More resources' header$/, async function () {
+  const headerContent = await this.page.caasFragment.locator('h2').first().textContent();
+  await expect(headerContent).toEqual('More resources');
 });
 
 Then(/^I should see the CaaS block cards$/, async function () {
