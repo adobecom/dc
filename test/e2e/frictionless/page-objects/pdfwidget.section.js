@@ -24,6 +24,11 @@ export class PdfWidgetSection extends Section {
       dcWebDocumentsTab: '//div[@role="tab"]//span[text()="Documents"]/..',
       dcWebCheckAllFiles: '//div[contains(@class, "Files")]//input[@title="Select All"]',
       dcWebDelete: '//button[@data-test-id="delete-action-button"]',
+      rotateRightButton: 'button[id="rotate-right"]',
+      addSignature: 'div[data-testid*="add-signature"]',
+      addInitials: 'div[data-testid*="add-initials"]',
+      applyButton: 'button[data-test-id="apply-btn"]',
+      signInButton: 'button[data-test-id="sign-in-btn"]',
     });
   }
 
