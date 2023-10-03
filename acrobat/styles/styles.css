@@ -24,11 +24,6 @@ div[data-section="widget"] {
   background-color: #fc6767;
   min-height: 570px;
 }
-@media (max-width: 600px) {
-  #dc-converter-widget {
-    height: calc(100vh - 110px);
-  }
-}
 
 #dc-converter-widget > div:first-of-type {
   display: none;
@@ -64,14 +59,6 @@ div[data-section="widget"] {
     max-width: 91.6667%;
     top: 40px;
   }
-}
-
-.dialog-modal.extension-modal {
-  top: unset;
-  left: unset;
-  box-shadow: 0 .5em 1em -.125em hsl(0deg 0% 4% / 10%),0 0 0 1px hsl(0deg 0% 4% / 2%);
-  margin-bottom: 20px;
-  margin-right: 20px;
 }
 
 .col[data-align="center"] {
@@ -263,6 +250,10 @@ div.how-to {
   .fsw > div > div {
     min-height: calc(100vh - 100px) !important;
   }
+
+  header:not(.global-navigation)  ~ main {
+    margin-top: 64px;
+  }
 }
 
 div.how-to ol li::before{
@@ -296,7 +287,12 @@ div.how-to ol li::before{
   box-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 4% / 10%), 0 0 0 1px hsl(0deg 0% 4% / 2%);
 }
 
-.dialog-modal {
+.dialog-modal.extension-modal {
+  top: unset;
+  left: unset;
+  box-shadow: 0 .5em 1em -.125em hsl(0deg 0% 4% / 10%),0 0 0 1px hsl(0deg 0% 4% / 2%);
+  margin-bottom: 20px;
+  margin-right: 20px;
   animation-name: modalSlideIn-frictionlessBrowserExtension;
   transition: opacity 125ms ease-in-out,background-color 125ms ease-in-out,backdrop-filter 125ms ease-in-out,-webkit-backdrop-filter 125ms ease-in-out,transform 125ms ease-in-out;
   animation-duration: 2s;
