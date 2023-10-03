@@ -13,5 +13,5 @@ Leave a review:
 Close the extension modal:
   - c.digitalData.primaryEvent.eventInfo.eventName: Get the extension-1|viewer-extension|<browser>-extension
   - c.digitalData.primaryEvent.eventInfo.eventName: Get the extension-1|close-viewer-extension|<browser>-extension
-  - c.digitalData.primaryEvent.eventInfo.eventName: Get the extension-1|already-closed-viewer-extension|<browser>-extension
+
 
