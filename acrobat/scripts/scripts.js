@@ -46,6 +46,14 @@ const getLocale = (locales, pathname = window.location.pathname) => {
   return locale;
 };
 
+function getTrialToken() {
+  const LOCAL_TOKEN = 'AloskvzI3ilSEcG1AXxQ9rv0Ro12O3ISCc3cZI/5yRr2mi2Eap5t0N5L3OT8KpWRBBOnfDvntk8n+dCG4eHGcQsAAABReyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJmZWF0dXJlIjoiU2NoZWR1bGVyWWllbGQiLCJleHBpcnkiOjE3MDk2ODMxOTl9';
+  const PROD_TOKEN = 'ApPnSNHCIWK27DqNdhiDHtOnC8mmBgtVJX5CLfG0qKTYvEG3MRpIdFTlz35GPStZLs926t+yC9M4Y6Ent+YKbgkAAABkeyJvcmlnaW4iOiJodHRwczovL2Fkb2JlLmNvbTo0NDMiLCJmZWF0dXJlIjoiU2NoZWR1bGVyWWllbGQiLCJleHBpcnkiOjE3MDk2ODMxOTksImlzU3ViZG9tYWluIjp0cnVlfQ==';
+  const { hostname } = window.location;
+  if (hostname.includes('localhost')) return LOCAL_TOKEN;
+  if (hostname === 'www.stage.adobe.com' || hostname === 'www.adobe.com') return PROD_TOKEN;
+};
+
 const getBrowserData = (userAgent) => {
   if (!userAgent) {
     return {};
@@ -100,6 +108,12 @@ const getBrowserData = (userAgent) => {
 
 // Get browser data
 window.browser = getBrowserData(window.navigator.userAgent);
+
+// Add origin-trial meta tag
+const tokenElement = document.createElement('meta');
+tokenElement.httpEquiv = 'origin-trial';
+tokenElement.content = getTrialToken();
+document.head.appendChild(tokenElement);
 
 function loadStyles(paths) {
   paths.forEach((path) => {
