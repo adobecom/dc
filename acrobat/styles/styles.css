@@ -57,14 +57,6 @@ div[data-section="widget"] {
   }
 }
 
-.dialog-modal.extension-modal {
-  top: unset;
-  left: unset;
-  box-shadow: 0 .5em 1em -.125em hsl(0deg 0% 4% / 10%),0 0 0 1px hsl(0deg 0% 4% / 2%);
-  margin-bottom: 20px;
-  margin-right: 20px;
-}
-
 .col[data-align="center"] {
   justify-content: center;
   display: flex;
@@ -291,7 +283,12 @@ div.how-to ol li::before{
   box-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 4% / 10%), 0 0 0 1px hsl(0deg 0% 4% / 2%);
 }
 
-.dialog-modal:not(#langnav) {
+.dialog-modal.extension-modal {
+  top: unset;
+  left: unset;
+  box-shadow: 0 .5em 1em -.125em hsl(0deg 0% 4% / 10%),0 0 0 1px hsl(0deg 0% 4% / 2%);
+  margin-bottom: 20px;
+  margin-right: 20px;
   animation-name: modalSlideIn-frictionlessBrowserExtension;
   transition: opacity 125ms ease-in-out,background-color 125ms ease-in-out,backdrop-filter 125ms ease-in-out,-webkit-backdrop-filter 125ms ease-in-out,transform 125ms ease-in-out;
   animation-duration: 2s;
