@@ -208,6 +208,10 @@ Then(/^I click "Sign in to download"$/, async function () {
   await this.page.signInButton.click({ timeout: 120000 });
 });
 
+Then(/^I should see sign-in modal$/, async function () {
+  await expect(this.page.signInModal).toBeVisible();
+});
+
 Then(/^I should not see any browser console errors$/, async function () {
   if (this.page.consoleMessages) {
     const errors = this.page.consoleMessages.filter(
@@ -232,6 +236,14 @@ Then(/^I should see the default how-to$/, async function () {
   await expect(this.page.howToDefault).toBeVisible();
 });
 
+Then(/^I should (|not )see eventwrapper onload$/, async function (neg) {
+  if (neg) {
+    await expect(this.page.eventwrapperOnload).not.toBeVisible();
+  } else {
+    await expect(this.page.eventwrapperOnload).toBeVisible();
+  }
+});
+
 Then(/^I should see upsell$/, async function () {
   await expect(this.page.upsellWall).toHaveCount(1, { timeout: 10000 });
 });
@@ -240,10 +252,22 @@ Then(/^I should see the 2nd conversion how-to$/, async function () {
   await expect(this.page.howTo2ndConversion).toBeVisible({ timeout: 10000 });
 });
 
-Then(/^I should see the verb subfooter$/, async function () {
-  await expect(this.page.verbSubfooter).toBeVisible({ timeout: 10000 });
-  const verbCount = await this.page.verbSubfooter.locator("a").count();
-  expect(verbCount).toBeGreaterThan(20);
+Then(/^I should (|not )see the verb subfooter$/, async function (neg) {
+  if (neg) {
+    await expect(this.page.verbSubfooter).not.toBeVisible({ timeout: 10000 });
+  } else {
+    await expect(this.page.verbSubfooter).toBeVisible({ timeout: 10000 });
+    const verbCount = await this.page.verbSubfooter.locator("a").count();
+    expect(verbCount).toBeGreaterThan(20);
+  }
+});
+
+Then(/^I should (|not )see the review component$/, async function (neg) {
+  if (neg) {
+    await expect(this.page.reviewComponent).not.toBeVisible();
+  } else {
+    await expect(this.page.reviewComponent).toBeVisible();
+  }
 });
 
 Then(/^I submit review feedback$/, async function () {
