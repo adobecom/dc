@@ -1,0 +1,34 @@
+name: Page Published
+
+# Power Automate will trigger this workflow when the query index is modified
+# Query index is modified when a page is published
+on:
+  repository_dispatch:
+    types: [page_modified]
+  
+jobs:  
+  find-page-diff:
+    name: Find Page Diff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: page-published.yml
+          workflow_conclusion: success
+          name: base-query-index-cache
+          if_no_artifact_found: ignore
+          github_token: ${{ secrets.DC_PAT }}
+      - name: Query Index
+        run: node .github/scripts/query_index.js query_index.json query_index.json
+      - uses: actions/upload-artifact@v3
+        with:
+          name: base-query-index-cache
+          path: query_index.json        
+      - name: List Diff
+        run: cat diff.json
+      - name: Slack Notification
+        run: node .github/scripts/notify_slack.js diff.json
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}        
