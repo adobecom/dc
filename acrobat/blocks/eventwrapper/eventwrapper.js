@@ -29,13 +29,14 @@ export default function init(element) {
   let widget;
   let sections;
   let body;
-  // eslint-disable-next-line
+  /* eslint-disable */
   const params = new Proxy(
     new URLSearchParams(window.location.search),
     {
       get: (searchParams, prop) => searchParams.get(prop)
     }
   );
+  /* eslint-enable */
 
   if (typeof (params.eventsAll) === 'string') {
     document.body.classList.add('eventsShowAll');
