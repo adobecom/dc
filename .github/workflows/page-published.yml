@@ -28,7 +28,45 @@ jobs:
           path: query_index.json        
       - name: List Diff
         run: cat diff.json
+      - id: get-added-page
+        run: |
+          page=$( jq '.added[0]' diff.json )
+          echo "::set-output name=added_page::$page"
+      - id: get-changed-page
+        run: |
+          page=$( jq '.changed[0]' diff.json )
+          echo "::set-output name=changed_page::$page"             
       - name: Slack Notification
         run: node .github/scripts/notify_slack.js diff.json
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}        
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Trigger DC Workflow for Added Page
+        if: ${{ steps.get-added-page.outputs.added_page }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.DC_PAT }}
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: 'adobecom',
+              repo: 'dc',
+              workflow_id: 'test-page-published.yml',
+              ref: 'main',
+              inputs: {
+                test_url: 'https://www.adobe.com${{ steps.get-added-page.outputs.added_page }}'
+              },              
+            })
+      - name: Trigger DC Workflow for Changed Page
+        if: ${{ steps.get-changed-page.outputs.changed_page }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.DC_PAT }}
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: 'adobecom',
+              repo: 'dc',
+              workflow_id: 'test-page-published.yml',
+              ref: 'main',
+              inputs: {
+                test_url: 'https://www.adobe.com${{ steps.get-changed-page.outputs.changed_page }}'
+              },              
+            })                          
