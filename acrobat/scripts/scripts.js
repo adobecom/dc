@@ -106,6 +106,7 @@ function loadStyles(paths) {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('href', path);
+    link.setAttribute('crossorigin', 'anonymous');
     document.head.appendChild(link);
   });
 }
