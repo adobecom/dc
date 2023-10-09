@@ -29,6 +29,7 @@ export class PdfWidgetSection extends Section {
       addInitials: 'div[data-testid*="add-initials"]',
       applyButton: 'button[data-test-id="apply-btn"]',
       signInButton: 'button[data-test-id="sign-in-btn"]',
+      signInModal: 'div[data-test-id="sign-in-modal-content"]',
     });
   }
 

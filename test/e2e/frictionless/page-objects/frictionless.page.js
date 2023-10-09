@@ -22,6 +22,7 @@ export class FrictionlessPage extends classes(DcGnavPage, PdfWidgetSection) {
       howToDefault: 'div[data-path*="how-to/default"]',
       howTo2ndConversion: '[data-tag="2nd conversion"] div[data-path*="how-to/2nd-conversion"]',
       verbSubfooter: '.verb-subfooter',
+      reviewComponent: '.review',
       reviewStats: '.hlx-ReviewStats',
       reviewSubmitResponse: '.hlx-submitResponse',
       reviewDisabled: '.hlx-Review-ratingFields[disabled]',
@@ -31,10 +32,11 @@ export class FrictionlessPage extends classes(DcGnavPage, PdfWidgetSection) {
       signUp: '[href*="https://auth.services.adobe.com"][href*="signup"]',
       extensionModal: '#chromeext, #edgeext',
       closeExtensionModal: '#chromeext .dialog-close, #edgeext .dialog-close',
+      eventwrapperOnload: '.eventwrapper.onload',
     });
   }
 
   reviewStartInput(rating) {
-    return this.native.locator(`.hlx-Review-ratingFields input[value="${rating}"]`); 
+    return this.native.locator(`.hlx-Review-ratingFields input[value="${rating}"]`);
   }
 }
