@@ -1,0 +1,72 @@
+name: Page Published
+
+# Power Automate will trigger this workflow when the query index is modified
+# Query index is modified when a page is published
+on:
+  repository_dispatch:
+    types: [page_modified]
+  
+jobs:  
+  find-page-diff:
+    name: Find Page Diff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: page-published.yml
+          workflow_conclusion: success
+          name: base-query-index-cache
+          if_no_artifact_found: ignore
+          github_token: ${{ secrets.DC_PAT }}
+      - name: Query Index
+        run: node .github/scripts/query_index.js query_index.json query_index.json
+      - uses: actions/upload-artifact@v3
+        with:
+          name: base-query-index-cache
+          path: query_index.json        
+      - name: List Diff
+        run: cat diff.json
+      - id: get-added-page
+        run: |
+          page=$( jq '.added[0]' diff.json )
+          echo "::set-output name=added_page::$page"
+      - id: get-changed-page
+        run: |
+          page=$( jq '.changed[0]' diff.json )
+          echo "::set-output name=changed_page::$page"             
+      - name: Slack Notification
+        run: node .github/scripts/notify_slack.js diff.json
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Trigger DC Workflow for Added Page
+        if: ${{ steps.get-added-page.outputs.added_page }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.DC_PAT }}
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: 'adobecom',
+              repo: 'dc',
+              workflow_id: 'test-page-published.yml',
+              ref: 'main',
+              inputs: {
+                test_url: 'https://www.adobe.com${{ steps.get-added-page.outputs.added_page }}'
+              },              
+            })
+      - name: Trigger DC Workflow for Changed Page
+        if: ${{ steps.get-changed-page.outputs.changed_page }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.DC_PAT }}
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: 'adobecom',
+              repo: 'dc',
+              workflow_id: 'test-page-published.yml',
+              ref: 'main',
+              inputs: {
+                test_url: 'https://www.adobe.com${{ steps.get-changed-page.outputs.changed_page }}'
+              },              
+            })                          
