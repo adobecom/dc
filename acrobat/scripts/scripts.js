@@ -326,7 +326,6 @@ const { ietf } = getLocale(locales);
   // get event back form dc web and then load area
   await loadArea(document, false);
 
-
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
