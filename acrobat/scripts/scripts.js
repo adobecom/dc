@@ -102,11 +102,14 @@ const getBrowserData = (userAgent) => {
 window.browser = getBrowserData(window.navigator.userAgent);
 
 // Add origin-trial meta tag
-const TRIAL_TOKEN = 'ApPnSNHCIWK27DqNdhiDHtOnC8mmBgtVJX5CLfG0qKTYvEG3MRpIdFTlz35GPStZLs926t+yC9M4Y6Ent+YKbgkAAABkeyJvcmlnaW4iOiJodHRwczovL2Fkb2JlLmNvbTo0NDMiLCJmZWF0dXJlIjoiU2NoZWR1bGVyWWllbGQiLCJleHBpcnkiOjE3MDk2ODMxOTksImlzU3ViZG9tYWluIjp0cnVlfQ==';
-const tokenElement = document.createElement('meta');
-tokenElement.httpEquiv = 'origin-trial';
-tokenElement.content = TRIAL_TOKEN;
-document.head.appendChild(tokenElement);
+const { hostname } = window.location
+if (hostname === 'stage.adobe.com') {
+  const TRIAL_TOKEN = 'ApPnSNHCIWK27DqNdhiDHtOnC8mmBgtVJX5CLfG0qKTYvEG3MRpIdFTlz35GPStZLs926t+yC9M4Y6Ent+YKbgkAAABkeyJvcmlnaW4iOiJodHRwczovL2Fkb2JlLmNvbTo0NDMiLCJmZWF0dXJlIjoiU2NoZWR1bGVyWWllbGQiLCJleHBpcnkiOjE3MDk2ODMxOTksImlzU3ViZG9tYWluIjp0cnVlfQ==';
+  const tokenElement = document.createElement('meta');
+  tokenElement.httpEquiv = 'origin-trial';
+  tokenElement.content = TRIAL_TOKEN;
+  document.head.appendChild(tokenElement);
+}
 
 function loadStyles(paths) {
   paths.forEach((path) => {
