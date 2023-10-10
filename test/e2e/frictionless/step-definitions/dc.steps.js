@@ -521,10 +521,6 @@ Then(/^I reload DocCloud "([^"]*)"$/, async function (path) {
   await this.page.native.goto(path);
 });
 
-Then(/^I go back$/, async function () {
-  await this.page.native.goBack();
-});
-
 Then(/^I should see the footer promo elements$/, async function () {
   this.context(DCPage);
   await expect(this.page.footerPromoHeading).toBeVisible({timeout: 5000});
