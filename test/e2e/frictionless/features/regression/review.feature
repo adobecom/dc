@@ -3,7 +3,7 @@ Feature: Frictionless Review Block
   Background:
     Given I have a new browser context
 
-  @MWPW-127204 @regression-review
+  @MWPW-127204 @regression @review
   Scenario Outline: Review rating and stats
     Given I go to the <Verb> page
      Then I should see the review stats
