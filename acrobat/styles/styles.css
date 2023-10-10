@@ -10,9 +10,7 @@
 @media (min-width: 900px) {
   .dc-bc .has-breadcrumbs,
   header.has-breadcrumbs {
-    padding-bottom: 33px;
-    visibility: visible;
-    opacity: 1;
+    box-sizing: content-box;
   }
 }
 
