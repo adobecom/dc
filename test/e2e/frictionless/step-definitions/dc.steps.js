@@ -33,46 +33,6 @@ const fs = require("fs");
 const YAML = require('js-yaml');
 import { getComparator } from 'playwright-core/lib/utils';
 
-async function enableNetworkLogging(page) {
-  if (global.config.profile.enableAnalytics) {
-    const networklogs = [];
-    page.networklogs = networklogs;
-
-    console.log('Before all tests: Enable network logging');
-
-    // Enable network logging
-    if (/chromium|msedge|chrome/.test(global.config.profile.browser)) {
-      const client = await page.native.context().newCDPSession(page.native);
-      await client.send('Network.enable');
-      const handleNetworkRequest = async (x) => {
-        if ('hasPostData' in x.request) {
-          if (!x.request.postData) {
-            try {
-              const res = await client.send('Network.getRequestPostData', {
-                requestId: x.requestId,
-              });
-              x.request.postData = res.postData;
-            } catch (err) {
-              console.log(err);
-            }
-          }
-          networklogs.push({
-            url: () => x.request.url,
-            postData: () => x.request.postData,
-          });
-        }
-      };
-
-      client.on('Network.requestWillBeSent', handleNetworkRequest);
-    } else {
-      await page.native.route('**', (route) => {
-        networklogs.push(route.request());
-        route.continue();
-      });
-    }
-  }
-}
-
 Then(/^I have a new browser context$/, async function () {
   PW.context = await PW.browser.newContext(PW.contextOptions);
 });
@@ -103,8 +63,6 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
     "password-protect-pdf": PasswordProtectPdfPage
   }[verb];
   this.page = new pageClass();
-
-  this.page.beforeOpen = enableNetworkLogging;
 
   await this.page.open();
 });
