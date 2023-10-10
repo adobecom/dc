@@ -33,6 +33,45 @@ const fs = require("fs");
 const YAML = require('js-yaml');
 import { getComparator } from 'playwright-core/lib/utils';
 
+async function enableNetworkLogging(page) {
+  if (global.config.profile.enableAnalytics) {
+    const networklogs = [];
+    page.networklogs = networklogs;
+
+    console.log('Before all tests: Enable network logging');
+
+    // Enable network logging
+    if (/chromium|msedge|chrome/.test(global.config.profile.browser)) {
+      const client = await page.native.context().newCDPSession(page.native);
+      await client.send('Network.enable');
+      const handleNetworkRequest = async (x) => {
+        if ('hasPostData' in x.request) {
+          if (!x.request.postData) {
+            try {
+              const res = await client.send('Network.getRequestPostData', {
+                requestId: x.requestId,
+              });
+              x.request.postData = res.postData;
+            } catch (err) {
+              console.log(err);
+            }
+          }
+          networklogs.push({
+            url: () => x.request.url,
+            postData: () => x.request.postData,
+          });
+        }
+      };
+
+      client.on('Network.requestWillBeSent', handleNetworkRequest);
+    } else {
+      await page.native.route('**', (route) => {
+        networklogs.push(route.request());
+        route.continue();
+      });
+    }
+  }
+}
 
 Then(/^I have a new browser context$/, async function () {
   PW.context = await PW.browser.newContext(PW.contextOptions);
@@ -481,14 +520,6 @@ Then(/^I reload DocCloud "([^"]*)"$/, async function (path) {
   await this.page.native.waitForTimeout(1000);
   await this.page.native.goto(path);
 });
-
-Then(
-  /^I should not see the address bar contains "([^\"]*)"$/,
-  async function (fragment) {
-    const pattern = fragment.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-    await expect(this.page.native).not.toHaveURL(new RegExp(pattern), {timeout: 10000});
-  }
-);
 
 Then(/^I go back$/, async function () {
   await this.page.native.goBack();
