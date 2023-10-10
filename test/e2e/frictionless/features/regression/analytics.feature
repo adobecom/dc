@@ -47,7 +47,7 @@ Feature: Analytics - Frictionless Pages
      Then I should see the review stats
      When I submit review feedback
      Then I should see the review submit response
-     Then I load expected analytics data from wiki page "2871483205" with replacements "<Replacements>"
+     Then I read expected analytics data with replacements "<Replacements>"
       And I should see analytics data posted within all logs matched with "Leave a review"
 
   Examples:
