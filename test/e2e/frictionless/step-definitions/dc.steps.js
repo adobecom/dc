@@ -21,8 +21,9 @@ import { ExtractPdfPagesPage } from "../page-objects/extractpdfpages.page";
 import { PdfEditorPage } from "../page-objects/pdfeditor.page";
 import { MergePdfPage } from "../page-objects/mergepdf.page";
 import { CompressPdfPage } from "../page-objects/compresspdf.page";
-import { FrictionlessPage } from "../page-objects/frictionless.page";
 import { PasswordProtectPdfPage } from "../page-objects/passwordprotectpdf.page";
+import { FrictionlessPage } from "../page-objects/frictionless.page";
+import { DCPage } from "../page-objects/dc.page";
 import { CaaSPage } from "../page-objects/caas.page";
 import { cardinal } from "../support/cardinal";
 import { expect } from "@playwright/test";
@@ -31,7 +32,6 @@ const path = require("path");
 const fs = require("fs");
 const YAML = require('js-yaml');
 import { getComparator } from 'playwright-core/lib/utils';
-
 
 Then(/^I have a new browser context$/, async function () {
   PW.context = await PW.browser.newContext(PW.contextOptions);
@@ -60,10 +60,15 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
     "pdf-editor": PdfEditorPage,
     "merge-pdf": MergePdfPage,
     "compress-pdf": CompressPdfPage,
-    "password-protect-pdf": PasswordProtectPdfPage,
+    "password-protect-pdf": PasswordProtectPdfPage
   }[verb];
   this.page = new pageClass();
 
+  await this.page.open();
+});
+
+Then(/^I go to the DC page '([^\"]*)'$/, async function (pageUrl) {
+  this.page = new DCPage(pageUrl);
   await this.page.open();
 });
 
@@ -311,6 +316,7 @@ Then(/^I should (|not )see a modal promoting the browser extension$/, { timeout:
 
 Then(/^I dismiss the extension modal$/, async function () {
   await this.page.closeExtensionModal.click();
+  await expect(this.page.extensionModal).not.toBeVisible();
 });
 
 Then(/^I (screenshot|should be able to open) the submenu of the (.*) menu item(?:|s)$/, async function (action, items) {
@@ -473,4 +479,10 @@ Then(/^I reload DocCloud "([^"]*)"$/, async function (path) {
 
   await this.page.native.waitForTimeout(1000);
   await this.page.native.goto(path);
+});
+
+Then(/^I should see the footer promo elements$/, async function () {
+  this.context(DCPage);
+  await expect(this.page.footerPromoHeading).toBeVisible({timeout: 5000});
+  await expect(this.page.footerPromoBullets).toBeVisible({timeout: 5000});  
 });

@@ -3,7 +3,7 @@ Feature: CaaS Block
   Background:
     Given I have a new browser context
 
-  @MWPW-132351 @regression-caas
+  @MWPW-132351 @regression @caas
   Scenario Outline: CaaS block on frictionless
     Given I go to the <Verb> page
     Then I should see the CaaS block
