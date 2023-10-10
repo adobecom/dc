@@ -104,6 +104,8 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
   }[verb];
   this.page = new pageClass();
 
+  this.page.beforeOpen = enableNetworkLogging;
+
   await this.page.open();
 });
 
