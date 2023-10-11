@@ -334,6 +334,7 @@ const { ietf } = getLocale(locales);
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
     if (window.dc_hosted) {
+      console.log('DC Hosted Ready');
       clearInterval(dcHostedReady);
       const imsIsReady = new CustomEvent('DC_Hosted:Ready');
       window.dispatchEvent(imsIsReady);

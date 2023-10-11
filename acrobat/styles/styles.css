@@ -7,13 +7,16 @@
  *
  */
 
-div[data-section="widget"] {
+ div[data-section="widget"] {
   display: block !important;
 }
 
 #dc-converter-widget {
   background-color: #fc6767;
   min-height: 570px;
+}
+.dc-converter-widget {
+  min-height: calc(100vh - 100px) !important;
 }
 @media (max-width: 600px) {
   #dc-converter-widget {
@@ -32,6 +35,8 @@ div[data-section="widget"] {
   top: 70px;
   right:0;
   z-index: 1;
+  visibility: visible;
+  transition: visibility 0s, opacity 0.5s linear;
 }
 
 #VERB, .hide {
@@ -453,12 +458,19 @@ div.how-to ol li::before{
 
 .widget-button {
   border-radius: 24px;
-  width: 441px;
+  max-width: 441px;
+  width: 55%;
   padding: 10px;
   background: #0265dc;
   margin: 16px auto;
   text-align: center;
   color: #fff;
+}
+
+.widget-button:hover {
+  text-decoration: none;
+  color: #fff;
+  background: #0054b6;
 }
 
 @media (max-width: 600px) {

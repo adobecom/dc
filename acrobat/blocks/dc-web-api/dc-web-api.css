@@ -76,3 +76,20 @@
     flex-flow: row;
     justify-content: center;
 }
+
+
+#CIDTWO {
+  /* display: none; */
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+
+
+#CID.facade {
+  position: absolute;
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s, opacity 0.5s linear;
+}

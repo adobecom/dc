@@ -75,6 +75,7 @@ export default function init(element) {
           // element.setAttribute('ready', '')
 
 
+          const wrappernew = createTag('div', {id: 'CIDTWO', class: `fsw widget-wrapper facade` });
           const wrapper = createTag('div', {id: 'CID', class: `fsw widget-wrapper ` });
           const heading = createTag('h1', { class: 'widget-heading' }, `${content[1].textContent}`);
           const dropZone = createTag('div', { id: 'dZone', class: 'widget-center' });
@@ -110,6 +111,7 @@ export default function init(element) {
             footer.append(iconSecurity);
             footer.append(legal);
             element.append(wrapper);
+            element.append(wrappernew);
           }
 
           if (Number(window.localStorage.limit) === 1 ) {
@@ -120,7 +122,7 @@ export default function init(element) {
           const dcWidgetScript = createTag('script', {
             id: 'adobe_dc_sdk_launcher',
             src: 'https://stage.acrobat.adobe.com/dc-hosted/3.8.0_2.15.2/dc-app-launcher.js',
-            'data-dropzone_id': 'CID',
+            'data-dropzone_id': 'CIDTWO',
             'data-locale': 'us-en',
             'data-server_env': 'prod',
             'data-verb': 'pdf-to-ppt',
@@ -137,19 +139,34 @@ export default function init(element) {
             dropZone.classList.remove('dragging');
           })
 
+
+          window.addEventListener('DC_Hosted:Ready', () => {
+
+            window.dc_hosted.addEventListener((e) => {
+              console.log(e);
+              if (e === 'dropzone-displayed') {
+                document.querySelector('#CIDTWO').id = 'CID'
+              }
+            });
+          });
+
           dropZone.addEventListener('drop', (file) => {
             handleDrop(file);
             dropZone.classList.remove('dragging');
             //make call to dc web and pass over file 
-            if (loadDC) {element.append(dcWidgetScript) }
+            element.querySelector('#CID').append(dcWidgetScript)
+            // if (loadDC) {element.querySelector('#CID').append(dcWidgetScript) }
             if (loadDC) {window.localStorage.limit = 1 + Number(window.localStorage.limit) }
             // loadScript('https://stage.acrobat.adobe.com/dc-hosted/3.10.0_2.16.2/dc-app-launcher.js');
           })
 
           button.addEventListener('change', (e) => {
-            // const selectedFile = document.getElementById("file-upload").files[0];
+            console.log(element);
+            const selectedFile = document.getElementById("file-upload").files[0];
             console.log(selectedFile);
-            if (loadDC) {element.append(dcWidgetScript) }
+            element.querySelector('#CID').append(dcWidgetScript)
+
+            // if (loadDC) {element.querySelector('#CID').append(dcWidgetScript) }
             if (loadDC) {window.localStorage.limit = 1 + Number(window.localStorage.limit) }
           })
         // })
