@@ -184,7 +184,6 @@ export default async function init(element) {
   // Redir URL
   const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
   if (REDIRECT_URL_DIV) {
-    // REDIRECT_URL_DIV.id = 'REDIRECT_URL';
     REDIRECT_URL = REDIRECT_URL_DIV.textContent.trim();
     REDIRECT_URL_DIV.remove();
   }
@@ -210,8 +209,7 @@ export default async function init(element) {
   // Redirect
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
-    if (window.location.hostname !== 'main--dc--adobecom.hlx.live'
-      && window.location.hostname !== 'www.adobe.com') {
+    if (window.location.hostname !== 'www.adobe.com') {
       window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}` || REDIRECT_URL;
     } else {
       window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
