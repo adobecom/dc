@@ -25,10 +25,8 @@
       "containerId": "tools",
       "id": "localize",
       "title": "Localize",
-      "environments": [
-        "edit"
-      ],
-      "url": "https://main--milo--adobecom.hlx.page/tools/loc/index.html?project=dc--adobecom",
+      "environments": [ "edit" ],
+      "url": "https://loc--dc--adobecom.hlx.page/tools/loc/index.html?project=dc--adobecom&&milolibs=loc",
       "passReferrer": true,
       "passConfig": true,
       "excludePaths": [ "/**" ],

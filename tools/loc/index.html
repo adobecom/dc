@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+  <title>Localization</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="translation.css">
+  <script type="module">
+    import { setLibs } from '../../acrobat/scripts/utils.js';
+    const LIBS = '/libs';
+    const miloLibs = setLibs(LIBS);
+    async function loadLibs() {
+      const { loadScript } = await import(`${miloLibs}/utils/utils.js`);
+      loadScript(`${miloLibs}/features/loc/lib/object_hash.js`);
+      loadScript(`${miloLibs}/features/loc/lib/msal-browser.js`);
+    }
+    loadLibs();
+  </script>
+</head>
+<body>
+  <header>
+    <h1 class="container">Localization</h1>
+  </header>
+  <main>
+    <div class="project-overview">
+      <div class="container">
+        <h2 class="project-name">
+          <span class="detail">Project</span>
+          <span id="project-url"></span>
+        </h2>
+        <div id="reload" class="hidden">
+          <button type="button">Reload project</button>
+        </div>
+        <div id="copyToEn" class="hidden">
+          <button type="button">Copy to English Langstore</button>
+        </div>
+        <div id="updateFragments" class="hidden">
+          <button type="button">Update Fragments</button>
+        </div>
+        <div id="send" class="hidden">
+          <button type="button">Start Project</button>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="subhead">
+        <div id="loading" class="hidden">
+          <div id="status" class="modal level-4 wait">Application is loading...</div>
+        </div>
+        <div id="refresh" class="hidden">
+          <button type="button">Get GLaaS updates</button>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="project-detail"></div>
+    </div>
+  </main>
+  <script type="module">
+    import { setLibs } from '../../acrobat/scripts/utils.js';
+    const LIBS = '/libs';
+    const miloLibs = setLibs(LIBS);
+    async function initLoc() {
+      const module = await import(`${miloLibs}/features/loc/ui.js`);
+      module.default();
+    }
+    initLoc();
+  </script>
+</body>
+</html>
