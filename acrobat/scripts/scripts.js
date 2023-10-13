@@ -271,7 +271,6 @@ const CONFIG = {
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
-
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
 
@@ -283,7 +282,8 @@ const { ietf } = getLocale(locales);
     widgetBlock.removeAttribute('class');
     widgetBlock.id = 'dc-converter-widget';
     const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
-    const dcUrls = [
+    const INLINE_SNIPPET = document.querySelector('section#edge-snippet');
+    const dcUrls = INLINE_SNIPPET ? [] : [
       `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verb}-${ietf.toLowerCase()}.html`,
     ];
 
