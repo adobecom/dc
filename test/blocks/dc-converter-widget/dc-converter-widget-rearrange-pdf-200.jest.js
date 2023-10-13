@@ -35,6 +35,6 @@ describe('dc-converter-widget', () => {
     window.performance.mark = jest.fn();
     await init(block);
     jest.runAllTimers();
-    expect(document.querySelector('#CID').children).toHaveLength(1);
+    expect(document.querySelector('.skeleton-wrapper')).toBeTruthy();
   });
 });
