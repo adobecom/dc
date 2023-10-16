@@ -481,6 +481,17 @@ Then(/^I reload DocCloud "([^"]*)"$/, async function (path) {
   await this.page.native.goto(path);
 });
 
+Then(/^I should see "Signed in as" text$/, async function () {
+  this.context(DCPage);
+  await expect(this.page.signInLabel).toBeVisible({timeout: 5000});
+});
+
+Then(/^I click a "Commerce" Button$/, async function () {
+  this.context(DCPage);
+  const commerceButtons = await this.page.commerceButton;
+  await this.page.commerceButton.nth(0).click();
+});
+
 Then(/^I should see the footer promo elements$/, async function () {
   this.context(DCPage);
   await expect(this.page.footerPromoHeading).toBeVisible({timeout: 5000});
