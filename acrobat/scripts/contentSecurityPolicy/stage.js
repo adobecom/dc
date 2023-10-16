@@ -221,7 +221,7 @@ const scriptSrc = [
   'tr.snapchat.com/',
   'universal.iperceptions.com',
   'use.typekit.net',
-  'www.everestjs.net/static/le/',
+  'www.everestjs.net/static/',
   'www.facebook.com',
   'www.google.com',
   'www.googletagmanager.com',

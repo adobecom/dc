@@ -190,7 +190,7 @@ const scriptSrc = [
   'static.ads-twitter.com',
   'universal.iperceptions.com',
   'use.typekit.net',
-  'www.everestjs.net/static/le/',
+  'www.everestjs.net/static/',
   'www.facebook.com',
   'www.google.com',
   'www.googleadservices.com/pagead/',
