@@ -277,7 +277,7 @@ const { ietf } = getLocale(locales);
 
   if (widgetBlock) {
     document.body.classList.add('dc-bc');
-    document.querySelector('header').classList.add('has-breadcrumbs');
+    document.querySelector('header').className = 'global-navigation has-breadcrumbs';
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');
