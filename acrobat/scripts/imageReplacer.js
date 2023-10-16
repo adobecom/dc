@@ -15,7 +15,6 @@ export default async function replacePlaceholdersWithImages(documentElement, loc
 
   await createTag.then((tag) => {
     paragraphs.forEach((p) => {
-      p.setAttribute('style', 'height: 33px;');
       const matched = pattern.exec(p.innerHTML);
       if (matched) {
         const cardsImage = tag('img', {
