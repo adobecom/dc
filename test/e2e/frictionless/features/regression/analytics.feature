@@ -3,13 +3,14 @@ Feature: Analytics - Frictionless Pages
   Background:
     Given I have a new browser context
 
-  @MWPW-130640 @regression-analytics
+  @MWPW-130640 @regression @analytics
   Scenario Outline: Analytics - Frictionless page load and download
     Given I go to the <Verb> page
-     Then I load expected analytics data from wiki page "2871483205" with replacements "<Replacements>"
      Then I upload the file "<File>"
+     Then I wait for the conversion
      Then I download the converted file
      Then I wait for 3 seconds
+     Then I read expected analytics data with replacements "<Replacements>"
       And I should see analytics data posted within all logs matched with "Page load"
       And I should see analytics data posted within all logs matched with "Download"
 
@@ -35,4 +36,20 @@ Feature: Analytics - Frictionless Pages
 
   Examples:
       | Verb         | File                 |
-      | excel-to-pdf | test-files/test.xlsx |      
+      | excel-to-pdf | test-files/test.xlsx |
+
+  @MWPW-130085 @regression @analytics
+  Scenario Outline: Analytics - Review block
+    Given I go to the <Verb> page
+     Then I upload the file "<File>"
+     Then I wait for the conversion
+     Then I download the converted file
+     Then I should see the review stats
+     When I submit review feedback
+     Then I should see the review submit response
+     Then I read expected analytics data with replacements "<Replacements>"
+      And I should see analytics data posted within all logs matched with "Leave a review"
+
+  Examples:
+      | Verb        | Replacements          | File                 |
+      | word-to-pdf | comment=Test,rating=5 | test-files/test.docx |

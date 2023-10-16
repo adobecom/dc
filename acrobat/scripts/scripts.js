@@ -116,6 +116,7 @@ function loadStyles(paths) {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('href', path);
+    link.setAttribute('crossorigin', 'anonymous');
     document.head.appendChild(link);
   });
 }
@@ -270,15 +271,13 @@ const CONFIG = {
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
-  const breadcrumbs = document.querySelector('.breadcrumbs');
-  const header = document.querySelector('header');
-  if (header && breadcrumbs) {
-    header.classList.add('with-breadcrumbs');
-  }
+
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
 
   if (widgetBlock) {
+    document.body.classList.add('dc-bc');
+    document.querySelector('header').className = 'global-navigation has-breadcrumbs';
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');

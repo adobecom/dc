@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Website foundation technology.",
   "scripts": {
-    "test": "npm run wtr ; npm run jest",
+    "test": "npm run wtr && npm run jest",
     "wtr": "wtr \"./test/**/*.test.(js|html)\" --node-resolve --port=2000 --coverage --concurrent-browsers 4",
     "wtr:watch": "npm run wtr -- --watch",
     "jest": "jest --coverage --coverageDirectory=coverage/jest",
@@ -27,7 +27,7 @@
   "homepage": "https://github.com/adobecom/college#readme",
   "devDependencies": {
     "@amwp/platform-ui-automation": "^0.0.4",
-    "@amwp/platform-ui-lib-adobe": "^0.0.4",
+    "@amwp/platform-ui-lib-adobe": "^0.0.6",
     "@babel/core": "7.17.7",
     "@babel/eslint-parser": "7.17.0",
     "@babel/register": "7.17.0",
