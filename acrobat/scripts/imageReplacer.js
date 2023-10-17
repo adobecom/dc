@@ -5,6 +5,7 @@ export default async function replacePlaceholdersWithImages(locale, miloLibs) {
   const path = `${miloLibs}/icons/accepted-credit-cards/${country}.png?format=webply&optimize=medium`;
   const pattern = /{{credit-cards}}/g;
   const paragraphs = document.querySelectorAll('p');
+  let load = true;
 
   await createTag.then((tag) => {
     paragraphs.forEach((p) => {
@@ -12,16 +13,17 @@ export default async function replacePlaceholdersWithImages(locale, miloLibs) {
       if (matched) {
         const img = tag('img', {
           src: path,
-          loading: 'lazy',
           'data-local': 'credit-cards-icon',
           class: 'credit-cards-icon',
           style: 'min-height: 33px;',
         });
         img.addEventListener('error', () => {
           window.lana?.log(`Failed to load credit-card icon for: ${country}`);
-          this.remove();
+          load = false;
         });
-        p.parentNode.replaceChild(img, p);
+        if (load) {
+          p.parentNode.replaceChild(img, p);
+        }
       }
     });
   });
