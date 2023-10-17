@@ -27,7 +27,7 @@
   "homepage": "https://github.com/adobecom/college#readme",
   "devDependencies": {
     "@amwp/platform-ui-automation": "^0.0.4",
-    "@amwp/platform-ui-lib-adobe": "^0.0.6",
+    "@amwp/platform-ui-lib-adobe": "^0.0.7",
     "@babel/core": "7.17.7",
     "@babel/eslint-parser": "7.17.0",
     "@babel/register": "7.17.0",
