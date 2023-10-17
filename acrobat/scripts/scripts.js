@@ -323,7 +323,7 @@ const { ietf } = getLocale(locales);
 
   if (getMetadata('commerce')) {
     const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
-    replacePlaceholdersWithImages(document, ietf, miloLibs);
+    replacePlaceholdersWithImages(ietf, miloLibs);
   }
 
   setConfig({ ...CONFIG, miloLibs });
