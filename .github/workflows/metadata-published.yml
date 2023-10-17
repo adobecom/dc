@@ -1,0 +1,78 @@
+name: Metadata Published
+
+# Franklin Sidekick will trigger this workflow when a resource is published
+on: 
+  repository_dispatch:
+    types:
+      - resource-published
+
+jobs:
+  find-metadata-diff:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Show Event Payload
+      run: |
+        echo "Status: ${{ github.event.client_payload.status }}"
+        echo "Path: ${{ github.event.client_payload.path }}"
+    - name: Download artifact
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: metadata-published.yml
+        workflow_conclusion: success
+        name: base-query-metadata-cache
+        if_no_artifact_found: ignore
+        github_token: ${{ secrets.DC_PAT }}  
+    - name: Query Metadata
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      run: node .github/scripts/query_metadata.js metadata.json query_metadata.json query_metadata.json
+    - name: Query Metadata
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      run: node .github/scripts/query_metadata.js metadata-eng.json query_metadata-eng.json query_metadata-eng.json
+    - name: Query Metadata
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      run: node .github/scripts/query_metadata.js metadata-stage-eng.json query_metadata-stage-eng.json query_metadata-stage-eng.json
+    - uses: actions/upload-artifact@v3
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}    
+      with:
+        name: base-query-metadata-cache
+        path: |
+          query_metadata.json
+          query_metadata-eng.json
+          query_metadata-stage-eng.json
+    - name: List Diff of metadata.json
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      run: cat diff_metadata.json
+    - name: List Diff of metadata-eng.json
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      run: cat diff_metadata-eng.json
+    - name: List Diff of metadata-stage-eng.json
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      run: cat diff_metadata-stage-eng.json
+    - name: Slack Notification
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      run: node .github/scripts/notify_slack.js diff_metadata.json
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    - name: Slack Notification
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      run: node .github/scripts/notify_slack.js diff_metadata-eng.json
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    - name: Slack Notification
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      run: node .github/scripts/notify_slack.js diff_metadata-stage-eng.json
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}                    
+    - name: Trigger DC Workflow
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.DC_PAT }}
+        script: |
+          github.rest.actions.createWorkflowDispatch({
+            owner: 'adobecom',
+            repo: 'dc',
+            workflow_id: 'test-milo.yml',
+            ref: 'main',
+          })      

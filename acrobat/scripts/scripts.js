@@ -101,11 +101,22 @@ const getBrowserData = (userAgent) => {
 // Get browser data
 window.browser = getBrowserData(window.navigator.userAgent);
 
+// Add origin-trial meta tag
+const { hostname } = window.location;
+if (hostname === 'www.stage.adobe.com') {
+  const TRIAL_TOKEN = 'ApPnSNHCIWK27DqNdhiDHtOnC8mmBgtVJX5CLfG0qKTYvEG3MRpIdFTlz35GPStZLs926t+yC9M4Y6Ent+YKbgkAAABkeyJvcmlnaW4iOiJodHRwczovL2Fkb2JlLmNvbTo0NDMiLCJmZWF0dXJlIjoiU2NoZWR1bGVyWWllbGQiLCJleHBpcnkiOjE3MDk2ODMxOTksImlzU3ViZG9tYWluIjp0cnVlfQ==';
+  const tokenElement = document.createElement('meta');
+  tokenElement.httpEquiv = 'origin-trial';
+  tokenElement.content = TRIAL_TOKEN;
+  document.head.appendChild(tokenElement);
+}
+
 function loadStyles(paths) {
   paths.forEach((path) => {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('href', path);
+    link.setAttribute('crossorigin', 'anonymous');
     document.head.appendChild(link);
   });
 }
@@ -260,15 +271,13 @@ const CONFIG = {
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
-  const breadcrumbs = document.querySelector('.breadcrumbs');
-  const header = document.querySelector('header');
-  if (header && breadcrumbs) {
-    header.classList.add('with-breadcrumbs');
-  }
+
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
 
   if (widgetBlock) {
+    document.body.classList.add('dc-bc');
+    document.querySelector('header').className = 'global-navigation has-breadcrumbs';
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');

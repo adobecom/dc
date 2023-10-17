@@ -1,4 +1,5 @@
 import { Then } from "@cucumber/cucumber";
+import { DcGnavPage } from "../page-objects/dcgnav.page";
 import { PdfToPptPage } from "../page-objects/pdftoppt.page";
 import { PdfToWordPage } from "../page-objects/pdftoword.page";
 import { PdfToExcelPage } from "../page-objects/pdftoexcel.page";
@@ -20,8 +21,9 @@ import { ExtractPdfPagesPage } from "../page-objects/extractpdfpages.page";
 import { PdfEditorPage } from "../page-objects/pdfeditor.page";
 import { MergePdfPage } from "../page-objects/mergepdf.page";
 import { CompressPdfPage } from "../page-objects/compresspdf.page";
-import { FrictionlessPage } from "../page-objects/frictionless.page";
 import { PasswordProtectPdfPage } from "../page-objects/passwordprotectpdf.page";
+import { FrictionlessPage } from "../page-objects/frictionless.page";
+import { DCPage } from "../page-objects/dc.page";
 import { CaaSPage } from "../page-objects/caas.page";
 import { cardinal } from "../support/cardinal";
 import { expect } from "@playwright/test";
@@ -30,44 +32,6 @@ const path = require("path");
 const fs = require("fs");
 const YAML = require('js-yaml');
 import { getComparator } from 'playwright-core/lib/utils';
-
-async function enableNetworkLogging(page) {
-  if (global.config.profile.enableAnalytics) {
-    const networklogs = [];
-    page.networklogs = networklogs;
-
-    console.log('Before all tests: Enable network logging');
-
-    // Enable network logging
-    if (/chromium|msedge|chrome/.test(global.config.profile.browser)) {
-      const client = await page.native.context().newCDPSession(page.native);
-      await client.send('Network.enable');
-      const handleNetworkRequest = async (x) => {
-        if ('hasPostData' in x.request) {
-          if (!x.request.postData) {
-            try {
-              const res = await client.send('Network.getRequestPostData', { requestId: x.requestId });
-              x.request.postData = res.postData;
-            } catch (err) {
-              console.log(err);
-            }
-          }
-          networklogs.push({
-            url: () => x.request.url,
-            postData: () => x.request.postData,
-          });
-        }
-      };
-
-      client.on('Network.requestWillBeSent', handleNetworkRequest);
-    } else {
-    await page.native.route('**', (route) => {
-      networklogs.push(route.request());
-      route.continue();
-    });
-  }
-}
-}
 
 Then(/^I have a new browser context$/, async function () {
   PW.context = await PW.browser.newContext(PW.contextOptions);
@@ -96,12 +60,15 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
     "pdf-editor": PdfEditorPage,
     "merge-pdf": MergePdfPage,
     "compress-pdf": CompressPdfPage,
-    "password-protect-pdf": PasswordProtectPdfPage,
+    "password-protect-pdf": PasswordProtectPdfPage
   }[verb];
   this.page = new pageClass();
 
-  this.page.beforeOpen = enableNetworkLogging;
+  await this.page.open();
+});
 
+Then(/^I go to the DC page '([^\"]*)'$/, async function (pageUrl) {
+  this.page = new DCPage(pageUrl);
   await this.page.open();
 });
 
@@ -208,6 +175,10 @@ Then(/^I click "Sign in to download"$/, async function () {
   await this.page.signInButton.click({ timeout: 120000 });
 });
 
+Then(/^I should see sign-in modal$/, async function () {
+  await expect(this.page.signInModal).toBeVisible();
+});
+
 Then(/^I should not see any browser console errors$/, async function () {
   if (this.page.consoleMessages) {
     const errors = this.page.consoleMessages.filter(
@@ -232,6 +203,14 @@ Then(/^I should see the default how-to$/, async function () {
   await expect(this.page.howToDefault).toBeVisible();
 });
 
+Then(/^I should (|not )see eventwrapper onload$/, async function (neg) {
+  if (neg) {
+    await expect(this.page.eventwrapperOnload).not.toBeVisible();
+  } else {
+    await expect(this.page.eventwrapperOnload).toBeVisible();
+  }
+});
+
 Then(/^I should see upsell$/, async function () {
   await expect(this.page.upsellWall).toHaveCount(1, { timeout: 10000 });
 });
@@ -240,10 +219,22 @@ Then(/^I should see the 2nd conversion how-to$/, async function () {
   await expect(this.page.howTo2ndConversion).toBeVisible({ timeout: 10000 });
 });
 
-Then(/^I should see the verb subfooter$/, async function () {
-  await expect(this.page.verbSubfooter).toBeVisible({ timeout: 10000 });
-  const verbCount = await this.page.verbSubfooter.locator("a").count();
-  expect(verbCount).toBeGreaterThan(20);
+Then(/^I should (|not )see the verb subfooter$/, async function (neg) {
+  if (neg) {
+    await expect(this.page.verbSubfooter).not.toBeVisible({ timeout: 10000 });
+  } else {
+    await expect(this.page.verbSubfooter).toBeVisible({ timeout: 10000 });
+    const verbCount = await this.page.verbSubfooter.locator("a").count();
+    expect(verbCount).toBeGreaterThan(20);
+  }
+});
+
+Then(/^I should (|not )see the review component$/, async function (neg) {
+  if (neg) {
+    await expect(this.page.reviewComponent).not.toBeVisible();
+  } else {
+    await expect(this.page.reviewComponent).toBeVisible();
+  }
 });
 
 Then(/^I submit review feedback$/, async function () {
@@ -325,6 +316,7 @@ Then(/^I should (|not )see a modal promoting the browser extension$/, { timeout:
 
 Then(/^I dismiss the extension modal$/, async function () {
   await this.page.closeExtensionModal.click();
+  await expect(this.page.extensionModal).not.toBeVisible();
 });
 
 Then(/^I (screenshot|should be able to open) the submenu of the (.*) menu item(?:|s)$/, async function (action, items) {
@@ -477,4 +469,31 @@ Then(/^I switch to the new page after clicking "Read now" button in the CaaS$/, 
   ]);
   await newPage.waitForLoadState();
   this.page.native = newPage;
+});
+
+
+Then(/^I reload DocCloud "([^"]*)"$/, async function (path) {
+  this.page = new DcGnavPage(path);
+
+  await this.page.open();
+
+  await this.page.native.waitForTimeout(1000);
+  await this.page.native.goto(path);
+});
+
+Then(/^I should see "Signed in as" text$/, async function () {
+  this.context(DCPage);
+  await expect(this.page.signInLabel).toBeVisible({timeout: 5000});
+});
+
+Then(/^I click a "Commerce" Button$/, async function () {
+  this.context(DCPage);
+  const commerceButtons = await this.page.commerceButton;
+  await this.page.commerceButton.nth(0).click();
+});
+
+Then(/^I should see the footer promo elements$/, async function () {
+  this.context(DCPage);
+  await expect(this.page.footerPromoHeading).toBeVisible({timeout: 5000});
+  await expect(this.page.footerPromoBullets).toBeVisible({timeout: 5000});  
 });

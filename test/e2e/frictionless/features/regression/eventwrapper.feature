@@ -3,11 +3,12 @@ Feature: Frictionless Event Wrapper Block
   Background:
     Given I have a new browser context
 
-  @MWPW-127202 @regression-eventwrapper
+  @MWPW-127202 @regression @eventwrapper
   Scenario Outline: L2 Verbs - Personalization events
     Given I go to the <Verb> page
      Then I should see the default how-to
      Then I upload the file "<File>"
+     Then I wait for the conversion
      Then I download the converted file
 
      When I go to the <Verb> page
@@ -30,7 +31,7 @@ Feature: Frictionless Event Wrapper Block
       | word-to-pdf  | test-files/test.docx |
       | excel-to-pdf | test-files/test.xlsx |
 
-  @MWPW-127202 @regression-eventwrapper
+  @MWPW-127202 @regression @eventwrapper
   Scenario Outline: L2 Verbs - Personalization events
     Given I go to the <Verb> page
      Then I should see the default how-to
@@ -51,3 +52,64 @@ Feature: Frictionless Event Wrapper Block
   Examples:
       | Verb       | File                |
       | pdf-to-jpg | test-files/test.pdf |
+
+  @MWPW-137378 @regression @eventwrapper
+  Scenario Outline: L2 Verbs - Personalization events for rotate-pdf
+      Given I go to the <Verb> page
+      Then I should see eventwrapper onload
+      Then I should see the review component
+      Then I should see the verb subfooter
+      Then I upload the file "<File>"
+      Then I should not see eventwrapper onload
+      Then I should not see the review component
+      Then I should not see the verb subfooter
+      Then I save rotated files
+      Then I wait for the conversion
+      Then I should not see eventwrapper onload
+      Then I should see the review component
+      Then I should see the verb subfooter
+
+      Then I go to the <Verb> page
+      Then I should see eventwrapper onload
+      Then I should see the review component
+      Then I should see the verb subfooter
+      Then I upload the file "<File>"
+      Then I should not see eventwrapper onload
+      Then I should not see the review component
+      Then I should not see the verb subfooter
+      Then I save rotated files
+      Then I wait for the conversion
+      Then I should not see eventwrapper onload
+      Then I should see the review component
+      Then I should see the verb subfooter
+
+      When I go to the <Verb> page
+      Then I should see upsell
+      Then I should see eventwrapper onload
+      Then I should not see the review component
+      Then I should see the verb subfooter
+
+  Examples:
+      | Verb       | File                |
+      | rotate-pdf | test-files/test.pdf |
+
+  @MWPW-137439 @regression @eventwrapper
+  Scenario Outline: L2 Verbs - Personalization events for sign-pdf
+      Given I go to the <Verb> page
+      Then I should see eventwrapper onload
+      Then I should see the review component
+      Then I should see the verb subfooter
+      Then I upload the file "<File>"
+      Then I should not see eventwrapper onload
+      Then I should not see the review component
+      Then I should not see the verb subfooter
+      Then I click "Sign in to download"
+      Then I wait for 2 seconds
+      Then I should see sign-in modal
+      Then I should not see eventwrapper onload
+      Then I should not see the review component
+      Then I should not see the verb subfooter
+
+  Examples:
+      | Verb     | File                |
+      | sign-pdf | test-files/test.pdf |

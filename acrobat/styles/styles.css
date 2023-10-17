@@ -6,13 +6,11 @@
  *
  *
  */
-header {
-  min-height: 64px;
-}
 
 @media (min-width: 900px) {
-  header.with-breadcrumbs {
-    padding-bottom: 33px;
+  .dc-bc .has-breadcrumbs,
+  header.has-breadcrumbs {
+    box-sizing: content-box;
   }
 }
 
