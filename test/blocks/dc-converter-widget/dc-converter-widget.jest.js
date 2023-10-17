@@ -45,8 +45,8 @@ describe('dc-converter-widget', () => {
     section.id = 'edge-snippet';
     section.appendChild(document.createTextNode('content'));
     block.appendChild(section);
-    const widget = await init(block);
-    expect(document.querySelector('#CID').dataset.rendered).toEqual("true");
+    await init(block);
+    expect(document.querySelector('#CID').dataset.rendered).toEqual('true');
   });
 
   it.each`
