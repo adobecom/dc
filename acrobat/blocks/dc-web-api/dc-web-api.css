@@ -54,8 +54,8 @@
 }
 
 .widget-big-icon {
-  width: 140px;
-  height: 140px;
+  width: 300px;
+  height: 160px;
   background-image: url(../../img/icons/widget-dz.png);
   background-size: contain;
   margin: auto;
