@@ -166,11 +166,10 @@ export default async function init(element) {
     ENV = 'stage';
   }
 
-  widget.querySelector('div').id = 'VERB';
-  const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
+  const [FIRST_DIV, REDIRECT_URL_DIV, GENERATE_CACHE_URL_DIV] = widget.querySelectorAll(':scope > div');
+  FIRST_DIV.id = 'VERB';
+  const VERB = FIRST_DIV.textContent.trim().toLowerCase();
 
-  // Redir URL
-  const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
   if (REDIRECT_URL_DIV) {
     REDIRECT_URL = REDIRECT_URL_DIV.textContent.trim();
     REDIRECT_URL_DIV.remove();
@@ -186,8 +185,6 @@ export default async function init(element) {
     window.location.href = EOLBrowserPage;
   }
 
-  // Generate cache url
-  const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
   if (GENERATE_CACHE_URL_DIV) {
     // GENERATE_CACHE_URL_DIV.id = 'GENERATE_CACHE_URL';
     DC_GENERATE_CACHE_URL = GENERATE_CACHE_URL_DIV.textContent.trim();
@@ -216,7 +213,14 @@ export default async function init(element) {
   const verbIncludeList = ['compress-pdf', 'fillsign', 'sendforsignature', 'add-comment',
     'delete-pages', 'reorder-pages', 'split-pdf', 'insert-pdf', 'extract-pages', 'crop-pages', 'number-pages'];
 
-  if (verbIncludeList.includes(VERB) || preRenderDropZone) {
+  const INLINE_SNIPPET = widget.querySelector(':scope > section#edge-snippet');
+  if (INLINE_SNIPPET) {
+    widgetContainer.dataset.rendered = 'true';
+    widgetContainer.appendChild(...INLINE_SNIPPET.childNodes);
+    widget.removeChild(INLINE_SNIPPET);
+    cacheLoad = true;
+    performance.mark('milo-move-snippet');
+  } else if (verbIncludeList.includes(VERB) || preRenderDropZone) {
     const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
