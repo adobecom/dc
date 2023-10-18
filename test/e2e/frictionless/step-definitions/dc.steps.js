@@ -1,4 +1,5 @@
 import { Then } from "@cucumber/cucumber";
+import { DcGnavPage } from "../page-objects/dcgnav.page";
 import { PdfToPptPage } from "../page-objects/pdftoppt.page";
 import { PdfToWordPage } from "../page-objects/pdftoword.page";
 import { PdfToExcelPage } from "../page-objects/pdftoexcel.page";
@@ -20,25 +21,17 @@ import { ExtractPdfPagesPage } from "../page-objects/extractpdfpages.page";
 import { PdfEditorPage } from "../page-objects/pdfeditor.page";
 import { MergePdfPage } from "../page-objects/mergepdf.page";
 import { CompressPdfPage } from "../page-objects/compresspdf.page";
+import { PasswordProtectPdfPage } from "../page-objects/passwordprotectpdf.page";
 import { FrictionlessPage } from "../page-objects/frictionless.page";
+import { DCPage } from "../page-objects/dc.page";
+import { CaaSPage } from "../page-objects/caas.page";
 import { cardinal } from "../support/cardinal";
 import { expect } from "@playwright/test";
+const os = require("os");
 const path = require("path");
 const fs = require("fs");
-
-async function enableNetworkLogging(page) {
-  if (global.config.profile.enableAnalytics) {
-    let networklogs = [];
-    page.networklogs = networklogs;
-    console.log('Before all tests: Enable network logging');
-    // Enable network logging
-    await page.native.route('**', (route) => {
-      const url = route.request().url();
-      networklogs.push(route.request());
-      route.continue();
-    });
-  }  
-}
+const YAML = require('js-yaml');
+import { getComparator } from 'playwright-core/lib/utils';
 
 Then(/^I have a new browser context$/, async function () {
   PW.context = await PW.browser.newContext(PW.contextOptions);
@@ -67,11 +60,15 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
     "pdf-editor": PdfEditorPage,
     "merge-pdf": MergePdfPage,
     "compress-pdf": CompressPdfPage,
+    "password-protect-pdf": PasswordProtectPdfPage
   }[verb];
   this.page = new pageClass();
 
-  this.page.beforeOpen = enableNetworkLogging;
+  await this.page.open();
+});
 
+Then(/^I go to the DC page '([^\"]*)'$/, async function (pageUrl) {
+  this.page = new DCPage(pageUrl);
   await this.page.open();
 });
 
@@ -134,6 +131,54 @@ Then(/^I merge the uploaded files$/, async function () {
   await this.page.mergeButton.click({ timeout: 120000 });
 });
 
+Then(/^I save rotated files$/, async function () {
+  this.context(FrictionlessPage);
+  await this.page.mergeButton.click({ timeout: 120000 });
+});
+
+Then(/^I rotate right the uploaded files$/, async function () {
+  this.context(FrictionlessPage);
+  await this.page.rotateRightButton.click({ timeout: 120000 });
+});
+
+Then(/^I rotate left first uploaded file$/, async function () {
+  let file = "//div[@data-test-id='grid-item-wrapper-0']";
+  let fileLeftRotateBtn = `${file}//button[@data-test-id='rotate-left-button']`;
+  await this.page.native.locator(file).click({timeout: 2000});
+  await this.page.native.locator(fileLeftRotateBtn).click({timeout: 2000});
+});
+
+Then(/^I click "Add (signature|initials)"$/, async function (sign) {
+  this.context(FrictionlessPage);
+  const elementToClick = sign === 'signature' ? this.page.addSignature : this.page.addInitials;
+  await elementToClick.click({ timeout: 120000 });
+});
+
+Then(/^I fill up signature input$/, async function () {
+  let signature = "//input[@data-test-id='type-sign-canvas']";
+  await this.page.native.locator(signature).fill('Test signature');
+  await this.page.applyButton.click({timeout: 2000});
+});
+
+Then(/^I sign up the document$/, async function () {
+  let document = '#pageview-current-page';
+  await this.page.native.locator(document).click({timeout: 2000});
+});
+
+Then(/^I should see (signature|initials)$/, async function (sign) {
+  const element = sign === 'signature' ? "//div[@data-testid='fns-field-0']" : "//div[@data-testid='fns-field-1']";
+  await expect(this.page.native.locator(element)).toBeVisible();
+});
+
+Then(/^I click "Sign in to download"$/, async function () {
+  this.context(FrictionlessPage);
+  await this.page.signInButton.click({ timeout: 120000 });
+});
+
+Then(/^I should see sign-in modal$/, async function () {
+  await expect(this.page.signInModal).toBeVisible();
+});
+
 Then(/^I should not see any browser console errors$/, async function () {
   if (this.page.consoleMessages) {
     const errors = this.page.consoleMessages.filter(
@@ -158,6 +203,14 @@ Then(/^I should see the default how-to$/, async function () {
   await expect(this.page.howToDefault).toBeVisible();
 });
 
+Then(/^I should (|not )see eventwrapper onload$/, async function (neg) {
+  if (neg) {
+    await expect(this.page.eventwrapperOnload).not.toBeVisible();
+  } else {
+    await expect(this.page.eventwrapperOnload).toBeVisible();
+  }
+});
+
 Then(/^I should see upsell$/, async function () {
   await expect(this.page.upsellWall).toHaveCount(1, { timeout: 10000 });
 });
@@ -166,10 +219,22 @@ Then(/^I should see the 2nd conversion how-to$/, async function () {
   await expect(this.page.howTo2ndConversion).toBeVisible({ timeout: 10000 });
 });
 
-Then(/^I should see the verb subfooter$/, async function () {
-  await expect(this.page.verbSubfooter).toBeVisible({ timeout: 10000 });
-  const verbCount = await this.page.verbSubfooter.locator("a").count();
-  expect(verbCount).toBeGreaterThan(20);
+Then(/^I should (|not )see the verb subfooter$/, async function (neg) {
+  if (neg) {
+    await expect(this.page.verbSubfooter).not.toBeVisible({ timeout: 10000 });
+  } else {
+    await expect(this.page.verbSubfooter).toBeVisible({ timeout: 10000 });
+    const verbCount = await this.page.verbSubfooter.locator("a").count();
+    expect(verbCount).toBeGreaterThan(20);
+  }
+});
+
+Then(/^I should (|not )see the review component$/, async function (neg) {
+  if (neg) {
+    await expect(this.page.reviewComponent).not.toBeVisible();
+  } else {
+    await expect(this.page.reviewComponent).toBeVisible();
+  }
 });
 
 Then(/^I submit review feedback$/, async function () {
@@ -177,17 +242,17 @@ Then(/^I submit review feedback$/, async function () {
   await this.page.reviewStartInput(3).click({timeout: 5000});
   await this.page.reviewCommentField.fill("Test");
   await this.page.reviewStartInput(5).click();
-  await this.page.reviewCommentSubmit.click();   
+  await this.page.reviewCommentSubmit.click();
 });
 
 Then(/^I should see the review stats$/, async function () {
   this.context(FrictionlessPage);
-  await expect(this.page.reviewStats).toBeVisible({timeout: 5000});  
+  await expect(this.page.reviewStats).toBeVisible({timeout: 5000});
 });
 
 Then(/^I should see the review submit response$/, async function () {
   this.context(FrictionlessPage);
-  await expect(this.page.reviewSubmitResponse).toBeVisible({timeout: 5000});  
+  await expect(this.page.reviewSubmitResponse).toBeVisible({timeout: 5000});
 });
 
 Then(/^I download the pdf from DC web$/, async function () {
@@ -251,19 +316,63 @@ Then(/^I should (|not )see a modal promoting the browser extension$/, { timeout:
 
 Then(/^I dismiss the extension modal$/, async function () {
   await this.page.closeExtensionModal.click();
+  await expect(this.page.extensionModal).not.toBeVisible();
 });
 
-Then(/^I should be able to open the submenu of the (.*) menu item(?:|s)$/, async function (items) {
+Then(/^I (screenshot|should be able to open) the submenu of the (.*) menu item(?:|s)$/, async function (action, items) {
   this.context(FrictionlessPage);
+
   let menuItems = items.replace(/ and /g, ",").split(",");
   menuItems = menuItems.map((x) => x.trim()).filter((x) => x.length > 0);
   for (let item of menuItems) {
     const index = cardinal(item);
     await this.page.openSubMenu(index);
     await expect(this.page.fedsPopup).toBeVisible();
-    await this.page.fedsPopup.screenshot({path: `fedsPopup-${item}.png`});
+    if (action === 'screenshot') {
+      const profile = global.config.profile;
+      let outputDir = this.gherkinDocument.uri.split('/features/')[1].replace('.feature', '');
+      outputDir = `${profile.reportDir}/screenshots/${outputDir}/${os.platform()}/${profile.browser}`;
+      await this.page.fedsPopup.screenshot({path: `${outputDir}/gnav-submenu-${item}.png`});
+    }
     await this.page.closeSubMenu(index);
     await expect(this.page.fedsPopup).not.toBeVisible();
+  }
+});
+
+/***
+ * This step is used to compare the current screenshots with the baseline
+ * screenshots.
+ *
+ * Baseline Folder: features/${feature-name}/${platform}/${browser}
+ * Current Folder: ${report-dir}/screenshots/${feature-name}/${platform}/${browser}
+ * Diff Image: ${report-dir}/${platform}_${browser}_${image-name}.png
+ *
+ * Command line options:
+ * --baseBrowser: Use a different browser to compare with the current browser
+*/
+Then(/^I should see the same screenshots as baseline$/, async function () {
+  const comparator = getComparator('image/png');
+  let baseDir = this.gherkinDocument.uri.replace('.feature', '');
+
+  const profile = global.config.profile;
+  let outputDir = this.gherkinDocument.uri.split('/features/')[1].replace('.feature', '');
+  outputDir = `${profile.reportDir}/screenshots/${outputDir}/${os.platform()}/${profile.browser}`;
+  const images = fs.readdirSync(outputDir).filter(x => x.endsWith('.png'));
+
+  const baseBrowser = profile.baseBrowser || profile.browser;
+
+  const errors = [];
+  for (let image of images) {
+    const baseImage = fs.readFileSync(`${baseDir}/${os.platform()}/${baseBrowser}/${image}`);
+    const currImage = fs.readFileSync(`${outputDir}/${image}`);
+    let diffImage = comparator(baseImage, currImage);
+    if (diffImage) {
+      errors.push(image);
+      fs.writeFileSync(`${profile.reportDir}/${os.platform()}_${profile.browser}_${image}`, diffImage.diff);
+    }
+  }
+  if (errors.length > 0) {
+    throw `Differences found: ${errors.join(', ')}`;
   }
 });
 
@@ -276,7 +385,7 @@ Then(/^I should be able to use the "([^\"]*)" submenu$/, async function (menu) {
 });
 
 Then(/^I select the last item of the submenu of the ([^\"]*) menu item$/, async function (menu) {
-  this.context(FrictionlessPage); 
+  this.context(FrictionlessPage);
   await this.page.openSubMenu(cardinal(menu));
   await this.page.selectFedsPopupItem(-1);
 });
@@ -293,17 +402,98 @@ Then(/^I switch to the new page after clicking "Buy now" button in the header$/,
     this.page.buyNow.click()
   ]);
   await newPage.waitForLoadState();
-  this.page.native = newPage; 
+  this.page.native = newPage;
 });
 
-Then(
-  /^I should not see the address bar contains "([^\"]*)"$/,
-  async function (fragment) {
-    const pattern = fragment.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-    await expect(this.page.native).not.toHaveURL(new RegExp(pattern), {timeout: 10000});
-  }
-);
+Then(/^I read expected analytics data with replacements "([^"]*)"$/, async function (replacements) {
+  const baseDir = this.gherkinDocument.uri.replace('.feature', '');
 
-Then(/^I go back$/, async function () {
-  await this.page.native.goBack();
+  let ymlRaw = fs.readFileSync(`${baseDir}/analytics_spec.yml`, 'utf8');
+
+  const kvs = replacements.split(',').map((x) => x.trim());
+  for (const kv of kvs) {
+    const keyValue = kv.split('=').map((x) => x.trim());
+    if (keyValue.length === 1) {
+      if (keyValue[0] === 'browser') {
+        keyValue.push({chromium: 'Chrome', chrome: 'Chrome', msedge: 'MSFT-Edge'}[global.config.profile.browser]);
+      }
+    }
+    ymlRaw = ymlRaw.replace(new RegExp(`<${keyValue[0]}>`, 'g'), keyValue[1]);
+  }
+
+  const events = YAML.load(ymlRaw);
+  for (const event in events) {
+    const normalizeLogs = [];
+    if (events[event]) {
+      for (const log of events[event]) {
+        const normalizeLog = {};
+        for (const key in log) {
+          normalizeLog.key = key;
+          normalizeLog.value = log[key];
+        }
+        normalizeLogs.push(normalizeLog);
+      }
+    }
+    events[event] = normalizeLogs;
+  }
+
+  this.page.wikiAnalyticsData = events;
+});
+
+Then(/^I should see the CaaS block$/, async function () {
+  this.context(CaaSPage);
+  await expect(this.page.caasFragment).toBeVisible({timeout: 30000});
+  await this.page.native.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect(this.page.caas).toBeVisible({timeout: 30000});
+});
+
+Then(/^I should see the 'More resources' header$/, async function () {
+  const headerContent = await this.page.caasFragment.locator('h2').first().textContent();
+  await expect(headerContent).toEqual('More resources');
+});
+
+Then(/^I should see the CaaS block cards$/, async function () {
+  await expect(this.page.caas.locator('.consonant-Card').first()).toBeVisible({timeout: 30000});
+  const cardCount = await this.page.caas.locator('.consonant-Card').count();
+  expect(cardCount).toBeGreaterThan(1);
+});
+
+Then(/^I click the "Read now" button inside the CaaS card$/, async function () {
+  await this.page.caasButton.nth(0).click();
+});
+
+Then(/^I switch to the new page after clicking "Read now" button in the CaaS$/, async function () {
+  const [newPage] = await Promise.all([
+    PW.context.waitForEvent('page'),
+    this.page.caasButton.nth(0).click()
+  ]);
+  await newPage.waitForLoadState();
+  this.page.native = newPage;
+});
+
+
+Then(/^I reload DocCloud "([^"]*)"$/, async function (path) {
+  this.page = new DcGnavPage(path);
+
+  await this.page.open();
+
+  await this.page.native.waitForTimeout(1000);
+  await this.page.native.goto(path);
+});
+
+Then(/^I should see "Signed in as" text$/, async function () {
+  this.context(DCPage);
+  await expect(this.page.signInLabel).toBeVisible({timeout: 5000});
+});
+
+Then(/^I click a "Commerce" Button$/, async function () {
+  this.context(DCPage);
+  const commerceButtons = await this.page.commerceButton;
+  await this.page.commerceButton.nth(0).click();
+});
+
+Then(/^I should see the footer promo elements$/, async function () {
+  this.context(DCPage);
+  await expect(this.page.footerPromoHeading).toBeVisible({timeout: 5000});
+  await expect(this.page.footerPromoBullets).toBeVisible({timeout: 5000});  
 });

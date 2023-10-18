@@ -30,8 +30,18 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            browser: firefox
+          - os: windows-latest
+            browser: chromium
+          - os: macos-latest
+            browser: webkit          
     name: Smoke Test
     runs-on: ${{ matrix.os }}
+    env:
+      TESTSUITE: '@smoke'
+      BASICTESTS: '$TESTSUITE and (not (@analytics or @extension-installed))'
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -47,21 +57,16 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci --ignore-scripts
 
+      - name: Install browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
       - name: Run the tests
-        run:   |
-          if [ "$RUNNER_OS" == "Linux" ]; then
-              npx playwright install --with-deps firefox
-              xvfb-run -a npx run test/e2e/frictionless -t "@smoke and not @analytics" --browser firefox
-          elif [ "$RUNNER_OS" == "macOS" ]; then
-              npx playwright install --with-deps webkit
-              npx run test/e2e/frictionless -t "@smoke and not @analytics" --browser webkit
-          else
-              npx playwright install --with-deps chromium
-              npx run test/e2e/frictionless -t "@smoke and not @analytics"
-          fi
-        shell: bash
+        run: npx run test/e2e/frictionless -t $BASICTESTS -h -p prod -b ${{ matrix.browser }} --bypassBotDetection
+        env:
+          USER_AGENT_SUFFIX: "${{ secrets.USER_AGENT_SUFFIX }}"
 
       - name: Save test logs
+        if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
           name: reports

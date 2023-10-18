@@ -1,0 +1,4 @@
+Page load:	
+  - c.digitalData.primaryEvent.eventInfo.interaction.impression: /.+/
+
+

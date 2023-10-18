@@ -15,13 +15,14 @@
  */
 const setLibs = (prodLibs, location) => {
   const { hostname, search } = location || window.location;
+  // eslint-disable-next-line compat/compat
   const branch = new URLSearchParams(search).get('milolibs') || 'main';
   if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.adobe.com/libs';
   if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
   if (branch === 'local') return 'http://localhost:6456/libs';
   const tld = hostname.includes('live') ? 'live' : 'page';
   return branch.includes('--') ? `https://${branch}.hlx.${tld}/libs` : `https://${branch}--milo--adobecom.hlx.${tld}/libs`;
-}
+};
 
 const getLocale = (locales, pathname = window.location.pathname) => {
   if (!locales) {
@@ -43,9 +44,9 @@ const getLocale = (locales, pathname = window.location.pathname) => {
   locale.prefix = isUS ? '' : `/${localeString}`;
   locale.region = isUS ? 'us' : localeString.split('_')[0];
   return locale;
-}
+};
 
-const getBrowserData = function (userAgent) {
+const getBrowserData = (userAgent) => {
   if (!userAgent) {
     return {};
   }
@@ -97,14 +98,25 @@ const getBrowserData = function (userAgent) {
   return browser;
 };
 
-//Get browser data
+// Get browser data
 window.browser = getBrowserData(window.navigator.userAgent);
+
+// Add origin-trial meta tag
+const { hostname } = window.location;
+if (hostname === 'www.stage.adobe.com') {
+  const TRIAL_TOKEN = 'ApPnSNHCIWK27DqNdhiDHtOnC8mmBgtVJX5CLfG0qKTYvEG3MRpIdFTlz35GPStZLs926t+yC9M4Y6Ent+YKbgkAAABkeyJvcmlnaW4iOiJodHRwczovL2Fkb2JlLmNvbTo0NDMiLCJmZWF0dXJlIjoiU2NoZWR1bGVyWWllbGQiLCJleHBpcnkiOjE3MDk2ODMxOTksImlzU3ViZG9tYWluIjp0cnVlfQ==';
+  const tokenElement = document.createElement('meta');
+  tokenElement.httpEquiv = 'origin-trial';
+  tokenElement.content = TRIAL_TOKEN;
+  document.head.appendChild(tokenElement);
+}
 
 function loadStyles(paths) {
   paths.forEach((path) => {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('href', path);
+    link.setAttribute('crossorigin', 'anonymous');
     document.head.appendChild(link);
   });
 }
@@ -231,7 +243,7 @@ const CONFIG = {
   local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga' },
   stage: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
-    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js'
+    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
   },
   live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
   prod: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
@@ -259,28 +271,31 @@ const CONFIG = {
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
+
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
+
   if (widgetBlock) {
+    document.body.classList.add('dc-bc');
+    document.querySelector('header').className = 'global-navigation has-breadcrumbs';
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');
     widgetBlock.id = 'dc-converter-widget';
-    const DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
     const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
     const dcUrls = [
       `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verb}-${ietf.toLowerCase()}.html`,
     ];
 
-    dcUrls.forEach( url => {
+    dcUrls.forEach((url) => {
       const link = document.createElement('link');
       link.setAttribute('rel', 'prefetch');
-      if(url.split('.').pop() === 'html') {link.setAttribute('as', 'fetch');}
-      if(url.split('.').pop() === 'js') {link.setAttribute('as', 'script');}
+      if (url.split('.').pop() === 'html') { link.setAttribute('as', 'fetch'); }
+      if (url.split('.').pop() === 'js') { link.setAttribute('as', 'script'); }
       link.setAttribute('href', url);
       link.setAttribute('crossorigin', '');
       document.head.appendChild(link);
-    })
+    });
 
     const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);
     await dcConverter(widgetBlock);
@@ -303,10 +318,13 @@ const { ietf } = getLocale(locales);
   loadStyles(paths);
 
   // Import base milo features and run them
-  const {
-    loadArea, loadScript, setConfig, loadLana, getMetadata
-  } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
+
+  if (getMetadata('commerce')) {
+    const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
+    replacePlaceholdersWithImages(ietf, miloLibs);
+  }
 
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });

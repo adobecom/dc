@@ -4,7 +4,7 @@ import { waitForElement, delay } from '../helpers/waitfor.js';
 
 document.head.innerHTML = '<meta name="promotion" content="abc"/><meta name="dc-widget-version" content="123"/>';
 document.body.innerHTML =
-  '<main><div class="promotion"/><div class="dc-converter-widget"/></main>';
+  '<header><main><div class="promotion"/><div class="dc-converter-widget"/></main></header>';
 
 const { scripts } = await import('../../acrobat/scripts/scripts');
 

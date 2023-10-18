@@ -20,8 +20,24 @@ Feature: Frictionless Converter Block
   Scenario Outline: L2 Verb - Upload and download
     Given I go to the <Verb> page
      Then I upload the file "<File>"
+     Then I wait for the conversion
      Then I download the converted file
 
   Examples:
       | Verb       | File                |
       | pdf-to-ppt | test-files/test.pdf |
+
+  @MWPW-127633 @smoke-skip-MWPW-137700 @converter
+  Scenario Outline: L1 Verb - Redirects for signed-in visitors
+    Given I go to the <Verb> page
+     Then I sign in AdobeID
+     Then I wait for 2 seconds
+     Then I should see the address bar contains "<RedirectLink>"
+
+     Then I go to the <Verb> page
+     Then I wait for 2 seconds
+     Then I should see the address bar contains "<RedirectLink>"
+
+  Examples:
+      | Verb              | RedirectLink                   |
+      | request-signature | /link/acrobat/sendforsignature |
