@@ -212,8 +212,11 @@ export default async function init(element) {
   const isReturningUser = window.localStorage.getItem('pdfnow.auth');
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   const preRenderDropZone = !isReturningUser && !isRedirection;
-  if (VERB === 'compress-pdf' || preRenderDropZone) {
-    const verbFromURL = window.location.pathname.split('/').pop().split('.')[0];
+
+  const verbIncludeList = ['compress-pdf', 'fillsign', 'sendforsignature', 'add-comment',
+    'delete-pages', 'reorder-pages', 'split-pdf', 'insert-pdf', 'extract-pages', 'crop-pages', 'number-pages'];
+
+  if (verbIncludeList.includes(VERB) || preRenderDropZone) {
     const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
@@ -223,7 +226,7 @@ export default async function init(element) {
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
           widgetContainer.appendChild(doc.body.firstElementChild);
-          performance.mark("milo-insert-snippet");
+          performance.mark('milo-insert-snippet');
         }
         break;
       }
