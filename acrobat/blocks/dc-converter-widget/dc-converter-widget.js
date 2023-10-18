@@ -1,16 +1,4 @@
 // Could use webpack/rollup. Just manually inline these structures, for now.
-let skeletonLoad = false;
-let cacheLoad = false;
-setTimeout(() => {
-  const skeletonLoader = new CustomEvent('DC_Skeleton:Ready');
-  window.dispatchEvent(skeletonLoader);
-}, 250);
-
-setTimeout(() => {
-  const skeletonLoader = new CustomEvent('DC_SkeletonShimmer:Ready');
-  window.dispatchEvent(skeletonLoader);
-}, 8000);
-
 const localeMap = {
   '': 'en-us',
   br: 'pt-br',
@@ -222,95 +210,6 @@ export default async function init(element) {
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   const preRenderDropZone = !isReturningUser && !isRedirection;
 
-  // Skeleton
-  if (window.browser?.isMobile && window.location.pathname.includes('rearrange-pdf')) {
-    window.addEventListener('DC_Skeleton:Ready', () => {
-      const skeletonWrapper = document.createElement('div');
-      const skeletonInnerWrapper = document.createElement('div');
-      const skeletonHead = document.createElement('div');
-      const skeletonDropzone = document.createElement('div');
-      const skeletonIcon = document.createElement('div');
-      const skeletonCopyOne = document.createElement('div');
-      const skeletonCopyTwo = document.createElement('div');
-      const skeletonCopyThree = document.createElement('div');
-      const skeletonButton = document.createElement('div');
-
-      skeletonWrapper.className = 'skeleton-wrapper';
-      skeletonHead.className = 'skeleton-head';
-      skeletonHead.setAttribute('aria-hidden', 'true');
-      skeletonHead.setAttribute('aria-busy', 'true');
-      skeletonDropzone.className = 'skeleton-dropzone';
-      skeletonInnerWrapper.className = 'skeleton-inner';
-      skeletonIcon.className = 'skeleton-icon';
-      skeletonCopyOne.className = 'skeleton-copy';
-      skeletonCopyTwo.className = 'skeleton-copy two';
-      skeletonCopyThree.className = 'skeleton-copy three';
-      skeletonButton.className = 'skeleton-button';
-
-      widgetContainer.classList.add('widget-loaded');
-
-      skeletonWrapper.appendChild(skeletonInnerWrapper);
-
-      skeletonInnerWrapper.appendChild(skeletonHead);
-      skeletonInnerWrapper.appendChild(skeletonDropzone);
-      skeletonDropzone.appendChild(skeletonIcon);
-      skeletonDropzone.appendChild(skeletonCopyOne);
-      skeletonDropzone.appendChild(skeletonCopyTwo);
-      skeletonDropzone.appendChild(skeletonCopyThree);
-      skeletonDropzone.appendChild(skeletonButton);
-
-      if (!cacheLoad) {
-        widgetContainer.appendChild(skeletonWrapper);
-
-        setTimeout(() => {
-          skeletonInnerWrapper.className = 'shimmer skeleton-inner';
-        }, 6000);
-      }
-      skeletonLoad = true;
-    });
-
-    window.addEventListener('DC_SkeletonShimmer:Ready', () => {
-      const skeletonWrapper = document.createElement('div');
-      const skeletonInnerWrapper = document.createElement('div');
-      const skeletonHead = document.createElement('div');
-      const skeletonDropzone = document.createElement('div');
-      const skeletonIcon = document.createElement('div');
-      const skeletonCopyOne = document.createElement('div');
-      const skeletonCopyTwo = document.createElement('div');
-      const skeletonCopyThree = document.createElement('div');
-      const skeletonButton = document.createElement('div');
-
-      skeletonWrapper.className = 'skeleton-wrapper';
-      skeletonHead.className = 'skeleton-head';
-      skeletonHead.setAttribute('aria-hidden', 'true');
-      skeletonHead.setAttribute('aria-busy', 'true');
-      skeletonDropzone.className = 'skeleton-dropzone';
-      skeletonInnerWrapper.className = 'shimmer skeleton-inner';
-      skeletonIcon.className = 'skeleton-icon';
-      skeletonCopyOne.className = 'skeleton-copy';
-      skeletonCopyTwo.className = 'skeleton-copy two';
-      skeletonCopyThree.className = 'skeleton-copy three';
-      skeletonButton.className = 'skeleton-button';
-
-      widgetContainer.classList.add('widget-loaded');
-
-      skeletonWrapper.appendChild(skeletonInnerWrapper);
-
-      skeletonInnerWrapper.appendChild(skeletonHead);
-      skeletonInnerWrapper.appendChild(skeletonDropzone);
-      skeletonDropzone.appendChild(skeletonIcon);
-      skeletonDropzone.appendChild(skeletonCopyOne);
-      skeletonDropzone.appendChild(skeletonCopyTwo);
-      skeletonDropzone.appendChild(skeletonCopyThree);
-      skeletonDropzone.appendChild(skeletonButton);
-
-      if (!window.dc_hosted) {
-        widgetContainer.firstChild.replaceWith(skeletonWrapper);
-      }
-      skeletonLoad = true;
-    });
-  }
-
   const verbIncludeList = ['compress-pdf', 'fillsign', 'sendforsignature', 'add-comment',
     'delete-pages', 'reorder-pages', 'split-pdf', 'insert-pdf', 'extract-pages', 'crop-pages', 'number-pages'];
 
@@ -330,10 +229,7 @@ export default async function init(element) {
           widgetContainer.dataset.rendered = 'true';
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
-          cacheLoad = true;
-          if (!skeletonLoad) {
-            widgetContainer.appendChild(doc.body.firstElementChild);
-          }
+          widgetContainer.appendChild(doc.body.firstElementChild);
           performance.mark('milo-insert-snippet');
         }
         break;
@@ -368,11 +264,6 @@ export default async function init(element) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
 
-  if (skeletonLoad) {
-    window.addEventListener('DC_Hosted:Ready', () => {
-      document.querySelector('.skeleton-wrapper').classList.add('fade-out');
-    });
-  }
   widget.appendChild(dcScript);
 
   window.addEventListener('IMS:Ready', () => {

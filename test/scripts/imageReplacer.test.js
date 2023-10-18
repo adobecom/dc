@@ -6,41 +6,32 @@ describe('replacePlaceholdersWithImages', () => {
 
   beforeEach(() => {
     documentElement = document.createElement('div');
-    documentElement.innerHTML = `
-    <p>AMEX_V_MC_D_DU_JCB_PP</p>
-    <p>AMEX_V_MC_JCB_JPBANK</p>
-    <p>AMEX_V_MC_PP</p>
-    <p>AMEX_VISA_MC_D_DU_ELC_PP_BOLETO</p>
-    <p>AMEX_VISA_MC_D_DU_JCB_PAYPAL</p>
-    <p>AMEX_VISA_MC_D_PAYPAL</p>
-    <p>AMEX_VISA_MC_JCB_JPBANK_JPSTORE</p>
-    <p>V_MC_DD_PP</p>
-    <p>V_MC</p>
-  `;
+    documentElement.innerHTML = '<p>{{credit-cards}}</p>';
+    document.body.innerHTML = '';
+    document.body.appendChild(documentElement);
   });
 
   it('replaces card placeholders with images', async () => {
-    await replacePlaceholdersWithImages(documentElement);
-    const imgElements = documentElement.querySelectorAll('img');
-    expect(imgElements.length).to.equal(9);
+    await replacePlaceholdersWithImages('es-US', '/libs');
+    const imgElements = document.querySelectorAll('img');
+    expect(imgElements.length).to.equal(1);
     imgElements.forEach((img) => {
-      expect(img.getAttribute('src')).to.match(/\/acrobat\/img\/icons\/credit-cards-.+\.(jpg|png)/);
+      expect(img.getAttribute('src')).to.match(/.*\/icons\/accepted-credit-cards\/[^/]+\.(jpg|png|webp)/);
       expect(img.getAttribute('loading')).to.equal('lazy');
-      expect(img.getAttribute('data-local')).to.equal('credit-cards');
+      expect(img.getAttribute('class')).to.equal('credit-cards-icon');
     });
   });
 
   it('removes the original paragraph element', async () => {
-    await replacePlaceholdersWithImages(documentElement);
+    await replacePlaceholdersWithImages('en-US', '/libs');
     const pElements = documentElement.querySelectorAll('p');
     expect(pElements.length).to.equal(0);
   });
 
   it('logs an error if an image fails to load', async () => {
-    await replacePlaceholdersWithImages(documentElement);
-    const imgElements = documentElement.querySelectorAll('img');
-    await imgElements[0].onerror();
-    const imgElements2 = documentElement.querySelectorAll('img');
-    expect(imgElements2.length).to.equal(8);
+    await replacePlaceholdersWithImages('en-US', '/libs');
+    expect(documentElement.querySelectorAll('img').length).to.equal(1);
+    await documentElement.querySelectorAll('img')[0].onerror();
+    expect(documentElement.querySelectorAll('img').length).to.equal(0);
   });
 });

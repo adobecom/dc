@@ -321,6 +321,11 @@ const { ietf } = getLocale(locales);
   const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
 
+  if (getMetadata('commerce')) {
+    const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
+    replacePlaceholdersWithImages(ietf, miloLibs);
+  }
+
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc' });
 
@@ -348,9 +353,4 @@ const { ietf } = getLocale(locales);
       window.dispatchEvent(imsIsReady);
     }
   }, 1000);
-
-  if (getMetadata('commerce')) {
-    const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
-    replacePlaceholdersWithImages(document);
-  }
 }());
