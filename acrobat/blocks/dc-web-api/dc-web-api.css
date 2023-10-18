@@ -37,9 +37,9 @@
 
 .widget-legal {
   margin-top: 30px;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 20px;
-  max-width: 420px;
+  max-width: 450px;
   text-align: left;
 }
 
@@ -63,8 +63,8 @@
 }
 
 .security-icon {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   background-image: url(../../img/icons/widget-sec.png);
   background-size: contain;
   background-repeat: no-repeat;
