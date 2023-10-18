@@ -30,10 +30,8 @@ describe('replacePlaceholdersWithImages', () => {
 
   it('logs an error if an image fails to load', async () => {
     await replacePlaceholdersWithImages('en-US', '/libs');
-    const imgElements = documentElement.querySelectorAll('img');
-    expect(imgElements.length).to.equal(1);
-    await imgElements[0].onerror();
-    const imgElements2 = documentElement.querySelectorAll('img');
-    expect(imgElements2.length).to.equal(1);
+    expect(documentElement.querySelectorAll('img').length).to.equal(1);
+    await documentElement.querySelectorAll('img')[0].onerror();
+    expect(documentElement.querySelectorAll('img').length).to.equal(0);
   });
 });
