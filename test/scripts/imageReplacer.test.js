@@ -7,27 +7,29 @@ describe('replacePlaceholdersWithImages', () => {
   beforeEach(() => {
     documentElement = document.createElement('div');
     documentElement.innerHTML = '<p>{{credit-cards}}</p>';
+    document.body.innerHTML = '';
+    document.body.appendChild(documentElement);
   });
 
   it('replaces card placeholders with images', async () => {
-    await replacePlaceholdersWithImages(documentElement, 'en-US', '/libs');
-    const imgElements = await documentElement.querySelectorAll('img');
+    await replacePlaceholdersWithImages('es-US', '/libs');
+    const imgElements = document.querySelectorAll('img');
     expect(imgElements.length).to.equal(1);
     imgElements.forEach((img) => {
       expect(img.getAttribute('src')).to.match(/.*\/icons\/accepted-credit-cards\/[^/]+\.(jpg|png|webp)/);
       expect(img.getAttribute('loading')).to.equal('lazy');
-      expect(img.getAttribute('data-local')).to.equal('credit-cards-icon');
+      expect(img.getAttribute('class')).to.equal('credit-cards-icon');
     });
   });
 
   it('removes the original paragraph element', async () => {
-    await replacePlaceholdersWithImages(documentElement, 'en-US', '/libs');
+    await replacePlaceholdersWithImages('en-US', '/libs');
     const pElements = documentElement.querySelectorAll('p');
     expect(pElements.length).to.equal(0);
   });
 
   it('logs an error if an image fails to load', async () => {
-    await replacePlaceholdersWithImages(documentElement, 'en-US', '/libs');
+    await replacePlaceholdersWithImages('en-US', '/libs');
     const imgElements = documentElement.querySelectorAll('img');
     expect(imgElements.length).to.equal(1);
     await imgElements[0].onerror();
