@@ -36,7 +36,7 @@ describe('Test dcLana script', async () => {
     document.dispatchEvent(event);
     expect(window.lana.log.calledOnce).to.be.true;
     expect(window.lana.log.getCall(0).args[0]).to.eq(
-      'test violation ¶ Refused to load content from www.adobe.com'
+      'test violation ¶ Refused to load content from www.adobe.com',
     );
     expect(window.lana.log.getCall(0).args[1].tags).to.eq(
       'Cat=Frictionless_CSP',
