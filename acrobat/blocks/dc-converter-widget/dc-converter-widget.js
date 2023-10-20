@@ -212,7 +212,7 @@ export default async function init(element) {
     if (window.location.hostname !== 'www.adobe.com'
     && window.location.hostname !== 'sign.ing'
     && window.location.hostname !== 'edit.ing') {
-      window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
+      window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}` || REDIRECT_URL;
     } else {
       window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
     }
