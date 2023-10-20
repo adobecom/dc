@@ -26,7 +26,7 @@ export default function lanaLogging() {
     }
   }, 10000);
 
-  window.dcwErrors?.forEach((error) => { 
+  window.dcwErrors?.forEach((error) => {
     lanaOptions.tags = 'Cat=Frictionless';
     window.lana?.log(error, lanaOptions);
   });
