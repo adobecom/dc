@@ -83,6 +83,7 @@ body.l2-state #CID div[class^='LifecycleOrganizeSettings__organizeSettings__'] {
 body.l2-state.hide-content #CID div[class^='PdfnowLifecycle__lifecycle'],
 body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
   min-height: 75vh;
+  height: 75vh;
 }
 
 body.l2-state.hide-content .global-footer {
@@ -121,7 +122,7 @@ body.l2-state div[data-section='widget'].widget-default-height {
   }
 
   body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
-    min-height: 80vh;
+    min-height: 75vh;
   }
 }
 
@@ -135,7 +136,7 @@ body.l2-state div[data-section='widget'].widget-default-height {
     top: unset;
   }
 
-  body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'], 
+  body.l2-state.hide-content #CID div[class^='FillSign2Viewer__dropzoneWrapper'],
   body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
     height: 95%;
     min-height: 95%;
