@@ -64,7 +64,7 @@ describe('Test dcLana script', async () => {
       "DC Widget Didn't Load ¶ Reason: DC Hosted did not load"
     );
     expect(window.lana.log.getCall(0).args[1].tags).to.eq(
-      'Cat=Frictionless'
+      'Cat=Frictionless',
     );
   });
 
