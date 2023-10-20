@@ -1,7 +1,8 @@
 const PROD_ENVS = [
-  'www.adobe.com'
+  'www.adobe.com',
+  'sign.ing',
+  'edit.ing',
 ];
-
 const STAGE_ENVS = [
   'www.stage.adobe.com',
   'main--dc--adobecom.hlx.page',
