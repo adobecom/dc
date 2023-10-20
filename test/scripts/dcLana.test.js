@@ -53,7 +53,7 @@ describe('Test dcLana script', async () => {
       'DC Widget Failed ¶ Reason: Error'
     );
     expect(window.lana.log.getCall(0).args[1].tags).to.eq(
-      'Cat=Frictionless'
+      'Cat=Frictionless',
     );
   });
 
