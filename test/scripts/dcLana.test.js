@@ -50,7 +50,7 @@ describe('Test dcLana script', async () => {
     window.dispatchEvent(new CustomEvent('DC_Hosted:Ready'));
     expect(window.lana.log.calledOnce).to.be.true;
     expect(window.lana.log.getCall(0).args[0]).to.eq(
-      'DC Widget Failed ¶ Reason: Error'
+      'DC Widget Failed ¶ Reason: Error',
     );
     expect(window.lana.log.getCall(0).args[1].tags).to.eq(
       'Cat=Frictionless',
