@@ -37,7 +37,6 @@ export default function lanaLogging() {
       lanaCspOptions.tags = 'Cat=Frictionless_CSP';
       window.lana?.log(error, lanaCspOptions);
     })
-  
     document.addEventListener("securitypolicyviolation", (e) => {
       lanaCspOptions.tags = 'Cat=Frictionless_CSP';
       window.lana?.log(`${e.violatedDirective} violation ¶ Refused to load content from ${e.blockedURI}`, lanaCspOptions);
