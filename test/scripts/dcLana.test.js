@@ -61,7 +61,7 @@ describe('Test dcLana script', async () => {
     clock.tick(10010);
     expect(window.lana.log.calledOnce).to.be.true;
     expect(window.lana.log.getCall(0).args[0]).to.eq(
-      "DC Widget Didn't Load ¶ Reason: DC Hosted did not load"
+      "DC Widget Didn't Load ¶ Reason: DC Hosted did not load",
     );
     expect(window.lana.log.getCall(0).args[1].tags).to.eq(
       'Cat=Frictionless',
