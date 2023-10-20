@@ -26,8 +26,19 @@ jobs:
               -u '${{ secrets.JNK_USER }}:${{ secrets.JNK_API_TOKEN }}'
 
   run-tests-gha:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            browser: firefox
+          - os: windows-latest
+            browser: chromium
+          - os: macos-latest
+            browser: webkit          
     name: Smoke Test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -37,19 +48,22 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci --ignore-scripts
 
-      - name: Install Playwright
-        run: npx playwright install --with-deps chromium
+      - name: Install browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Run the tests
-        run: xvfb-run -a npx run test/e2e/frictionless -t @smoke-converter
+        run: npx run test/e2e/frictionless -t "@smoke and (not (@analytics or @extension-installed))" -h -p prod -b ${{ matrix.browser }} --bypassBotDetection
+        env:
+          USER_AGENT_SUFFIX: "${{ secrets.USER_AGENT_SUFFIX }}"
 
       - name: Save test logs
+        if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
           name: reports

@@ -1,0 +1,40 @@
+name: Test Published Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_url:
+        description: 'Test URL'
+        required: true
+        default: 'https://www.adobe.com/'
+
+jobs:
+  run-tests:
+    name: Running tests
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.38.1-jammy
+
+    steps: 
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: Cache dependencies
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: ./node_modules
+        key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
+
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --ignore-scripts
+
+    - name: Run tests
+      run: npx playwright test .github/scripts/check_404.spec.js
+      env:
+        USER_AGENT_SUFFIX: "${{ secrets.USER_AGENT_SUFFIX }}"
+        TEST_URL: "${{ github.event.inputs.test_url }}"
+     

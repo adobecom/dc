@@ -3,12 +3,13 @@ Feature: Frictionless Event Wrapper Block
   Background:
     Given I have a new browser context
 
-  @MWPW-130448 @smoke-eventwrapper
+  @MWPW-130448 @smoke @eventwrapper
   Scenario Outline: L2 Verb - Personalization events
     Given I go to the <Verb> page
      Then I should see the default how-to
       And I should see the verb subfooter
      Then I upload the file "<File>"
+     Then I wait for the conversion
      Then I download the converted file
 
      When I go to the <Verb> page

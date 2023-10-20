@@ -41,11 +41,9 @@ describe('Test scripts', () => {
       initialized: true,
       isSignedInUser: jest.fn().mockReturnValue(false),
     };
-    window.bowser = {
-      getParser: () => ({
-        getBrowserName: () => 'Chrome',
-        getBrowserVersion: () => '110.0',
-      }),
+    window.browser = {
+      name: 'Chrome',
+      isMobile: false,
     };
     window._satellite = {
       track: jest.fn(),
@@ -62,7 +60,7 @@ describe('Test scripts', () => {
     document.head.innerHTML =
       '<meta name="promotion" content="abc"/><meta name="dc-widget-version" content="123"/>';
     document.body.innerHTML =
-      '<main><div class="dc-converter-widget"/><div/></main>';
+      '<header><main><div class="dc-converter-widget"><div><div>pdf-to-image</div></div></div></main></header>';
   });
 
   describe('Test prod', () => {

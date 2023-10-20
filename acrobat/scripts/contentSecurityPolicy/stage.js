@@ -84,6 +84,7 @@ const frameSrc = [
   '\'self\'',
   'data:',
   'blob:',
+  '*.adobe.io',
   '*.amazonaws.com',
   '*.blob.core.windows.net',
   '*.snapchat.com/',
@@ -91,6 +92,7 @@ const frameSrc = [
   'accounts.google.com',
   'adobe.demdex.net',
   'bid.g.doubleclick.net',
+  'commerce-stg.adobe.com',
   'dc-api-stage.adobecontent.io',
   'dc-api.adobecontent.io',
   'dc.stage.acrobat.com',
@@ -102,6 +104,7 @@ const frameSrc = [
   'www.facebook.com',
   'www.youtube.com',
   's.company-target.com',
+  'stage-ui.messaging.adobe.com/',
   ';',
 ];
 
@@ -152,6 +155,7 @@ const imgSrc = [
   '*.hlx.live',
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
+  'client.messaging.adobe.com/',
   ';',
 ];
 

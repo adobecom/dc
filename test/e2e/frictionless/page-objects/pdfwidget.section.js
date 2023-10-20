@@ -1,15 +1,15 @@
-import { Section } from "@amwp/platform-ui-automation/lib/common/page-objects/section";
+import { Section } from '@amwp/platform-ui-automation/lib/common/page-objects/section';
 
 export class PdfWidgetSection extends Section {
   constructor() {
     super();
     this.buildProps({
-      selectButton: "#lifecycle-nativebutton",
+      selectButton: '#lifecycle-nativebutton',
       fileUploadInput: '//input[contains(@class,"FileUpload")]',
       dropZoneInput: '//input[contains(@class,"DropzoneContent")]',
       downloadButton: 'button[data-test-id="download"], button[data-testid*="download"]',
       filenameHeader: '//div[contains(@class, "FilenameHeader__name")]',
-      selectFormat: "button#select-format",
+      selectFormat: 'button#select-format',
       convertButton: 'button[data-test-id*="convert"]',
       mergeButton: 'button[data-test-id*="merge"]',
       continueWithAdobe: 'button[data-test-id="adobe-social-cta-button"]',
@@ -24,6 +24,12 @@ export class PdfWidgetSection extends Section {
       dcWebDocumentsTab: '//div[@role="tab"]//span[text()="Documents"]/..',
       dcWebCheckAllFiles: '//div[contains(@class, "Files")]//input[@title="Select All"]',
       dcWebDelete: '//button[@data-test-id="delete-action-button"]',
+      rotateRightButton: 'button[id="rotate-right"]',
+      addSignature: 'div[data-testid*="add-signature"]',
+      addInitials: 'div[data-testid*="add-initials"]',
+      applyButton: 'button[data-test-id="apply-btn"]',
+      signInButton: 'button[data-test-id="sign-in-btn"]',
+      signInModal: 'div[data-test-id="sign-in-modal-content"]',
     });
   }
 
@@ -36,6 +42,7 @@ export class PdfWidgetSection extends Section {
   }
 
   async download() {
+    await this.downloadButton.waitFor({ timeout: 180000 });
     await this.downloadButton.click({ timeout: 180000 });
   }
 

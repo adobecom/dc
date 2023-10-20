@@ -54,6 +54,7 @@ const connectSrc = [
   '*.hlx.page',
   '*.hlx.live',
   'cdn.linkedin.oribi.io',
+  'adobedc.demdex.net/',
   ';',
 ];
 
@@ -81,12 +82,14 @@ const frameSrc = [
   '\'self\'',
   'data:',
   'blob:',
+  '*.adobe.io',
   '*.amazonaws.com',
   '*.blob.core.windows.net',
   '9212252.fls.doubleclick.net',
   'accounts.google.com',
   'adobe.demdex.net',
   'bid.g.doubleclick.net',
+  'commerce-stg.adobe.com',
   'dc-api-dev.adobecontent.io',
   'dc.dev.dexilab.acrobat.com',
   'dev.acrobat.adobe.com',
@@ -99,6 +102,7 @@ const frameSrc = [
   'www.facebook.com',
   'www.youtube.com',
   's.company-target.com',
+  'stage-ui.messaging.adobe.com/',
   ';',
 ];
 
@@ -145,6 +149,7 @@ const imgSrc = [
   'fast-track--milo--adobecom.hlx.live',
   '*.hlx.page',
   '*.hlx.live',
+  'client.messaging.adobe.com/',
   ';',
 ];
 

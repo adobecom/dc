@@ -1,6 +1,6 @@
 Feature: Frictionless Browser Extension Modal
 
-  @MWPW-130086 @regression-ext-installed
+  @MWPW-130086 @regression @extension-installed @headed
   Scenario Outline: Acrobat extension is already installed
     Given I go to the <Verb> page
      Then I resize the browser window to 1366x768
@@ -21,7 +21,7 @@ Feature: Frictionless Browser Extension Modal
       | Verb       | File                |
       | pdf-to-ppt | test-files/test.pdf |
 
-  @MWPW-130086 @regression-ext-headed
+  @MWPW-130086 @regression @extension @headed
   Scenario Outline: Display the modal if Acrobat extension is not already installed
     Given I have a new browser context
     Given I go to the <Verb> page
@@ -43,7 +43,7 @@ Feature: Frictionless Browser Extension Modal
       | Verb         | File                 |
       | excel-to-pdf | test-files/test.xlsx |
 
-  @MWPW-130086 @regression-ext-headed
+  @MWPW-130086 @regression @extension @headed
   Scenario Outline: User dismisses the Acrobat extension modal
     Given I have a new browser context
     Given I go to the <Verb> page
@@ -59,10 +59,10 @@ Feature: Frictionless Browser Extension Modal
      Then I should not see a modal promoting the browser extension
 
   Examples:
-      | Verb     | File                |
-      | sign-pdf | test-files/test.pdf |
+      | Verb              | File                |
+      | request-signature | test-files/test.pdf |
 
-  @MWPW-130086 @regression-ext-headed
+  @MWPW-130086 @regression @extension @headed
   Scenario Outline: Mobile and tablets should not display the modal
     Given I have a new browser context
     Given I go to the <Verb> page
@@ -78,5 +78,5 @@ Feature: Frictionless Browser Extension Modal
      Then I should not see a modal promoting the browser extension
 
   Examples:
-      | Verb     | File                |
-      | sign-pdf | test-files/test.pdf |
+      | Verb              | File                |
+      | request-signature | test-files/test.pdf |
