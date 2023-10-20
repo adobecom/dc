@@ -4,6 +4,14 @@
   color: transparent;
 }
 
+.widget-copy {
+  font-size: 16px;
+  text-align: center;
+  margin: 0 10px;
+  font-weight: 400;
+  color: #4b4b4b;
+}
+
 .demo-text {
   text-align: center;
   font-size: 8px;
@@ -18,6 +26,7 @@
 .widget-sub {
   margin: 42px auto 0;
   text-align: center;
+  font-weight: 700;
   display: flex;
   align-items: center;
   max-width: 300px;
