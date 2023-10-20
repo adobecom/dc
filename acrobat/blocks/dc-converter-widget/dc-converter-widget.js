@@ -218,7 +218,6 @@ export default async function init(element) {
     widgetContainer.dataset.rendered = 'true';
     widgetContainer.appendChild(...INLINE_SNIPPET.childNodes);
     widget.removeChild(INLINE_SNIPPET);
-    cacheLoad = true;
     performance.mark('milo-move-snippet');
   } else if (verbIncludeList.includes(VERB) || preRenderDropZone) {
     const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
