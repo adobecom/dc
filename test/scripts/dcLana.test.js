@@ -25,7 +25,7 @@ describe('Test dcLana script', async () => {
     expect(window.lana.log.calledOnce).to.be.true;
     expect(window.lana.log.getCall(0).args[0]).to.eq('Fake Error');
     expect(window.lana.log.getCall(0).args[1].tags).to.eq(
-      'Cat=Frictionless_CSP'
+      'Cat=Frictionless_CSP',
     );
   });
 
