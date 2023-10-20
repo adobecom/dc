@@ -149,7 +149,7 @@ export default async function init(element) {
   let REDIRECT_URL = '';
   let DC_GENERATE_CACHE_URL = '';
 
-  if (window.location.hostname === 'www.adobe.com') {
+  if (window.location.hostname === 'www.adobe.com' || window.location.hostname === 'sign.ing' || window.location.hostname === 'edit.ing') {
     WIDGET_ENV = `https://acrobat.adobe.com/dc-hosted/${DC_WIDGET_VERSION}/dc-app-launcher.js`;
     DC_DOMAIN = 'https://www.adobe.com/dc';
     ENV = 'prod';
@@ -189,8 +189,9 @@ export default async function init(element) {
   // Redirect
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
-    if (window.location.hostname != 'main--dc--adobecom.hlx.live'
-      && window.location.hostname != 'www.adobe.com' ) {
+    if (window.location.hostname !== 'www.adobe.com'
+    && window.location.hostname !== 'sign.ing'
+    && window.location.hostname !== 'edit.ing') {
       window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
     } else {
       window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
