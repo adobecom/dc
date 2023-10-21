@@ -9,6 +9,8 @@
   text-align: center;
   margin: 0 10px;
   font-weight: 400;
+  padding-top: 20px;
+  padding-bottom: 7px;
   color: #4b4b4b;
 }
 
@@ -25,6 +27,7 @@
 
 .widget-button {
   width: 347px;
+  font-size: 18px;
   font-weight: 700;
 }
 
@@ -35,6 +38,7 @@
   display: flex;
   align-items: center;
   max-width: 300px;
+  color: #2c2c2c;
 }
 
 .widget-center {
@@ -43,6 +47,7 @@
   margin: auto;
   height: 70%;
   border-radius: 8px;
+  justify-content: flex-start;
 }
 
 .widget-center.dragging {
@@ -65,16 +70,21 @@
   background-image: url('../../img/icons/widget-icon.png');
   background-size: cover;
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 15px;
+}
+
+.widget-heading{
+  margin: 0 0 18px;
 }
 
 .widget-big-icon {
-  width: 270px;
+  width: 260px;
   height: 160px;
   background-image: url(../../img/icons/widget-dz.png);
   background-size: contain;
   margin: auto;
   background-repeat: no-repeat;
+  padding-bottom: 10px;
 }
 
 .security-icon {
