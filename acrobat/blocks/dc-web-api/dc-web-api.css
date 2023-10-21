@@ -23,6 +23,11 @@
   color: initial;
 }
 
+.widget-button {
+  width: 347px;
+  font-weight: 700;
+}
+
 .widget-sub {
   margin: 42px auto 0;
   text-align: center;
@@ -47,8 +52,9 @@
 .widget-legal {
   margin-top: 30px;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 15px;
   max-width: 450px;
+  color: #4b4b4b;
   text-align: left;
 }
 
