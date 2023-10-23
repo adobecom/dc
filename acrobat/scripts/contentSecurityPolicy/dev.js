@@ -8,6 +8,7 @@ const connectSrc = [
   '\'self\'',
   'blob:',
   '14257-chimera-stage.adobeioruntime.net',
+  '14257-chimera.adobeioruntime.net',
   '*.adobe.com',
   '*.adobe.io',
   '*.adobelogin.com',
