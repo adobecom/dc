@@ -24,7 +24,6 @@ import { CompressPdfPage } from "../page-objects/compresspdf.page";
 import { PasswordProtectPdfPage } from "../page-objects/passwordprotectpdf.page";
 import { FrictionlessPage } from "../page-objects/frictionless.page";
 import { DCPage } from "../page-objects/dc.page";
-import { CaaSPage } from "../page-objects/caas.page";
 import { cardinal } from "../support/cardinal";
 import { expect } from "@playwright/test";
 const os = require("os");
@@ -441,7 +440,6 @@ Then(/^I read expected analytics data with replacements "([^"]*)"$/, async funct
 });
 
 Then(/^I should see the CaaS block$/, async function () {
-  this.context(CaaSPage);
   await expect(this.page.caasFragment).toBeVisible({timeout: 30000});
   await this.page.native.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await expect(this.page.caas).toBeVisible({timeout: 30000});
