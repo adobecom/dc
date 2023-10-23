@@ -497,3 +497,27 @@ Then(/^I should see the footer promo elements$/, async function () {
   await expect(this.page.footerPromoHeading).toBeVisible({timeout: 5000});
   await expect(this.page.footerPromoBullets).toBeVisible({timeout: 5000});  
 });
+
+Then(/^I should see that the prices match on checkout from the (.*) merch card(?:|s)$/, async function (items) {
+  this.context(DCPage);
+
+  let products = items.replace(/ and /g, ";").split(';');
+
+  for (let index = 0; index < products.length; index++) {
+    let price = await this.page.getInlinePrice(index);
+
+    let checkoutLinks = products[index].split(',');
+    checkoutLinks = checkoutLinks.map((x) => x.trim().replace(/[']/g, ""));
+
+    for (let link of checkoutLinks) {
+      await this.page.clickCheckoutLink(index, link);
+
+      let checkoutPrice = await this.page.checkoutPrice.getAttribute("aria-label");
+      await expect(price).toContain(checkoutPrice);
+
+      console.log(`'${price}' matched the checkout price '${checkoutPrice}'`);
+  
+      await this.page.native.goBack();
+    }
+  }
+});
