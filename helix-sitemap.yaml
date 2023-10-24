@@ -340,13 +340,7 @@ sitemaps:
         destination: /bg/dc-shared/assets/sitemap.xml
         hreflang: bg-BG
 
-      ru:
-        source: /ru/dc-shared/assets/query-index.json
-        alternate: /ru/{path}.html
-        destination: /ru/dc-shared/assets/sitemap.xml
-        hreflang: ru-RU
-        
-      cis_ru_kz:
+      cis_ru:
         source: /ru/dc-shared/assets/query-index.json
         alternate: /ru/{path}.html
         destination: /ru/dc-shared/assets/sitemap.xml
@@ -357,6 +351,7 @@ sitemaps:
           - ru-KG
           - ru-KZ
           - ru-MD
+          - ru-RU
           - ru-TJ
           - ru-UZ
 
@@ -365,12 +360,6 @@ sitemaps:
         alternate: /ua/{path}.html
         destination: /ua/dc-shared/assets/sitemap.xml
         hreflang: uk-UA
-
-      il_he:
-        source: /il_he/dc-shared/assets/query-index.json
-        alternate: /il_he/{path}.html
-        destination: /il_he/dc-shared/assets/sitemap.xml
-        hreflang: he
 
       ae_ar:
         source: /ae_ar/dc-shared/assets/query-index.json
@@ -400,7 +389,7 @@ sitemaps:
         source: /in/dc-shared/assets/query-index.json
         alternate: /in/{path}.html
         destination: /in/dc-shared/assets/sitemap.xml
-        hreflang: en-GB
+        hreflang: en-IN
 
       id_id:
         source: /id_id/dc-shared/assets/query-index.json
@@ -460,19 +449,21 @@ sitemaps:
         source: /in_hi/dc-shared/assets/query-index.json
         alternate: /in_hi/{path}.html
         destination: /in_hi/dc-shared/assets/sitemap.xml
-        hreflang: hi
+        hreflang: hi-IN
 
       th_th:
         source: /th_th/dc-shared/assets/query-index.json
         alternate: /th_th/{path}.html
         destination: /th_th/dc-shared/assets/sitemap.xml
-        hreflang: th
+        hreflang: th-TH
 
       cn:
         source: /cn/dc-shared/assets/query-index.json
         alternate: /cn/{path}.html
         destination: /cn/dc-shared/assets/sitemap.xml
-        hreflang: zh-CN
+        hreflang:
+          - zh-CN
+          - zh-Hans-CN
 
       hk_zh:
         source: /hk_zh/dc-shared/assets/query-index.json
