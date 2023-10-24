@@ -37,6 +37,18 @@ describe('dc-converter-widget', () => {
     expect(fetchUrl).toMatch(/^https:\/\/www.adobe.com\/dc\//);
   });
 
+  it('handles content inserted from edge', async () => {
+    delete window.location;
+    window.location = new URL('https://www.adobe.com');
+    const block = document.querySelector('.dc-converter-widget');
+    const section = document.createElement('section');
+    section.id = 'edge-snippet';
+    section.appendChild(document.createTextNode('content'));
+    block.appendChild(section);
+    await init(block);
+    expect(document.querySelector('#CID').dataset.rendered).toEqual('true');
+  });
+
   it.each`
     hostname
     ${'stage--dc--adobecom.hlx.page'}

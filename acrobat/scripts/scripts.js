@@ -116,7 +116,6 @@ function loadStyles(paths) {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('href', path);
-    link.setAttribute('crossorigin', 'anonymous');
     document.head.appendChild(link);
   });
 }
@@ -271,7 +270,6 @@ const CONFIG = {
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
-
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
 
@@ -283,7 +281,8 @@ const { ietf } = getLocale(locales);
     widgetBlock.removeAttribute('class');
     widgetBlock.id = 'dc-converter-widget';
     const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
-    const dcUrls = [
+    const INLINE_SNIPPET = document.querySelector('section#edge-snippet');
+    const dcUrls = INLINE_SNIPPET ? [] : [
       `https://www.adobe.com/dc/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${verb}-${ietf.toLowerCase()}.html`,
     ];
 
@@ -321,8 +320,13 @@ const { ietf } = getLocale(locales);
   const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
 
+  if (getMetadata('commerce')) {
+    const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
+    replacePlaceholdersWithImages(ietf, miloLibs);
+  }
+
   setConfig({ ...CONFIG, miloLibs });
-  loadLana({ clientId: 'dxdc' });
+  loadLana({ clientId: 'dxdc', tags: 'Cat=DC_Milo' });
 
   // get event back form dc web and then load area
   await loadArea(document, false);
@@ -348,9 +352,4 @@ const { ietf } = getLocale(locales);
       window.dispatchEvent(imsIsReady);
     }
   }, 1000);
-
-  if (getMetadata('commerce')) {
-    const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
-    replacePlaceholdersWithImages(document);
-  }
 }());

@@ -1,16 +1,4 @@
 // Could use webpack/rollup. Just manually inline these structures, for now.
-let skeletonLoad = false;
-let cacheLoad = false;
-setTimeout(() => {
-  const skeletonLoader = new CustomEvent('DC_Skeleton:Ready');
-  window.dispatchEvent(skeletonLoader);
-}, 250);
-
-setTimeout(() => {
-  const skeletonLoader = new CustomEvent('DC_SkeletonShimmer:Ready');
-  window.dispatchEvent(skeletonLoader);
-}, 8000);
-
 const localeMap = {
   '': 'en-us',
   br: 'pt-br',
@@ -178,11 +166,10 @@ export default async function init(element) {
     ENV = 'stage';
   }
 
-  widget.querySelector('div').id = 'VERB';
-  const VERB = widget.querySelector('div').textContent.trim().toLowerCase();
+  const [FIRST_DIV, REDIRECT_URL_DIV, GENERATE_CACHE_URL_DIV] = widget.querySelectorAll(':scope > div');
+  FIRST_DIV.id = 'VERB';
+  const VERB = FIRST_DIV.textContent.trim().toLowerCase();
 
-  // Redir URL
-  const REDIRECT_URL_DIV = widget.querySelectorAll('div')[2];
   if (REDIRECT_URL_DIV) {
     REDIRECT_URL = REDIRECT_URL_DIV.textContent.trim();
     REDIRECT_URL_DIV.remove();
@@ -198,8 +185,6 @@ export default async function init(element) {
     window.location.href = EOLBrowserPage;
   }
 
-  // Generate cache url
-  const GENERATE_CACHE_URL_DIV = widget.querySelectorAll('div')[4];
   if (GENERATE_CACHE_URL_DIV) {
     // GENERATE_CACHE_URL_DIV.id = 'GENERATE_CACHE_URL';
     DC_GENERATE_CACHE_URL = GENERATE_CACHE_URL_DIV.textContent.trim();
@@ -209,9 +194,7 @@ export default async function init(element) {
   // Redirect
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
-    if (window.location.hostname !== 'www.adobe.com'
-    && window.location.hostname !== 'sign.ing'
-    && window.location.hostname !== 'edit.ing') {
+    if (window.location.hostname !== 'www.adobe.com' && window.location.hostname !== 'sign.ing' && window.location.hostname !== 'edit.ing') {
       window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}` || REDIRECT_URL;
     } else {
       window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
@@ -227,99 +210,16 @@ export default async function init(element) {
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   const preRenderDropZone = !isReturningUser && !isRedirection;
 
-  // Skeleton
-  if (window.browser?.isMobile && window.location.pathname.includes('rearrange-pdf')) {
-    window.addEventListener('DC_Skeleton:Ready', () => {
-      const skeletonWrapper = document.createElement('div');
-      const skeletonInnerWrapper = document.createElement('div');
-      const skeletonHead = document.createElement('div');
-      const skeletonDropzone = document.createElement('div');
-      const skeletonIcon = document.createElement('div');
-      const skeletonCopyOne = document.createElement('div');
-      const skeletonCopyTwo = document.createElement('div');
-      const skeletonCopyThree = document.createElement('div');
-      const skeletonButton = document.createElement('div');
-
-      skeletonWrapper.className = 'skeleton-wrapper';
-      skeletonHead.className = 'skeleton-head';
-      skeletonHead.setAttribute('aria-hidden', 'true');
-      skeletonHead.setAttribute('aria-busy', 'true');
-      skeletonDropzone.className = 'skeleton-dropzone';
-      skeletonInnerWrapper.className = 'skeleton-inner';
-      skeletonIcon.className = 'skeleton-icon';
-      skeletonCopyOne.className = 'skeleton-copy';
-      skeletonCopyTwo.className = 'skeleton-copy two';
-      skeletonCopyThree.className = 'skeleton-copy three';
-      skeletonButton.className = 'skeleton-button';
-
-      widgetContainer.classList.add('widget-loaded');
-
-      skeletonWrapper.appendChild(skeletonInnerWrapper);
-
-      skeletonInnerWrapper.appendChild(skeletonHead);
-      skeletonInnerWrapper.appendChild(skeletonDropzone);
-      skeletonDropzone.appendChild(skeletonIcon);
-      skeletonDropzone.appendChild(skeletonCopyOne);
-      skeletonDropzone.appendChild(skeletonCopyTwo);
-      skeletonDropzone.appendChild(skeletonCopyThree);
-      skeletonDropzone.appendChild(skeletonButton);
-
-      if (!cacheLoad) {
-        widgetContainer.appendChild(skeletonWrapper);
-
-        setTimeout(() => {
-          skeletonInnerWrapper.className = 'shimmer skeleton-inner';
-        }, 6000);
-      }
-      skeletonLoad = true;
-    });
-
-    window.addEventListener('DC_SkeletonShimmer:Ready', () => {
-      const skeletonWrapper = document.createElement('div');
-      const skeletonInnerWrapper = document.createElement('div');
-      const skeletonHead = document.createElement('div');
-      const skeletonDropzone = document.createElement('div');
-      const skeletonIcon = document.createElement('div');
-      const skeletonCopyOne = document.createElement('div');
-      const skeletonCopyTwo = document.createElement('div');
-      const skeletonCopyThree = document.createElement('div');
-      const skeletonButton = document.createElement('div');
-
-      skeletonWrapper.className = 'skeleton-wrapper';
-      skeletonHead.className = 'skeleton-head';
-      skeletonHead.setAttribute('aria-hidden', 'true');
-      skeletonHead.setAttribute('aria-busy', 'true');
-      skeletonDropzone.className = 'skeleton-dropzone';
-      skeletonInnerWrapper.className = 'shimmer skeleton-inner';
-      skeletonIcon.className = 'skeleton-icon';
-      skeletonCopyOne.className = 'skeleton-copy';
-      skeletonCopyTwo.className = 'skeleton-copy two';
-      skeletonCopyThree.className = 'skeleton-copy three';
-      skeletonButton.className = 'skeleton-button';
-
-      widgetContainer.classList.add('widget-loaded');
-
-      skeletonWrapper.appendChild(skeletonInnerWrapper);
-
-      skeletonInnerWrapper.appendChild(skeletonHead);
-      skeletonInnerWrapper.appendChild(skeletonDropzone);
-      skeletonDropzone.appendChild(skeletonIcon);
-      skeletonDropzone.appendChild(skeletonCopyOne);
-      skeletonDropzone.appendChild(skeletonCopyTwo);
-      skeletonDropzone.appendChild(skeletonCopyThree);
-      skeletonDropzone.appendChild(skeletonButton);
-
-      if (!window.dc_hosted) {
-        widgetContainer.firstChild.replaceWith(skeletonWrapper);
-      }
-      skeletonLoad = true;
-    });
-  }
-
   const verbIncludeList = ['compress-pdf', 'fillsign', 'sendforsignature', 'add-comment',
     'delete-pages', 'reorder-pages', 'split-pdf', 'insert-pdf', 'extract-pages', 'crop-pages', 'number-pages'];
 
-  if (verbIncludeList.includes(VERB) || preRenderDropZone) {
+  const INLINE_SNIPPET = widget.querySelector(':scope > section#edge-snippet');
+  if (INLINE_SNIPPET) {
+    widgetContainer.dataset.rendered = 'true';
+    widgetContainer.appendChild(...INLINE_SNIPPET.childNodes);
+    widget.removeChild(INLINE_SNIPPET);
+    performance.mark('milo-move-snippet');
+  } else if (verbIncludeList.includes(VERB) || preRenderDropZone) {
     const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
@@ -328,10 +228,7 @@ export default async function init(element) {
           widgetContainer.dataset.rendered = 'true';
           const doc = new DOMParser().parseFromString(template, 'text/html');
           document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
-          cacheLoad = true;
-          if (!skeletonLoad) {
-            widgetContainer.appendChild(doc.body.firstElementChild);
-          }
+          widgetContainer.appendChild(doc.body.firstElementChild);
           performance.mark('milo-insert-snippet');
         }
         break;
@@ -366,11 +263,6 @@ export default async function init(element) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
 
-  if (skeletonLoad) {
-    window.addEventListener('DC_Hosted:Ready', () => {
-      document.querySelector('.skeleton-wrapper').classList.add('fade-out');
-    });
-  }
   widget.appendChild(dcScript);
 
   window.addEventListener('IMS:Ready', () => {

@@ -25,7 +25,7 @@ describe('Test dcLana script', async () => {
     expect(window.lana.log.calledOnce).to.be.true;
     expect(window.lana.log.getCall(0).args[0]).to.eq('Fake Error');
     expect(window.lana.log.getCall(0).args[1].tags).to.eq(
-      'Cat=DxDC_Frictionless_CSP,origin=milo'
+      'Cat=Frictionless_CSP',
     );
   });
 
@@ -36,10 +36,10 @@ describe('Test dcLana script', async () => {
     document.dispatchEvent(event);
     expect(window.lana.log.calledOnce).to.be.true;
     expect(window.lana.log.getCall(0).args[0]).to.eq(
-      'test violation ¶ Refused to load content from www.adobe.com'
+      'test violation ¶ Refused to load content from www.adobe.com',
     );
     expect(window.lana.log.getCall(0).args[1].tags).to.eq(
-      'Cat=DxDC_Frictionless_CSP,origin=milo'
+      'Cat=Frictionless_CSP',
     );
   });
 
@@ -50,10 +50,10 @@ describe('Test dcLana script', async () => {
     window.dispatchEvent(new CustomEvent('DC_Hosted:Ready'));
     expect(window.lana.log.calledOnce).to.be.true;
     expect(window.lana.log.getCall(0).args[0]).to.eq(
-      'DC Widget Failed ¶ Reason: Error'
+      'DC Widget Failed ¶ Reason: Error',
     );
     expect(window.lana.log.getCall(0).args[1].tags).to.eq(
-      'Cat=DxDC_Frictionless,origin=milo'
+      'Cat=Frictionless',
     );
   });
 
@@ -61,10 +61,10 @@ describe('Test dcLana script', async () => {
     clock.tick(10010);
     expect(window.lana.log.calledOnce).to.be.true;
     expect(window.lana.log.getCall(0).args[0]).to.eq(
-      "DC Widget Didn't Load ¶ Reason: DC Hosted did not load"
+      "DC Widget Didn't Load ¶ Reason: DC Hosted did not load",
     );
     expect(window.lana.log.getCall(0).args[1].tags).to.eq(
-      'Cat=DxDC_Frictionless,origin=milo'
+      'Cat=Frictionless',
     );
   });
 
