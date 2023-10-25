@@ -262,6 +262,15 @@ const CONFIG = {
   lcpImg?.setAttribute('loading', 'eager');
 }());
 
+async function loadLazy() {
+  if (window.location.hostname === 'localhost'
+    || window.location.hostname.endsWith('.hlx.page')
+    || window.location.hostname.endsWith('.hlx.reviews')
+    || window.location.hostname.endsWith('.hlx.live')) {
+    await import('../../tools/sidekick/review.js');
+  }
+}
+
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -327,6 +336,10 @@ const { ietf } = getLocale(locales);
 
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc', tags: 'Cat=DC_Milo' });
+
+  document.addEventListener('milo:deferred', () => {
+    loadLazy();
+  });
 
   // get event back form dc web and then load area
   await loadArea(document, false);

@@ -92,6 +92,15 @@
       "includePaths": [
         "**.docx**"
       ]
-    }
+    },
+    {
+      "id": "move-to-review",
+      "title": "Move to Review",
+      "environments": [
+        "dev",
+        "preview"
+      ],
+      "event": "move-to-review"
+    }    
   ]
 }

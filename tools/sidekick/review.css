@@ -1,0 +1,250 @@
+:host {
+    --review-open-background-color: #f4ad2f;
+    --review-open-color: black;
+    --review-submitted-background-color: #f56544;
+    --review-submitted-color: white;
+    --hlx-dialog-background-color: white;
+    --hlx-dialog-text-color: #444;
+    --hlx-dialog-row-odd-color: #ddd;
+    --hlx-dialog-row-even-color: #eee;
+    --hlx-dialog-row-link-color: var(--hlx-dialog-text-color);
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :host {
+      --hlx-dialog-background-color: #444;
+      --hlx-dialog-text-color: #eee;
+      --hlx-dialog-row-odd-color: #666;
+      --hlx-dialog-row-even-color: #555;
+    }
+  }
+  
+  .move-to-review button.submitted {
+    background-color: var(--review-submitted-background-color);
+    color: var(--review-submitted-color);
+    border-color: var(--review-submitted-background-color);
+  }
+  
+  .move-to-review button.ready {
+    background-color: var(--review-open-background-color);
+    color: var(--review-open-color);
+    border-color: var(--review-open-background-color);
+  }
+  
+  .hlx-sk .review.plugin > span, .hlx-sk .review-status-badge.plugin > span {
+    margin-top: 0;
+  }
+  
+  .review {
+    display: flex;
+    align-items: center;
+  }
+  
+  .badge-locked {
+    transform: scale(0.7) translate(0, -7px);;
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    width: 12px;
+    height: 11px;
+    border: 2px solid;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    border-bottom: transparent;
+    margin-top: -12px;
+    margin-right: 12px;
+  }
+  
+  .badge-locked::after {
+    content: '';
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 16px;
+    height: 10px;
+    border-radius: 2px;
+    border: 2px solid transparent;
+    box-shadow: 0 0 0 2px;
+    left: -4px;
+    top: 9px;
+  }
+  
+  .badge-unlocked {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(0.7) translate(0, -9px);
+    width: 12px;
+    height: 6px;
+    border: 2px solid;
+    border-top-right-radius: 100px;
+    border-top-left-radius: 100px;
+    border-bottom: transparent;
+    margin-top: -18px;
+    margin-left: -2px;
+    margin-right: 12px;
+  }
+  
+  .badge-unlocked::after,
+  .badge-unlocked::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute
+  }
+  
+  .badge-unlocked::after {
+    border: 2px solid transparent;
+    box-shadow: 0 0 0 2px;
+    width: 16px;
+    height: 10px;
+    border-radius: 2px;
+    left: -4px;
+    top: 10px;
+  }
+  
+  .badge-unlocked::before {
+    width: 2px;
+    height: 6px;
+    background: currentcolor;
+    left: -2px;
+    top: 4px;
+  }
+  
+  .review-status a:any-link{
+    color: currentcolor;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .review-status-badge {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    padding: 0 10px;
+    cursor: pointer;
+  }
+  
+  .review-status-badge.open {
+    background-color: var(--review-open-background-color);
+    color: var(--review-open-color);
+  }
+  
+  .review-status-badge.submitted {
+    background-color: var(--review-submitted-background-color);
+    color: var(--review-submitted-color);
+  }
+  
+  .hlx-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: calc(100% - 140px);
+    width: min(calc(100% - 64px), 800px);
+    margin: 32px auto;
+    background-color: var(--hlx-dialog-background-color);
+    border-radius: 16px;
+    box-shadow: 0 0 10px #000;
+    font-size: 12px;
+    color: var(--hlx-dialog-text-color);
+    border: 0;
+    box-sizing: border-box;
+    padding: 32px;
+  }
+  
+  .hlx-dialog p.hlx-row {
+    background-color: var(--hlx-dialog-row-even-color);
+    margin: 0;
+    padding: 8px;
+    border-top: 1px solid #888;
+  }
+  
+  .hlx-dialog p.hlx-row:nth-child(odd) {
+    background-color: var(--hlx-dialog-row-odd-color);
+  }
+  
+  .hlx-row a:any-link {
+    color: var(--hlx-dialog-row-link-color);
+  }
+  
+  .hlx-dialog form {
+    position: absolute;
+    right: 32px;
+  }
+  
+  .hlx-dialog textarea, .hlx-dialog input {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 8px 0;
+    padding: 8px;
+  }
+  
+  .plugin-container > span.hlx-sk-label {
+    display: none;
+  }
+  
+  .plugin-container > .plugin.publish {
+    display: none;
+  }
+  
+  .hlx-dialog .hlx-edit-manifest {
+    margin-top: 32px;
+  }
+  
+  .hlx-dialog .hlx-edit-manifest.hlx-edit-hide * {
+    display: none;
+  }
+  
+  .hlx-dialog .hlx-edit-manifest.hlx-edit-hide #hlx-edit-manifest {
+    display: unset;
+  }
+  
+  .hlx-dialog .hlx-edit-manifest.hlx-edit-show #hlx-edit-manifest {
+    display: none;
+  }
+  
+  
+  .hlx-dialog button {
+    background-color: transparent;
+    border: var(--hlx-sk-button-border);
+    border-radius: var(--hlx-sk-button-border-radius);
+    color: var(--hlx-sk-button-color);
+    font-size: var(--hlx-sk-button-font-size);
+    line-height: var(--hlx-sk-button-line-height);
+    font-family: var(--hlx-sk-font-family);
+    font-weight: var(--hlx-sk-button-font-weight);
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: var(--hlx-sk-button-padding);
+    cursor: pointer;
+    outline: none;
+    min-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+    margin: 0 8px 0 0;
+  }
+  
+  .hlx-dialog button:hover {
+    background-color: var(--hlx-sk-button-hover-bg);
+    border-color: var(--hlx-sk-button-hover-border);
+    color: var(--hlx-sk-button-hover-color);
+  }
+  
+  .hlx-dialog button:focus {
+    background-color: var(--hlx-sk-button-focus-bg);
+    border-color: var(--hlx-sk-button-focus-border);
+    color: var(--hlx-sk-button-focus-color);
+  }
+  
+  .hlx-dialog button.pressed {
+    background-color: var(--hlx-sk-button-pressed-bg);
+    color: var(--hlx-sk-button-pressed-color);
+  }
+  
+  .hlx-dialog button:disabled {
+    color: var(--hlx-sk-button-disabled-color);
+    border: var(--hlx-sk-button-disabled-border);
+  }
