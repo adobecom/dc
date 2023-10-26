@@ -170,6 +170,25 @@ Then(/^I should see (signature|initials)$/, async function (sign) {
   await expect(this.page.native.locator(element)).toBeVisible();
 });
 
+Then(/^I fill up (|confirm )password input$/, async function (confirm) {
+  let pw;
+  if (confirm) {
+    pw = "//input[@type='password'][@data-test-id='protect-settings-confirm-password']";
+  } else {
+    pw = "//input[@type='password'][@data-test-id='protect-settings-input-password']";
+  }
+  await this.page.native.locator(pw).fill('Test123');
+});
+
+Then (/^I click 'Set password'$/, async function () {
+  let btn = await this.page.native.locator("//button[@data-test-id='protect-settings-set-password-button']");
+  await btn.click();
+});
+
+Then (/^I should see preview description$/, async function () {
+  await expect(this.page.previewDescription).toBeVisible();
+});
+
 Then(/^I click "Sign in to download"$/, async function () {
   this.context(FrictionlessPage);
   await this.page.signInButton.click({ timeout: 120000 });
@@ -495,5 +514,5 @@ Then(/^I click a "Commerce" Button$/, async function () {
 Then(/^I should see the footer promo elements$/, async function () {
   this.context(DCPage);
   await expect(this.page.footerPromoHeading).toBeVisible({timeout: 5000});
-  await expect(this.page.footerPromoBullets).toBeVisible({timeout: 5000});  
+  await expect(this.page.footerPromoBullets).toBeVisible({timeout: 5000});
 });
