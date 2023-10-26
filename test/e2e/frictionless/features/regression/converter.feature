@@ -168,3 +168,19 @@ Feature: Frictionless Converter Block
       | compress-pdf         | /link/acrobat/compress-pdf |
       | sign-pdf             | /link/acrobat/fillsign     |
       | rotate-pdf           | /link/acrobat/rotate-pages |
+
+  @MWPW-137197 @regression @converter
+  Scenario Outline: L2 Verbs - Password protect pdf
+     Given I go to the <Verb> page
+      Then I upload the file "<File>"
+      Then I wait for 2 seconds
+      Then I fill up password input
+      Then I fill up confirm password input
+      Then I click 'Set password'
+      Then I wait for the conversion
+      Then I should see preview description
+      Then I download the converted file
+
+  Examples:
+      |Verb                  | File                |
+      | password-protect-pdf | test-files/test.pdf |
