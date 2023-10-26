@@ -14,11 +14,9 @@ Feature: Frictionless Converter Block
 
   Examples:
       | Verb              | File                 |
-    # | sign-pdf          | test-files/test.pdf  |
       | request-signature | test-files/test.pdf  |
       | crop-pdf          | test-files/test.pdf  |
       | delete-pdf-pages  | test-files/test2.pdf |
-    # | rotate-pdf        | test-files/test.pdf  |
       | rearrange-pdf     | test-files/test.pdf  |
       | split-pdf         | test-files/test2.pdf |
       | add-pages-to-pdf  | test-files/test.pdf  |
@@ -88,39 +86,39 @@ Feature: Frictionless Converter Block
   @MWPW-137180 @regression @converter
   Scenario Outline: L2 Verbs - Upload, rotate and download
     Given I go to the <Verb> page
-    Then I upload the files "<Files>"
-    Then I rotate right the uploaded files
-    Then I rotate left first uploaded file
-    Then I wait for 2 seconds
-    Then I save rotated files
-    Then I download the converted file
+     Then I upload the files "<Files>"
+     Then I rotate right the uploaded files
+     Then I rotate left first uploaded file
+     Then I wait for 2 seconds
+     Then I save rotated files
+     Then I download the converted file
 
-    Examples:
+  Examples:
       | Verb       | Files                                    |
       | rotate-pdf | test-files/test.pdf,test-files/test2.pdf |
 
   @MWPW-137251 @regression @converter
   Scenario Outline: L2 Verbs - Upload and sign in
     Given I go to the <Verb> page
-    Then I upload the file "<File>"
-    Then I click "Add signature"
-    Then I fill up signature input
-    Then I click "Add initials"
-    Then I fill up signature input
-    Then I click "Add signature"
-    Then I sign up the document
-    Then I should see signature
-    Then I click "Add initials"
-    Then I sign up the document
-    Then I should see initials
-    Then I wait for 2 seconds
-    Then I click "Sign in to download"
+     Then I upload the file "<File>"
+     Then I click "Add signature"
+     Then I fill up signature input
+     Then I click "Add initials"
+     Then I fill up signature input
+     Then I click "Add signature"
+     Then I sign up the document
+     Then I should see signature
+     Then I click "Add initials"
+     Then I sign up the document
+     Then I should see initials
+     Then I wait for 2 seconds
+     Then I click "Sign in to download"
 
-    Examples:
-      | Verb       | File                 |
-      | sign-pdf   | test-files/test.pdf  |
+  Examples:
+      | Verb     | File                |
+      | sign-pdf | test-files/test.pdf |
 
-  @MWPW-127633 @regression @converter
+  @MWPW-127633 @regression @converter @signedin
   Scenario Outline: L1 Verbs - Redirects for signed-in visitors
     Given I go to the <Verb> page
      Then I sign in AdobeID
@@ -141,7 +139,7 @@ Feature: Frictionless Converter Block
       | add-pages-to-pdf  | /link/acrobat/insert           |
       | extract-pdf-pages | /link/acrobat/extract          |
 
-  @MWPW-127634 @regression @converter
+  @MWPW-127634 @regression @converter @signedin
   Scenario Outline: L2 Verbs - Redirects for signed-in visitors
     Given I go to the <Verb> page
      Then I sign in AdobeID
