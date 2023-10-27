@@ -312,9 +312,11 @@ const { ietf } = getLocale(locales);
   const miloLibs = setLibs(LIBS);
 
   // Milo and site styles
-  const paths = [`${miloLibs}/styles/styles.css`];
-  if (STYLES) { paths.push(STYLES); }
-  loadStyles(paths);
+  if (!document.getElementById('inline-milo-styles')) {
+    const paths = [`${miloLibs}/styles/styles.css`];
+    if (STYLES) { paths.push(STYLES); }
+    loadStyles(paths);
+  }
 
   // Import base milo features and run them
   const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
