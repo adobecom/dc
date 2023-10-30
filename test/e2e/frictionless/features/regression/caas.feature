@@ -10,7 +10,6 @@ Feature: CaaS Block
      Then I should see the 'More resources' header
      Then I should see the CaaS block cards
      Then I click the "Read now" button inside the CaaS card
-     Then I switch to the new page after clicking "Read now" button in the CaaS
      Then I should not see the address bar contains "<Verb>.html"
   Examples:
       | Verb                 |

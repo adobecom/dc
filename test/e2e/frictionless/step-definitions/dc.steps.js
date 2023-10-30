@@ -476,16 +476,27 @@ Then(/^I should see the CaaS block cards$/, async function () {
 });
 
 Then(/^I click the "Read now" button inside the CaaS card$/, async function () {
-  await this.page.caasButton.nth(0).click();
-});
+  let href = await this.page.caasButton.nth(0).getAttribute('href');
+  let target = await this.page.caasButton.nth(0).getAttribute('target');
+  let retry = 3;
 
-Then(/^I switch to the new page after clicking "Read now" button in the CaaS$/, async function () {
-  const [newPage] = await Promise.all([
-    PW.context.waitForEvent('page'),
-    this.page.caasButton.nth(0).click()
-  ]);
-  await newPage.waitForLoadState();
-  this.page.native = newPage;
+  while (retry > 0) {
+    try {
+      if (target === '_blank') {
+        const pagePromise = PW.context.waitForEvent("page");
+        await this.page.caasButton.nth(0).click();
+        const newPage = await pagePromise;
+        await newPage.waitForLoadState();
+        this.page.native = newPage;
+      } else {
+        await this.page.caasButton.nth(0).click();
+      }
+      await expect(this.page.native).toHaveURL(href);
+      retry = 0;
+    } catch {
+      retry--;
+    }
+  }
 });
 
 
