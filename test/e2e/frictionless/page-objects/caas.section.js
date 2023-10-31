@@ -6,7 +6,7 @@ export class CaaSSection extends Section {
     this.buildProps({
       caas: '#caas',
       caasFragment: '.fragment[data-path*="caas"]>>nth=0',
-      caasButton: 'a[data-testid="consonant-BtnInfobit"]'
+      caasButton: 'a[data-testid="consonant-BtnInfobit"] >> visible=true'
     });
   }
 }
