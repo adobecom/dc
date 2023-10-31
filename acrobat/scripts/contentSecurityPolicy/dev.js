@@ -48,6 +48,8 @@ const connectSrc = [
   'main--dc--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
   'http://localhost:6456/',
+  'ws://local-test.acrobat.com',
+  'wss://local-test.acrobat.com',
   'main--milo--adobecom.hlx.live',
   'fast-track--milo--adobecom.hlx.page',
   'fast-track--milo--adobecom.hlx.live',
