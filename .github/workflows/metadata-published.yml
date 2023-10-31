@@ -14,6 +14,9 @@ jobs:
       run: |
         echo "Status: ${{ github.event.client_payload.status }}"
         echo "Path: ${{ github.event.client_payload.path }}"
+    - name: Checkout
+      if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
+      uses: actions/checkout@v3
     - name: Download artifact
       if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
       uses: dawidd6/action-download-artifact@v2

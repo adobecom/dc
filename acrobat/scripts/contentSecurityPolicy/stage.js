@@ -49,6 +49,8 @@ const connectSrc = [
   'main--milo--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
   'http://localhost:6456/',
+  'ws://local-test.acrobat.com:*',
+  'wss://local-test.acrobat.com:*',
   '*.hlx.page',
   '*.hlx.live',
   'cdn.linkedin.oribi.io',

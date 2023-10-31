@@ -113,3 +113,47 @@ Feature: Frictionless Event Wrapper Block
   Examples:
       | Verb     | File                |
       | sign-pdf | test-files/test.pdf |
+
+  @MWPW-138330 @regression @eventwrapper
+  Scenario Outline: L2 Verbs - Personalization events for password-protect-pdf
+     Given I go to the <Verb> page
+      Then I should see eventwrapper onload
+      Then I should see the review component
+      Then I should see the verb subfooter
+      Then I upload the file "<File>"
+      Then I should not see eventwrapper onload
+      Then I should not see the review component
+      Then I should see the verb subfooter
+      Then I fill up password input
+      Then I fill up confirm password input
+      Then I click 'Set password'
+      Then I wait for the conversion
+      Then I should not see eventwrapper onload
+      Then I should see the review component
+      Then I should see the verb subfooter
+
+      When I go to the <Verb> page
+      Then I should see eventwrapper onload
+      Then I should see the review component
+      Then I should see the verb subfooter
+      Then I upload the file "<File>"
+      Then I should not see eventwrapper onload
+      Then I should not see the review component
+      Then I should see the verb subfooter
+      Then I fill up password input
+      Then I fill up confirm password input
+      Then I click 'Set password'
+      Then I wait for the conversion
+      Then I should not see eventwrapper onload
+      Then I should see the review component
+      Then I should see the verb subfooter
+
+      When I go to the <Verb> page
+      Then I should see upsell
+      Then I should see eventwrapper onload
+      Then I should not see the review component
+      Then I should see the verb subfooter
+
+  Examples:
+      | Verb                 | File                |
+      | password-protect-pdf | test-files/test.pdf |
