@@ -1,8 +1,9 @@
 import { classes } from "polytype";
 import { DcGnavPage } from "./dcgnav.page";
 import { PdfWidgetSection } from "./pdfwidget.section";
+import { CaaSSection } from "./caas.section";
 
-export class FrictionlessPage extends classes(DcGnavPage, PdfWidgetSection) {
+export class FrictionlessPage extends classes(DcGnavPage, PdfWidgetSection, CaaSSection) {
   constructor(contentPath) {
     super({
       super: DcGnavPage,
@@ -23,6 +24,7 @@ export class FrictionlessPage extends classes(DcGnavPage, PdfWidgetSection) {
       extensionModal: '#chromeext, #edgeext',
       closeExtensionModal: '#chromeext .dialog-close, #edgeext .dialog-close',
       eventwrapperOnload: '.eventwrapper.onload',
+      previewDescription: 'div[class*="previewDescription"]',
     });
   }
 

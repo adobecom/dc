@@ -24,7 +24,6 @@ import { CompressPdfPage } from "../page-objects/compresspdf.page";
 import { PasswordProtectPdfPage } from "../page-objects/passwordprotectpdf.page";
 import { FrictionlessPage } from "../page-objects/frictionless.page";
 import { DCPage } from "../page-objects/dc.page";
-import { CaaSPage } from "../page-objects/caas.page";
 import { cardinal } from "../support/cardinal";
 import { expect } from "@playwright/test";
 const os = require("os");
@@ -168,6 +167,25 @@ Then(/^I sign up the document$/, async function () {
 Then(/^I should see (signature|initials)$/, async function (sign) {
   const element = sign === 'signature' ? "//div[@data-testid='fns-field-0']" : "//div[@data-testid='fns-field-1']";
   await expect(this.page.native.locator(element)).toBeVisible();
+});
+
+Then(/^I fill up (|confirm )password input$/, async function (confirm) {
+  let pw;
+  if (confirm) {
+    pw = "//input[@type='password'][@data-test-id='protect-settings-confirm-password']";
+  } else {
+    pw = "//input[@type='password'][@data-test-id='protect-settings-input-password']";
+  }
+  await this.page.native.locator(pw).fill('Test123');
+});
+
+Then (/^I click 'Set password'$/, async function () {
+  let btn = await this.page.native.locator("//button[@data-test-id='protect-settings-set-password-button']");
+  await btn.click();
+});
+
+Then (/^I should see preview description$/, async function () {
+  await expect(this.page.previewDescription).toBeVisible();
 });
 
 Then(/^I click "Sign in to download"$/, async function () {
@@ -441,7 +459,6 @@ Then(/^I read expected analytics data with replacements "([^"]*)"$/, async funct
 });
 
 Then(/^I should see the CaaS block$/, async function () {
-  this.context(CaaSPage);
   await expect(this.page.caasFragment).toBeVisible({timeout: 30000});
   await this.page.native.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await expect(this.page.caas).toBeVisible({timeout: 30000});
@@ -495,5 +512,29 @@ Then(/^I click a "Commerce" Button$/, async function () {
 Then(/^I should see the footer promo elements$/, async function () {
   this.context(DCPage);
   await expect(this.page.footerPromoHeading).toBeVisible({timeout: 5000});
-  await expect(this.page.footerPromoBullets).toBeVisible({timeout: 5000});  
+  await expect(this.page.footerPromoBullets).toBeVisible({timeout: 5000});
+});
+
+Then(/^I should see that the prices match on checkout from the (.*) merch card(?:|s)$/, async function (items) {
+  this.context(DCPage);
+
+  let products = items.replace(/ and /g, ";").split(';');
+
+  for (let index = 0; index < products.length; index++) {
+    let price = await this.page.getInlinePrice(index);
+
+    let checkoutLinks = products[index].split(',');
+    checkoutLinks = checkoutLinks.map((x) => x.trim().replace(/[']/g, ""));
+
+    for (let link of checkoutLinks) {
+      await this.page.clickCheckoutLink(index, link);
+
+      let checkoutPrice = await this.page.checkoutPrice.getAttribute("aria-label");
+      await expect(price).toContain(checkoutPrice);
+
+      console.log(`'${price}' matched the checkout price '${checkoutPrice}'`);
+  
+      await this.page.native.goBack();
+    }
+  }
 });
