@@ -264,9 +264,7 @@ const CONFIG = {
 
 async function loadLazy() {
   if (window.location.hostname === 'localhost'
-    || window.location.hostname.endsWith('.hlx.page')
-    || window.location.hostname.endsWith('.hlx.reviews')
-    || window.location.hostname.endsWith('.hlx.live')) {
+    || window.location.hostname.includes('.hlx.')) {
     await import('../../tools/sidekick/review.js');
   }
 }
