@@ -11,7 +11,7 @@ export class CommerceSection extends Section {
   async getInlinePrice(productCard) {
     let selector;
     if (typeof productCard === 'number') {
-      selector = `.merch-card:nth-child(${productCard + 1}) [is="inline-price"] .price`;
+      selector = `.merch-card:nth-child(${productCard + 1}) inline-price .price`;
     } else if (typeof menu === 'string') {
       selector = `.merch-card #${productCard} ~ .consonant-PlansCard-description .price`;
     }
@@ -22,9 +22,9 @@ export class CommerceSection extends Section {
   async clickCheckoutLink(productCard, link) {
     let selector;
     if (typeof productCard === 'number') {
-      selector = `.merch-card:nth-child(${productCard + 1}) [is="checkout-link"][daa-ll^='${link}']`;
+      selector = `.merch-card:nth-child(${productCard + 1}) checkout-link [daa-ll^='${link}']`;
     } else if (typeof menu === 'string') {
-      selector = `.merch-card #${productCard} ~ .consonant-CardFooter [is="checkout-link"][daa-ll^='${link}']`;
+      selector = `.merch-card #${productCard} ~ .consonant-CardFooter checkout-link [daa-ll^='${link}']`;
     }
     await this.native.locator(selector).click();
   }
