@@ -538,9 +538,17 @@ Then(/^I should see that the prices match on checkout from the (.*) merch card(?
     checkoutLinks = checkoutLinks.map((x) => x.trim().replace(/[']/g, ""));
 
     for (let link of checkoutLinks) {
-      await this.page.clickCheckoutLink(index, link);
-
-      let checkoutPrice = await this.page.checkoutPrice.getAttribute("aria-label");
+      let retry = 2;
+      let checkoutPrice;
+      while (retry > 0) {
+        try {
+          await this.page.clickCheckoutLink(index, link);
+          checkoutPrice = await this.page.checkoutPrice.getAttribute("aria-label");
+          break;
+        } catch {
+          retry--;
+        }
+      }
       await expect(price).toContain(checkoutPrice);
 
       console.log(`'${price}' matched the checkout price '${checkoutPrice}'`);
