@@ -2,6 +2,12 @@ name: Verify Milo Changes
 
 on:
   workflow_dispatch:
+    inputs:
+      testCodeBranch:
+        description: 'Test Code Branch'
+        required: true
+        default: 'stage'
+        type: string
 
 jobs:
   run-tests:
@@ -42,7 +48,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-
+        with:
+          ref: ${{ inputs.testCodeBranch }}
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
@@ -58,7 +65,7 @@ jobs:
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Run the tests
-        run: npx run test/e2e/frictionless -t "@smoke and (not (@analytics or @extension-installed))" -h -p prod -b ${{ matrix.browser }} --bypassBotDetection
+        run: npx run test/e2e -t "@smoke and (not (@analytics or @extension-installed))" -h -p prod -b ${{ matrix.browser }} --bypassBotDetection
         env:
           USER_AGENT_SUFFIX: "${{ secrets.USER_AGENT_SUFFIX }}"
 
