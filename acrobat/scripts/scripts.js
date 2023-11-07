@@ -10,6 +10,12 @@
  * governing permissions and limitations under the License.
  */
 
+import {
+  runExperiments,
+  setExperimentsContext,
+  showExperimentsOverlay,
+} from './utils.js';
+
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -256,11 +262,17 @@ const CONFIG = {
   },
 };
 
+const AUDIENCES = {
+  mobile: () => window.innerWidth < 600,
+  desktop: () => window.innerWidth >= 600,
+  // define your custom audiences here as needed
+};
+
 // Default to loading the first image as eager.
-(async function loadLCPImage() {
+async function loadLCPImage() {
   const lcpImg = document.querySelector('img');
   lcpImg?.setAttribute('loading', 'eager');
-}());
+}
 
 /*
  * ------------------------------------------------------------
@@ -270,6 +282,15 @@ const CONFIG = {
 const { ietf } = getLocale(locales);
 
 (async function loadPage() {
+
+  // Run experiments
+  const miloLibs = setLibs(LIBS);
+  await import(`${miloLibs}/utils/samplerum.js`);
+  await setExperimentsContext('/homepage');
+  await runExperiments({ audiences: AUDIENCES });
+
+  loadLCPImage();
+
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
 
@@ -308,9 +329,6 @@ const { ietf } = getLocale(locales);
     }
   })();
 
-  // Setup Milo
-  const miloLibs = setLibs(LIBS);
-
   // Milo and site styles
   if (!document.getElementById('inline-milo-styles')) {
     const paths = [`${miloLibs}/styles/styles.css`];
@@ -332,6 +350,8 @@ const { ietf } = getLocale(locales);
 
   // get event back form dc web and then load area
   await loadArea(document, false);
+
+  showExperimentsOverlay({ audiences: AUDIENCES });
 
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
