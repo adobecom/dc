@@ -23,6 +23,10 @@ div[data-section="widget"] {
   min-height: 570px;
 }
 
+#dc-converter-widget > div:first-of-type {
+  display: none;
+}
+
 #CID {
   width: 75%;
   max-width: 75%;
@@ -462,7 +466,7 @@ div.how-to ol li::before{
 .widget-center {
   justify-content: center;
   flex: 1 1 auto;
-  display: flex;
+  display: flex !important;
   flex-direction: column;
 }
 
