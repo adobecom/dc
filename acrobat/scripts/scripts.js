@@ -286,8 +286,8 @@ const { ietf } = getLocale(locales);
   // Run experiments
   const miloLibs = setLibs(LIBS);
   await import(`${miloLibs}/utils/samplerum.js`);
-  await setExperimentsContext('/homepage');
-  await runExperiments({ audiences: AUDIENCES });
+  await setExperimentsContext('/homepage', miloLibs);
+  await runExperiments({ audiences: AUDIENCES }, miloLibs);
 
   loadLCPImage();
 
@@ -351,7 +351,7 @@ const { ietf } = getLocale(locales);
   // get event back form dc web and then load area
   await loadArea(document, false);
 
-  showExperimentsOverlay({ audiences: AUDIENCES });
+  showExperimentsOverlay({ audiences: AUDIENCES }, miloLibs);
 
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');

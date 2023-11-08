@@ -103,8 +103,7 @@ const pluginContext = {
   toClassName,
 };
 
-export async function setExperimentsContext(codeBasePath) {
-  const miloLibs = getLibs();
+export async function setExperimentsContext(codeBasePath, miloLibs) {
   const { getMetadata } = await import(`${miloLibs}/utils/utils.js`);
   const { sampleRUM } = await import(`${miloLibs}/utils/samplerum.js`);
   pluginContext.getMetadata = getMetadata;
@@ -113,7 +112,7 @@ export async function setExperimentsContext(codeBasePath) {
   window.hlx.patchBlockConfig = [];
 }
 
-export async function runExperiments(config) {
+export async function runExperiments(config, miloLibs) {
   if (!pluginContext.getMetadata('experiment')
     && !Object.keys(getAllMetadata('campaign')).length
     && !Object.keys(getAllMetadata('audience')).length) {
@@ -131,7 +130,6 @@ export async function runExperiments(config) {
   if (selectedVariant === experiment.variantNames[0] || !control?.blocks?.length) {
     return;
   }
-  const miloLibs = getLibs();
   const { getConfig, updateConfig } = await import(`${miloLibs}/utils/utils.js`);
   const variant = experiment.variants[selectedVariant];
   updateConfig({
@@ -143,7 +141,7 @@ export async function runExperiments(config) {
   });
 }
 
-export async function showExperimentsOverlay(config) {
+export async function showExperimentsOverlay(config, miloLibs) {
   if (!pluginContext.getMetadata('experiment')
     && !Object.keys(getAllMetadata('campaign')).length
     && !Object.keys(getAllMetadata('audience')).length) {
