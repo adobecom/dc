@@ -2,7 +2,7 @@
   "name": "@adobecom/dc",
   "private": true,
   "version": "1.0.0",
-  "description": "Website foundation technology.",
+  "description": "Adobe Document Cloud",
   "scripts": {
     "test": "npm run wtr && npm run jest",
     "wtr": "wtr \"./test/**/*.test.(js|html)\" --node-resolve --port=2000 --coverage --concurrent-browsers 4",
@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adobecom/college.git"
+    "url": "git+https://github.com/adobecom/dc.git"
   },
   "author": "Adobe",
   "license": "Apache License 2.0",
   "bugs": {
-    "url": "https://github.com/adobecom/college/issues"
+    "url": "https://github.com/adobecom/dc/issues"
   },
-  "homepage": "https://github.com/adobecom/college#readme",
+  "homepage": "https://github.com/adobecom/dc#readme",
   "devDependencies": {
     "@amwp/platform-ui-automation": "^0.0.4",
     "@amwp/platform-ui-lib-adobe": "^0.0.7",
