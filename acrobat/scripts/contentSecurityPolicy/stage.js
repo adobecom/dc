@@ -7,7 +7,6 @@ const childSrc = [
 const connectSrc = [
   '\'self\'',
   'blob:',
-  '14257-contentmetadata.adobeioruntime.net',
   '14257-chimera-stage.adobeioruntime.net',
   '14257-chimera.adobeioruntime.net',
   '*.adobe.com',
