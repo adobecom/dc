@@ -34,7 +34,7 @@ export var getBrowserData = function (userAgent) {
     },
   ];
 
-  for (var i=0; i < regex.length; i++) {
+  for (var i = 0; i < regex.length; i++) {
     if (regex[i].browserReg.test(userAgent)) {
       var version = userAgent.match(regex[i].versionReg);
       browser.name = regex[i].name;
