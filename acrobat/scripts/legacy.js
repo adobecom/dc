@@ -44,7 +44,6 @@ export var getBrowserData = function (userAgent) {
   }
   return browser;
 };
-/* eslint-disable */
 
 //Get browser data
 window.browser = getBrowserData(window.navigator.userAgent);
@@ -58,3 +57,4 @@ if (window.browser.name === 'Internet Explorer' ||
   window.browser.name === 'Safari' && !window.browser.version ) {
   window.location.href = EOLBrowserPage;
 }
+/* eslint-enable */

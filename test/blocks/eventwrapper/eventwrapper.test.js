@@ -7,7 +7,7 @@ const head = await readFile({ path: './mocks/head.html' });
 const body = await readFile({ path: './mocks/body.html' });
 const bodyRotatePdf = await readFile({ path: './mocks/body-rotate-pdf.html' });
 const { default: init } = await import(
-  '../../../acrobat/blocks/eventwrapper/eventwrapper'
+  '../../../acrobat/blocks/eventwrapper/eventwrapper.js'
 );
 
 describe('eventwrapper block on Chrome', () => {
@@ -23,7 +23,7 @@ describe('eventwrapper block on Chrome', () => {
       listeners: [],
       addEventListener: function (fn) {
         window.dc_hosted.listeners.push(fn);
-        window.dc_hosted.events.forEach(function (e) {
+        window.dc_hosted.events.forEach((e) => {
           try {
             fn(e.event, e.data);
           } catch (ex) {
@@ -33,7 +33,7 @@ describe('eventwrapper block on Chrome', () => {
       },
       dispatchEvent: function (event, data) {
         window.dc_hosted.events.push({ event: event, data: data });
-        window.dc_hosted.listeners.forEach(function (fn) {
+        window.dc_hosted.listeners.forEach((fn) => {
           try {
             fn(event, data);
           } catch (e) {
@@ -214,7 +214,7 @@ describe('eventwrapper block on Microsoft Edge', () => {
       listeners: [],
       addEventListener: function (fn) {
         window.dc_hosted.listeners.push(fn);
-        window.dc_hosted.events.forEach(function (e) {
+        window.dc_hosted.events.forEach((e) => {
           try {
             fn(e.event, e.data);
           } catch (ex) {
@@ -224,7 +224,7 @@ describe('eventwrapper block on Microsoft Edge', () => {
       },
       dispatchEvent: function (event, data) {
         window.dc_hosted.events.push({ event: event, data: data });
-        window.dc_hosted.listeners.forEach(function (fn) {
+        window.dc_hosted.listeners.forEach((fn) => {
           try {
             fn(event, data);
           } catch (e) {
