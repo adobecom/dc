@@ -254,6 +254,7 @@ const CONFIG = {
     version: '1.0',
     onDemand: false,
   },
+  ...(hostname.endsWith('.ing') && { useDotHtml: true }), // Adding .html to canonical url for .ing pages
 };
 
 // Default to loading the first image as eager.
