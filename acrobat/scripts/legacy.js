@@ -1,3 +1,4 @@
+/* eslint-disable */
 export var getBrowserData = function (userAgent) {
   if (!userAgent) {
     return {};
@@ -43,6 +44,7 @@ export var getBrowserData = function (userAgent) {
   }
   return browser;
 };
+/* eslint-disable */
 
 //Get browser data
 window.browser = getBrowserData(window.navigator.userAgent);

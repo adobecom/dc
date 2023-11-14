@@ -10,9 +10,9 @@ describe('Test locale', () => {
   it('has langstore locale', async () => {
     delete window.location;
     window.location = new URL(
-      'https://www.adobe.com/langstore/ar/acrobat/online/ppt-to-pdf.html'
+      'https://www.adobe.com/langstore/ar/acrobat/online/ppt-to-pdf.html',
     );
-    await require('../../acrobat/scripts/scripts');
+    await require('../../acrobat/scripts/scripts.js');
   });
 });
 
@@ -27,9 +27,9 @@ describe('Test Navigator', () => {
   it('has no navigator', async () => {
     delete window.location;
     window.location = new URL(
-      'https://www.adobe.com/acrobat/online/ppt-to-pdf.html'
+      'https://www.adobe.com/acrobat/online/ppt-to-pdf.html',
     );
-    await require('../../acrobat/scripts/scripts');
+    await require('../../acrobat/scripts/scripts.js');
     expect(window.browser).toStrictEqual({});
   });
 });
