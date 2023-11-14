@@ -113,58 +113,58 @@ describe('eventwrapper block on Chrome', () => {
     expect(event).to.eql('Get the extension-1|already-closed-viewer-extension|Chrome-extension');
   });
 
-  it('handles processing-start', async function () {
+  it('handles processing-start', async () => {
     window.dc_hosted.dispatchEvent('processing-start', {});
     expect(document.body.dataset.currentEvent).to.eql('start');
   });
 
-  it('handles file-upload-start', async function () {
+  it('handles file-upload-start', async () => {
     window.dc_hosted.dispatchEvent('file-upload-start', {});
     expect(document.body.dataset.currentEvent).to.eql('upload');
   });
 
-  it('handles file-upload-complete', async function () {
+  it('handles file-upload-complete', async () => {
     window.dc_hosted.dispatchEvent('file-upload-complete', {});
     expect(document.body.dataset.currentEvent).to.eql('uploadcomplete');
   });
 
-  it('handles processing-cancelled', async function () {
+  it('handles processing-cancelled', async () => {
     window.dc_hosted.dispatchEvent('processing-cancelled', {});
     expect(document.body.dataset.currentEvent).to.eql('cancel');
   });
 
-  it('handles processing-complete', async function () {
+  it('handles processing-complete', async () => {
     window.dc_hosted.dispatchEvent('processing-complete', {});
     expect(document.body.dataset.currentEvent).to.eql('complete');
   });
 
-  it('handles try-another-file-start', async function () {
+  it('handles try-another-file-start', async () => {
     window.dc_hosted.dispatchEvent('try-another-file-start', {});
     expect(window.modalDisplayed).to.be.false;
   });
 
-  it('handles preview-generating', async function () {
+  it('handles preview-generating', async () => {
     window.dc_hosted.dispatchEvent('preview-generating', {});
     expect(document.body.dataset.currentEvent).to.eql('preview');
   });
 
-  it('handles preview-displayed', async function () {
+  it('handles preview-displayed', async () => {
     window.dc_hosted.dispatchEvent('preview-displayed', {});
     expect(document.body.dataset.currentEvent).to.eql('preview');
   });
 
-  it('handles dropzone-displayed', async function () {
+  it('handles dropzone-displayed', async () => {
     window.dc_hosted.dispatchEvent('dropzone-displayed', {});
     expect(document.body.dataset.currentEvent).to.be.undefined;
   });
 
-  it('handles download-start', async function () {
+  it('handles download-start', async () => {
     window.dc_hosted.dispatchEvent('download-start', {});
     expect(document.body.dataset.currentEvent).to.eql('download');
   });
 
-  it('handles default case', async function () {
-    //download is last currentEvent before unknown-event
+  it('handles default case', async () => {
+    // download is last currentEvent before unknown-event
     window.dc_hosted.dispatchEvent('unknown-event', {});
     expect(document.body.dataset.currentEvent).to.eql('download');
   });
