@@ -62,7 +62,7 @@ describe('eventwrapper block on Chrome', () => {
     sinon.restore();
   });
 
-  it('shows the ext modal on Chrome when conversion complete and preview displayed', async function () {
+  it('shows the ext modal on Chrome when conversion complete and preview displayed', async () => {
     document.head.innerHTML = head;
     document.body.innerHTML = body;
     window.dc_hosted.listeners = [];
@@ -80,7 +80,7 @@ describe('eventwrapper block on Chrome', () => {
     expect(window.modalDisplayed).to.be.true;
   });
 
-  it('handles modalExist', async function () {
+  it('handles modalExist', async () => {
     document.head.innerHTML = head;
     document.body.innerHTML = body;
     window.dc_hosted.listeners = [];
@@ -100,7 +100,7 @@ describe('eventwrapper block on Chrome', () => {
     expect(event).to.eql('Get the extension-1|viewer-extension-exists|Chrome-extension');
   });
 
-  it('handles modalAlready', async function () {
+  it('handles modalAlready', async () => {
     document.head.innerHTML = head;
     document.body.innerHTML = body;
     localStorage.fricBrowExt = 'true';
@@ -169,7 +169,7 @@ describe('eventwrapper block on Chrome', () => {
     expect(document.body.dataset.currentEvent).to.eql('download');
   });
 
-  it('hide content for processing-start on rotate-pdf', async function () {
+  it('hide content for processing-start on rotate-pdf', async () => {
     document.head.innerHTML = head;
     document.body.innerHTML = bodyRotatePdf;
     const blocks = document.body.querySelectorAll('.eventwrapper');
@@ -184,7 +184,7 @@ describe('eventwrapper block on Chrome', () => {
     const contentSections = document.querySelectorAll('.section:not([data-section=\'widget\'])');
     contentSections.forEach((section) => expect(section.classList.contains('hide')).to.be.equal(true));
   });
-  it('show content for preview-generating on rotate-pdf', async function () {
+  it('show content for preview-generating on rotate-pdf', async () => {
     document.head.innerHTML = head;
     document.body.innerHTML = bodyRotatePdf;
     const blocks = document.body.querySelectorAll('.eventwrapper');
@@ -253,7 +253,7 @@ describe('eventwrapper block on Microsoft Edge', () => {
     sinon.restore();
   });
 
-  it('shows the ext modal on MS Edge when conversion complete and preview displayed', async function () {
+  it('shows the ext modal on MS Edge when conversion complete and preview displayed', async () => {
     document.head.innerHTML = head;
     document.body.innerHTML = body;
     window.dc_hosted.listeners = [];
@@ -270,7 +270,7 @@ describe('eventwrapper block on Microsoft Edge', () => {
     expect(window.modalDisplayed).to.be.true;
   });
 
-  it('handles modalExist', async function () {
+  it('handles modalExist', async () => {
     document.head.innerHTML = head;
     document.body.innerHTML = body;
     window.dc_hosted.listeners = [];
@@ -290,7 +290,7 @@ describe('eventwrapper block on Microsoft Edge', () => {
     expect(event).to.eql('Get the extension-1|viewer-extension-exists|MSFT-Edge-extension');
   });
 
-  it('handles modalAlready', async function () {
+  it('handles modalAlready', async () => {
     document.head.innerHTML = head;
     document.body.innerHTML = body;
     localStorage.fricBrowExt = 'true';
