@@ -114,7 +114,7 @@ if (hostname === 'www.stage.adobe.com') {
 // Adding .html to canonical url for .ing pages
 if (hostname.endsWith('.ing')) {
   const canonEl = document.head.querySelector('link[rel="canonical"]');
-  canonEl?.setAttribute('href', `${canonEl.href}.html`);
+  if (!canonEl?.href.endsWith('.html')) canonEl?.setAttribute('href', `${canonEl.href}.html`);
 }
 
 function loadStyles(paths) {
