@@ -111,6 +111,12 @@ if (hostname === 'www.stage.adobe.com') {
   document.head.appendChild(tokenElement);
 }
 
+// Adding .html to canonical url for .ing pages
+if (hostname.endsWith('.ing')) {
+  const canonEl = document.head.querySelector('link[rel="canonical"]');
+  canonEl?.setAttribute('href', `${canonEl.href}.html`);
+}
+
 function loadStyles(paths) {
   paths.forEach((path) => {
     const link = document.createElement('link');
@@ -254,7 +260,6 @@ const CONFIG = {
     version: '1.0',
     onDemand: false,
   },
-  ...(hostname.endsWith('.ing') && { useDotHtml: true }), // Adding .html to canonical url for .ing pages
 };
 
 // Default to loading the first image as eager.
