@@ -47,7 +47,7 @@ const localeMap = {
   se: 'sv-se',
   ch_it: 'it-ch',
   tr: 'tr-tr',
-  uk: 'en-gb',
+  uk: 'en-uk',
   bg: 'bg-bg',
   ru: 'ru-ru',
   ua: 'uk-ua',

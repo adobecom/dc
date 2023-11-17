@@ -6,7 +6,7 @@ const miloLibs = setLibs('/libs');
  * can be replaced once Milo provides an implementation
  * @returns mobileOS
  */
-export function getMobileOperatingSystem() {
+function getMobileOperatingSystem() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
   // Windows Phone must come first because its UA also contains "Android"
