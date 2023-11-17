@@ -1,4 +1,4 @@
-# Contributing to DC MILO
+# Contributing to Project Helix
 
 This project (like almost all of Project Helix) is an Open Development project and welcomes contributions from everyone who finds it useful or lacking.
 
@@ -64,7 +64,7 @@ $ npm run commit
 
 # How Contributions get Reviewed
 
-One of the maintainers will look at the pull request within one week. Feedback on the pull request will be given in writing, in GitHub!
+One of the maintainers will look at the pull request within one week. Feedback on the pull request will be given in writing, in GitHub.
 
 # Release Management
 
