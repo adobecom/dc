@@ -14,6 +14,6 @@ jobs:
         with:
           destination_branch: "main"
           pr_title: "Ready for Prod: ${{ github.ref_name }} into main"
-          pr_body: "Merge to main"
-          pr_reviewer: "blainegunn"
+          pr_body: "Merge to main, commit: ${{ github.sha }}"
+          pr_reviewer: "adobecom/slytherin"
           pr_label: "Ready for Main"
