@@ -30,6 +30,7 @@ export class PdfWidgetSection extends Section {
       applyButton: 'button[data-test-id="apply-btn"]',
       signInButton: 'button[data-test-id="sign-in-btn"]',
       signInModal: 'div[data-test-id="sign-in-modal-content"]',
+      lifecyleComplete: 'div[class*="LifecycleComplete"],div[class*="lifecycle-settings"]',
     });
   }
 

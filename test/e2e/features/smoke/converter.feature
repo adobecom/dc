@@ -41,3 +41,12 @@ Feature: Frictionless Converter Block
   Examples:
       | Verb              | RedirectLink                   |
       | request-signature | /link/acrobat/sendforsignature |
+
+  @MWPW-139420 @ing
+  Scenario: sign.ing and edit.ing sites
+  Given I go to the .ing site
+   Then I scroll to the "More resources" header
+   Then I should see the CaaS block cards
+   Then I should see the review stats
+   Then I upload the file "test-files/test.pdf"
+   Then I should see the upload completed
