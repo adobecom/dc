@@ -64,7 +64,7 @@ $ npm run commit
 
 # How Contributions get Reviewed
 
-One of the maintainers will look at the pull request within one week. Feedback on the pull request will be given in writing, in GitHub.
+One of the maintainers will look at the pull request within one week. Feedback on the pull request will be given in writing, in GitHub!
 
 # Release Management
 
