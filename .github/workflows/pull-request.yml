@@ -13,7 +13,7 @@ jobs:
         uses: diillson/auto-pull-request@v1.0.1
         with:
           destination_branch: "main"
-          pr_title: "Pulling ${{ github.ref }} into master"
+          pr_title: "Ready for Prod: ${{ github.ref_name }} into main"
           pr_body: "Merge to main"
-          pr_assignee: "blainegunn"
-          pr_label: "ready-for-main"
+          pr_reviewer: "blainegunn"
+          pr_label: "Ready for Main"
