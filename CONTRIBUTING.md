@@ -1,4 +1,4 @@
-# Contributing to Project Helix
+# Contributing to DC MILO
 
 This project (like almost all of Project Helix) is an Open Development project and welcomes contributions from everyone who finds it useful or lacking.
 
