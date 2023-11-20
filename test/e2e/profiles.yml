@@ -15,3 +15,9 @@ preview:
 
 local:
   baseUrl: http://localhost:3000
+
+signing:
+  baseUrl: https://sign.ing
+
+editing:
+  baseUrl: https://edit.ing
