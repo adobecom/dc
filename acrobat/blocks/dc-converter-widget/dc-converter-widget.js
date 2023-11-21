@@ -115,7 +115,7 @@ const verbRedirMap = {
 
 const exhCreateLimitCookie = 'cr_p_c_e';
 const exhExportLimitCookie = 'ex_p_c_e';
-const exhOrganizeLimitCookie = 'org_p_c_e';
+const exhOrganizeLimitCookie = 'or_p_c_e';
 const exhCompressLimitCookie = 'cm_p_ops_e';
 
 const exhLimitCookieMap = {
