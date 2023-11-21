@@ -126,7 +126,7 @@ const exhLimitCookieMap = {
 };
 
 const url = window.location;
-const cookies = document.cookie;
+const { cookie } = document;
 
 const langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
