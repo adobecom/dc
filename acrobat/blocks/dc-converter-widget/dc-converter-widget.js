@@ -113,20 +113,16 @@ const verbRedirMap = {
   'number-pages': 'number',
 };
 
-const exhCreateLimitCookie = 'cr_p_c_e';
-const exhExportLimitCookie = 'ex_p_c_e';
-const exhOrganizeLimitCookie = 'or_p_c_e';
-const exhCompressLimitCookie = 'cm_p_ops_e';
-
 const exhLimitCookieMap = {
-  'to-pdf': exhCreateLimitCookie,
-  'pdf-to': exhExportLimitCookie,
-  'compress-pdf': exhCompressLimitCookie,
-  'rotate-pages': exhOrganizeLimitCookie,
+  'createpdf': 'cr_p_c_e',
+  'to-pdf': 'cr_p_c_e',
+  'pdf-to': 'ex_p_c_e',
+  'compress-pdf': 'cm_p_ops_e',
+  'rotate-pages': 'or_p_c_e',
 };
 
 const url = window.location;
-const { cookie } = document;
+const { cookie: cookies } = document;
 
 const langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
@@ -220,7 +216,6 @@ export default async function init(element) {
   widgetContainer.className = `fsw wapper-${VERB}`;
   widget.appendChild(widgetContainer);
 
-  const isReturningUser = window.localStorage.getItem('pdfnow.auth');
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   let isLimitExhausted = false;
   const isExportVerb = VERB.includes('pdf-to');
@@ -233,10 +228,7 @@ export default async function init(element) {
     isLimitExhausted = cookies.includes(exhLimitCookieMap['to-pdf']);
   }
 
-  const verbIncludeList = ['compress-pdf', 'fillsign', 'sendforsignature', 'add-comment',
-    'delete-pages', 'reorder-pages', 'split-pdf', 'insert-pdf', 'extract-pages', 'crop-pages', 'number-pages'];
-
-  const preRenderDropZone = verbIncludeList.includes(VERB) || (!isReturningUser && !isRedirection);
+  const preRenderDropZone = !isLimitExhausted && !isRedirection;
 
   const INLINE_SNIPPET = widget.querySelector(':scope > section#edge-snippet');
   if (INLINE_SNIPPET) {
@@ -244,7 +236,7 @@ export default async function init(element) {
     widgetContainer.appendChild(...INLINE_SNIPPET.childNodes);
     widget.removeChild(INLINE_SNIPPET);
     performance.mark('milo-move-snippet');
-  } else if (!isLimitExhausted && preRenderDropZone) {
+  } else if (preRenderDropZone) {
     const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
