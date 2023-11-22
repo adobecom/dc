@@ -114,7 +114,6 @@ const verbRedirMap = {
 };
 
 const exhLimitCookieMap = {
-  'createpdf': 'cr_p_c_e',
   'to-pdf': 'cr_p_c_e',
   'pdf-to': 'ex_p_c_e',
   'compress-pdf': 'cm_p_ops_e',
