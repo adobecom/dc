@@ -219,7 +219,7 @@ export default async function init(element) {
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   let isLimitExhausted = false;
   const isExportVerb = VERB.includes('pdf-to');
-  const isCreateVerb = VERB.includes('to-pdf');
+  const isCreateVerb = VERB.includes('to-pdf') || VERB === 'createpdf';
   if (exhLimitCookieMap[VERB]) {
     isLimitExhausted = cookies.includes(exhLimitCookieMap[VERB]);
   } else if (isExportVerb) {
