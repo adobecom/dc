@@ -14,7 +14,6 @@ const PREVIEW_DIS = 'preview-displayed';
 const TRY_ANOTHER = 'try-another-file-start';
 // const UPSELL_DIS = 'upsell-displayed';
 const FADE = 'review fade-in';
-const DISABLE_EXTENSION_BANNER = window.dc_hosted.disableExtensionBanner === true;
 
 export default function init(element) {
   const wrapper = element;
@@ -73,14 +72,14 @@ export default function init(element) {
       // Browser Extension
       if (!localStorage.fricBrowExt) {
         let extName;
-        if (browserName === 'Chrome' && !window.modalDisplayed && !DISABLE_EXTENSION_BANNER) {
+        if (browserName === 'Chrome' && !window.modalDisplayed && window.dc_hosted.disableExtensionBanner !== true) {
           window.modalDisplayed = true;
           extName = '#chromeext';
           extID = 'efaidnbmnnnibpcajpcglclefindmkaj';
           extInstalled(extID, extName, browserName);
         }
 
-        if (browserName === 'Microsoft Edge' && !window.modalDisplayed && !DISABLE_EXTENSION_BANNER) {
+        if (browserName === 'Microsoft Edge' && !window.modalDisplayed && window.dc_hosted.disableExtensionBanner !== true) {
           window.modalDisplayed = true;
           extName = '#edgeext';
           extID = 'elhekieabhbkpmcefcoobjddigjcaadp';
