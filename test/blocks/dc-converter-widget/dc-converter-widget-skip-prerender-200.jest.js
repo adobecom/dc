@@ -6,7 +6,7 @@
 
 import path from 'path';
 import fs from 'fs';
-import init from '../../../acrobat/blocks/dc-converter-widget/dc-converter-widget';
+import init from '../../../acrobat/blocks/dc-converter-widget/dc-converter-widget.js';
 
 const skippedPreRenderCases = [
   {
