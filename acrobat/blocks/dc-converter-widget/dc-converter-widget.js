@@ -121,7 +121,6 @@ const exhLimitCookieMap = {
 };
 
 const url = window.location;
-const { cookie: cookies } = document;
 
 const langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
@@ -217,6 +216,7 @@ export default async function init(element) {
 
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   let isLimitExhausted = false;
+  const { cookie: cookies } = document;
   const isExportVerb = VERB.startsWith('pdf-to');
   const isCreateVerb = VERB.endsWith('to-pdf') || VERB === 'createpdf';
   if (exhLimitCookieMap[VERB]) {
