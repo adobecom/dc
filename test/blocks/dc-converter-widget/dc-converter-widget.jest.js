@@ -9,7 +9,7 @@ describe('dc-converter-widget', () => {
   beforeEach(async () => {
     document.body.innerHTML = fs.readFileSync(
       path.resolve(__dirname, './mocks/body.html'),
-      'utf8',
+      'utf8'
     );
     window.performance.mark = jest.fn();
   });
@@ -24,9 +24,10 @@ describe('dc-converter-widget', () => {
       fetchUrl = url;
       return Promise.resolve({
         status: 200,
-        text: () => Promise.resolve(
-          fs.readFileSync(path.resolve(__dirname, './mocks/widget.html')),
-        ),
+        text: () =>
+          Promise.resolve(
+            fs.readFileSync(path.resolve(__dirname, './mocks/widget.html'))
+          ),
       });
     });
     delete window.location;
@@ -61,9 +62,10 @@ describe('dc-converter-widget', () => {
       fetchUrl = url;
       return Promise.resolve({
         status: 200,
-        text: () => Promise.resolve(
-          fs.readFileSync(path.resolve(__dirname, './mocks/widget.html')),
-        ),
+        text: () =>
+          Promise.resolve(
+            fs.readFileSync(path.resolve(__dirname, './mocks/widget.html'))
+          ),
       });
     });
     delete window.location;
@@ -74,7 +76,11 @@ describe('dc-converter-widget', () => {
   });
 
   it('loads widget failed from prod env', async () => {
-    window.fetch = jest.fn(() => Promise.resolve({ status: 404 }));
+    window.fetch = jest.fn(() =>
+      Promise.resolve({
+        status: 404,
+      })
+    );
     delete window.location;
     window.location = new URL('https://www.adobe.com');
     const block = document.querySelector('.dc-converter-widget');
@@ -89,13 +95,18 @@ describe('dc-converter-widget', () => {
     ${'stage--dc--adobecom.hlx.live'}
     ${'www.stage.adobe.com'}
   `('redirects when signed in on stage', async ({ hostname }) => {
-    window.fetch = jest.fn((url) => Promise.resolve({
-      status: 200,
-      text: () => Promise.resolve(
-        fs.readFileSync(path.resolve(__dirname, './mocks/widget.html')),
-      ),
-    }));
-    window.adobeIMS = { isSignedInUser: jest.fn(() => true) };
+    window.fetch = jest.fn((url) =>
+      Promise.resolve({
+        status: 200,
+        text: () =>
+          Promise.resolve(
+            fs.readFileSync(path.resolve(__dirname, './mocks/widget.html'))
+          ),
+      })
+    );
+    window.adobeIMS = {
+      isSignedInUser: jest.fn(() => true)
+    };
     delete window.location;
     window.location = new URL(`https://${hostname}`);
     const block = document.querySelector('.dc-converter-widget');
@@ -109,19 +120,24 @@ describe('dc-converter-widget', () => {
     ${'main--dc--adobecom.hlx.live'}
     ${'www.adobe.com'}
   `('redirects when signed in', async ({ hostname }) => {
-    window.fetch = jest.fn((url) => Promise.resolve({
-      status: 200,
-      text: () => Promise.resolve(
-        fs.readFileSync(path.resolve(__dirname, './mocks/widget.html')),
-      ),
-    }));
-    window.adobeIMS = { isSignedInUser: jest.fn(() => true) };
+    window.fetch = jest.fn((url) =>
+      Promise.resolve({
+        status: 200,
+        text: () =>
+          Promise.resolve(
+            fs.readFileSync(path.resolve(__dirname, './mocks/widget.html'))
+          ),
+      })
+    );
+    window.adobeIMS = {
+      isSignedInUser: jest.fn(() => true)
+    };
     delete window.location;
     window.location = new URL(`https://${hostname}`);
     const block = document.querySelector('.dc-converter-widget');
     const widget = await init(block);
     window.dispatchEvent(new CustomEvent('IMS:Ready'));
     // Issue with jest and window.location
-    // expect(window.location).toMatch(/https:\/\/www.adobe.com\/go\/testredirect/);
-  });
+    //expect(window.location).toMatch(/https:\/\/www.adobe.com\/go\/testredirect/);
+  });  
 });
