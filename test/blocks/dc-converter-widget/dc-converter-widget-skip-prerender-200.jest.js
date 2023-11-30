@@ -50,7 +50,6 @@ describe('DC Converter Widget Skip Prerender Verbs', () => {
     'render widget when pre-render is skipped from limit exhausted cookie condition',
     async ({ url, mockFilePath, cookieValue }) => {
       document.cookie = cookieValue;
-      delete window.location;
       document.body.innerHTML = fs.readFileSync(
         path.resolve(__dirname, mockFilePath),
         'utf8',
