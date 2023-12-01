@@ -71,6 +71,11 @@ Then(/^I go to the DC page '([^\"]*)'$/, async function (pageUrl) {
   await this.page.open();
 });
 
+Then(/^I go to the .ing site$/, async function () {
+  this.page = new FrictionlessPage('/');
+  await this.page.open();
+});
+
 Then(/^I upload the (?:PDF|file|files) "([^\"]*)"$/, async function (filePath) {
   this.context(FrictionlessPage);
   const filePaths = filePath.split(",");
@@ -90,6 +95,10 @@ Then(/^I upload the (?:PDF|file|files) "([^\"]*)"$/, async function (filePath) {
       retry--;
     }
   }
+});
+
+Then(/^I should see the upload completed$/, async function () {
+  await expect.poll(() => this.page.lifecyleComplete.count()).toBeGreaterThan(0, { timeout: 60000 });
 });
 
 Then(/^I download the converted file$/, { timeout: 200000 }, async function () {
@@ -587,3 +596,13 @@ Then(/^I should see How can I help you in jarvis popup window$/, async function 
   const jarvisElement = await this.page.native.frameLocator("iframe[src*='https://ui.messaging.adobe.com/2.64.10/index.html']").getByText("How can I help you?");
   await expect(jarvisElement).toBeVisible({timeout: 8000});
 });
+
+Then(/^I scroll to the "([^"]*)" header$/, async function (header) {
+  const xpath = `//*[self::h1 or self::h2 or self::h3][text()="${header}"]`;
+  await this.page.native.locator(xpath).waitFor({timeout: 5000});
+  await this.page.native.evaluate((xpath) => {
+    const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    element.scrollIntoView();
+  }, xpath);
+});
+
