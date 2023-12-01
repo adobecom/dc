@@ -12,27 +12,27 @@ const skippedPreRenderCases = [
   {
     mockFilePath: './mocks/body-variants/body-compress-pdf.html',
     url: 'https://www.adobe.com/acrobat/online/compress-pdf.html',
-    cookieValue: 'cm_p_ops_e_ac=true',
+    cookieValue: 'p_cm_p_ops_e_ac=true',
   },
   {
     mockFilePath: './mocks/body-variants/body-convert-pdf.html',
     url: 'https://www.adobe.com/acrobat/online/convert-pdf.html',
-    cookieValue: 'cr_p_c_e_ac=true',
+    cookieValue: 'p_cr_p_c_e_ac=true',
   },
   {
     mockFilePath: './mocks/body-variants/body-word-to-pdf.html',
     url: 'https://www.adobe.com/acrobat/online/word-to-pdf.html',
-    cookieValue: 'cr_p_c_e_ac=true',
+    cookieValue: 'p_cr_p_c_e_ac=true',
   },
   {
     mockFilePath: './mocks/body-variants/body-pdf-to-word.html',
     url: 'https://www.adobe.com/acrobat/online/pdf-to-word.html',
-    cookieValue: 'ex_p_c_e_ac=true',
+    cookieValue: 'p_ex_p_c_e_ac=true',
   },
   {
     mockFilePath: './mocks/body-variants/body-pdf-to-word.html',
     url: 'https://www.adobe.com/acrobat/online/pdf-to-word.html',
-    cookieValue: 'ex_p_c_st_e_ac=true',
+    cookieValue: 'p_ac_ex_p_c_st_e=true',
   },
 ];
 
