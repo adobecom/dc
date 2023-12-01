@@ -114,10 +114,18 @@ const verbRedirMap = {
 };
 
 const exhLimitCookieMap = {
-  'to-pdf': 'cr_p_c_e',
-  'pdf-to': 'ex_p_c_e',
-  'compress-pdf': 'cm_p_ops_e',
-  'rotate-pages': 'or_p_c_e',
+  'to-pdf': 'cr_p_c_e_ac',
+  'pdf-to': 'ex_p_c_e_ac',
+  'compress-pdf': 'cm_p_ops_e_ac',
+  'rotate-pages': 'or_p_c_e_ac',
+};
+
+// TODO: Retire once app id is unified with chrome ex viewer
+const exhStartLimitCookieMap = {
+  'to-pdf': 'cr_p_c_st_e_ac',
+  'pdf-to': 'ex_p_c_st_e_ac',
+  'compress-pdf': 'cm_p_ops_st_e_ac',
+  'rotate-pages': 'or_p_c_st_e_ac',
 };
 
 const url = window.location;
@@ -219,12 +227,15 @@ export default async function init(element) {
   const { cookie: cookies } = document;
   const isExportVerb = VERB.startsWith('pdf-to');
   const isCreateVerb = VERB.endsWith('to-pdf') || VERB === 'createpdf';
-  if (exhLimitCookieMap[VERB]) {
-    isLimitExhausted = cookies.includes(exhLimitCookieMap[VERB]);
+  if (exhLimitCookieMap[VERB] || exhStartLimitCookieMap[VERB]) {
+    isLimitExhausted = cookies.includes(exhLimitCookieMap[VERB])
+      || cookies.includes(exhStartLimitCookieMap[VERB]);
   } else if (isExportVerb) {
-    isLimitExhausted = cookies.includes(exhLimitCookieMap['pdf-to']);
+    isLimitExhausted = cookies.includes(exhLimitCookieMap['pdf-to'])
+      || cookies.includes(exhStartLimitCookieMap['pdf-to']);
   } else if (isCreateVerb) {
-    isLimitExhausted = cookies.includes(exhLimitCookieMap['to-pdf']);
+    isLimitExhausted = cookies.includes(exhLimitCookieMap['to-pdf'])
+      || cookies.includes(exhStartLimitCookieMap['to-pdf']);
   }
 
   const preRenderDropZone = !isLimitExhausted && !isRedirection;
