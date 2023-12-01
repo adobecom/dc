@@ -114,11 +114,17 @@ const verbRedirMap = {
 };
 
 const exhLimitCookieMap = {
-  'to-pdf': 'p_ac_cr_p_c',
-  'pdf-to': 'p_ac_ex_p_c',
-  'compress-pdf': 'p_ac_cm_p_ops',
-  'rotate-pages': 'p_ac_or_p_c',
-  createpdf: 'p_ac_cr_p_c',
+  'to-pdf': 'ac_cr_p_c',
+  'pdf-to': 'ac_ex_p_c',
+  'compress-pdf': 'ac_cm_p_ops',
+  'rotate-pages': 'ac_or_p_c',
+  createpdf: 'ac_cr_p_c',
+};
+
+const appEnvCookieMap = {
+  dev: 'd_',
+  stage: 's_',
+  prod: 'p_',
 };
 
 const url = window.location;
@@ -216,9 +222,10 @@ export default async function init(element) {
   widget.appendChild(widgetContainer);
 
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
-  const { cookie: cookies } = document;
+  const { cookie } = document;
   const limitCookie = exhLimitCookieMap[VERB] || exhLimitCookieMap[VERB.match(/^pdf-to|to-pdf$/)?.[0]];
-  const isLimitExhausted = cookies.includes(limitCookie);
+  const cookiePrefix = appEnvCookieMap[ENV] || '';
+  const isLimitExhausted = cookie.includes(`${cookiePrefix}${limitCookie}`);
   const preRenderDropZone = !isLimitExhausted && !isRedirection;
 
   const INLINE_SNIPPET = widget.querySelector(':scope > section#edge-snippet');
