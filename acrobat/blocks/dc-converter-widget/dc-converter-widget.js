@@ -118,6 +118,7 @@ const exhLimitCookieMap = {
   'pdf-to': 'p_ac_ex_p_c',
   'compress-pdf': 'p_ac_cm_p_ops',
   'rotate-pages': 'p_ac_or_p_c',
+  createpdf: 'p_ac_cr_p_c',
 };
 
 const url = window.location;
@@ -215,18 +216,9 @@ export default async function init(element) {
   widget.appendChild(widgetContainer);
 
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
-  let isLimitExhausted = false;
   const { cookie: cookies } = document;
-  const isExportVerb = VERB.startsWith('pdf-to');
-  const isCreateVerb = VERB.endsWith('to-pdf') || VERB === 'createpdf';
-  if (exhLimitCookieMap[VERB]) {
-    isLimitExhausted = cookies.includes(exhLimitCookieMap[VERB]);
-  } else if (isExportVerb) {
-    isLimitExhausted = cookies.includes(exhLimitCookieMap['pdf-to']);
-  } else if (isCreateVerb) {
-    isLimitExhausted = cookies.includes(exhLimitCookieMap['to-pdf']);
-  }
-
+  const limitCookie = exhLimitCookieMap[VERB] || exhLimitCookieMap[VERB.match(/^pdf-to|to-pdf$/)?.[0]];
+  const isLimitExhausted = cookies.includes(limitCookie);
   const preRenderDropZone = !isLimitExhausted && !isRedirection;
 
   const INLINE_SNIPPET = widget.querySelector(':scope > section#edge-snippet');
