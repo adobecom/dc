@@ -11,4 +11,4 @@ Feature: Validate the Jarvis chat
 
     Examples:
       |page                                                           |
-      |https://www.adobe.com/acrobat/resources/best-pdf-software.html |
+      |/acrobat/resources/best-pdf-software.html |

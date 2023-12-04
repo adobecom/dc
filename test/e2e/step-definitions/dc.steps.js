@@ -576,10 +576,6 @@ Then(/^I scroll to the "([^"]*)" header$/, async function (header) {
   }, xpath);
 });
 
-Then(/^I go to "<page>"$/, async function () {
-  await browser.url();
-});
-
 Then(/^I close Onetrust pop up if present$/, async function () {
   const btnEnableAll = await this.page.native.locator('#onetrust-accept-btn-handler');
   await expect(btnEnableAll).toBeVisible({timeout: 30000});
