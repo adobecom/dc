@@ -578,8 +578,10 @@ Then(/^I scroll to the "([^"]*)" header$/, async function (header) {
 
 Then(/^I close Onetrust pop up if present$/, async function () {
   const btnEnableAll = await this.page.native.locator('#onetrust-accept-btn-handler');
-  await expect(btnEnableAll).toBeVisible({timeout: 30000});
-  btnEnableAll.click();
+  if (btnEnableAll) {
+    await expect(btnEnableAll).toBeVisible({timeout: 30000});
+    btnEnableAll.click();
+  }
 });
 
 Then(/^I should see a chat icon$/, async function () {
