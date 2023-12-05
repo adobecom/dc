@@ -225,7 +225,7 @@ export default async function init(element) {
   const { cookie } = document;
   const limitCookie = exhLimitCookieMap[VERB] || exhLimitCookieMap[VERB.match(/^pdf-to|to-pdf$/)?.[0]];
   const cookiePrefix = appEnvCookieMap[ENV] || '';
-  const isLimitExhausted = cookie.includes(`${cookiePrefix}${limitCookie}`);
+  const isLimitExhausted = limitCookie && cookie.includes(`${cookiePrefix}${limitCookie}`);
   const preRenderDropZone = !isLimitExhausted && !isRedirection;
 
   const INLINE_SNIPPET = widget.querySelector(':scope > section#edge-snippet');
