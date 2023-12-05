@@ -132,6 +132,16 @@
       "url": "https://milo.adobe.com/tools/faas",
       "isPalette": false,
       "includePaths": [ "**.docx**"]
+    },
+    {
+      "containerId": "tools",
+      "id": "ost",
+      "title": "Use offer",
+      "environments": [ "edit", "dev", "preview" ],
+      "url": "https://milo.adobe.com/tools/ost",
+      "includePaths": [ "**.docx**" ],
+      "passConfig": true,
+      "passReferrer": true
     }
   ]
 }
