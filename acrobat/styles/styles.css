@@ -23,6 +23,11 @@ div[data-section="widget"] {
   min-height: 570px;
 }
 
+.DCHosted__container___3HQ1f > div:first-of-type {
+  min-height: 570px;
+  background-color: #fff;
+}
+
 #CID {
   width: 75%;
   max-width: 75%;
