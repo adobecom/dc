@@ -1,5 +1,5 @@
 /* eslint-disable */
-export var getBrowserData = function (userAgent) {
+export function getBrowserData (userAgent) {
   if (!userAgent) {
     return {};
   }
