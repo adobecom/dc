@@ -51,10 +51,10 @@ window.browser = getBrowserData(window.navigator.userAgent);
 // Feature checking for old browsers
 var EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 if (window.browser.name === 'Internet Explorer' ||
-  window.browser.name === 'Microsoft Edge' && window.browser.version?.split('.')[0] < 86 ||
-  window.browser.name === 'Microsoft Edge' && !window.browser.version ||
-  window.browser.name === 'Safari' && window.browser.version?.split('.')[0] < 14 ||
-  window.browser.name === 'Safari' && !window.browser.version ) {
+  (window.browser.name === 'Microsoft Edge' && !window.browser.version) ||
+  (window.browser.name === 'Microsoft Edge' && window.browser.version.split('.')[0] < 86) ||
+  (window.browser.name === 'Safari' && !window.browser.version) ||
+  (window.browser.name === 'Safari' && window.browser.version.split('.')[0] < 14)) {
   window.location.href = EOLBrowserPage;
 }
 /* eslint-enable */
