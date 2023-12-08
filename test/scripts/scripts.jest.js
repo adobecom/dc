@@ -28,39 +28,33 @@ describe('Test scripts', () => {
       value: userAgent,
       configurable: true,
     });
-    jest.mock('https://www.adobe.com/libs/utils/utils.js', () => {
-      return {
-        loadArea: jest.fn(),
-        loadScript: jest.fn(),
-        loadLana: jest.fn(),
-        getLocale: jest.fn().mockImplementation(() => ({ietf: 'en-US'})),
-        setConfig: mockSetConfig,
-        getMetadata: jest.fn().mockReturnValue('123'),
-      };
-    });
+    jest.mock('https://www.adobe.com/libs/utils/utils.js', () => ({
+      loadArea: jest.fn(),
+      loadScript: jest.fn(),
+      loadLana: jest.fn(),
+      getLocale: jest.fn().mockImplementation(() => ({ ietf: 'en-US' })),
+      setConfig: mockSetConfig,
+      getMetadata: jest.fn().mockReturnValue('123'),
+    }));
     jest.mock(
       'https://main--milo--adobecom.hlx.page/libs/utils/utils.js',
-      () => {
-        return {
-          loadArea: jest.fn(),
-          loadScript: jest.fn(),
-          loadLana: jest.fn(),
-          getLocale: jest.fn().mockImplementation(() => ({ietf: 'en-US'})),
-          setConfig: mockSetConfig,
-          getMetadata: jest.fn().mockReturnValue('123'),
-        };
-      }
-    );
-    jest.mock('/libs/utils/utils.js', () => {
-      return {
+      () => ({
         loadArea: jest.fn(),
         loadScript: jest.fn(),
         loadLana: jest.fn(),
-        getLocale: jest.fn().mockImplementation(() => ({ietf: 'en-US'})),
+        getLocale: jest.fn().mockImplementation(() => ({ ietf: 'en-US' })),
         setConfig: mockSetConfig,
         getMetadata: jest.fn().mockReturnValue('123'),
-      };
-    });
+      }),
+    );
+    jest.mock('/libs/utils/utils.js', () => ({
+      loadArea: jest.fn(),
+      loadScript: jest.fn(),
+      loadLana: jest.fn(),
+      getLocale: jest.fn().mockImplementation(() => ({ ietf: 'en-US' })),
+      setConfig: mockSetConfig,
+      getMetadata: jest.fn().mockReturnValue('123'),
+    }));
     window.adobeIMS = {
       initialized: true,
       isSignedInUser: jest.fn().mockReturnValue(false),
@@ -69,28 +63,22 @@ describe('Test scripts', () => {
       name: 'Chrome',
       isMobile: false,
     };
-    window._satellite = {
-      track: jest.fn(),
-    };
-    window.dc_hosted = {
-      getUserLimits: jest.fn().mockImplementation(async () => ({})),
-    };
-    window.fetch = jest.fn().mockImplementation(async () => ({status: 404}));
+    window._satellite = { track: jest.fn() };
+    window.dc_hosted = { getUserLimits: jest.fn().mockImplementation(async () => ({})) };
+    window.fetch = jest.fn().mockImplementation(async () => ({ status: 404 }));
   });
 
   beforeEach(() => {
     jest.resetModules();
-    document.head.innerHTML =
-      '<meta name="promotion" content="abc"/><meta name="dc-widget-version" content="123"/>';
-    document.body.innerHTML =
-      '<header><main><div class="dc-converter-widget"><div><div>pdf-to-image</div></div></div></main></header>';
+    document.head.innerHTML = '<meta name="promotion" content="abc"/><meta name="dc-widget-version" content="123"/>';
+    document.body.innerHTML = '<header><main><div class="dc-converter-widget"><div><div>pdf-to-image</div></div></div></main></header>';
   });
 
   describe('Test prod', () => {
     it('uses prod milolibs', async () => {
       delete window.location;
       window.location = new URL(
-        'https://www.adobe.com/acrobate/online/ppt-to-pdf'
+        'https://www.adobe.com/acrobate/online/ppt-to-pdf',
       );
       await require('../../acrobat/scripts/scripts.js');
       await delay(100);
@@ -107,8 +95,8 @@ describe('Test scripts', () => {
       await delay(100);
       const config = await getConfig();
       expect(config.miloLibs).toEqual('https://www.stage.adobe.com/libs');
-    })
-  })
+    });
+  });
 
   describe('Test stage hostname with local branch', () => {
     it('uses localhost milolibs', async () => {
@@ -118,8 +106,8 @@ describe('Test scripts', () => {
       await delay(100);
       const config = await getConfig();
       expect(config.miloLibs).toEqual('http://localhost:6456/libs');
-    })
-  })
+    });
+  });
 
   describe('Test live hostname with main branch', () => {
     it('uses hlx live libs', async () => {
@@ -129,8 +117,8 @@ describe('Test scripts', () => {
       await delay(100);
       const config = await getConfig();
       expect(config.miloLibs).toEqual('https://main--milo--adobecom.hlx.live/libs');
-    })
-  })
+    });
+  });
 
   describe('Test live hostname with milo branch', () => {
     it('uses branch hlx live libs', async () => {
@@ -140,8 +128,8 @@ describe('Test scripts', () => {
       await delay(100);
       const config = await getConfig();
       expect(config.miloLibs).toEqual('https://main--milo--tsayadobe.hlx.live/libs');
-    })
-  })
+    });
+  });
 
   describe('Test page hostname with main branch', () => {
     it('uses hlx page libs', async () => {
@@ -151,8 +139,8 @@ describe('Test scripts', () => {
       await delay(100);
       const config = await getConfig();
       expect(config.miloLibs).toEqual('https://main--milo--adobecom.hlx.page/libs');
-    })
-  })
+    });
+  });
 
   describe('Test page hostname with milo branch', () => {
     it('uses branch hlx page libs', async () => {
@@ -162,6 +150,6 @@ describe('Test scripts', () => {
       await delay(100);
       const config = await getConfig();
       expect(config.miloLibs).toEqual('https://main--milo--tsayadobe.hlx.page/libs');
-    })
-  })
+    });
+  });
 });
