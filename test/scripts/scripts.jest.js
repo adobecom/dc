@@ -87,6 +87,19 @@ describe('Test scripts', () => {
     });
   });
 
+  describe('Test prod with milolibs', () => {
+    it('uses prod libs, milolibs ignored', async () => {
+      delete window.location;
+      window.location = new URL(
+        'https://www.adobe.com/acrobate/online/ppt-to-pdf?milolibs=main--milo--tsayadobe',
+      );
+      await require('../../acrobat/scripts/scripts.js');
+      await delay(100);
+      const config = await getConfig();
+      expect(config.miloLibs).toEqual('/libs');
+    });
+  });
+
   describe('Test stage', () => {
     it('uses stage milolibs', async () => {
       delete window.location;
