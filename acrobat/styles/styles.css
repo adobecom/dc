@@ -23,6 +23,10 @@ div[data-section="widget"] {
   min-height: 570px;
 }
 
+#dc-converter-widget > div:first-of-type {
+  display: none;
+}
+
 .DCHosted__container___3HQ1f > div:first-of-type {
   min-height: 570px;
   background-color: #fff;
@@ -467,7 +471,7 @@ div.how-to ol li::before{
 .widget-center {
   justify-content: center;
   flex: 1 1 auto;
-  display: flex;
+  display: flex !important;
   flex-direction: column;
 }
 
