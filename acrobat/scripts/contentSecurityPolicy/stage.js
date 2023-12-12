@@ -95,6 +95,7 @@ const frameSrc = [
   'accounts.google.com',
   'adobe.demdex.net',
   'bid.g.doubleclick.net',
+  'td.doubleclick.net',
   'commerce-stg.adobe.com',
   'dc-api-stage.adobecontent.io',
   'dc-api.adobecontent.io',
@@ -118,6 +119,7 @@ const imgSrc = [
   'data:',
   '*.adobe.com',
   '*.clarity.ms',
+  '*.enterprise.adobe.com',
   '*.services.adobe.com',
   'alb.reddit.com/rp.gif',
   's.tgm.yahoo-net.jp',
@@ -169,6 +171,7 @@ const manifestSrc = [
 
 const scriptSrc = [
   '\'self\'',
+  '\'unsafe-inline\'',
   '\'unsafe-eval\'',
   '*.adobe.com',
   '*.clarity.ms',

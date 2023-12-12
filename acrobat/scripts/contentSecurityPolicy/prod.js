@@ -84,6 +84,7 @@ const frameSrc = [
   'acrobat.adobe.com',
   'adobe.demdex.net',
   'bid.g.doubleclick.net',
+  'td.doubleclick.net',
   'commerce.adobe.com',
   'dc-api.adobecontent.io',
   'documentcloud.adobe.com',
@@ -107,6 +108,7 @@ const imgSrc = [
   'blob:',
   'data:',
   '*.clarity.ms',
+  '*.enterprise.adobe.com',
   '*.services.adobe.com',
   'alb.reddit.com/rp.gif',
   'analytics.twitter.com/',
@@ -159,6 +161,7 @@ const manifestSrc = [
 
 const scriptSrc = [
   '\'self\'',
+  '\'unsafe-inline\'',
   '\'unsafe-eval\'',
   '*.adobe.com',
   '*.clarity.ms',
