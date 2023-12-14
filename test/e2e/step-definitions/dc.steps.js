@@ -561,7 +561,7 @@ Then(/^I should see that the prices match on checkout from the (.*) merch card(?
       await expect(price).toContain(checkoutPrice);
 
       console.log(`'${price}' matched the checkout price '${checkoutPrice}'`);
-  
+
       await this.page.native.goBack();
     }
   }
@@ -574,4 +574,32 @@ Then(/^I scroll to the "([^"]*)" header$/, async function (header) {
     const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     element.scrollIntoView();
   }, xpath);
+});
+
+Then(/^I close Onetrust pop up if present$/, async function () {
+  const btnEnableAll = await this.page.native.locator('#onetrust-accept-btn-handler');
+  if (btnEnableAll) {
+    await expect(btnEnableAll).toBeVisible({timeout: 30000});
+    btnEnableAll.click();
+  }
+});
+
+Then(/^I should see a chat icon$/, async function () {
+  const btnChat = await this.page.native.locator('#adbmsgCta');
+  await expect(btnChat).toBeVisible({timeout: 30000});
+});
+
+Then(/^I click the chat button$/, async function () {
+  const btnChat = await this.page.native.locator('#adbmsgCta');
+  btnChat.click();
+});
+
+Then(/^I should see jarvis popup window$/, async function () {
+  const jarvisPopup = await this.page.native.locator('#adbmsgContentContainer');
+  await expect(jarvisPopup).toBeVisible({timeout: 8000});
+});
+
+Then(/^I should see How can I help you in jarvis popup window$/, async function () {
+  const jarvisElement = await this.page.native.frameLocator("iframe[src*='https://ui.messaging.adobe.com/2.64.10/index.html']").getByText("How can I help you?");
+  await expect(jarvisElement).toBeVisible({timeout: 8000});
 });

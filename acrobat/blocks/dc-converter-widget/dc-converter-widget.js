@@ -113,7 +113,22 @@ const verbRedirMap = {
   'number-pages': 'number',
 };
 
+const exhLimitCookieMap = {
+  'to-pdf': 'ac_cr_p_c',
+  'pdf-to': 'ac_ex_p_c',
+  'compress-pdf': 'ac_cm_p_ops',
+  'rotate-pages': 'ac_or_p_c',
+  createpdf: 'ac_cr_p_c',
+};
+
+const appEnvCookieMap = {
+  dev: 'd_',
+  stage: 's_',
+  prod: 'p_',
+};
+
 const url = window.location;
+
 const langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
 
@@ -206,20 +221,22 @@ export default async function init(element) {
   widgetContainer.className = `fsw wapper-${VERB}`;
   widget.appendChild(widgetContainer);
 
-  const isReturningUser = window.localStorage.getItem('pdfnow.auth');
   const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
-  const preRenderDropZone = !isReturningUser && !isRedirection;
-
-  const verbIncludeList = ['compress-pdf', 'fillsign', 'sendforsignature', 'add-comment',
-    'delete-pages', 'reorder-pages', 'split-pdf', 'insert-pdf', 'extract-pages', 'crop-pages', 'number-pages'];
+  const { cookie } = document;
+  const limitCookie = exhLimitCookieMap[VERB] || exhLimitCookieMap[VERB.match(/^pdf-to|to-pdf$/)?.[0]];
+  const cookiePrefix = appEnvCookieMap[ENV] || '';
+  const isLimitExhausted = limitCookie && cookie.includes(`${cookiePrefix}${limitCookie}`);
+  const preRenderDropZone = !isLimitExhausted && !isRedirection;
 
   const INLINE_SNIPPET = widget.querySelector(':scope > section#edge-snippet');
   if (INLINE_SNIPPET) {
-    widgetContainer.dataset.rendered = 'true';
-    widgetContainer.appendChild(...INLINE_SNIPPET.childNodes);
+    if (!isLimitExhausted) {
+      widgetContainer.dataset.rendered = 'true';
+      widgetContainer.appendChild(...INLINE_SNIPPET.childNodes);
+      performance.mark('milo-move-snippet');
+    }
     widget.removeChild(INLINE_SNIPPET);
-    performance.mark('milo-move-snippet');
-  } else if (verbIncludeList.includes(VERB) || preRenderDropZone) {
+  } else if (preRenderDropZone) {
     const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {

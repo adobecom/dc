@@ -67,9 +67,13 @@
     "coverageProvider": "v8",
     "moduleNameMapper": {
       "^https://main--milo--adobecom\\.hlx\\.page/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
+      "^https://main--milo--adobecom\\.hlx\\.live/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
       "^https://www\\.adobe\\.com/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
+      "^https://www\\.stage\\.adobe\\.com/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
       "^http://localhost:6456/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
-      "^/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1"
+      "^/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
+      "^https://main--milo--tsayadobe\\.hlx\\.live/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
+      "^https://main--milo--tsayadobe\\.hlx\\.page/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1"
     }
   }
 }

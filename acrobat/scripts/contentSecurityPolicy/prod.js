@@ -45,6 +45,7 @@ const connectSrc = [
   '*.typekit.net/',
   'trial-eum-clienttons-s.akamaihd.net/',
   '*.akstat.io/',
+  'rum.hlx.page',
   ';',
 ];
 
@@ -76,6 +77,7 @@ const frameSrc = [
   '\'self\'',
   'data:',
   'blob:',
+  '*.adobe.io',
   '*.amazonaws.com',
   '*.blob.core.windows.net',
   '9212252.fls.doubleclick.net',
@@ -83,6 +85,7 @@ const frameSrc = [
   'acrobat.adobe.com',
   'adobe.demdex.net',
   'bid.g.doubleclick.net',
+  'td.doubleclick.net',
   'commerce.adobe.com',
   'dc-api.adobecontent.io',
   'documentcloud.adobe.com',
@@ -106,6 +109,7 @@ const imgSrc = [
   'blob:',
   'data:',
   '*.clarity.ms',
+  '*.enterprise.adobe.com',
   '*.services.adobe.com',
   'alb.reddit.com/rp.gif',
   'analytics.twitter.com/',
@@ -158,6 +162,7 @@ const manifestSrc = [
 
 const scriptSrc = [
   '\'self\'',
+  '\'unsafe-inline\'',
   '\'unsafe-eval\'',
   '*.adobe.com',
   '*.clarity.ms',
@@ -230,6 +235,7 @@ const scriptSrc = [
   's.yjtag.jp/tag.js',
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
+  'rum.hlx.page',
   ';',
 ];
 

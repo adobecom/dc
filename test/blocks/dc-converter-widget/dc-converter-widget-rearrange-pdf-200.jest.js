@@ -10,7 +10,7 @@ import fs from 'fs';
 describe('dc-converter-widget', () => {
   beforeEach(async () => {
     document.body.innerHTML = fs.readFileSync(
-      path.resolve(__dirname, './mocks/body-rearrange-pdf.html'),
+      path.resolve(__dirname, './mocks/body-variants/body-rearrange-pdf.html'),
       'utf8',
     );
     jest.useFakeTimers();
