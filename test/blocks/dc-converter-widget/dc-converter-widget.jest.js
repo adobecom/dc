@@ -175,6 +175,29 @@ describe('dc-converter-widget', () => {
     const block = document.querySelector('.dc-converter-widget');
     await init(block);
     window.dispatchEvent(new CustomEvent('IMS:Ready'));
+    expect(window.location).toBe('https://www.adobe.com/go/acrobat-pdftoppt');
+  });
+
+  it.each`
+    hostname
+    ${'www.adobe.com'}
+  `('redirects when signed in - redirect link in block', async ({ hostname }) => {
+    document.body.innerHTML = fs.readFileSync(
+      path.resolve(__dirname, './mocks/body_redirect.html'),
+      'utf8',
+    );
+    window.fetch = jest.fn(() => Promise.resolve(
+      {
+        status: 200,
+        text: () => Promise.resolve(fs.readFileSync(path.resolve(__dirname, './mocks/widget.html'))),
+      },
+    ));
+    window.adobeIMS = { isSignedInUser: jest.fn(() => true) };
+    delete window.location;
+    window.location = new URL(`https://${hostname}/acrobat/online/pdf-to-ppt.html`);
+    const block = document.querySelector('.dc-converter-widget');
+    await init(block);
+    window.dispatchEvent(new CustomEvent('IMS:Ready'));
     expect(window.location).toBe('https://www.adobe.com/go/testredirect');
   });
 
