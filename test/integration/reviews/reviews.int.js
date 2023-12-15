@@ -42,7 +42,7 @@ describe('reviews', function () {
 
   beforeEach(function () {
     testName = this.currentTest.title;
-    screenshotPath = `${screenshotFolder}/${suiteName}/$browser/${testName}.png`;
+    screenshotPath = `${screenshotFolder}/${suiteName}/$browser/${testName}.test.png`;
   });
 
   it('click 2 stars', async () => {
