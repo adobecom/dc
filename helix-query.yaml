@@ -478,15 +478,6 @@ indices:
       - '/bg/dc-shared/*'
     target: /bg/dc-shared/assets/query-index.xlsx
  
-  ru:
-    <<: *def
-    include:
-      - '/ru/acrobat/**'
-      - '/ru/sign/**'
-    exclude:
-      - '/ru/dc-shared/*'
-    target: /ru/dc-shared/assets/query-index.xlsx
- 
   ua:
     <<: *def
     include:
