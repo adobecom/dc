@@ -23,13 +23,18 @@ div[data-section="widget"] {
   min-height: 570px;
 }
 
-#dc-converter-widget > div:first-of-type {
-  display: none;
-}
-
 .DCHosted__container___3HQ1f > div:first-of-type {
   min-height: 570px;
   background-color: #fff;
+}
+
+/* ootb widget */
+.dc-converter-widget > div:first-of-type {
+  display: none;
+}
+
+#dc-converter-widget > div:first-of-type {
+  display: none;
 }
 
 #CID {
@@ -449,11 +454,6 @@ div.how-to ol li::before{
   max-width: 800px;
   margin: auto;
   padding: 20px;
-}
-
-/* ootb widget */
-.dc-converter-widget > div:first-of-type {
-  display: none;
 }
 
 .widget-heading {

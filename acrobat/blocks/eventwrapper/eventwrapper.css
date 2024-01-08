@@ -95,7 +95,7 @@ body.l2-state.hide-content .global-footer {
 }
 
 body.l2-state.hide-content h3[class^='FrictionlessNavBar__topbarTitle'] svg g {
-  stroke: rgb(124, 195, 63);
+  stroke: rgb(124 195 63);
 }
 
 #CID.wapper-rotate-pages,
