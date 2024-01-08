@@ -40,7 +40,7 @@ div[data-section="widget"] {
   padding: 0;
   position: relative;
   left:0;
-  top: 70px;
+  top: 30px;
   right:0;
   z-index: 1;
 }

@@ -50,6 +50,10 @@ body:not([data-current-event]) [data-event-name=onload] {
   animation-name: fade-in;
 }
 
+.review.hide {
+  opacity: 0;
+}
+
 @keyframes fade-in {
   0% {
     opacity: 0;
