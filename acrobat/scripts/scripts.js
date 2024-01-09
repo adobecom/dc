@@ -294,7 +294,7 @@ const { ietf } = getLocale(locales);
 
     dcUrls.forEach((url) => {
       const link = document.createElement('link');
-      link.setAttribute('rel', 'prefetch');
+      link.setAttribute('rel', 'preload');
       if (url.split('.').pop() === 'html') { link.setAttribute('as', 'fetch'); }
       if (url.split('.').pop() === 'js') { link.setAttribute('as', 'script'); }
       link.setAttribute('href', url);
