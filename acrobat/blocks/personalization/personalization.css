@@ -18,9 +18,9 @@
   display: none;
 }
 
-.personalizationShowAll [data-tag='default'],
-.personalizationShowAll [data-tag='2nd conversion'],
-.personalizationShowAll [data-tag='upsell'] {
+div[data-tag='default'],
+div[data-tag='2nd conversion'],
+div[data-tag='upsell'] {
   display: block !important;
 }
 
