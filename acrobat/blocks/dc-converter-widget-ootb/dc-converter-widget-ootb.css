@@ -35,6 +35,7 @@
   background-color: white;
   min-height: 570px;
   display: flex;
+  
   /* flex: 1 1 auto; */
   flex-direction: column;
 }
