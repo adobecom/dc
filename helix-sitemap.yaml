@@ -123,12 +123,6 @@ sitemaps:
         destination: /be_nl/dc-shared/assets/sitemap.xml
         hreflang: nl-BE
 
-      cy_en:
-        source: /cy_en/dc-shared/assets/query-index.json
-        alternate: /cy_en/{path}.html
-        destination: /cy_en/dc-shared/assets/sitemap.xml
-        hreflang: en-CY
-
       dk:
         source: /dk/dc-shared/assets/query-index.json
         alternate: /dk/{path}.html
@@ -206,12 +200,6 @@ sitemaps:
         alternate: /hu/{path}.html
         destination: /hu/dc-shared/assets/sitemap.xml
         hreflang: hu-HU
-
-      mt:
-        source: /mt/dc-shared/assets/query-index.json
-        alternate: /mt/{path}.html
-        destination: /mt/dc-shared/assets/sitemap.xml
-        hreflang: en-MT
 
       mena_en:
         source: /mena_en/dc-shared/assets/query-index.json
