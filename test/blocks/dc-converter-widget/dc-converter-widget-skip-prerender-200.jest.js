@@ -49,6 +49,7 @@ describe('DC Converter Widget Skip Prerender Verbs', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     document.cookie = '';
+    jest.useFakeTimers();
   });
 
   it.each(skippedPreRenderCases)(

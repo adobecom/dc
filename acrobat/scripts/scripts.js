@@ -245,13 +245,27 @@ const CONFIG = {
   codeRoot: '/acrobat',
   contentRoot: '/dc-shared',
   imsClientId: 'acrobatmilo',
-  local: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga' },
+  local: {
+    edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga',
+    pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
   stage: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
+    pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
+    pdfViewerReportSuite: 'adbadobedxqa',
   },
-  live: { edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c' },
-  prod: { edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961' },
+  live: {
+    edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
+    pdfViewerClientId: '18e9175fc6754b9892d315cae9f346f1',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
+  prod: {
+    edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961',
+    pdfViewerClientId: '8a1d0707bf0f45af8af9f3bead0d213e',
+    pdfViewerReportSuite: 'adbadobenonacdcprod,adbadobedxprod,adbadobeprototype',
+  },
   locales,
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
@@ -326,6 +340,7 @@ const { ietf } = getLocale(locales);
 
   // Import base milo features and run them
   const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
+
   addLocale(ietf);
 
   if (getMetadata('commerce')) {
