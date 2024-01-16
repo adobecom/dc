@@ -248,19 +248,23 @@ const CONFIG = {
   local: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga',
     pdfViewerClientId: 'f32514316c454a1a8d9f85498ae0a948',
+    pdfViewerReportSuite: 'adbadobedxqa',
   },
   stage: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
     pdfViewerClientId: 'f32514316c454a1a8d9f85498ae0a948',
+    pdfViewerReportSuite: 'adbadobedxqa',
   },
   live: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
     pdfViewerClientId: '18e9175fc6754b9892d315cae9f346f1',
+    pdfViewerReportSuite: 'adbadobedxqa',
   },
   prod: {
     edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961',
     pdfViewerClientId: 'ad52683540514799b6b621b5a5b20339',
+    pdfViewerReportSuite: 'adbadobenonacdcprod,adbadobedxprod,adbadobeprototype',
   },
   locales,
   // geoRouting: 'on',
