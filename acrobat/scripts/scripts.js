@@ -263,7 +263,7 @@ const CONFIG = {
   },
   prod: {
     edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961',
-    pdfViewerClientId: 'ad52683540514799b6b621b5a5b20339',
+    pdfViewerClientId: '8a1d0707bf0f45af8af9f3bead0d213e',
     pdfViewerReportSuite: 'adbadobenonacdcprod,adbadobedxprod,adbadobeprototype',
   },
   locales,
