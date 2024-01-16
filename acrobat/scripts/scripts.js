@@ -247,13 +247,13 @@ const CONFIG = {
   imsClientId: 'acrobatmilo',
   local: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga',
-    pdfViewerClientId: 'f32514316c454a1a8d9f85498ae0a948',
+    pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   stage: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
-    pdfViewerClientId: 'f32514316c454a1a8d9f85498ae0a948',
+    pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   live: {
