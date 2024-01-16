@@ -341,8 +341,6 @@ const { ietf } = getLocale(locales);
   // Import base milo features and run them
   const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
 
-  console.log(CONFIG);
-
   addLocale(ietf);
 
   if (getMetadata('commerce')) {
