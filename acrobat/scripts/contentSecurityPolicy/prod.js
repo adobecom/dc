@@ -100,6 +100,7 @@ const frameSrc = [
   'www.youtube.com',
   's.company-target.com',
   'ui.messaging.adobe.com/',
+  'acrobatservices.adobe.com',
   ';',
 ];
 
