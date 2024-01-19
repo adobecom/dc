@@ -245,6 +245,7 @@ const CONFIG = {
   codeRoot: '/acrobat',
   contentRoot: '/dc-shared',
   imsClientId: 'acrobatmilo',
+  commerce: { checkoutClientId: 'doc_cloud' },
   local: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga',
     pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
