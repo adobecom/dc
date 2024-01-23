@@ -23,11 +23,6 @@ div[data-section="widget"] {
   min-height: 570px;
 }
 
-.DCHosted__container___3HQ1f > div:first-of-type {
-  min-height: 570px;
-  background-color: #fff;
-}
-
 /* ootb widget */
 .dc-converter-widget > div:first-of-type {
   display: none;
@@ -521,5 +516,5 @@ div.how-to ol li::before{
 @media (max-width: 600px) {
   [data-path*="caas"] .fragment {
     min-height: 1899px;
-  }  
+  }
 }
