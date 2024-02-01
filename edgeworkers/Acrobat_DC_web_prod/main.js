@@ -9,7 +9,7 @@ import localeMap from './utils/locales.js';
 import verbMap from './utils/verbs.js';
 import contentSecurityPolicy from './utils/csp/index.js';
 
-const isProd = false;
+const isProd = true;
 
 // Start with the hash value for the IE/Trident inline script
 const scriptHashes = ['\'sha256-ppkx2kFovnKNr1hP8XV2hWwWaRR9Gz5JRHa4/dY8xzg=\''];
@@ -25,6 +25,9 @@ export async function responseProvider(request) {
   const last = path.splice(-1)[0].split('.')[0];
   const verb = verbMap[last] || last;
   const rewriter = new HtmlRewritingStream();
+  let incomingHeaderLength = -1;
+  let trimmedHeaderLength = -1;
+  let csp = '';
 
   const fetchFrictionlessPage = async () => {
     // Setup: Fetch a stream containing HTML
@@ -59,6 +62,7 @@ export async function responseProvider(request) {
 
     // Strip headers which should not be forwarded
     const responseHeaders = htmlResponse.getHeaders();
+    incomingHeaderLength = JSON.stringify(responseHeaders).length;
     for (const prop of [
       'accept-encoding',
       'cache-control',
@@ -77,6 +81,7 @@ export async function responseProvider(request) {
     ]) {
       delete responseHeaders[prop];
     }
+    trimmedHeaderLength = JSON.stringify(responseHeaders).length;
 
     return [responseStream, responseHeaders, version, widgetVersion];
   };
@@ -163,6 +168,7 @@ export async function responseProvider(request) {
     });
   };
 
+  let debugCount = 0;
   try {
     const [
       [responseStream, responseHeaders, dcCoreVersion],
@@ -174,7 +180,8 @@ export async function responseProvider(request) {
 
     // TODO: revisit cache TTL, TTL and handling on error
 
-    const csp = contentSecurityPolicy(isProd, scriptHashes);
+    csp = contentSecurityPolicy(isProd, scriptHashes);
+    debugCount++;
     const headers = {
       ...responseHeaders,
       'Content-Security-Policy': csp,
@@ -194,6 +201,6 @@ export async function responseProvider(request) {
       responseStream.pipeThrough(rewriter),
     );
   } catch (error) {
-    return createResponse(500, {}, error.message);
+    return createResponse(500, {}, `Error: ${error.toString()} message=${error.message} stack=${error.stack} debugCount=${debugCount}\nincoming header length is ${incomingHeaderLength} trimmed header length is ${trimmedHeaderLength} csp length is ${csp.length}`);
   }
 }

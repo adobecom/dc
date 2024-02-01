@@ -10,14 +10,17 @@
     "int": "wtr \"./test/integration/**/*.int.(js|html)\" --node-resolve --port=2000 --concurrent-browsers 3 --config wtr-integration.config.mjs",
     "int:watch": "npm run int -- --watch",
     "int3": "wtr \"./test/integration/**/*.int.(js|html)\" --node-resolve --port=2000 --concurrent-browsers 3 --config wtr-int-browsers.config.mjs",
-    "int3:watch": "npm run int3 -- --watch",    
-    "jest": "jest --coverage --coverageDirectory=coverage/jest",
+    "int3:watch": "npm run int3 -- --watch",
+    "jest": "jest --testPathPattern=test --coverage --coverageDirectory=coverage/jest",
     "jest:watch": "npm run jest -- --watchAll",
     "lcov": "lcov -a coverage/jest/lcov.info -a coverage/wtr/lcov.info -o coverage/lcov.info",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint .",
     "lint:css": "stylelint 'acrobat/blocks/**/*.css' 'acrobat/styles/*.css'",
-    "update-csp": "node ./tools/cspUpdate/cspUpdate.js"
+    "update-csp": "node ./tools/cspUpdate/cspUpdate.js",
+    "ewtest": "jest --testPathPattern=edgeworkers",
+    "ewprod2stg": "node ./edgeworkers/scripts/prod2stg.js",
+    "ewbuild": "node ./edgeworkers/scripts/build.js"
   },
   "repository": {
     "type": "git",
@@ -57,7 +60,7 @@
     "bowser": "^2.11.0",
     "@web/test-runner": "0.13.27",
     "@web/test-runner-commands": "0.6.1",
-    "@web/test-runner-playwright": "0.11.0"  
+    "@web/test-runner-playwright": "0.11.0"
   },
   "jest": {
     "testRegex": "\\.jest\\.(js|jsx)$",
@@ -66,6 +69,7 @@
     ],
     "coverageProvider": "v8",
     "moduleNameMapper": {
+      "crypto": "<rootDir>/test/edgeworkers/__mocks__/crypto.js",
       "^https://main--milo--adobecom\\.hlx\\.page/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
       "^https://main--milo--adobecom\\.hlx\\.live/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
       "^https://www\\.adobe\\.com/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
