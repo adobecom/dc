@@ -1,0 +1,76 @@
+name: Verify Edge Worker
+
+on:
+  workflow_dispatch:
+    inputs:
+      testCodeBranch:
+        description: 'Test Code Branch'
+        required: true
+        default: 'stage'
+        type: string
+      env:
+        description: 'Environment'
+        type: choice
+        required: true
+        default: 'prod'
+        options:
+            - 'prod'
+      hostsHack:
+        description: 'Hosts File Hack'
+        required: false
+        type: string
+
+jobs:
+  run-tests-gha:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        include:
+          - os: ubuntu-latest
+            browser: chrome
+       
+    name: Smoke Test
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Hosts file hack
+        if: "${{ github.event.inputs.hostsHack != '' }}"
+        run: echo ${{ inputs.hostsHack }} | sudo tee -a /etc/hosts
+
+      - name: Check hosts file
+        run: cat /etc/hosts
+
+      - name: Check IP
+        run: curl https://api.ipify.org
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.testCodeBranch }}
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Install browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run the tests
+        run: npx run test/e2e -t "@smoke and (not (@analytics or @extension-installed))" -h -p ${{ inputs.env }} -b ${{ matrix.browser }} --bypassBotDetection
+        env:
+          USER_AGENT_SUFFIX: "${{ secrets.USER_AGENT_SUFFIX }}"
+
+      - name: Save test logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: reports
+          path: reports/
+
