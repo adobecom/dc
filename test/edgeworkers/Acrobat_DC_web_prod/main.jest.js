@@ -10,9 +10,12 @@ import { HttpResponseScripts } from "response-scripts";
 import { HttpResponseStyles } from "response-styles";
 import { HttpResponseMiloStyles } from "response-milo-styles";
 import { HttpResponse404 } from "response-404";
+import { mockOnElement } from "html-rewriter";
+
 
 describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
   let fetches;
+  let resource404 = false
 
   beforeAll(() => {
     httpRequest.mockImplementation((path) => {
@@ -28,7 +31,11 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
       } else if (path.includes('widget.js')) {
         response = new HttpResponseWidget();
       } else if (path.includes('/libs/styles/styles.css')) {
-        response = new HttpResponseMiloStyles();
+        if (resource404 === true) {
+          response = new HttpResponse404();
+        } else {
+          response = new HttpResponseMiloStyles();
+        }
       } else if (path.includes('/acrobat/styles/styles.css')) {
         response = new HttpResponseStyles();
       } else {
@@ -43,9 +50,10 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     fetches = [];
+    resource404 = false;
   });
 
-  test("responseProvider", async () => {
+  it("responseProvider", async () => {
     let requestMock = new Request({path: '/acrobat/online/pdf-to-ppt'});
 
     const responsePromise = replaceResponseProvider(requestMock);
@@ -64,7 +72,7 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
     });
   });
 
-  test("responseProvider ROW", async () => {
+  it("responseProvider ROW", async () => {
     let requestMock = new Request({path: '/jp/acrobat/online/pdf-to-ppt'});
 
     const responsePromise = replaceResponseProvider(requestMock);
@@ -81,12 +89,38 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
     });
   });  
 
-  test("404 exception", async () => {
+  it("404 exception", async () => {
     let requestMock = new Request({path: '/404/online/pdf-to-ppt'});
 
     const responsePromise = replaceResponseProvider(requestMock);
     responsePromise.then(response => {
       expect(response.status).toEqual(500);
     });
-  });  
+  });
+
+  it("resource 404 exception", async () => {
+    let requestMock = new Request({path: '/acrobat/online/pdf-to-ppt'});
+    resource404 = true;
+
+    const responsePromise = replaceResponseProvider(requestMock);
+    responsePromise.then(response => {
+      expect(response.status).toEqual(500);
+      expect(response.body).toContain('Failed to fetch resource: /libs/styles/styles.css status: 404');
+    });
+  });    
+
+  it("missing metadata exception", async () => {
+    let requestMock = new Request({path: '/acrobat/online/pdf-to-ppt'});
+    mockOnElement.mockImplementation((elem, fn) => {
+      let el =  {
+        getAttribute: jest.fn().mockImplementation(() => undefined),
+      };
+    });
+
+    const responsePromise = replaceResponseProvider(requestMock);
+    responsePromise.then(response => {
+      expect(response.status).toEqual(500);
+      expect(response.body).toContain('Missing metadata');
+    });
+  });    
 });

@@ -65,7 +65,9 @@
   "jest": {
     "testRegex": "\\.jest\\.(js|jsx)$",
     "collectCoverageFrom": [
-      "acrobat/**/*.js"
+      "acrobat/**/*.js",
+      "edgeworkers/**/*.js",
+      "!edgeworkers/scripts/**/*.js"
     ],
     "coverageProvider": "v8",
     "moduleNameMapper": {
