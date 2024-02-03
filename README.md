@@ -7,7 +7,7 @@
 1. Run `aem up` this repo's folder. (opens your browser at `http://localhost:3000`)
 1. Open this repo's folder in your favorite editor and start coding.
 
-## Testing
+## Testing,
 
 Run both Web Test Runner and Jest unit tests
 ```
