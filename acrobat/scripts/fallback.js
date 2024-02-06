@@ -13,5 +13,8 @@
   window.redirectToURL = function(url) {
     window.location.href = url;
   };
+
+  window.redirectToURL(window.getRedirectURL(window.location.pathname));
+
 })();
 /* eslint-enable */
