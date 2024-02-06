@@ -1,33 +1,17 @@
 /* eslint-disable */
+(function() {
+  var routes = [
+    { pattern: /^\/acrobat\/online\/.*/, redirect: 'https://acrobat.adobe.com/home/index-browser-eol.html' },
+    { pattern: /.*/, redirect: 'https://helpx.adobe.com/x-productkb/global/adobe-supported-browsers.html' }
+  ];
 
-var routes = [
-  { pattern: /^\/acrobat\/online\/.*/, redirect: 'https://acrobat.adobe.com/home/index-browser-eol.html' },
-  { pattern: /.*/, redirect: 'https://helpx.adobe.com/x-productkb/global/adobe-supported-browsers.html' }
-];
+  window.getRedirectURL = function(currentPath) {
+    var route = routes.find(r => r.pattern.test(currentPath));
+    return route ? route.redirect : null;
+  };
 
-export function getRedirectURL(currentPath) {
-  if (currentPath == null) {
-    return null;
-  }
-
-  for (var i = 0; i < routes.length; i++) {
-    if (routes[i].pattern.test(currentPath)) {
-      console.log('Redirecting to: ' + currentPath);
-      return routes[i].redirect;
-    }
-  }
-  return null;
-}
-
-export function redirectToURL(url) {
-  window.location.href = url;
-}
-
-function initiateRedirect() {
-  if (pathname = getRedirectURL(window.location.pathname)) {
-    redirectToURL(pathname);
-  }
-}
-
-window.onload = initiateRedirect;
+  window.redirectToURL = function(url) {
+    window.location.href = url;
+  };
+})();
 /* eslint-enable */
