@@ -1,11 +1,12 @@
-<script type="module">
-  // This will only run in browsers that support ES6 modules
-  alert('ES6 Module supported!');
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="preconnect" href="https://acrobat.adobe.com" crossorigin>
+<script src="/acrobat/scripts/scripts.js" type="module"></script>
+<style>body { display: none; }</style>
+<link rel="icon" href="data:,">
+<!-- To ensure IE redirects -->
+<script type="text/javascript">
+  if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+    document.write('<script src="/acrobat/scripts/legacy.js"><\/script>');
+  }
 </script>
-
-<!-- Fallback Script -->
-<script nomodule>
-  // This will only run in browsers that DO NOT support ES6 modules
-  alert('ES6 Module NOT supported. Redirecting...');
-</script>
-<!-- <script src="/acrobat/scripts/fallback.js" nomodule></script> -->
+<script src="/acrobat/scripts/fallback.js" nomodule></script>
