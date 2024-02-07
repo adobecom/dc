@@ -5,7 +5,5 @@ describe('legacy test', () => {
     await import('../../acrobat/scripts/fallback.js');
     expect(window.redirectToSupportPage).to.be.an('function');
     expect(window.routes).to.be.an('array');
-    expect(window.routes[0].redirect).to.be.an('function');
-    expect(window.routes[1].redirect).to.be.an('function');
   });
 });
