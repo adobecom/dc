@@ -18,7 +18,6 @@ var routes = [
     redirect: function(matches) {
       var locale = matches[1];
       var path = matches[2];
-      // Redirect to a general page with the locale
       return 'https://helpx.adobe.com/' + locale + '/x-productkb/global/adobe-supported-browsers.html';
     }
   },
@@ -30,10 +29,8 @@ var routes = [
   }
 ];
 
-window.redirectToSupportPage = function() {
-  console.log('redirectToSupportPage');
+var redirectToSupportPage = function() {
   var currentPathname = window.location.pathname;
-
   for (var i = 0; i < routes.length; i++) {
     var match = currentPathname.match(routes[i].pattern);
     if (match) {
@@ -43,6 +40,8 @@ window.redirectToSupportPage = function() {
     }
   }
 };
+window.routes = routes;
+window.redirectToSupportPage = redirectToSupportPage;
 
-redirectToSupportPage();
+window.redirectToSupportPage();
 /* eslint-enable */
