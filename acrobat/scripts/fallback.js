@@ -31,6 +31,7 @@ var routes = [
 ];
 
 window.redirectToSupportPage = function() {
+  console.log('redirectToSupportPage');
   var currentPathname = window.location.pathname;
 
   for (var i = 0; i < routes.length; i++) {
@@ -43,5 +44,5 @@ window.redirectToSupportPage = function() {
   }
 };
 
-window.redirectToSupportPage();
+redirectToSupportPage();
 /* eslint-enable */
