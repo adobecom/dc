@@ -2,9 +2,8 @@
 var routes = [
   {
     pattern: /^\/([a-zA-Z]{2}(?:-[a-zA-Z]{2})?)\/acrobat\/online\/.*/,
-    redirect: function(matches) {
-      var locale = matches[1];
-      return 'https://acrobat.adobe.com/' + locale + '/home/index-browser-eol.html';
+    redirect: function() {
+      return 'https://acrobat.adobe.com/home/index-browser-eol.html';
     }
   },
   {
