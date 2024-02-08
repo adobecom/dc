@@ -1,7 +1,7 @@
 /* eslint-disable */
 var routes = [
   {
-    pattern: /^\/([a-zA-Z]{2}(?:-[a-zA-Z]{2})?)\/acrobat\/online\/.*/,
+    pattern: /^\/([^\/]+)\/acrobat\/online\/.*$/,
     redirect: function() {
       return 'https://acrobat.adobe.com/home/index-browser-eol.html';
     }
@@ -13,18 +13,14 @@ var routes = [
     }
   },
   {
-    pattern: /^\/([a-zA-Z]{2}(?:-[a-zA-Z]{2})?)\/(.*)/,
+    pattern: /^\/([^\/]+)\/acrobat(?:\.html)?\/?$/,
     redirect: function(matches) {
       var locale = matches[1];
-      if (locale === 'acrobat' || locale === 'sign') {
-        return 'https://helpx.adobe.com/x-productkb/global/adobe-supported-browsers.html';
-      } else {
-        return 'https://helpx.adobe.com/' + locale + '/x-productkb/global/adobe-supported-browsers.html';
-      }
-      }
+      return 'https://helpx.adobe.com/' + locale + '/x-productkb/global/adobe-supported-browsers.html';
+    }
   },
   {
-    pattern: /.*/,
+    pattern: /\/acrobat\/.*/,
     redirect: function() {
       return 'https://helpx.adobe.com/x-productkb/global/adobe-supported-browsers.html';
     }
