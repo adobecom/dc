@@ -248,7 +248,11 @@ const CONFIG = {
   commerce: { checkoutClientId: 'doc_cloud' },
   local: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga',
-    pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
+    pdfViewerClientId: 'ec572982b2a849d4b16c47d9558d66d1',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
+  page: {
+    pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   stage: {
