@@ -16,9 +16,12 @@ var routes = [
     pattern: /^\/([a-zA-Z]{2}(?:-[a-zA-Z]{2})?)\/(.*)/,
     redirect: function(matches) {
       var locale = matches[1];
-      var path = matches[2];
-      return 'https://helpx.adobe.com/' + locale + '/x-productkb/global/adobe-supported-browsers.html';
-    }
+      if (locale === 'acrobat' || locale === 'sign') {
+        return 'https://helpx.adobe.com/x-productkb/global/adobe-supported-browsers.html';
+      } else {
+        return 'https://helpx.adobe.com/' + locale + '/x-productkb/global/adobe-supported-browsers.html';
+      }
+      }
   },
   {
     pattern: /.*/,
