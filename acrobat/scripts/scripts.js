@@ -281,10 +281,8 @@ const CONFIG = {
 if (window.location.pathname.match('/sign/')
   || window.location.pathname.match('/documentcloud/')
   || window.location.pathname.match('/acrobat/business/')) {
-  CONFIG.jarvis.id = 'DocumentCloudSignAcro';
+  CONFIG.jarvis.id = 'DocumentCloudsignAcro';
 };
-
-console.log(CONFIG.jarvis);
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
