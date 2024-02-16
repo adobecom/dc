@@ -251,7 +251,11 @@ const CONFIG = {
     pdfViewerClientId: 'ec572982b2a849d4b16c47d9558d66d1',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
-  page: {
+  dcmain: {
+    pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
+  dcstage: {
     pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
