@@ -275,6 +275,7 @@ const CONFIG = {
     version: '1.0',
     onDemand: false,
   },
+  imsScope: 'AdobeID,openid,gnav,firefly_api,adobeid.scope',
 };
 
 // Setting alternative Jarcis client ID for these paths
