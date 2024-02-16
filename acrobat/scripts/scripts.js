@@ -256,7 +256,7 @@ const CONFIG = {
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   dcstage: {
-    pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
+    pdfViewerClientId: '2522674a708e4ddf8bbd62e18585ae4b',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   stage: {
