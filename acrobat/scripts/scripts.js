@@ -330,12 +330,12 @@ const { ietf } = getLocale(locales);
   }
 
   // Setup CSP
-  (async () => {
-    if (document.querySelector('meta[name="dc-widget-version"]')) {
-      const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
-      ContentSecurityPolicy();
-    }
-  })();
+  // (async () => {
+  //   if (document.querySelector('meta[name="dc-widget-version"]')) {
+  //     const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
+  //     ContentSecurityPolicy();
+  //   }
+  // })();
 
   // Setup Milo
   const miloLibs = setLibs(LIBS);
@@ -366,6 +366,20 @@ const { ietf } = getLocale(locales);
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
+
+  // Update Phone Numbers
+  const new_locale = JSON.parse(sessionStorage.getItem('feds_location').toLowerCase());
+  // console.log(new_locale.country);
+   
+   let response = await fetch(`/${new_locale.country}/dc-shared/placeholders.json`, { 
+     method: "GET",
+   });
+   
+   let data = await response.text();
+   console.log(data);
+   console.log('data');
+   
+
 
   // IMS Ready
   const imsReady = setInterval(() => {
