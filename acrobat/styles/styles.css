@@ -23,11 +23,6 @@ div[data-section="widget"] {
   min-height: 570px;
 }
 
-.DCHosted__container___3HQ1f > div:first-of-type {
-  min-height: 570px;
-  background-color: #fff;
-}
-
 /* ootb widget */
 .dc-converter-widget > div:first-of-type {
   display: none;
@@ -105,13 +100,13 @@ div[data-section="widget"] {
   padding-left: 10px;
 }
 
-@media (min-width: 52.7rem) {
+@media (min-width: 1075px) {
   .accordion-container.verb-subfooter-moblie {
     display: none;
   }
 }
 
-@media (max-width: 52.6rem) {
+@media (max-width: 1074px) {
   .verb-subfooter  {
     display: none;
   }
@@ -521,5 +516,5 @@ div.how-to ol li::before{
 @media (max-width: 600px) {
   [data-path*="caas"] .fragment {
     min-height: 1899px;
-  }  
+  }
 }

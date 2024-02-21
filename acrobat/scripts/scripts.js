@@ -245,6 +245,7 @@ const CONFIG = {
   codeRoot: '/acrobat',
   contentRoot: '/dc-shared',
   imsClientId: 'acrobatmilo',
+  commerce: { checkoutClientId: 'doc_cloud' },
   local: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga',
     pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
@@ -274,6 +275,13 @@ const CONFIG = {
     version: '1.0',
     onDemand: false,
   },
+};
+
+// Setting alternative Jarcis client ID for these paths
+if (window.location.pathname.match('/sign/')
+  || window.location.pathname.match('/documentcloud/')
+  || window.location.pathname.match('/acrobat/business/')) {
+  CONFIG.jarvis.id = 'DocumentCloudsignAcro';
 };
 
 // Default to loading the first image as eager.
