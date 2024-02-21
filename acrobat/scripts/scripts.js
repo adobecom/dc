@@ -14,14 +14,12 @@
  * The decision engine for where to get Milo's libs from.
  */
 const setLibs = (prodLibs, location) => {
-  const { hostname, search } = location || window.location;
   // eslint-disable-next-line compat/compat
+  const { hostname, search } = location || window.location;
+  if (!(hostname.includes('.hlx.') || hostname.includes('local'))) return prodLibs;
   const branch = new URLSearchParams(search).get('milolibs') || 'main';
-  if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.stage.adobe.com/libs';
-  if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
   if (branch === 'local') return 'http://localhost:6456/libs';
-  const tld = hostname.includes('live') ? 'live' : 'page';
-  return branch.includes('--') ? `https://${branch}.hlx.${tld}/libs` : `https://${branch}--milo--adobecom.hlx.${tld}/libs`;
+  return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
 };
 
 const getLocale = (locales, pathname = window.location.pathname) => {
