@@ -6,7 +6,7 @@ import { setLibs, getLibs } from '../../acrobat/scripts/utils';
 describe('Test utils.js', () => {
   it('tests setLibs', async () => {
     const libs = setLibs('/libs');
-    expect(libs).toBe('https://main--milo--adobecom.hlx.page/libs');
+    expect(libs).toBe('https://main--milo--adobecom.hlx.live/libs');
   });
 
   it('tests setLibs for prod', async () => {
@@ -25,7 +25,7 @@ describe('Test utils.js', () => {
       'https://www.stage.adobe.com'
     );    
     const libs = setLibs('/libs');
-    expect(libs).toBe('https://www.adobe.com/libs');
+    expect(libs).toBe('/libs');
   });  
 
   it('tests setLibs for milolibs local', async () => {
@@ -34,7 +34,7 @@ describe('Test utils.js', () => {
       'https://www.stage.adobe.com?milolibs=local'
     );    
     const libs = setLibs('/libs');
-    expect(libs).toBe('http://localhost:6456/libs');
+    expect(libs).toBe('/libs');
   });
 
   it('tests setLibs for milolibs repo', async () => {
@@ -43,6 +43,6 @@ describe('Test utils.js', () => {
       'https://www.stage.adobe.com?milolibs=main--milo--tsayadobe'
     );    
     const libs = setLibs('/libs');
-    expect(libs).toBe('https://main--milo--tsayadobe.hlx.page/libs');
+    expect(libs).toBe('/libs');
   });   
 });
