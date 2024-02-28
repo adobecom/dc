@@ -77,7 +77,7 @@ export default {
   eg_ar: 'ar-eg',
   gt: 'es-gt',
   id_en: 'en-id',
-  id_id: 'in-id',
+  id_id: 'id-id',
   ph_en: 'en-ph',
   ph_fil: 'fil-ph',
   my_en: 'en-my',

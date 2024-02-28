@@ -9,25 +9,15 @@ import localeMap from './utils/locales.js';
 import verbMap from './utils/verbs.js';
 import contentSecurityPolicy from './utils/csp/index.js';
 
-const isProd = true;
-
-// Start with the hash value for the IE/Trident inline script
-const scriptHashes = ['\'sha256-ppkx2kFovnKNr1hP8XV2hWwWaRR9Gz5JRHa4/dY8xzg=\''];
-
-const origin = isProd ? 'https://www.adobe.com' : 'https://www.stage.adobe.com';
-const acrobat = isProd ? 'https://acrobat.adobe.com' : 'https://stage.acrobat.adobe.com';
-const pdfnow = isProd ? 'https://pdfnow-stage.adobe.io' : 'https://pdfnow.adobe.io';
-
 export async function responseProvider(request) {
   const path = request.path.split('/');
   const first = path.splice(1, 1);
   const locale = localeMap[first];
   const last = path.splice(-1)[0].split('.')[0];
   const verb = verbMap[last] || last;
+  const origin = `${request.scheme}://${request.host}`;
+  const isProd = request.host === 'www.adobe.com';
   const rewriter = new HtmlRewritingStream();
-  let incomingHeaderLength = -1;
-  let trimmedHeaderLength = -1;
-  let csp = '';
 
   const fetchFrictionlessPage = async () => {
     // Setup: Fetch a stream containing HTML
@@ -35,10 +25,13 @@ export async function responseProvider(request) {
     const headers = {'X-EW-Frictionless-Page': ['true']};
     const htmlResponse = await httpRequest(
       path,
-      headers,
+      {headers},
     );
     if (!htmlResponse.ok) {
-      throw new Error(`Failed to fetch doc: ${path} status=${htmlResponse?.status}`);
+      const err = new Error(`Failed to fetch doc: ${path}`);
+      err.body = htmlResponse.body;
+      err.status = htmlResponse.status;
+      throw err;
     }
 
     // Make preliminary pass through the content to capture version metadata
@@ -62,7 +55,6 @@ export async function responseProvider(request) {
 
     // Strip headers which should not be forwarded
     const responseHeaders = htmlResponse.getHeaders();
-    incomingHeaderLength = JSON.stringify(responseHeaders).length;
     for (const prop of [
       'accept-encoding',
       'cache-control',
@@ -81,7 +73,6 @@ export async function responseProvider(request) {
     ]) {
       delete responseHeaders[prop];
     }
-    trimmedHeaderLength = JSON.stringify(responseHeaders).length;
 
     return [responseStream, responseHeaders, version, widgetVersion];
   };
@@ -117,6 +108,8 @@ export async function responseProvider(request) {
 
     return [responseStream, responseHeaders, dcCoreVersion];
   };
+
+  const scriptHashes = [];
 
   const fetchAndInlineScripts = async () => {
     const [
@@ -168,7 +161,6 @@ export async function responseProvider(request) {
     });
   };
 
-  let debugCount = 0;
   try {
     const [
       [responseStream, responseHeaders, dcCoreVersion],
@@ -178,21 +170,21 @@ export async function responseProvider(request) {
       fetchAndInlineStyles(),
     ]);
 
-    // TODO: revisit cache TTL, TTL and handling on error
-
-    csp = contentSecurityPolicy(isProd, scriptHashes);
-    debugCount++;
+    const csp = contentSecurityPolicy(isProd, scriptHashes);
+    const acrobat = isProd ? 'https://acrobat.adobe.com' : 'https://stage.acrobat.adobe.com';
+    const pdfnow = isProd ? 'https://pdfnow.adobe.io' : 'https://pdfnow-stage.adobe.io';
     const headers = {
       ...responseHeaders,
       'Content-Security-Policy': csp,
-      Link: `<${acrobat}>;rel="preconnect",\
-      <https://auth.services.adobe.com>;rel="preconnect",\
-      <${pdfnow}>;rel="preconnect",\
-      <https://assets.adobedtm.com>;rel="preconnect",\
-      <https://use.typekit.net>;rel="preconnect",\
-      <${acrobat}/dc-core/${dcCoreVersion}/dc-core.js>;rel="preload";as="script",\
-      <${acrobat}/dc-core/${dcCoreVersion}/dc-core.css>;rel="preload";as="style",\
-      `
+      Link: [
+        `<${acrobat}>;rel="preconnect"`,
+        '<https://auth.services.adobe.com>;rel="preconnect"',
+        `<${pdfnow}>;rel="preconnect"`,
+        '<https://assets.adobedtm.com>;rel="preconnect"',
+        '<https://use.typekit.net>;rel="preconnect"',
+        `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.js>;rel="preload";as="script"`,
+        `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.css>;rel="preload";as="style"`,
+      ].join()
     };
 
     return createResponse(
@@ -201,6 +193,6 @@ export async function responseProvider(request) {
       responseStream.pipeThrough(rewriter),
     );
   } catch (error) {
-    return createResponse(500, {}, `Error: ${error.toString()} message=${error.message} stack=${error.stack} debugCount=${debugCount}\nincoming header length is ${incomingHeaderLength} trimmed header length is ${trimmedHeaderLength} csp length is ${csp.length}`);
+    return createResponse(error.status ?? 500, {}, error.body ?? error.message);
   }
 }

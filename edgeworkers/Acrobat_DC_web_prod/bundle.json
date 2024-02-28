@@ -1,4 +1,4 @@
 {
-    "edgeworker-version": "0.67",
-    "description" : "update locales"
+    "edgeworker-version": "0.83",
+    "description" : "remove hash for legacy.js IE/Trident script"
 }
