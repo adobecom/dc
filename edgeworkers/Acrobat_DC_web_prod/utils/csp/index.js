@@ -1,5 +1,5 @@
-import stage from 'stage.js';
-import prod from 'prod.js';
+import stage from './stage.js';
+import prod from './prod.js';
 
 export default function ContentSecurityPolicy(isProd, scriptSrc = []) {
   const ENV = isProd ? prod : stage;

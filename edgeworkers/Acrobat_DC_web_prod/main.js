@@ -5,9 +5,9 @@ import { WritableStream } from 'streams';
 import { createResponse } from 'create-response';
 import { httpRequest } from 'http-request';
 //import { logger } from 'log';
-import localeMap from 'utils/locales.js';
-import verbMap from 'utils/verbs.js';
-import contentSecurityPolicy from 'utils/csp/index.js';
+import localeMap from './utils/locales.js';
+import verbMap from './utils/verbs.js';
+import contentSecurityPolicy from './utils/csp/index.js';
 
 export async function responseProvider(request) {
   const path = request.path.split('/');
