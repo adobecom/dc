@@ -390,9 +390,6 @@ fillerforPH();
     replacePlaceholdersWithImages(ietf, miloLibs);
   }
 
-  // const { default: fillerforPH } = await import('./geo-phoneNumber.js');
-  // fillerforPH();
-
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'dxdc', tags: 'Cat=DC_Milo' });
 
