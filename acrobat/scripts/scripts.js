@@ -13,6 +13,30 @@
 /**
  * The decision engine for where to get Milo's libs from.
  */
+const pattern = /{{phone-\S\w*\S\w*}}/g;
+document.querySelectorAll('p').forEach((p, idx) => {
+  // console.log('-----');
+  // console.log(p.innerHTML);
+  // console.log(pattern.exec(p.innerHTML));
+  if (pattern.exec(p.innerHTML)) {
+    p.setAttribute('number-type', p.innerHTML.match(pattern)[0].replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, ''));
+    p.classList.add(`geo-pn${idx}`);
+  }
+  // if (pattern.exec(p.innerHTML)) p.setAttribute('number-type', p.innerHTML.match(pattern)[0].replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, ''));
+
+  // if (pattern.exec(p.innerHTML)) console.log(p.innerHTML.match(pattern));
+  // if (pattern.exec(p.innerHTML)) p.classList.add(`geo-pn${idx}`);
+
+  // console.log('---ends--');
+  // if (pattern.exec(p.innerHTML)) console.log(p.innerHTML);
+
+  // const matched = pattern.exec(p.innerHTML);
+  // if (pattern.exec(p.innerHTML)) {
+  //   console.log(p.innerHTML);
+  //   console.log('this ^ is a match');
+  //   p.classList.add(`geo-pn${idx}`);
+  // }
+});
 const setLibs = (prodLibs, location) => {
   const { hostname, search } = location || window.location;
   // eslint-disable-next-line compat/compat
@@ -304,6 +328,8 @@ if (window.location.pathname.match('/sign/')
  * ------------------------------------------------------------
  */
 const { ietf } = getLocale(locales);
+const { default: fillerforPH } = await import('./geo-phoneNumber.js');
+fillerforPH();
 
 (async function loadPage() {
   // Fast track the widget
@@ -337,12 +363,12 @@ const { ietf } = getLocale(locales);
   }
 
   // Setup CSP
-  (async () => {
-    if (document.querySelector('meta[name="dc-widget-version"]')) {
-      const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
-      ContentSecurityPolicy();
-    }
-  })();
+  // (async () => {
+  //   if (document.querySelector('meta[name="dc-widget-version"]')) {
+  //     const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
+  //     ContentSecurityPolicy();
+  //   }
+  // })();
 
   // Setup Milo
   const miloLibs = setLibs(LIBS);
