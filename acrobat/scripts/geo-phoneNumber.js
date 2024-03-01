@@ -1,10 +1,11 @@
 /* eslint-disable compat/compat */
 const urlParams = new URLSearchParams(window.location.search);
-let newLocale = `${urlParams.get('akamaiLocale')}/`
-   // || `${JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()}/`
-    || `${JSON.parse(sessionStorage.getItem('feds_location'))?.country?.toLowerCase()}/`
+let newLocale = urlParams.get('akamaiLocale')
+    || JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()
+    || JSON.parse(sessionStorage.getItem('feds_location'))?.country?.toLowerCase()
     || '';
-if (newLocale === 'us/') newLocale = '';
+if (newLocale === 'us') newLocale = '';
+if (newLocale !== 'us') newLocale = `${newLocale}/`;
 
 const replaceTypeOfNum = (numType, visNum, i) => {
   const cc = document.querySelector(`.${i}`);
@@ -17,9 +18,9 @@ export default async function fillerforPH() {
   const response = await fetch(`/${newLocale}dc-shared/placeholders.json`);
   const data = await response.text();
   if(data.ok) {
-    console.log('good call');
+    console.log('good');
   } else {
-    console.log('maybe try a backup?');
+    console.log('so');
   }
   const DATA = JSON.parse(data);
 
