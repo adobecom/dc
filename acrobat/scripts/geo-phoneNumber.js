@@ -1,17 +1,26 @@
 /* eslint-disable compat/compat */
+const response = await fetch('https://geo2.adobe.com/json/', { method: 'GET' });
+
+const data = await response.text();
+const NewData = JSON.parse(data);
+
 const urlParams = new URLSearchParams(window.location.search);
 let newLocale = urlParams.get('akamaiLocale')
     || JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()
     || JSON.parse(sessionStorage.getItem('feds_location'))?.country?.toLowerCase()
+    || NewData?.country?.toLowerCase()
     || '';
 if (newLocale === 'us') newLocale = '';
 if (newLocale !== 'us') newLocale = `${newLocale}/`;
+
+console.log(newLocale);
 
 const replaceTypeOfNum = (numType, visNum, i) => {
   const cc = document.querySelector(`.${i}`);
   cc.querySelector('a').href = `tel:${visNum}`;
   cc.querySelector('a').innerText = visNum;
 };
+
 
 // This funct
 export default async function fillerforPH() {
