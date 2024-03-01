@@ -20,7 +20,6 @@ const updatePhoneNumber = (visNum, i) => {
   const phoneNumberEle = document.querySelector(`.${i}`);
   phoneNumberEle.href = `tel:${visNum}`;
   phoneNumberEle.innerText = visNum;
-  phoneNumberEle.href = `tel:${visNum}`;
 };
 
 // This funct
@@ -34,7 +33,7 @@ export default async function geoPhoneNumber() {
 
   document.querySelectorAll('a[class*="geo-pn"]').forEach((phoneNumber) => {
     const numberType = phoneNumber.getAttribute('number-type');
-    const numberID = phoneNumber.className;
+    const numberID = phoneNumber.classList[0];
     placeHolderJsonData.data.forEach((val) => {
       if (val.key === numberType) {
         updatePhoneNumber(val.value, numberID);
