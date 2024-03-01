@@ -1,12 +1,13 @@
 /* eslint-disable compat/compat */
 const urlParams = new URLSearchParams(window.location.search);
-let newLocale = urlParams.get('akamaiLocale') || JSON.parse(sessionStorage.getItem('feds_location')).country.toLowerCase() || '';
-if (newLocale === 'us') newLocale = '';
-if (newLocale !== 'us') newLocale = `${newLocale}/`;
+let newLocale = `${urlParams.get('akamaiLocale')}/`
+    || `${JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()}/`
+    || `${JSON.parse(sessionStorage.getItem('feds_location'))?.country?.toLowerCase()}/`
+    || '';
+if (newLocale === 'us/') newLocale = '';
 
 const replaceTypeOfNum = (numType, visNum, i) => {
   const cc = document.querySelector(`.${i}`);
-  console.log(cc);
   cc.querySelector('a').href = `tel:${visNum}`;
   cc.querySelector('a').innerText = visNum;
 };
@@ -15,6 +16,11 @@ const replaceTypeOfNum = (numType, visNum, i) => {
 export default async function fillerforPH() {
   const response = await fetch(`/${newLocale}dc-shared/placeholders.json`);
   const data = await response.text();
+  if(data.ok) {
+    console.log('good');
+  } else {
+    console.log('so');
+  }
   const DATA = JSON.parse(data);
 
   document.querySelectorAll('p[class*="geo-pn"]').forEach((p) => {
