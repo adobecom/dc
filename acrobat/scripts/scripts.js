@@ -14,7 +14,7 @@
  * Add classes to phonen numbers
  */
 const pattern = /{{phone-\S\w*\S\w*}}/g;
-document.querySelectorAll('p').forEach((p, idx) => {
+document.querySelectorAll('a').forEach((p, idx) => {
   if (pattern.exec(p.innerHTML)) {
     p.setAttribute('number-type', p.innerHTML.match(pattern)[0].replace(/[&/\\#,+()$~%.'":*?<>{}]/g, ''));
     p.classList.add(`geo-pn${idx}`);
@@ -403,6 +403,6 @@ const { ietf } = getLocale(locales);
     }
   }, 1000);
 
-  const { default: fillerforPH } = await import('./geo-phoneNumber.js');
-  fillerforPH();
+  const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
+  geoPhoneNumber();
 }());
