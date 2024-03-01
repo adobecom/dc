@@ -1,43 +1,65 @@
 /* eslint-disable compat/compat */
+const geoTwo = await fetch('https://geo2.adobe.com/json/');
 const urlParams = new URLSearchParams(window.location.search);
-let newLocale = `${urlParams.get('akamaiLocale')}/`
-    || `${JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()}/`
-    || `${JSON.parse(sessionStorage.getItem('feds_location'))?.country?.toLowerCase()}/`
-    || '';
-if (newLocale === 'us/') newLocale = '';
+const geoData = await geoTwo.json();
+console.log(`gadgag      -    ${geoData?.country?.toLowerCase()}`);
 
-const replaceTypeOfNum = (numType, visNum, i) => {
-  const cc = document.querySelector(`.${i}`);
-  cc.querySelector('a').href = `tel:${visNum}`;
-  cc.querySelector('a').innerText = visNum;
+let newLocale = urlParams.get('akamaiLocale')?.toLowerCase()
+    || geoData?.country?.toLowerCase()
+    || JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()
+    || JSON.parse(sessionStorage.getItem('feds_location'))?.country?.toLowerCase()
+    || '';
+
+if (newLocale === 'us' || newLocale === '/' || newLocale === '//') {
+  newLocale = '/';
+} else {
+  newLocale = `/${newLocale}/`;
+}
+
+const updatePhoneNumber = (visNum, i) => {
+  const phoneNumberEle = document.querySelector(`.${i}`);
+  phoneNumberEle.href = `tel:${visNum}`;
+  phoneNumberEle.innerText = visNum;
+  phoneNumberEle.href = `tel:${visNum}`;
 };
 
 // This funct
-export default async function fillerforPH() {
-  const response = await fetch(`/${newLocale}dc-shared/placeholders.json`);
-  const data = await response.text();
-  if(data.ok) {
-    console.log('good');
-  } else {
-    console.log('so');
-  }
-  const DATA = JSON.parse(data);
+export default async function geoPhoneNumber() {
+  // if (newLocale )
+  const placeHolderJson = await fetch(`${newLocale}dc-shared/placeholders.json`);
+  const placeHolderJsonData = await placeHolderJson.json();
+  window.dcpns = placeHolderJsonData.data;
+  const globalPhoneNumbers = new CustomEvent('DCNumbers:Ready');
+  window.dispatchEvent(globalPhoneNumbers);
 
-  document.querySelectorAll('p[class*="geo-pn"]').forEach((p) => {
-    const numberType = p.getAttribute('number-type');
-    const numberID = p.className;
-    DATA.data.forEach((val) => {
+  document.querySelectorAll('a[class*="geo-pn"]').forEach((phoneNumber) => {
+    const numberType = phoneNumber.getAttribute('number-type');
+    const numberID = phoneNumber.className;
+    placeHolderJsonData.data.forEach((val) => {
       if (val.key === numberType) {
-        replaceTypeOfNum(numberType, val.value, numberID);
+        updatePhoneNumber(val.value, numberID);
       }
     });
   });
 }
 
+// Catch the frags
+const frags = document.querySelectorAll('.fragment [href*="tel"]');
+window.addEventListener('DCNumbers:Ready', () => {
+  frags.forEach((f) => {
+    const fragPhoneType = `phone-${f.href.split(' ')[1]}`;
+    window.dcpns.forEach((val) => {
+      if (val.key === fragPhoneType) {
+        f.innerText = val.value;
+        f.href = `tel: ${val.value}`;
+      }
+    });
+  });
+});
 
-// Update Var names
+
+
 // Unit Test 
 // Test on real pages 
-// Test w/ hyperlink
-// Test when no geo is present
-// dsg
+// check page local vs client 
+
