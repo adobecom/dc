@@ -17,9 +17,9 @@ export default async function fillerforPH() {
   const response = await fetch(`/${newLocale}dc-shared/placeholders.json`);
   const data = await response.text();
   if(data.ok) {
-    console.log('good');
+    console.log('good call');
   } else {
-    console.log('so');
+    console.log('maybe try a backup?');
   }
   const DATA = JSON.parse(data);
 
