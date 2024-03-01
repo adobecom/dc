@@ -1,7 +1,7 @@
 /* eslint-disable compat/compat */
 const urlParams = new URLSearchParams(window.location.search);
 let newLocale = `${urlParams.get('akamaiLocale')}/`
-    || `${JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()}/`
+   // || `${JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()}/`
     || `${JSON.parse(sessionStorage.getItem('feds_location'))?.country?.toLowerCase()}/`
     || '';
 if (newLocale === 'us/') newLocale = '';
