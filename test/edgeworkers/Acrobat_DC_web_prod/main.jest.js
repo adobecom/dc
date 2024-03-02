@@ -94,7 +94,7 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
 
     const responsePromise = replaceResponseProvider(requestMock);
     responsePromise.then(response => {
-      expect(response.status).toEqual(500);
+      expect(response.status).toEqual(404);
     });
   });
 
