@@ -1,14 +1,14 @@
 /* eslint-disable compat/compat */
+/* c8 ignore next 11 */
 const geoTwo = await fetch('https://geo2.adobe.com/json/');
 const urlParams = new URLSearchParams(window.location.search);
 const geoData = await geoTwo.json();
-console.log(`gadgag      -    ${geoData?.country?.toLowerCase()}`);
 
 let newLocale = urlParams.get('akamaiLocale')?.toLowerCase()
-    || geoData?.country?.toLowerCase()
-    || JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()
-    || JSON.parse(sessionStorage.getItem('feds_location'))?.country?.toLowerCase()
-    || '';
+  || geoData?.country?.toLowerCase()
+  || JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()
+  || JSON.parse(sessionStorage.getItem('feds_location'))?.country?.toLowerCase()
+  || '';
 
 if (newLocale === 'us' || newLocale === '/' || newLocale === '//') {
   newLocale = '/';
@@ -42,7 +42,6 @@ export default async function geoPhoneNumber() {
   });
 }
 
-// Catch the frags
 const frags = document.querySelectorAll('.fragment [href*="tel"]');
 window.addEventListener('DCNumbers:Ready', () => {
   frags.forEach((f) => {
@@ -55,10 +54,3 @@ window.addEventListener('DCNumbers:Ready', () => {
     });
   });
 });
-
-
-
-// Unit Test 
-// Test on real pages 
-// check page local vs client 
-
