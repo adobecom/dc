@@ -10,7 +10,7 @@
 | priceN        | Prices from 1 to N that will be displayed below the card title, when corresponding option is selected                         |
 | ctaN          | Button/buttons group from 1 to N  that will be displayed in the footer of the card, when corresponding option is selected     |
 | disclaimerN   | Disclaimer text from 1 to N that will be displayed below the price, when corresponding option is selected                     |
-| initialOption | Optional. Name of option that will be selected by default. If not defined, option1 will be used as default.                                                                               |
+| initialOption | Optional. Name of option that will be selected by default. If not defined, option1 will be used as default..                                                                              |
 | promotionText | Optional property. If defined, card will have yellow border and yellow box in top right corner, with promotion text.          |
 |               | Text styled as H1 inside promotion text will be bold with font-size:14px, and the rest of text will have font-size:12px       |
 
