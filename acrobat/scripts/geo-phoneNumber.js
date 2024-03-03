@@ -22,9 +22,7 @@ const updatePhoneNumber = (visNum, i) => {
   phoneNumberEle.innerText = visNum;
 };
 
-// This funct
 export default async function geoPhoneNumber() {
-  // if (newLocale )
   const placeHolderJson = await fetch(`${newLocale}dc-shared/placeholders.json`);
   const placeHolderJsonData = await placeHolderJson.json();
   window.dcpns = placeHolderJsonData.data;
