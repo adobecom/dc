@@ -1,5 +1,5 @@
 /* eslint-disable compat/compat */
-/* c8 ignore next 11 */
+/* c8 ignore next 56 */
 const geoTwo = await fetch('https://geo2.adobe.com/json/');
 const urlParams = new URLSearchParams(window.location.search);
 const geoData = await geoTwo.json();
