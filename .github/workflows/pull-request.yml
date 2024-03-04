@@ -15,5 +15,5 @@ jobs:
           destination_branch: "main"
           pr_title: "Ready for Main: ${{ github.ref_name }} into main. ${{ github.base_ref }}"
           pr_body: "Merge to main, commit: ${{ github.sha }} --  ${{ github.head_ref }}"
-          pr_reviewer: "document-cloud-sot"
+          pr_reviewer: "9606719"
           pr_label: "Ready for Main"
