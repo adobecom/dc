@@ -5,7 +5,7 @@
 ```
 | pricing-card                                                                                                                                  |
 |---------------------------------------------------------------------------------------------------------------------------------------------- |
-| title         | Text that will be shown in header of card. Text styled as H1 will have font size 24h, and other text will have font size 20px |
+| title         | Text that will be shown in header of card! Text styled as H1 will have font size 24h, and other text will have font size 20px |
 | optionN       |  Options from 1 to N that will be listed as radio buttons in middle section of the pricing card                               |
 | priceN        | Prices from 1 to N that will be displayed below the card title, when corresponding option is selected                         |
 | ctaN          | Button/buttons group from 1 to N  that will be displayed in the footer of the card, when corresponding option is selected     |
