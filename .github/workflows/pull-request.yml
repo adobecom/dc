@@ -13,7 +13,7 @@ jobs:
         uses: diillson/auto-pull-request@v1.0.1
         with:
           destination_branch: "main"
-          pr_title: "Ready for Main: ${{ github.ref_name }} into main"
-          pr_body: "Merge to main, commit: ${{ github.sha }}"
-          pr_reviewer: "9415158"
+          pr_title: "Ready for Main: ${{ github.ref_name }} into main. ${{ github.base_ref }}"
+          pr_body: "Merge to main, commit: ${{ github.sha }} --  ${{ github.head_ref }}"
+          pr_reviewer: "9606719,T_kwDOBa1KWM4AkpY,document-cloud-sot"
           pr_label: "Ready for Main"
