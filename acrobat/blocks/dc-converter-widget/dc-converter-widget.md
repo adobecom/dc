@@ -10,6 +10,3 @@ Third row is for dc-generate-cache link, If it has value, it will be used as dc-
 | word-to-pdf            |
 | Link to redirect       |
 | dc-generate-cache link |
-
-tbd
-last time
