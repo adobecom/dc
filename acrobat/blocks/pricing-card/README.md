@@ -16,7 +16,7 @@
 
 ```
 
-Pricing cards should be defined inside one section, with section-metadata (style "pricing-card-columns"). For example:
+Pricing cards should be defined inside one section, with section-metadata (style "pricing-card-columns"). For example.:
 
 ---
 |pricing-card|
