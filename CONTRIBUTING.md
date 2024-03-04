@@ -27,7 +27,7 @@ For other contributors, a maintainer of the project has to approve the pull requ
 2. Make some changes on a branch on your fork
 3. Create a pull request from your branch
 
-In your pull request, outline:
+In your pull request, outline::
 
 * What the changes intend
 * How they change the existing code
