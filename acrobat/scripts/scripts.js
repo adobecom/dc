@@ -348,7 +348,7 @@ const { ietf } = getLocale(locales);
   }
 
   // Setup CSP
-  // (async () => {
+  (async () => {
     if (document.querySelector('meta[name="dc-widget-version"]')) {
       const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
       ContentSecurityPolicy();
