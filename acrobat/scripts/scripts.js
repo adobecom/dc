@@ -10,6 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
+const pattern = /{{phone-\S\w*\S\w*}}/g;
+document.querySelectorAll('a').forEach((p, idx) => {
+  if (pattern.exec(p.innerHTML)) {
+    p.setAttribute('number-type', p.innerHTML.match(pattern)[0].replace(/[&/\\#,+()$~%.'":*?<>{}]/g, ''));
+    p.classList.add(`geo-pn${idx}`);
+  }
+});
+
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -248,7 +256,15 @@ const CONFIG = {
   commerce: { checkoutClientId: 'doc_cloud' },
   local: {
     edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga',
-    pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
+    pdfViewerClientId: 'ec572982b2a849d4b16c47d9558d66d1',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
+  dcmain: {
+    pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
+  dcstage: {
+    pdfViewerClientId: '2522674a708e4ddf8bbd62e18585ae4b',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   stage: {
@@ -383,4 +399,11 @@ const { ietf } = getLocale(locales);
       window.dispatchEvent(imsIsReady);
     }
   }, 1000);
+
+  if (document.querySelectorAll('a[class*="geo-pn"]').length > 0 || document.querySelectorAll('a[href*="geo"]').length > 0) {
+    const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
+    geoPhoneNumber();
+  }
 }());
+
+
