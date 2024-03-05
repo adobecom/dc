@@ -81,11 +81,29 @@ export async function loadMnemonicList(foreground) {
     window.lana?.log(`Failed to load mnemonic list module: ${err}`);
   }
 }
-// Slide
 
-function smxIndicators(slides) {
-  const indicators = [];
-  const indicatorsContainer = createTag('ul', { class: 'smx-tabs', role: 'tablist' });
+function goToSlide(slide, tabs, deck) {
+  const activeTab = tabs.querySelector('.active');
+  const activeSlide = deck.querySelector('.active');
+  activeTab?.classList.remove('active');
+  activeSlide?.classList.remove('active');
+  tabs.querySelector(`[data-index="${slide}"]`).classList.add('active');
+  const deckSlide = deck.querySelector(`:nth-child(${slide + 1})`);
+  deckSlide.classList.add('active');
+}
+
+function handleChangingSlides(tabs, deck) {
+  [...tabs.querySelectorAll('li')].forEach((li) => {
+    li.addEventListener('click', (event) => {
+      const slide = parseInt(event.currentTarget.dataset.index, 10);
+      goToSlide(slide, tabs, deck);
+    });
+  });
+}
+
+function getTabs(slides) {
+  const tabArray = [];
+  const tabsContainer = createTag('ul', { class: 'smx-tabs', role: 'tablist' });
   for (let i = 0; i < slides.length; i += 1) {
     const li = createTag('li', {
       class: 'smx-tab',
@@ -95,27 +113,27 @@ function smxIndicators(slides) {
       'aria-selected': false,
       'aria-labelledby': `Viewing ${slides[i].label}`,
     }, slides[i].icon);
-    li.append(slides[i].label);
+    const tabLabel = createTag('p', { class: 'smx-label' }, slides[i].label);
+    li.append(tabLabel);
 
     // Set inital active state
     if (i === 0) {
       li.classList.add('active');
       li.setAttribute('tabindex', 0);
     }
-    indicators.push(li);
+    tabArray.push(li);
   }
-  indicatorsContainer.append(...indicators);
-  return indicatorsContainer;
+  tabsContainer.append(...tabArray);
+  return tabsContainer;
 }
-function smxSlides(slides) {
+function getSlides(slides) {
   const deck = createTag('div', { class: 'smx-deck' });
   for (let i = 0; i < slides.length; i += 1) {
-    const slide = createTag('div', { class: 'smx-slide hidden' });
-    console.log('slides[i]', slides[i]);
+    const slide = createTag('div', { class: 'smx-slide' });
     if (typeof slides[i].video === 'object' ? slide.append(...slides[i].video) : slide.append(slides[i].video));
     deck.append(slide);
   }
-  deck.firstChild.classList.remove('hidden');
+  deck.firstChild.classList.add('active');
   return deck;
 }
 
@@ -149,9 +167,11 @@ export default async function init(el) {
     }
     if (slides.length > 0) {
       const videoSwitcher = createTag('div', { class: 'smx-container' });
-      const slideIndicators = smxIndicators(slides);
-      const slideDeck = smxSlides(slides);
-      videoSwitcher.append(slideDeck, slideIndicators);
+      const tabs = getTabs(slides);
+      const deck = getSlides(slides);
+      videoSwitcher.append(deck);
+      videoSwitcher.append(tabs);
+      handleChangingSlides(tabs, deck);
       el.insertBefore(videoSwitcher, foreground);
     }
   }
