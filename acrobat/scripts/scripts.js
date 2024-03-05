@@ -10,9 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-/**
- * Add classes to phonen numbers
- */
 const pattern = /{{phone-\S\w*\S\w*}}/g;
 document.querySelectorAll('a').forEach((p, idx) => {
   if (pattern.exec(p.innerHTML)) {
@@ -403,6 +400,10 @@ const { ietf } = getLocale(locales);
     }
   }, 1000);
 
-  const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
-  geoPhoneNumber();
+  if (document.querySelectorAll('a[class*="geo-pn"]').length > 0 || document.querySelectorAll('a[href*="geo"]').length > 0) {
+    const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
+    geoPhoneNumber();
+  }
 }());
+
+
