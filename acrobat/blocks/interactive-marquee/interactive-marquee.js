@@ -172,7 +172,7 @@ export default async function init(el) {
       videoSwitcher.append(deck);
       videoSwitcher.append(tabs);
       handleChangingSlides(tabs, deck);
-      el.insertBefore(videoSwitcher, foreground);
+      foreground.append(videoSwitcher);
     }
   }
   const headline = foreground.querySelector('h1, h2, h3, h4, h5, h6');
