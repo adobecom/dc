@@ -10,6 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
+const pattern = /{{phone-\S\w*\S\w*}}/g;
+document.querySelectorAll('a').forEach((p, idx) => {
+  if (pattern.exec(p.innerHTML)) {
+    p.setAttribute('number-type', p.innerHTML.match(pattern)[0].replace(/[&/\\#,+()$~%.'":*?<>{}]/g, ''));
+    p.classList.add(`geo-pn${idx}`);
+  }
+});
+
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -395,4 +403,11 @@ const { ietf } = getLocale(locales);
       window.dispatchEvent(imsIsReady);
     }
   }, 1000);
+
+  if (document.querySelectorAll('a[class*="geo-pn"]').length > 0 || document.querySelectorAll('a[href*="geo"]').length > 0) {
+    const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
+    geoPhoneNumber();
+  }
 }());
+
+
