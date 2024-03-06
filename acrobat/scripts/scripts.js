@@ -283,6 +283,10 @@ const CONFIG = {
     version: '1.0',
     onDemand: false,
   },
+  htmlExclude: [
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
+  ],
 };
 
 // Setting alternative Jarcis client ID for these paths
