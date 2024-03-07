@@ -103,17 +103,17 @@ function handleChangingSlides(tabs, deck) {
 
 function getTabs(slides) {
   const tabArray = [];
-  const tabsContainer = createTag('ul', { class: 'smx-tabs', role: 'tablist' });
+  const tabsContainer = createTag('ul', { class: 'slider-tabs', role: 'tablist' });
   for (let i = 0; i < slides.length; i += 1) {
     const li = createTag('li', {
-      class: 'smx-tab',
+      class: 'slider-tab',
       role: 'tab',
       tabindex: -1,
       'data-index': i,
       'aria-selected': false,
       'aria-labelledby': `Viewing ${slides[i].label}`,
     }, slides[i].icon);
-    const tabLabel = createTag('p', { class: 'smx-label' }, slides[i].label);
+    const tabLabel = createTag('p', { class: 'slider-label' }, slides[i].label);
     li.append(tabLabel);
 
     // Set inital active state
@@ -127,9 +127,9 @@ function getTabs(slides) {
   return tabsContainer;
 }
 function getSlides(slides) {
-  const deck = createTag('div', { class: 'smx-deck' });
+  const deck = createTag('div', { class: 'slider-deck' });
   for (let i = 0; i < slides.length; i += 1) {
-    const slide = createTag('div', { class: 'smx-slide' });
+    const slide = createTag('div', { class: 'slide' });
     if (typeof slides[i].video === 'object' ? slide.append(...slides[i].video) : slide.append(slides[i].video));
     deck.append(slide);
   }
@@ -166,7 +166,7 @@ export default async function init(el) {
       }
     }
     if (slides.length > 0) {
-      const videoSwitcher = createTag('div', { class: 'smx-container' });
+      const videoSwitcher = createTag('div', { class: 'slider' });
       const tabs = getTabs(slides);
       const deck = getSlides(slides);
       videoSwitcher.append(deck);

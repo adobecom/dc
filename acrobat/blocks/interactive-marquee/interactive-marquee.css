@@ -729,37 +729,37 @@
   color: inherit;
 }
 
-.smx-container {
-  position: relative;
-  align-content: stretch;
-  display: flex;
-  flex-wrap: wrap;
-  margin: auto;
-  flex-direction: column;
-  padding-top: 40px;
+.slider-deck {
 }
 
-.smx-deck {
-  width: 83%;
-  min-width: auto;
-  margin: auto;
-}
-
-.smx-tabs {
-  box-shadow: 0px 0px 15px #00000029;
-  border-radius: 5px;
-  z-index: 1;
+.slider-tabs {
+  border-radius: 4px;
   display: flex;
-  background: #fff;
-  padding: 9px 10px 10px;
+  background: #FFF;
+  padding: 8px;
+  gap: 8px;
   justify-content: space-between;
+  height: 50px;
+  margin-top: 24px;
+  margin-bottom: 0;
 }
 
-.smx-slides {
-
+.slider-tab {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 32%;
+  padding: 8px;
+  border: 1px solid #E6E6E6;
+  border-radius: 4px;
+  gap:6px;
 }
 
-.smx-slide {
+.slides {
+}
+
+.slide {
   display: none;
   position: absolute;
   top: 0;
@@ -767,54 +767,60 @@
   width: 100%;
   height: 100%;
   z-index: 0;
-  transition: opacity 0.3s;
+  transition: 0;
 }
 
-.smx-tab {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 32%;
-  padding: 7px 5px 4px 5px;
-  border: 1px solid #E6E6E6;
-  border-radius: 5px;
-  transition: border-color 0.3s;
-  margin-left: 10px;
-  max-height: 60px;
-  min-width: 100px !important;
-}
-
-.smx-label {
+.slider-label {
   font-size: var(--type-body-xxs-size);
-  line-height: 16px;
+  line-height: 12px;
   text-align: center;
-  margin-top: 5px;
-  margin-bottom: 0;
-
+  margin: 0;
+  font-weight: 700;
 }
 
-.smx-tab.active {
+.slider-tab.active {
   background-color: #1273E6;
+  border-color: #1273E6;
   color: white;
-  display: flex;
 }
-.smx-slide.active {
+
+.slide.active {
   display: block;
   position: relative;
   opacity: 1;
   z-index: 1;
 }
 
-.smx-tab span.icon.margin-right {
+.slider-tab span.icon.margin-right {
   margin: 0 !important;
   padding: 0;
-  height: 20px;
+  font-size: 16px;
+  height: 16px;
 }
 
 @media screen and (min-width: 600px) {
-  .smx-tab {
-    margin-left: 10px;
-    min-width: 100px !important;
+  .interactive-marquee.split .foreground.container {
+    flex-direction: column;
+  }
+
+  .slider-tabs {
+    padding: 16px;
+    gap: 16px;
+    height: 73px;
+    max-width: 468px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .slider-tab span.icon.margin-right {
+    font-size: 20px;
+    height: 20px;
+  }
+
+  .slider-label {
+    font-size: var(--type-body-xs-size);
+    line-height: 21px;
+    text-align: center;
+    margin: 0;
   }
 }
