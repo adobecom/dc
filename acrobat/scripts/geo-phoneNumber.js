@@ -20,7 +20,11 @@ export default async function geoPhoneNumber() {
   const updatePhoneNumber = (visNum, i) => {
     const phoneNumberEle = document.querySelector(`.${i}`);
     phoneNumberEle.href = `tel:${visNum}`;
-    phoneNumberEle.innerText = visNum;
+    if (phoneNumberEle.childNodes.length > 1) {
+      phoneNumberEle.childNodes[1].textContent = visNum;
+    } else {
+      phoneNumberEle.textContent = visNum;
+    }
   };
   
   const placeHolderJson = await fetch(`${newLocale}dc-shared/placeholders.json`);
