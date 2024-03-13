@@ -26,7 +26,6 @@ function decorateText(el, size) {
     headingEl.classList.add(`heading-${typeSize[0]}`);
     headingEl.nextElementSibling?.classList.add(`body-${typeSize[1]}`);
     const sib = headingEl.previousElementSibling;
-    console.log('sib', sib);
     if (sib) {
       const className = sib.querySelector('img, .icon') ? 'icon-area' : `detail-${typeSize[2]}`;
       sib.classList.add(className);
@@ -101,6 +100,15 @@ function handleChangingSlides(tabs, deck) {
   });
 }
 
+function getTitle(title) {
+  const titleContainer = createTag('div', { class: 'slider-title-container' });
+  const text = createTag('p', { class: 'slider-title heading-l' }, title.text);
+  const icon = createTag('img', { src: `${title.icon}` });
+  const iconContainer = createTag('div', { class: 'slider-arrow' });
+  iconContainer.append(icon);
+  titleContainer.append(iconContainer, text);
+  return titleContainer;
+}
 function getTabs(slides) {
   const tabArray = [];
   const tabsContainer = createTag('ul', { class: 'slider-tabs', role: 'tablist' });
@@ -151,26 +159,33 @@ export default async function init(el) {
   if (el.classList.contains('video-switcher')) {
     const slides = []; // Initialize the slides array
     const background = children[0].classList.contains('background') ? children[0] : null;
+    const title = {};
     for (const child of children) {
       if (child !== foreground && child !== background) {
-        child.classList.add('slide');
         const info = child.querySelectorAll('div');
-        const data = {
-          icon: info[0],
-          label: info[1].innerHTML,
-          video: info[2].querySelectorAll('a'),
-        };
-        data.icon = child.querySelector('.icon');
-        slides.push(data); // Add the child to the slides array
+        if ((info[0]?.innerHTML === 'Title')) {
+          title.text = info[1].innerHTML;
+          title.icon = info[2].innerHTML;
+        } else {
+          const data = {
+            icon: info[0],
+            label: info[1].innerHTML,
+            video: info[2].querySelectorAll('a'),
+          };
+          child.classList.add('slide');
+          data.icon = child.querySelector('.icon');
+          slides.push(data); // Add the child to the slides array
+        }
         child.remove(); // Remove the child from the DOM
       }
     }
     if (slides.length > 0) {
       const videoSwitcher = createTag('div', { class: 'slider' });
+      const text = getTitle(title);
       const tabs = getTabs(slides);
       const deck = getSlides(slides);
-      videoSwitcher.append(deck);
-      videoSwitcher.append(tabs);
+      if (text) videoSwitcher.append(text);
+      videoSwitcher.append(deck, tabs);
       handleChangingSlides(tabs, deck);
       foreground.append(videoSwitcher);
     }
@@ -192,7 +207,7 @@ export default async function init(el) {
   decorateButtons(text, size === 'large' ? 'button-xl' : 'button-l');
   decorateText(text, size);
   const iconArea = text?.querySelector('.icon-area');
-  console.log('iconArea', iconArea);
+  iconArea.classList.add('heading-l');
   if (iconArea?.childElementCount > 1) decorateMultipleIconArea(iconArea);
   extendButtonsClass(text);
   if (el.classList.contains('split')) {

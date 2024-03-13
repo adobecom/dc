@@ -102,13 +102,17 @@
 }
 
 .interactive-marquee .icon-area {
-  margin-bottom: var(--spacing-s);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
 }
 
 .interactive-marquee .icon-area img {
   height: 48px;
   width: auto;
   display: block;
+  margin-right: var(--spacing-xs);
 }
 
 .interactive-marquee .background img {
@@ -729,6 +733,15 @@
   color: inherit;
 }
 
+.slider {
+  position: relative;
+
+}
+
+.slider-title-container {
+  display: none;
+}
+
 .slider-deck {
 }
 
@@ -741,7 +754,7 @@
   justify-content: space-between;
   height: 50px;
   margin-top: 24px;
-  margin-bottom: 0;
+  margin-bottom: 91px;
 }
 
 .slider-tab {
@@ -753,7 +766,7 @@
   padding: 8px;
   border: 1px solid #E6E6E6;
   border-radius: 4px;
-  gap:6px;
+  gap: 0;
 }
 
 .slides {
@@ -768,6 +781,15 @@
   height: 100%;
   z-index: 0;
   transition: 0;
+}
+
+.slide .milo-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 225px;
+  padding: 0;
+  position: relative;
 }
 
 .slider-label {
@@ -793,14 +815,45 @@
 
 .slider-tab span.icon.margin-right {
   margin: 0 !important;
-  padding: 0;
-  font-size: 16px;
+  line-height: 0;
+}
+
+.slider-tab svg.icon-milo {
   height: 16px;
+  top: 0;
 }
 
 @media screen and (min-width: 600px) {
+  .slider-title-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    left: calc(var(--spacing-m) * -1);
+    width: 570px;
+    margin: 0 auto var(--spacing-xs);
+  }
+
+  .slider-arrow {
+    position: absolute;
+    left: 0;
+  }
+
+  .slider-deck{
+    width: 570px;
+    margin: 0 auto;
+  }
+
+  .slide .milo-video {
+    min-height: 430px;
+    max-width: 100%;
+  }
+
   .interactive-marquee.split .foreground.container {
     flex-direction: column;
+  }
+
+  .interactive-marquee.split .foreground.container .text {
+    max-width: 100%;
   }
 
   .slider-tabs {
@@ -812,15 +865,75 @@
     margin-right: auto;
   }
 
-  .slider-tab span.icon.margin-right {
-    font-size: 20px;
+
+  .slider-tab svg.icon-milo {
     height: 20px;
   }
+
 
   .slider-label {
     font-size: var(--type-body-xs-size);
     line-height: 21px;
     text-align: center;
+    margin: 0;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .interactive-marquee.split .foreground.container {
+    flex-direction: row;
+  }
+
+  .interactive-marquee.split .foreground.container .text {
+    max-width: calc(50% - var(--grid-column-width));
+  }
+
+  .slider {
+    align-self: baseline;
+  }
+
+  .slider-deck{
+    display: flex;
+    align-items: center;
+  }
+
+  .slide .milo-video {
+    min-height: 428px;
+  }
+
+  .slider-tabs {
+    position: absolute;
+    right: calc(0px - 12%);
+    z-index: 1;
+    margin: 0;
+    flex-direction: column;
+    height: auto;
+    top: 50%;
+    bottom: 50%;
+    align-self: center;
+    display: flex;
+  }
+
+  .slider-tab {
+    cursor: pointer;
+    width: 177px;
+    padding: 16px;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
+  .slider-tab span.icon.margin-right {
+
+  }
+  .slider-tab svg.icon-milo {
+    height: 40px;
+  }
+
+  .slider-label {
+    font-size: var(--type-body-m-size);
+    line-height: 24px;
+    text-align: left;
     margin: 0;
   }
 }
