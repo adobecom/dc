@@ -1,24 +1,3 @@
-.interactive-marquee {
-  position: relative;
-  color: var(--color-white);
-  display: flex;
-}
-
-.interactive-marquee.large.standard {
-  min-height: 560px;
-}
-
-.interactive-marquee.small,
-.interactive-marquee.quiet,
-.interactive-marquee.inline,
-.interactive-marquee.large.compact {
-  min-height: 360px;
-}
-
-.interactive-marquee.inline hr {
-  margin-top: var(--spacing-m);
-  margin-bottom: 0;
-}
 
 .interactive-marquee.light,
 .interactive-marquee.mobile-light,
@@ -819,7 +798,7 @@
 }
 
 .slider-tab svg.icon-milo {
-  height: 16px;
+  height: var(--spacing-xs);
   top: 0;
 }
 
@@ -828,14 +807,17 @@
     display: flex;
     align-items: center;
     position: relative;
-    left: calc(var(--spacing-m) * -1);
+    left: calc(var(--spacing-xs) * -1);
     width: 570px;
     margin: 0 auto var(--spacing-xs);
   }
 
   .slider-arrow {
+    height: 54px;
+    width: 38px;
     position: absolute;
-    left: 0;
+    top: var(--spacing-xs);
+    left: -29px;
   }
 
   .slider-deck{
@@ -857,8 +839,8 @@
   }
 
   .slider-tabs {
-    padding: 16px;
-    gap: 16px;
+    padding: var(--spacing-xs);
+    gap: var(--spacing-xs);
     height: 73px;
     max-width: 468px;
     margin-left: auto;
@@ -903,7 +885,7 @@
 
   .slider-tabs {
     position: absolute;
-    right: calc(0px - 12%);
+    right: calc(105.5px * -1);
     z-index: 1;
     margin: 0;
     flex-direction: column;
@@ -912,20 +894,18 @@
     bottom: 50%;
     align-self: center;
     display: flex;
+    width: 211px;
   }
 
   .slider-tab {
     cursor: pointer;
     width: 177px;
-    padding: 16px;
+    padding: var(--spacing-xs);
     flex-direction: row;
     justify-content: flex-start;
-    gap: 16px;
+    gap: var(--spacing-xs);
   }
 
-  .slider-tab span.icon.margin-right {
-
-  }
   .slider-tab svg.icon-milo {
     height: 40px;
   }

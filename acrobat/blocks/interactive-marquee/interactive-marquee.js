@@ -67,20 +67,6 @@ const decorateImage = (media) => {
   }
 };
 
-export async function loadMnemonicList(foreground) {
-  try {
-    const { base } = getConfig();
-    const stylePromise = new Promise((resolve) => {
-      loadStyle(`${base}/blocks/mnemonic-list/mnemonic-list.css`, resolve);
-    });
-    const loadModule = import('../mnemonic-list/mnemonic-list.js')
-      .then(({ decorateMnemonicList }) => decorateMnemonicList(foreground));
-    await Promise.all([stylePromise, loadModule]);
-  } catch (err) {
-    window.lana?.log(`Failed to load mnemonic list module: ${err}`);
-  }
-}
-
 function goToSlide(slide, tabs, deck) {
   const activeTab = tabs.querySelector('.active');
   const activeSlide = deck.querySelector('.active');
@@ -230,8 +216,5 @@ export default async function init(el) {
       el.classList.add('has-credit');
       media?.lastChild.remove();
     }
-  }
-  if (el.classList.contains('mnemonic-list') && foreground) {
-    await loadMnemonicList(foreground);
   }
 }
