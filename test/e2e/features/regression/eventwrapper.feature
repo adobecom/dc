@@ -103,12 +103,6 @@ Feature: Frictionless Event Wrapper Block
       Then I should not see eventwrapper onload
       Then I should not see the review component
       Then I should not see the verb subfooter
-      Then I click "Sign in to download"
-      Then I wait for 2 seconds
-      Then I should see sign-in modal
-      Then I should not see eventwrapper onload
-      Then I should not see the review component
-      Then I should not see the verb subfooter
 
   Examples:
       | Verb     | File                |

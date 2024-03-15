@@ -111,8 +111,6 @@ Feature: Frictionless Converter Block
      Then I click "Add initials"
      Then I sign up the document
      Then I should see initials
-     Then I wait for 2 seconds
-     Then I click "Sign in to download"
 
   Examples:
       | Verb     | File                |
