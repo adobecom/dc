@@ -17,7 +17,7 @@ on:
 jobs:
   run-stage-tests:
     if: ${{ github.event.inputs.miloBranch == 'stage' }}
-    name: Trigger CircleCI Job
+    name: Trigger Stage CircleCI Job
     runs-on: [self-hosted, Linux, X64]
     steps:
       - name: Trigger CircleCI Job
@@ -29,7 +29,7 @@ jobs:
                     \"parameters\":{ \
                       \"env\":\"stage\", \
                       \"dcbranch\":\"stage\", \
-                      \"milobranch\":\"stage\", \
+                      \"milobranch\":\"stage\" \
                     } \
               }"
 
@@ -40,7 +40,7 @@ jobs:
 
   run-prod-tests:
     if: ${{ github.event.inputs.miloBranch == 'main' }}
-    name: Trigger CircleCI Job
+    name: Trigger Prod CircleCI Job
     runs-on: [self-hosted, Linux, X64]
     steps:
       - name: Trigger CircleCI Job
