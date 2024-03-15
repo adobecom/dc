@@ -8,9 +8,38 @@ on:
         required: true
         default: 'stage'
         type: string
+      miloBranch:
+        description: 'Milo Branch'
+        required: true
+        default: 'main'
+        type: string
 
 jobs:
-  run-tests:
+  run-stage-tests:
+    if: ${{ github.event.inputs.miloBranch == 'stage' }}
+    name: Trigger CircleCI Job
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - name: Trigger CircleCI Job
+        run: |
+          curl -X POST 'https://circle.ci.adobe.com/api/v2/project/gh/wcms/Platform-UI-DC/pipeline' \
+              -H 'Circle-Token: ${{ secrets.CCI_TOKEN }}' \
+              -H 'content-type: application/json' \
+              -d "{\"branch\":\"main\", \
+                    \"parameters\":{ \
+                      \"env\":\"stage\", \
+                      \"dcbranch\":\"stage\", \
+                      \"milobranch\":\"stage\", \
+                    } \
+              }"
+
+      - name: Trigger Jenkins Job
+        run: |
+          curl -X POST 'https://dc.ci.corp.adobe.com/job/DC%20Release%20-%20Run%20Nala/buildWithParameters?token=${{ secrets.JNK_JOB_TOKEN }}&branch=stage' \
+              -u '${{ secrets.JNK_USER }}:${{ secrets.JNK_API_TOKEN }}'
+
+  run-prod-tests:
+    if: ${{ github.event.inputs.miloBranch == 'main' }}
     name: Trigger CircleCI Job
     runs-on: [self-hosted, Linux, X64]
     steps:
@@ -31,7 +60,8 @@ jobs:
           curl -X POST 'https://dc.ci.corp.adobe.com/job/DC%20Release%20-%20Run%20Nala/buildWithParameters?token=${{ secrets.JNK_JOB_TOKEN }}&branch=main' \
               -u '${{ secrets.JNK_USER }}:${{ secrets.JNK_API_TOKEN }}'
 
-  run-tests-gha:
+  run-prod-tests-gha:
+    if: ${{ github.event.inputs.miloBranch == 'main' }}
     strategy:
       fail-fast: false
       matrix:
@@ -76,7 +106,8 @@ jobs:
           name: reports
           path: reports/
 
-  run-integration-tests:     
+  run-integration-tests:
+    if: ${{ github.event.inputs.miloBranch == 'main' }}    
     name: Integration Tests
     runs-on: macos-latest
     steps:
