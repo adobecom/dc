@@ -41,7 +41,6 @@ describe('geoPhoneNumber', () => {
 
   it('should update phone numbers correctly', async () => {
     await geoPhoneNumber(document.body.innerHTML);
-    console.log(document.querySelector('.geo-pn3').innerHTML);
     expect(document.querySelector('.geo-pn3').innerHTML).toBe('<a href="tel:800-915-9430" number-type="phone-enterprise">800-915-9430</a>');
   });
 
