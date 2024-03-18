@@ -35,37 +35,11 @@ function decorateText(el, size) {
   decorate(heading, config);
 }
 
-function decorateMultipleIconArea(iconArea) {
-  iconArea.querySelectorAll(':scope > picture').forEach((picture) => {
-    const src = picture.querySelector('img')?.getAttribute('src');
-    const a = picture.nextElementSibling;
-    if (src?.endsWith('.svg') || a?.tagName !== 'A') return;
-    if (!a.querySelector('img')) {
-      a.innerHTML = '';
-      a.className = '';
-      a.appendChild(picture);
-    }
-  });
-  if (iconArea.childElementCount > 1) iconArea.classList.add('icon-area-multiple');
-}
-
 function extendButtonsClass(text) {
   const buttons = text?.querySelectorAll('.con-button');
   if (buttons?.length === 0) return;
   buttons?.forEach((button) => { button.classList.add('button-justified-mobile'); });
 }
-
-const decorateImage = (media) => {
-  media.classList.add('image');
-
-  const imageLink = media.querySelector('a');
-  const picture = media.querySelector('picture');
-
-  if (imageLink && picture && !imageLink.parentElement.classList.contains('modal-img-link')) {
-    imageLink.textContent = '';
-    imageLink.append(picture);
-  }
-};
 
 function goToSlide(slide, tabs, deck) {
   const activeTab = tabs.querySelector('.active');
@@ -166,25 +140,19 @@ export default async function init(el) {
       }
     }
     if (slides.length > 0) {
-      const videoSwitcher = createTag('div', { class: 'slider' });
+      const slider = createTag('div', { class: 'slider' });
       const text = getTitle(title);
       const tabs = getTabs(slides);
       const deck = getSlides(slides);
-      if (text) videoSwitcher.append(text);
-      videoSwitcher.append(deck, tabs);
+      if (text) slider.append(text);
+      slider.append(deck, tabs);
       handleChangingSlides(tabs, deck);
-      foreground.append(videoSwitcher);
+      foreground.append(slider);
     }
   }
   const headline = foreground.querySelector('h1, h2, h3, h4, h5, h6');
   const text = headline?.closest('div');
   text?.classList.add('text');
-  const media = foreground.querySelector(':scope > div:not([class])');
-
-  if (media) {
-    media.classList.add('asset');
-    if (!media.querySelector('video, a[href*=".mp4"]')) decorateImage(media);
-  }
 
   const firstDivInForeground = foreground.querySelector(':scope > div');
   if (firstDivInForeground?.classList.contains('asset')) el.classList.add('row-reversed');
@@ -194,27 +162,5 @@ export default async function init(el) {
   decorateText(text, size);
   const iconArea = text?.querySelector('.icon-area');
   iconArea.classList.add('heading-l');
-  if (iconArea?.childElementCount > 1) decorateMultipleIconArea(iconArea);
   extendButtonsClass(text);
-  if (el.classList.contains('split')) {
-    if (foreground && media) {
-      media.classList.add('bleed');
-      foreground.insertAdjacentElement('beforebegin', media);
-    }
-
-    let mediaCreditInner;
-    const txtContent = media?.lastChild?.textContent?.trim();
-    if (txtContent) {
-      mediaCreditInner = createTag('p', { class: 'body-s' }, txtContent);
-    } else if (media?.lastElementChild?.tagName !== 'PICTURE') {
-      mediaCreditInner = media?.lastElementChild;
-    }
-
-    if (mediaCreditInner) {
-      const mediaCredit = createTag('div', { class: 'media-credit container' }, mediaCreditInner);
-      el.appendChild(mediaCredit);
-      el.classList.add('has-credit');
-      media?.lastChild.remove();
-    }
-  }
 }
