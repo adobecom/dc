@@ -22,6 +22,7 @@ Feature: Frictionless Converter Block
       | add-pages-to-pdf  | test-files/test.pdf  |
       | extract-pdf-pages | test-files/test2.pdf |
       | pdf-editor        | test-files/test.pdf  |
+      | sign-pdf          | test-files/test.pdf  |
 
   @MWPW-124781 @regression @converter
   Scenario Outline: L2 Verbs - Upload and download
@@ -96,25 +97,6 @@ Feature: Frictionless Converter Block
   Examples:
       | Verb       | Files                                    |
       | rotate-pdf | test-files/test.pdf,test-files/test2.pdf |
-
-  @MWPW-137251 @regression @converter
-  Scenario Outline: L2 Verbs - Upload and sign in
-    Given I go to the <Verb> page
-     Then I upload the file "<File>"
-     Then I click "Add signature"
-     Then I fill up signature input
-     Then I click "Add initials"
-     Then I fill up signature input
-     Then I click "Add signature"
-     Then I sign up the document
-     Then I should see signature
-     Then I click "Add initials"
-     Then I sign up the document
-     Then I should see initials
-
-  Examples:
-      | Verb     | File                |
-      | sign-pdf | test-files/test.pdf |
 
   @MWPW-127633 @regression @converter @signedin
   Scenario Outline: L1 Verbs - Redirects for signed-in visitors
