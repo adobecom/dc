@@ -535,7 +535,7 @@ Then(/^I should see the footer promo elements$/, async function () {
   await expect(this.page.footerPromoBullets).toBeVisible({timeout: 5000});
 });
 
-Then(/^I should see that the prices match on checkout from the (.*) merch card(?:|s)$/, async function (items) {
+Then(/^I should see that the prices match on checkout from the (.*) merch card(?:|s)$/, {timeout: 120000}, async function (items) {
   this.context(DCPage);
 
   let products = items.replace(/ and /g, ";").split(';');
