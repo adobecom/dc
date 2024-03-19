@@ -1,7 +1,3 @@
-/*
- * Marquee - v6.0
- */
-
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
@@ -33,12 +29,6 @@ function decorateText(el, size) {
     }
   };
   decorate(heading, config);
-}
-
-function extendButtonsClass(text) {
-  const buttons = text?.querySelectorAll('.con-button');
-  if (buttons?.length === 0) return;
-  buttons?.forEach((button) => { button.classList.add('button-justified-mobile'); });
 }
 
 function goToSlide(slide, tabs, deck) {
@@ -116,39 +106,37 @@ export default async function init(el) {
   }
   foreground.classList.add('foreground', 'container');
 
-  if (el.classList.contains('video-switcher')) {
-    const slides = []; // Initialize the slides array
-    const background = children[0].classList.contains('background') ? children[0] : null;
-    const title = {};
-    for (const child of children) {
-      if (child !== foreground && child !== background) {
-        const info = child.querySelectorAll('div');
-        if ((info[0]?.innerHTML === 'Title')) {
-          title.text = info[1].innerHTML;
-          title.icon = info[2].innerHTML;
-        } else {
-          const data = {
-            icon: info[0],
-            label: info[1].innerHTML,
-            video: info[2].querySelectorAll('a'),
-          };
-          child.classList.add('slide');
-          data.icon = child.querySelector('.icon');
-          slides.push(data); // Add the child to the slides array
-        }
-        child.remove(); // Remove the child from the DOM
+  const slides = []; // Initialize the slides array
+  const background = children[0].classList.contains('background') ? children[0] : null;
+  const title = {};
+  for (const child of children) {
+    if (child !== foreground && child !== background) {
+      const info = child.querySelectorAll('div');
+      if ((info[0]?.innerHTML === 'Title')) {
+        title.text = info[1].innerHTML;
+        title.icon = info[2].innerHTML;
+      } else {
+        const data = {
+          icon: info[0],
+          label: info[1].innerHTML,
+          video: info[2].querySelectorAll('a'),
+        };
+        child.classList.add('slide');
+        data.icon = child.querySelector('.icon');
+        slides.push(data); // Add the child to the slides array
       }
+      child.remove(); // Remove the child from the DOM
     }
-    if (slides.length > 0) {
-      const slider = createTag('div', { class: 'slider' });
-      const text = getTitle(title);
-      const tabs = getTabs(slides);
-      const deck = getSlides(slides);
-      if (text) slider.append(text);
-      slider.append(deck, tabs);
-      handleChangingSlides(tabs, deck);
-      foreground.append(slider);
-    }
+  }
+  if (slides.length > 0) {
+    const slider = createTag('div', { class: 'slider' });
+    const text = getTitle(title);
+    const tabs = getTabs(slides);
+    const deck = getSlides(slides);
+    if (text) slider.append(text);
+    slider.append(deck, tabs);
+    handleChangingSlides(tabs, deck);
+    foreground.append(slider);
   }
   const headline = foreground.querySelector('h1, h2, h3, h4, h5, h6');
   const text = headline?.closest('div');
@@ -158,9 +146,8 @@ export default async function init(el) {
   if (firstDivInForeground?.classList.contains('asset')) el.classList.add('row-reversed');
 
   const size = getBlockSize(el);
-  decorateButtons(text, size === 'large' ? 'button-xl' : 'button-l');
+  decorateButtons(text, size === 'large' ? 'button-xl' : 'button-xl');
   decorateText(text, size);
   const iconArea = text?.querySelector('.icon-area');
   iconArea.classList.add('heading-l');
-  extendButtonsClass(text);
 }
