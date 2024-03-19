@@ -1,11 +1,12 @@
 /* eslint-disable compat/compat */
-/* c8 ignore next 53 */
+
 export default async function geoPhoneNumber() {
   const geoTwo = await fetch('https://geo2.adobe.com/json/');
   const urlParams = new URLSearchParams(window.location.search);
   const geoData = await geoTwo.json();
 
-  let newLocale = urlParams.get('akamaiLocale')?.toLowerCase()
+  let newLocale = JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()
+  || urlParams.get('akamaiLocale')?.toLowerCase()
   || geoData?.country?.toLowerCase()
   || JSON.parse(sessionStorage.getItem('international'))?.country?.toLowerCase()
   || JSON.parse(sessionStorage.getItem('feds_location'))?.country?.toLowerCase()
@@ -16,13 +17,16 @@ export default async function geoPhoneNumber() {
   } else {
     newLocale = `/${newLocale}/`;
   }
-
   const updatePhoneNumber = (visNum, i) => {
     const phoneNumberEle = document.querySelector(`.${i}`);
     phoneNumberEle.href = `tel:${visNum}`;
-    phoneNumberEle.innerText = visNum;
+    if (phoneNumberEle.childNodes.length > 1) {
+      phoneNumberEle.childNodes[1].textContent = visNum;
+    } else {
+      phoneNumberEle.textContent = visNum;
+    }
   };
-  
+
   const placeHolderJson = await fetch(`${newLocale}dc-shared/placeholders.json`);
   if (placeHolderJson.status !== 200) return;
   const placeHolderJsonData = await placeHolderJson.json();
