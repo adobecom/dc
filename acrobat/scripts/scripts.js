@@ -186,7 +186,7 @@ const locales = {
   no: { ietf: 'no-NO', tk: 'aaz7dvd.css' },
   pl: { ietf: 'pl-PL', tk: 'aaz7dvd.css' },
   pt: { ietf: 'pt-PT', tk: 'inq1xob.css' },
-  ro: { ietf: 'en-RO', tk: 'aaz7dvd.css' },
+  ro: { ietf: 'en-RO', tk: 'qxw8hzm.css' },
   sa_en: { ietf: 'en', tk: 'pps7abe.css' },
   ch_de: { ietf: 'de-CH', tk: 'vin7zsi.css' },
   si: { ietf: 'sl-SI', tk: 'aaz7dvd.css' },
