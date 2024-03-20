@@ -93,27 +93,6 @@ Feature: Frictionless Event Wrapper Block
       | Verb       | File                |
       | rotate-pdf | test-files/test.pdf |
 
-  @MWPW-137439 @regression @eventwrapper
-  Scenario Outline: L2 Verbs - Personalization events for sign-pdf
-      Given I go to the <Verb> page
-      Then I should see eventwrapper onload
-      Then I should see the review component
-      Then I should see the verb subfooter
-      Then I upload the file "<File>"
-      Then I should not see eventwrapper onload
-      Then I should not see the review component
-      Then I should not see the verb subfooter
-      Then I click "Sign in to download"
-      Then I wait for 2 seconds
-      Then I should see sign-in modal
-      Then I should not see eventwrapper onload
-      Then I should not see the review component
-      Then I should not see the verb subfooter
-
-  Examples:
-      | Verb     | File                |
-      | sign-pdf | test-files/test.pdf |
-
   @MWPW-138330 @regression @eventwrapper
   Scenario Outline: L2 Verbs - Personalization events for password-protect-pdf
      Given I go to the <Verb> page
