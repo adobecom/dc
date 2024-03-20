@@ -129,6 +129,7 @@ export default async function init(el) {
     }
   }
   if (slides.length > 0) {
+    const interactive = createTag('div', { class: 'interactive-container' });
     const slider = createTag('div', { class: 'slider' });
     const text = getTitle(title);
     const tabs = getTabs(slides);
@@ -136,14 +137,13 @@ export default async function init(el) {
     if (text) slider.append(text);
     slider.append(deck, tabs);
     handleChangingSlides(tabs, deck);
-    foreground.append(slider);
+    interactive.append(slider);
+    foreground.append(interactive);
+    document.querySelector('.interactive-marquee').classList.add('active');
   }
   const headline = foreground.querySelector('h1, h2, h3, h4, h5, h6');
   const text = headline?.closest('div');
   text?.classList.add('text');
-
-  const firstDivInForeground = foreground.querySelector(':scope > div');
-  if (firstDivInForeground?.classList.contains('asset')) el.classList.add('row-reversed');
 
   const size = getBlockSize(el);
   decorateButtons(text, size === 'large' ? 'button-xl' : 'button-xl');

@@ -2,6 +2,16 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 100vh;
+  opacity: 0;
+}
+
+.interactive-marquee.active {
+  opacity: 1;
+}
+
+.hide-video {
+  opacity: 0;
 }
 
 .interactive-marquee.light,
@@ -24,13 +34,16 @@
   gap: var(--spacing-m);
 }
 
-/* Slider */
 .slider {
   position: relative;
 }
 
 .slider-title-container {
   display: none;
+}
+
+.slider-deck {
+  min-height: 225px;
 }
 
 .slider-tabs {
@@ -236,13 +249,60 @@
   }
 }
 
+
 @media screen and (min-width: 1200px) {
-  .interactive-marquee .icon-area img {
-    height: 80px;
+  .interactive-marquee .foreground .text {
+    padding: var(--spacing-xl) 0;
+    order: unset;
+    display: block;
+    max-width: 500px;
+    margin: 0 0 0 auto;
+    position: relative;
   }
 
-  .interactive-marquee .text {
+  .interactive-marquee .foreground .interactive-container {
+    order: unset;
+    width: 50%;
+    height: 100%;
+    margin: 0;
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .interactive-marquee {
+    min-height: 700px;
+    flex-direction: row;
+    position: relative;
+    display: flex;
+  }
+
+  .interactive-marquee .foreground {
+    padding: 0;
+    gap: 100px;
+    flex-direction: row;
+    align-items: center;
+    order: unset;
+    width: 100%;
+    position: relative;
+    display: flex;
+    margin: 0 auto;
+  }
+
+
+  html[dir="rtl"] .interactive-marquee .foreground {
+    flex-direction: row-reverse;
+  }
+
+  .interactive-marquee .foreground .text {
     padding: var(--spacing-xl) 0;
+    order: unset;
+    display: block;
+    max-width: 500px;
+  }
+
+  .interactive-marquee .icon-area img {
+    height: 80px;
   }
 
   .interactive-marquee .background .mobile-only,
@@ -254,27 +314,9 @@
     display: block;
   }
 
-  .interactive-marquee .foreground {
-    flex-direction: row;
-    align-items: center;
-    padding: 0;
-    gap: 100px; /* 1 column */
-    min-height: 700px;
-  }
-
-
-  html[dir="rtl"] .interactive-marquee .foreground {
-    flex-direction: row-reverse;
-  }
-
-  .interactive-marquee .foreground .text {
-    max-width: 500px;
-  }
-
   .slider {
-    order: 2;
-    align-self: baseline;
-    margin-top: 40px;
+    max-width: 570px;
+    margin: 40px auto;
   }
 
   .slider-deck{
@@ -318,8 +360,17 @@
   }
 }
 
-@media screen and (min-width: 1440px) {
-  .interactive-marquee .foreground.container {
-    max-width: 1530px;
+
+
+
+@media screen and (max-width: 1437px) and (min-width: 1200px) {
+  .slider-tabs {
+    right: 4px;
+  }
+}
+
+@media screen and (max-width: 1649px) and (min-width: 1438px) {
+  .slider-tabs {
+    right: -32px;
   }
 }
