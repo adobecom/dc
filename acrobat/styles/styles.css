@@ -32,6 +32,10 @@ div[data-section="widget"] {
   display: none;
 }
 
+#dc-converter-widget button, #dc-converter-widget input {
+  font-family: inherit;
+}
+
 #CID {
   width: 75%;
   max-width: 75%;
