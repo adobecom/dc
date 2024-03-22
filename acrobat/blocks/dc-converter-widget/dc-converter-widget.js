@@ -119,6 +119,7 @@ const exhLimitCookieMap = {
   'compress-pdf': 'ac_cm_p_ops',
   'rotate-pages': 'ac_or_p_c',
   createpdf: 'ac_cr_p_c',
+  'ocr-pdf': 'ac_ocr_p_c',
 };
 
 const appEnvCookieMap = {
