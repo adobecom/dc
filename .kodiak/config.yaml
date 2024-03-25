@@ -14,6 +14,8 @@ notifications:
         assignee:
           name: gunn
         customfield_11800: MWPW-140779 #epic link
+        customfield_12900:
+          value: Slytherin
         watchers:
           - casalino
           - jmichnow
