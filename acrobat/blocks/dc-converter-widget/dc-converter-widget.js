@@ -315,7 +315,7 @@ export default async function init(element) {
         // rotate pdf, rearrange pdf, split pdf, add pages to pdf, sign pdf, export pdf)
         l1Verbs: canNotUpload,
         // Half L2/L1
-        ocrPDF: canNotUpload || (val.ocr_pdf && val.ocr_pdf.can_process),
+        ocrPDF: canNotUpload || (val.ocr_pdf && !val.ocr_pdf.can_process),
       };
       window.doccloudPersonalization = doccloudPersonalization;
       // Personalization Ready Event
