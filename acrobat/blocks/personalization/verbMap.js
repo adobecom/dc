@@ -20,7 +20,7 @@ const verbMap = {
     'insert-pdf': 'organize_pdf',
     'extract-pages': 'organize_pdf',
     L1: 'organize_pdf',
-    'ocr-pdf ': 'ocr_pdf',
+    'ocr-pdf ': 'ocrPDF',
   },
   upsellMap: {
     'word-to-pdf': 'createPDF',
