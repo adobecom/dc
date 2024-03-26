@@ -19,10 +19,10 @@ notifications:
           - jmichnow
           - mauchley
           - tsay
-          - seanchoi
         labels:
           - "OriginatingProcess=Kodiak"
           - "security"
           - "kodiak-ticket"
+          - "dc-security"
         components:
           - name: "DevOps Security"
