@@ -603,3 +603,8 @@ Then(/^I should see How can I help you in jarvis popup window$/, async function 
   const jarvisElement = await this.page.native.frameLocator("iframe[src*='https://ui.messaging.adobe.com/2.64.10/index.html']").getByText("How can I help you?");
   await expect(jarvisElement).toBeVisible({timeout: 8000});
 });
+
+Then(/^I should see inline PDF viewer$/, async function () {
+  const element = await this.page.native.frameLocator("iframe[src*='https://acrobatservices.adobe.com/view-sdk']").getByText("SOLUTION BRIEF", {exact: true});
+  await expect(element).toBeVisible({timeout: 10000})
+})

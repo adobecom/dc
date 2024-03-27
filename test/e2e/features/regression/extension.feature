@@ -80,3 +80,12 @@ Feature: Frictionless Browser Extension Modal
   Examples:
       | Verb              | File                |
       | request-signature | test-files/test.pdf |
+
+    @MWPW-144462 @regression @extension @headed
+      Scenario Outline: PDF should be displayed inline
+      Given I go to the DC page '<urlPath>'
+      Then I should see inline PDF viewer
+
+      Examples:
+      | urlPath|
+      | acrobat/business/reports/sdk/adobe-acrobat-microsoft-365-brief.html|
