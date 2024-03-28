@@ -111,7 +111,7 @@ const verbRedirMap = {
   'compress-pdf': 'compress',
   'png-to-pdf': 'jpgtopdf',
   'number-pages': 'number',
-  'ocr-pdf': 'createpdf',
+  'ocr-pdf': 'ocr',
 };
 
 const exhLimitCookieMap = {
