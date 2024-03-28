@@ -1,4 +1,10 @@
 .*
 *.md
+*.json
+!*/**/*.json
 LICENSE
 test/*
+*.mjs
+wtr/*
+edgeworkers/*
+babel.config.js
