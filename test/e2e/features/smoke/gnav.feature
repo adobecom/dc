@@ -3,7 +3,7 @@ Feature: Frictionless Gnav Tests
   Background:
     Given I have a new browser context
 
-  @MWPW-136087 @smoke @gnav
+  @MWPW-136087 @gnav
   Scenario Outline: L1 Verb - Navigate Gnav Menus
     Given I go to the <Verb> page
      Then I should be able to open the submenu of the 1st, 3rd, 4th and 6th menu items
