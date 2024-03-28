@@ -608,3 +608,13 @@ Then(/^I should see inline PDF viewer$/, async function () {
   const element = await this.page.native.frameLocator("iframe[src*='https://acrobatservices.adobe.com/view-sdk']").getByText("SOLUTION BRIEF", {exact: true});
   await expect(element).toBeVisible({timeout: 10000})
 })
+
+Then(/^I switch to the new page$/, async function () {
+  this.context(DCPage);
+  const [newPage] = await Promise.all([
+    PW.context.waitForEvent('page'),
+  ]);
+  await newPage.waitForLoadState();
+  await newPage.bringToFront();
+  this.page.native = newPage;
+})

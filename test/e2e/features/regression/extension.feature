@@ -89,3 +89,14 @@ Feature: Frictionless Browser Extension Modal
       Examples:
       | urlPath|
       | acrobat/business/reports/sdk/adobe-acrobat-microsoft-365-brief.html|
+
+    @MWPW-144263 @regression @extension @headed
+      Scenario Outline: PDF should be displayed in PDF viewer in new tab
+      Given I go to the DC page '<urlPath>'
+      Then I click the element "text='Read the solution brief'"
+      Then I switch to the new page
+      Then I should see the address bar contains "/adobe-sign-workday-sb-ue.pdf"
+      Examples:
+        | urlPath|
+        | acrobat/business/integrations/workday.html|
+
