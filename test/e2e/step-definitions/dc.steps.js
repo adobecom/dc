@@ -335,9 +335,9 @@ Then(/^I delete the file in DC Web$/, async function () {
 
 Then(/^I should (|not )see a modal promoting the browser extension$/, { timeout: 180000 }, async function (neg) {
   if (neg) {
-    await expect(this.page.extensionModal).not.toBeVisible();
+    await expect(this.page.extensionModal).not.toBeVisible({ timeout: 10000 });
   } else {
-    await expect(this.page.extensionModal).toBeVisible();
+    await expect(this.page.extensionModal).toBeVisible({ timeout: 10000 });
   }
 });
 
@@ -474,8 +474,8 @@ Then(/^I read expected analytics data with replacements "([^"]*)"$/, async funct
 });
 
 Then(/^I should see the CaaS block$/, async function () {
+  await this.page.caasFragment.scrollIntoViewIfNeeded();
   await expect(this.page.caasFragment).toBeVisible({timeout: 30000});
-  await this.page.native.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await expect(this.page.caas).toBeVisible({timeout: 30000});
 });
 
@@ -498,7 +498,8 @@ Then(/^I click the "Read now" button inside the CaaS card$/, async function () {
   while (retry > 0) {
     try {
       if (target === '_blank') {
-        const pagePromise = PW.context.waitForEvent("page");
+        const pagePromise = PW.context.waitForEvent("page", { timeout: 5000 });
+        await this.page.caasButton.nth(0).scrollIntoViewIfNeeded();
         await this.page.caasButton.nth(0).click();
         const newPage = await pagePromise;
         await newPage.waitForLoadState();
@@ -510,6 +511,7 @@ Then(/^I click the "Read now" button inside the CaaS card$/, async function () {
       retry = 0;
     } catch {
       retry--;
+      await this.page.native.waitForTimeout(2000);
     }
   }
 });
@@ -606,6 +608,6 @@ Then(/^I should see jarvis popup window$/, async function () {
 });
 
 Then(/^I should see How can I help you in jarvis popup window$/, async function () {
-  const jarvisElement = await this.page.native.frameLocator("iframe[src*='https://ui.messaging.adobe.com/2.64.10/index.html']").getByText("How can I help you?");
+  const jarvisElement = await this.page.native.frameLocator("iframe[class*='adbmsgContentIframe']").getByText("How can I help you?");
   await expect(jarvisElement).toBeVisible({timeout: 8000});
 });
