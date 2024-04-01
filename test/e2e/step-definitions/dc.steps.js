@@ -417,9 +417,15 @@ Then(/^I select the last item of the submenu of the ([^\"]*) menu item$/, async 
   await this.page.selectFedsPopupItem(-1);
 });
 
-Then(/^I click "Buy now" button in the header$/, async function () {
+Then(/^I click (.*) nav item in the header$/, async function (item) {
   this.context(FrictionlessPage);
-  this.page.buyNow.click()
+  const index = cardinal(item);
+  this.page.clickNavItem(index);
+});
+
+Then(/^I click "([^\"]*)" button in the header$/, async function (button) {
+  this.context(FrictionlessPage);
+  this.page.cta.click()
 });
 
 Then(/^I switch to the new page after clicking "Buy now" button in the header$/, async function () {
