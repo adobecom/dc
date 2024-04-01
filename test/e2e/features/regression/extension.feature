@@ -95,7 +95,7 @@ Feature: Frictionless Browser Extension Modal
       Given I go to the DC page '<urlPath>'
       Then I click the element "text='Read the solution brief'"
       Then I switch to the new page
-      Then I should see the address bar contains "/adobe-sign-workday-sb-ue.pdf"
+      Then I should see the address bar contains "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/"
       Examples:
         | urlPath|
         | acrobat/business/integrations/workday.html|
