@@ -603,3 +603,20 @@ Then(/^I should see How can I help you in jarvis popup window$/, async function 
   const jarvisElement = await this.page.native.frameLocator("iframe[src*='https://ui.messaging.adobe.com/2.64.10/index.html']").getByText("How can I help you?");
   await expect(jarvisElement).toBeVisible({timeout: 8000});
 });
+
+Then(/^I record phone number on the page$/, async function () {
+  this.phoneNumber = await this.page.native.locator("a[href^='tel']").textContent();
+  console.log("Phone number without geo-ip:", this.phoneNumber);
+})
+
+Then(/^I go to the page "([^"]*)" with geo-ip spoof "([^"]*)"$/, async function (pageUrl, akamaiLocale) {
+  this.page = new DCPage(pageUrl + '?akamaiLocale=' + akamaiLocale);
+  await this.page.open();
+})
+
+Then(/^I confirm phone number is not changed$/, async function () {
+  const geoIpPhoneNumber = await this.page.native.locator("a[href^='tel']").textContent();
+  expect(this.phoneNumber).toEqual(geoIpPhoneNumber);
+  console.log("Phone number with geo-ip:", geoIpPhoneNumber);
+
+})
