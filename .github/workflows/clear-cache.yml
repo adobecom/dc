@@ -1,6 +1,17 @@
 name: Clear Akamai Cache
 
 on:
+  workflow_call:
+    inputs:
+      cpCode:
+        description: 'CP Code'
+        required: true
+        type: string
+      network:
+        description: 'Network'
+        required: true
+        type: string
+
   workflow_dispatch:
     inputs:
       cpCode:
