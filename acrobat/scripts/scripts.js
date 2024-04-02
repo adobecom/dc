@@ -302,7 +302,7 @@ if (window.location.pathname.match('/sign/')
   || window.location.pathname.match('/documentcloud/')
   || window.location.pathname.match('/acrobat/business/')) {
   CONFIG.jarvis.id = 'DocumentCloudsignAcro';
-}
+};
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
@@ -317,8 +317,7 @@ if (window.location.pathname.match('/sign/')
  */
 const { ietf } = getLocale(locales);
 
-// Making loadPage an async function
-async function loadPage() {
+(async function loadPage() {
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
 
@@ -345,16 +344,14 @@ async function loadPage() {
       document.head.appendChild(link);
     });
 
-    const dcConverterModule = await import(`../blocks/${blockName}/${blockName}.js`);
-    const dcConverter = dcConverterModule.default;
+    const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);
     await dcConverter(widgetBlock);
   }
 
   // Setup CSP
   (async () => {
     if (document.querySelector('meta[name="dc-widget-version"]')) {
-      const CSPModule = await import('./contentSecurityPolicy/csp.js');
-      const ContentSecurityPolicy = CSPModule.default;
+      const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
       ContentSecurityPolicy();
     }
   })();
@@ -376,8 +373,7 @@ async function loadPage() {
   addLocale(ietf);
 
   if (getMetadata('commerce')) {
-    const imageReplacerModule = await import('./imageReplacer.js');
-    const replacePlaceholdersWithImages = imageReplacerModule.default;
+    const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
     replacePlaceholdersWithImages(ietf, miloLibs);
   }
 
@@ -388,8 +384,7 @@ async function loadPage() {
   await loadArea(document, false);
 
   // Setup Logging
-  const lanaLoggingModule = await import('./dcLana.js');
-  const lanaLogging = lanaLoggingModule.default;
+  const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
 
   // IMS Ready
@@ -411,10 +406,7 @@ async function loadPage() {
   }, 1000);
 
   if (document.querySelectorAll('a[class*="geo-pn"]').length > 0 || document.querySelectorAll('a[href*="geo"]').length > 0) {
-    const geoPhoneNumberModule = await import('./geo-phoneNumber.js');
-    const geoPhoneNumber = geoPhoneNumberModule.default;
+    const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
     geoPhoneNumber();
   }
-}
-
-loadPage(); // Call the async function
+}());
