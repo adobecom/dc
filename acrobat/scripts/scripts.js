@@ -366,68 +366,46 @@ const { ietf } = getLocale(locales);
     loadStyles(paths);
   }
 
-  import(`${miloLibs}/utils/utils.js`).then((miloUtils) => {
-    const { loadArea, setConfig, loadLana, getMetadata } = miloUtils;
+  // Import base milo features and run them
+  const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
 
-    // Rest of your code where you use loadArea, setConfig, loadLana, getMetadata
-  }).catch((error) => {
-    console.error('Failed to load miloUtils:', error);
-  });
+  addLocale(ietf);
 
-  // Wrap your asynchronous operations in an async function
-  async function loadMiloUtils() {
-    try {
-      const miloUtils = await import(`${miloLibs}/utils/utils.js`);
-      const { loadArea, setConfig, loadLana, getMetadata } = miloUtils;
-      addLocale(ietf);
-
-      if (getMetadata('commerce')) {
-        const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
-        replacePlaceholdersWithImages(ietf, miloLibs);
-      }
-
-      setConfig({ ...CONFIG, miloLibs });
-      loadLana({ clientId: 'dxdc', tags: 'Cat=DC_Milo' });
-
-      // get event back form dc web and then load area
-      await loadArea(document, false);
-
-      // Setup Logging
-      const { default: lanaLogging } = await import('./dcLana.js');
-      lanaLogging();
-
-      // IMS Ready
-      const imsReady = setInterval(() => {
-        if (window.adobeIMS && window.adobeIMS.initialized) {
-          clearInterval(imsReady);
-          const imsIsReady = new CustomEvent('IMS:Ready');
-          window.dispatchEvent(imsIsReady);
-        }
-      }, 1000);
-
-      // DC Hosted Ready...
-      const dcHostedReady = setInterval(() => {
-        if (window.dc_hosted) {
-          clearInterval(dcHostedReady);
-          const imsIsReady = new CustomEvent('DC_Hosted:Ready');
-          window.dispatchEvent(imsIsReady);
-        }
-      }, 1000);
-
-      if (document.querySelectorAll('a[class*="geo-pn"]').length > 0 || document.querySelectorAll('a[href*="geo"]').length > 0) {
-        const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
-        geoPhoneNumber();
-      }
-    } catch (error) {
-      console.error('Error loading miloUtils:', error);
-    }
+  if (getMetadata('commerce')) {
+    const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
+    replacePlaceholdersWithImages(ietf, miloLibs);
   }
 
-// Call the async function
-loadMiloUtils();
-  // // Import base milo features and run them
-  // const miloUtils = await import(`${miloLibs}/utils/utils.js`);
-  // const { loadArea, setConfig, loadLana, getMetadata } = miloUtils;
+  setConfig({ ...CONFIG, miloLibs });
+  loadLana({ clientId: 'dxdc', tags: 'Cat=DC_Milo' });
 
+  // get event back form dc web and then load area
+  await loadArea(document, false);
 
+  // Setup Logging
+  const { default: lanaLogging } = await import('./dcLana.js');
+  lanaLogging();
+
+  // IMS Ready
+  const imsReady = setInterval(() => {
+    if (window.adobeIMS && window.adobeIMS.initialized) {
+      clearInterval(imsReady);
+      const imsIsReady = new CustomEvent('IMS:Ready');
+      window.dispatchEvent(imsIsReady);
+    }
+  }, 1000);
+
+  // DC Hosted Ready...
+  const dcHostedReady = setInterval(() => {
+    if (window.dc_hosted) {
+      clearInterval(dcHostedReady);
+      const imsIsReady = new CustomEvent('DC_Hosted:Ready');
+      window.dispatchEvent(imsIsReady);
+    }
+  }, 1000);
+
+  if (document.querySelectorAll('a[class*="geo-pn"]').length > 0 || document.querySelectorAll('a[href*="geo"]').length > 0) {
+    const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
+    geoPhoneNumber();
+  }
 }());
