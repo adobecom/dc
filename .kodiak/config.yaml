@@ -1,0 +1,30 @@
+version: 1.0
+
+snow:
+  - id: 545806 # Milo DC
+
+notifications:
+  jira:
+    default:
+      project: MWPW # Mandatory
+      filters:
+        include:
+          risk_rating: R5
+      fields:
+        assignee:
+          name: gunn
+        customfield_11800: MWPW-140779 #epic link
+        customfield_12900:
+          value: Slytherin
+        watchers:
+          - casalino
+          - jmichnow
+          - mauchley
+          - tsay
+        labels:
+          - "OriginatingProcess=Kodiak"
+          - "security"
+          - "kodiak-ticket"
+          - "dc-security"
+        components:
+          - name: "DevOps Security"

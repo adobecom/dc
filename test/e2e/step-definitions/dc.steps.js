@@ -535,7 +535,7 @@ Then(/^I should see the footer promo elements$/, async function () {
   await expect(this.page.footerPromoBullets).toBeVisible({timeout: 5000});
 });
 
-Then(/^I should see that the prices match on checkout from the (.*) merch card(?:|s)$/, async function (items) {
+Then(/^I should see that the prices match on checkout from the (.*) merch card(?:|s)$/, {timeout: 120000}, async function (items) {
   this.context(DCPage);
 
   let products = items.replace(/ and /g, ";").split(';');
@@ -603,3 +603,18 @@ Then(/^I should see How can I help you in jarvis popup window$/, async function 
   const jarvisElement = await this.page.native.frameLocator("iframe[src*='https://ui.messaging.adobe.com/2.64.10/index.html']").getByText("How can I help you?");
   await expect(jarvisElement).toBeVisible({timeout: 8000});
 });
+
+Then(/^I should see inline PDF viewer$/, async function () {
+  const element = await this.page.native.frameLocator("iframe[src*='https://acrobatservices.adobe.com/view-sdk']").getByText("SOLUTION BRIEF", {exact: true});
+  await expect(element).toBeVisible({timeout: 10000})
+})
+
+Then(/^I switch to the new page$/, async function () {
+  this.context(DCPage);
+  const [newPage] = await Promise.all([
+    PW.context.waitForEvent('page'),
+  ]);
+  await newPage.waitForLoadState();
+  await newPage.bringToFront();
+  this.page.native = newPage;
+})
