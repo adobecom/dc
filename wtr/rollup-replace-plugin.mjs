@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import rollupReplace from '@rollup/plugin-replace';
 import { fromRollup } from '@web/dev-server-rollup';
 
@@ -20,6 +21,7 @@ export function rollupReplacePlugin() {
       'https://main--milo--adobecom.hlx.page': `${miloLibFull}`,
       delimiters: ['', ''],
     };
+    console.log(`Rollup replace:\n ${JSON.stringify(pluginArgs, null, 2)}`);
   }
   return replace(pluginArgs);
 }
