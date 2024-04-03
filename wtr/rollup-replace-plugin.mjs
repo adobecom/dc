@@ -4,7 +4,7 @@ import { fromRollup } from '@web/dev-server-rollup';
 export function rollupReplacePlugin() {
   const replace = fromRollup(rollupReplace);
 
-  let plugin = null;
+  let pluginArgs = {};
   if (process.env.MILOLIBS) {
     const miloLib = process.env.MILOLIBS;
     let miloLibFull = miloLib;
@@ -15,13 +15,13 @@ export function rollupReplacePlugin() {
     } else {
       miloLibFull = `https://${miloLib}--milo--adobecom.hlx.page`;
     }
-    plugin = replace({
+    pluginArgs = {
       "'main'": `'${miloLib}'`,
       'https://main--milo--adobecom.hlx.page': `${miloLibFull}`,
       delimiters: ['', ''],
-    });
+    };
   }
-  return plugin;
+  return replace(pluginArgs);
 }
 
 export default rollupReplacePlugin;
