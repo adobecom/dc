@@ -1,8 +1,8 @@
 .interactive-marquee {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: 100vh;
+  justify-content: flex-start;
+  min-height: calc(100vh - var(--feds-height-nav));
   opacity: 0;
 }
 
@@ -28,7 +28,7 @@
 
 .interactive-marquee .foreground {
   position: relative;
-  padding: var(--spacing-xxl) 0;
+  padding: var(--spacing-s) 0;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-m);
@@ -55,7 +55,6 @@
   justify-content: space-between;
   height: 50px;
   margin-top: 24px;
-  margin-bottom: 91px;
 }
 
 .slider-tab {
@@ -175,8 +174,9 @@
   margin: 0 0 var(--spacing-s);
 }
 
-.interactive-marquee .text p:last-of-type {
+.interactive-marquee .action-area p:last-of-type {
   margin-bottom: 0;
+  text-align: center;
 }
 
 
@@ -195,10 +195,6 @@
     gap: var(--spacing-s);
   }
 
-}
-
-
-@media screen and (min-width: 600px) {
   .slider-title-container {
     display: flex;
     align-items: center;
@@ -249,26 +245,6 @@
   }
 }
 
-
-@media screen and (min-width: 1200px) {
-  .interactive-marquee .foreground .text {
-    padding: var(--spacing-xl) 0;
-    order: unset;
-    display: block;
-    max-width: 500px;
-    margin: 0 0 0 auto;
-    position: relative;
-  }
-
-  .interactive-marquee .foreground .interactive-container {
-    order: unset;
-    width: 50%;
-    height: 100%;
-    margin: 0;
-    display: block;
-  }
-}
-
 @media screen and (min-width: 1200px) {
   .interactive-marquee {
     min-height: 700px;
@@ -289,16 +265,28 @@
     margin: 0 auto;
   }
 
-
-  html[dir="rtl"] .interactive-marquee .foreground {
-    flex-direction: row-reverse;
-  }
-
   .interactive-marquee .foreground .text {
     padding: var(--spacing-xl) 0;
     order: unset;
     display: block;
     max-width: 500px;
+    margin: 0 0 0 auto;
+    position: relative;
+  }
+
+
+  html[dir="rtl"] .interactive-marquee .foreground {
+    flex-direction: row-reverse;
+  }
+
+  .interactive-marquee .foreground .interactive-container {
+    order: unset;
+    width: 50%;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .interactive-marquee .icon-area img {
@@ -315,17 +303,22 @@
   }
 
   .slider {
-    max-width: 570px;
+    width: 671px;
     margin: 40px auto;
   }
 
+  .slider-title-container {
+    width: 671px;
+  }
+
   .slider-deck{
+    width: 671px;
     display: flex;
     align-items: center;
   }
 
   .slide .milo-video {
-    min-height: 428px;
+    min-height: 502px;
   }
 
   .slider-tabs {
