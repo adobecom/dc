@@ -28,12 +28,19 @@ function decorateText(el, size) {
       sib.previousElementSibling?.classList.add('icon-area');
     }
   };
-  decorate(heading, config);
+  if (!heading) {
+    const paragraphs = el.querySelectorAll('p');
+    if (paragraphs.length > 0 && paragraphs[0].querySelector('img, .icon')) {
+      paragraphs[0].classList.add('icon-area');
+    }
+  } else {
+    decorate(heading, config);
+  }
 }
 
 function goToSlide(slide, tabs, deck) {
-  const activeTab = tabs.querySelector('.active');
-  const activeSlide = deck.querySelector('.active');
+  const activeTab = tabs?.querySelector('.active');
+  const activeSlide = deck?.querySelector('.active');
   activeTab?.classList.remove('active');
   activeSlide?.classList.remove('active');
   tabs.querySelector(`[data-index="${slide}"]`).classList.add('active');
@@ -41,7 +48,7 @@ function goToSlide(slide, tabs, deck) {
   deckSlide.classList.add('active');
 }
 
-function handleChangingSlides(tabs, deck) {
+function handleSlideChange(tabs, deck) {
   [...tabs.querySelectorAll('li')].forEach((li) => {
     li.addEventListener('click', (event) => {
       const slide = parseInt(event.currentTarget.dataset.index, 10);
@@ -50,80 +57,91 @@ function handleChangingSlides(tabs, deck) {
   });
 }
 
-function getTitle(title) {
+function createTitleElement(title) {
   const titleContainer = createTag('div', { class: 'slider-title-container' });
   const text = createTag('p', { class: 'slider-title heading-l' }, title.text);
-  const icon = createTag('img', { src: `${title.icon}` });
   const iconContainer = createTag('div', { class: 'slider-arrow' });
-  iconContainer.append(icon);
+  iconContainer.innerHTML = title.icon;
   titleContainer.append(iconContainer, text);
   return titleContainer;
 }
-function getTabs(slides) {
-  const tabArray = [];
-  const tabsContainer = createTag('ul', { class: 'slider-tabs', role: 'tablist' });
-  for (let i = 0; i < slides.length; i += 1) {
-    const li = createTag('li', {
-      class: 'slider-tab',
-      role: 'tab',
-      tabindex: -1,
-      'data-index': i,
-      'aria-selected': false,
-      'aria-labelledby': `Viewing ${slides[i].label}`,
-    }, slides[i].icon);
-    const tabLabel = createTag('p', { class: 'slider-label' }, slides[i].label);
-    li.append(tabLabel);
 
-    // Set inital active state
-    if (i === 0) {
-      li.classList.add('active');
-      li.setAttribute('tabindex', 0);
-    }
-    tabArray.push(li);
-  }
-  tabsContainer.append(...tabArray);
-  return tabsContainer;
+function createTab(slide, index, isFirst) {
+  const li = createTag('li', {
+    class: `slider-tab${isFirst ? ' active' : ''}`,
+    role: 'tab',
+    tabindex: isFirst ? 0 : -1,
+    'data-index': index,
+    'aria-selected': isFirst ? 'true' : 'false',
+    'aria-labelledby': `Viewing ${slide.label}`,
+  }, slide.icon);
+
+  const tabLabel = createTag('p', { class: 'slider-label' }, slide.label);
+  li.append(tabLabel);
+  return li;
 }
-function getSlides(slides) {
+
+function createSlide(slide) {
+  const slideEl = createTag('div', { class: 'slide' });
+  const content = (typeof slide.video === 'object') ? [...slide.video] : [slide.video];
+  slideEl.append(...content);
+  return slideEl;
+}
+
+function createSlideComponents(slides) {
+  const tabs = createTag('ul', { class: 'slider-tabs', role: 'tablist' });
   const deck = createTag('div', { class: 'slider-deck' });
-  for (let i = 0; i < slides.length; i += 1) {
-    const slide = createTag('div', { class: 'slide' });
-    if (typeof slides[i].video === 'object' ? slide.append(...slides[i].video) : slide.append(slides[i].video));
-    deck.append(slide);
+  let firstSlideActive = true;
+
+  slides.forEach((slide, index) => {
+    const tab = createTab(slide, index, firstSlideActive);
+    const slideElement = createSlide(slide);
+    if (firstSlideActive) {
+      slideElement.classList.add('active');
+      firstSlideActive = false;
+    }
+    tabs.append(tab);
+    deck.append(slideElement);
+  });
+
+  return { tabs, deck };
+}
+
+function addDarkClassIfNecessary(element) {
+  const exclusionClasses = ['light', 'quiet'];
+  if (!exclusionClasses.some((className) => element.classList.contains(className))) {
+    element.classList.add('dark');
   }
-  deck.firstChild.classList.add('active');
-  return deck;
 }
 
 export default async function init(el) {
-  const excDark = ['light', 'quiet'];
-  if (!excDark.some((s) => el.classList.contains(s))) el.classList.add('dark');
+  addDarkClassIfNecessary(el);
   const children = el.querySelectorAll(':scope > div');
   const foreground = children[children.length - 1];
+  foreground.classList.add('foreground', 'container');
   if (children.length > 1) {
     children[0].classList.add('background');
     decorateBlockBg(el, children[0], { useHandleFocalpoint: true });
   }
-  foreground.classList.add('foreground', 'container');
 
-  const slides = []; // Initialize the slides array
   const background = children[0].classList.contains('background') ? children[0] : null;
+  const slides = []; // Initialize the slides array
   const title = {};
   for (const child of children) {
     if (child !== foreground && child !== background) {
       const info = child.querySelectorAll('div');
-      if ((info[0]?.innerHTML === 'Title')) {
-        title.text = info[1].innerHTML;
+      if ((info[0]?.textContent.toLowerCase().includes('title'))) {
+        title.text = info[1].textContent;
         title.icon = info[2].innerHTML;
       } else {
         const data = {
-          icon: info[0],
-          label: info[1].innerHTML,
-          video: info[2].querySelectorAll('a'),
+          icon: info[0].querySelector('.icon') || null,
+          label: info[1].innerHTML !== '' ? info[1].innerHTML : null,
+          video: info[2].querySelectorAll('a').length > 0 ? info[2].querySelectorAll('a') : null,
         };
-        child.classList.add('slide');
-        data.icon = child.querySelector('.icon');
-        slides.push(data); // Add the child to the slides array
+        if (data.video && (data.icon || data.label)) {
+          slides.push(data);
+        }
       }
       child.remove(); // Remove the child from the DOM
     }
@@ -131,23 +149,19 @@ export default async function init(el) {
   if (slides.length > 0) {
     const interactive = createTag('div', { class: 'interactive-container' });
     const slider = createTag('div', { class: 'slider' });
-    const text = getTitle(title);
-    const tabs = getTabs(slides);
-    const deck = getSlides(slides);
+    const text = createTitleElement(title);
+    const { tabs, deck } = createSlideComponents(slides);
     if (text) slider.append(text);
     slider.append(deck, tabs);
-    handleChangingSlides(tabs, deck);
+    handleSlideChange(tabs, deck);
     interactive.append(slider);
     foreground.append(interactive);
     document.querySelector('.interactive-marquee').classList.add('active');
   }
-  const headline = foreground.querySelector('h1, h2, h3, h4, h5, h6');
-  const text = headline?.closest('div');
-  text?.classList.add('text');
 
-  const size = getBlockSize(el);
+  const text = foreground?.querySelector(':scope > div');
+  text?.classList.add('text');
+  const size = getBlockSize(el, 3);
   decorateButtons(text, size === 'large' ? 'button-xl' : 'button-xl');
   decorateText(text, size);
-  const iconArea = text?.querySelector('.icon-area');
-  iconArea.classList.add('heading-l');
 }
