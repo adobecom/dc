@@ -126,7 +126,6 @@ export default function init(element) {
         if (reviewBlock[0]) { reviewBlock[0].classList.add('hide'); }
         break;
       case UPLOAD_COMPLETE:
-        if (verb === 'fillsign' && locale === 'en-US') hideContent();
         setCurrentEvent('uploadcomplete');
         break;
       case PROCESS_CANCELED:
