@@ -109,7 +109,6 @@ const getBrowserData = (userAgent) => {
 // Get browser data
 window.browser = getBrowserData(window.navigator.userAgent);
 
-// Add origin-trial meta tag
 const { hostname } = window.location;
 
 // Adding .html to canonical url for .ing pages
