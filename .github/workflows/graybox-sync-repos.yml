@@ -1,0 +1,66 @@
+name: Graybox Repo Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      syncBranch:
+        description: 'Branch to sync'
+        required: true
+        default: 'stage'
+        type: choice
+        options:
+          - 'stage'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.FG_SYNC_APP_ID }}
+          private-key: ${{ secrets.FG_SYNC_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: "dc-graybox"
+
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.syncBranch }}
+
+      - name: Clone Graybox Repository and Checkout Stage Branch
+        run: |
+          git clone https://github.com/adobecom/dc-graybox.git ../dc-graybox
+          cd ../dc-graybox
+          git checkout $GB_SYNC_BRANCH
+          echo "dc-graybox branch"
+          git branch
+          cd ../dc
+          echo "dc branch"
+          git branch
+        env:
+          GB_SYNC_BRANCH: ${{ inputs.syncBranch }}
+
+      - name: Overwrite graybox repo files with latest from source repo
+        run: |
+          rsync -av --exclude='fstab.yaml' --exclude='.github'  --exclude='.kodiak' --exclude='.git' --exclude='.idea' --exclude='.husky' --exclude='.vscode' --exclude='tools/sidekick/config.json' ./ ../dc-graybox/
+
+      - name: Commit and Push Changes to Graybox Repository
+        run: |
+          cd ../dc-graybox
+          echo "dc-graybox branch"
+          git branch
+          git config user.email "$FG_SYNC_BOT_EMAIL"
+          git config user.name "milo-repo-sync[bot]"
+          git status
+          git remote set-url origin https://oauth2:$GITHUB_TOKEN@github.com/adobecom/dc-graybox.git
+          git remote -v
+          git add .
+          git commit -m "Syncing dc to dc-graybox"
+          git push origin $GB_SYNC_BRANCH --force
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          FG_SYNC_BOT_EMAIL: ${{ secrets.FG_SYNC_BOT_EMAIL }}
+          GB_SYNC_BRANCH: ${{ inputs.syncBranch }}
