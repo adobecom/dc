@@ -3,7 +3,7 @@ Feature: Commerce
   Background:
     Given I have a new browser context
 
- @MWPW-137510 @regression @commerce
+ @MWPW-137510 @regression @commerce @signedin
   Scenario Outline: Checkout flow for logged-in visitors
     Given I go to the DC page '<Path>'
     Then I sign in AdobeID

@@ -6,7 +6,7 @@ Feature: CaaS Block
   @MWPW-138468 @smoke @caas
   Scenario Outline: CaaS block
     Given I go to the DC page '<Path>'
-     Then I scroll to the bottom of the page
+     When I scroll to the bottom of the page
      Then I should see the CaaS block
      Then I should see the CaaS block cards
      Then I click the "Read now" button inside the CaaS card
