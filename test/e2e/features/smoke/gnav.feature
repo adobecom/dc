@@ -11,9 +11,13 @@ Feature: Frictionless Gnav Tests
      Then I should not see the address bar contains "<Verb>"
      Then I go back
      Then I should see the address bar contains "<Verb>"
-     When I click "Buy now" button in the header
-     #When I switch to the new page after clicking "Buy now" button in the header
+     When I click 7th nav item in the header
      Then I should see the address bar contains "/acrobat/pricing/pricing.html"
+     Then I go back
+     Then I should see the address bar contains "<Verb>"
+     When I click "Free trial" button in the header
+     #When I switch to the new page after clicking "Buy now" button in the header
+     Then I should see the address bar contains "/acrobat/free-trial-download.html"
 
   Examples:
       | Verb         |
