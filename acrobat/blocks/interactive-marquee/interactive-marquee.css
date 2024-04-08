@@ -231,6 +231,8 @@
     flex-direction: row;
     position: relative;
     display: flex;
+
+    --slider-tabs-width: calc(243px - (var(--spacing-xs) * 2));
   }
 
   .interactive-marquee .foreground {
@@ -287,6 +289,11 @@
     margin: 40px 0;
   }
 
+  .wide .slider {
+    width: 664px;
+    margin: 40px 0;
+  }
+
   .slider-title-container {
     display: flex;
     align-items: center;
@@ -299,12 +306,23 @@
     font-weight: 700;
   }
 
+  .wide .slider-title-container {
+    right: -148px;
+    top: -62px;
+  }
+
   .slider-arrow {
     height: 54px;
     width: 38px;
     position: absolute;
     top: var(--spacing-l);
     right: -40px;
+  }
+
+  .wide .slider-arrow {
+    position: absolute;
+    top: var(--spacing-xs);
+    right: -54px;
   }
 
   .slider-title-container.left {
@@ -334,6 +352,10 @@
     min-height: 502px;
   }
 
+  .wide .slide .milo-video {
+    min-height: 374px;
+  }
+
   .slider-tabs {
     position: absolute;
     right: calc(105.5px * -1);
@@ -342,13 +364,13 @@
     flex-direction: column;
     bottom: 0;
     top: 0;
-    width: 211px;
+    width: var(--slider-tabs-width);
     height: fit-content;
   }
 
   .slider-tab {
     cursor: pointer;
-    width: 177px;
+    width: auto;
     padding: var(--spacing-xs);
     flex-direction: row;
     justify-content: flex-start;
@@ -367,30 +389,47 @@
   }
 }
 
-
-
-
 @media screen and (max-width: 1437px) and (min-width: 1200px) {
   .slider-tabs {
     right: 4px;
   }
+
+  .wide .slider-title-container {
+    right: var(--spacing-xs);
+  }
 }
 
-@media screen and (max-width: 1648px) and (min-width: 1438px) {
+@media screen and (min-width: 1438px) and (max-width: 1648px) {
   .slider-tabs {
     right: -32px;
   }
-}
 
-@media screen and (min-width: 1649px) and (max-width: 1736px) {
-  .slider-tabs {
-    right: calc(105.5px * -1);
+  .wide .slider-title-container {
+    right: 0;
   }
 }
 
-@media screen and (min-width: 1737px) {
+@media screen and (min-width: 1649px) and (max-width: 1799px) {
   .slider-tabs {
-    right: calc((211px - 36px) * -1);
+    right: calc(105.5px * -1);
+  }
+
+  .wide .slider-title-container {
+    right: -27.5px;
+  }
+
+  .wide .slider-tabs {
+    right: calc( (var(--slider-tabs-width) / 2) * -1);
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .slider-tabs {
+    right: calc(var(--slider-tabs-width) * -1);
+  }
+
+  .wide .slider-tabs {
+    right: calc((var(--slider-tabs-width) + 15px) * -1);
   }
 }
 

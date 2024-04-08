@@ -38,21 +38,55 @@ function decorateText(el, size) {
   }
 }
 
-function goToSlide(slide, tabs, deck) {
-  const activeTab = tabs?.querySelector('.active');
-  const activeSlide = deck?.querySelector('.active');
-  activeTab?.classList.remove('active');
+function goToSlide(slideIndex, tabs, deck) {
+  const tabElements = tabs.querySelectorAll('li');
+  tabElements.forEach((tab, index) => {
+    const isActive = index === slideIndex;
+    tab.classList.toggle('active', isActive);
+    tab.setAttribute('aria-selected', isActive.toString());
+  });
+  const activeSlide = deck.querySelector('.active');
   activeSlide?.classList.remove('active');
-  tabs.querySelector(`[data-index="${slide}"]`).classList.add('active');
-  const deckSlide = deck.querySelector(`:nth-child(${slide + 1})`);
-  deckSlide.classList.add('active');
+  const newActiveSlide = deck.children[slideIndex];
+  newActiveSlide.classList.add('active');
 }
 
 function handleSlideChange(tabs, deck) {
-  [...tabs.querySelectorAll('li')].forEach((li) => {
-    li.addEventListener('click', (event) => {
+  [...tabs.querySelectorAll('li')].forEach((tab, index, tabElements) => {
+    tab.setAttribute('tabindex', '0');
+
+    tab.addEventListener('click', (event) => {
       const slide = parseInt(event.currentTarget.dataset.index, 10);
       goToSlide(slide, tabs, deck);
+    });
+
+    // Keyboard events for navigation
+    tab.addEventListener('keydown', (event) => {
+      let newIndex;
+      switch (event.key) {
+        case 'Enter':
+        case ' ':
+          event.preventDefault();
+          tab.click();
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          event.preventDefault();
+          newIndex = index - 1;
+          break;
+        case 'ArrowRight':
+        case 'ArrowDown':
+          event.preventDefault();
+          newIndex = index + 1;
+          break;
+        default:
+          return;
+      }
+
+      // Change focus to new tab, if it exists
+      if (newIndex !== undefined && newIndex >= 0 && newIndex < tabElements.length) {
+        tabElements[newIndex].focus();
+      }
     });
   });
 }
@@ -125,7 +159,7 @@ export default async function init(el) {
   }
 
   const background = children[0].classList.contains('background') ? children[0] : null;
-  const slides = []; // Initialize the slides array
+  const slides = [];
   const title = {};
   for (const child of children) {
     if (child !== foreground && child !== background) {
@@ -139,7 +173,7 @@ export default async function init(el) {
           label: info[1].innerHTML !== '' ? info[1].innerHTML : null,
           video: info[2].querySelectorAll('a').length > 0 ? info[2].querySelectorAll('a') : null,
         };
-        if (data.video && (data.icon || data.label)) {
+        if (data.video && data.icon && data.label) {
           slides.push(data);
         }
       }
