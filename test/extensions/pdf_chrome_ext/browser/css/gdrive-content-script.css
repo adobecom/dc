@@ -1,0 +1,18 @@
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+*  Copyright 2015 Adobe Systems Incorporated
+*  All Rights Reserved.
+*
+* NOTICE:  All information contained herein is, and remains
+* the property of Adobe Systems Incorporated and its suppliers,
+* if any.  The intellectual and technical concepts contained
+* herein are proprietary to Adobe Systems Incorporated and its
+* suppliers and are protected by all applicable intellectual property laws,
+* including trade secret and or copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe Systems Incorporated.
+**************************************************************************/
+@font-face{font-family:AdobeClean-Regular;src:url(chrome-extension://__MSG_@@extension_id__/browser/css/fonts/AdobeClean-Regular.otf) format("opentype")}#edit-with-acrobat{position:absolute;float:right;right:365px;z-index:1;text-decoration:none;padding:8px 16px;font-family:AdobeClean-Regular,Source Sans Pro,system-ui;font-size:14px;font-weight:700;border-radius:100px;border:2px solid #4b4b4b;color:#ebebeb;top:12px;background:transparent;pointer-events:all}#edit-with-acrobat:hover{background:#4b4b4b}#acrobat-icon{width:18px;height:18px;margin:0 8px 0 0}#acrobat-icon,#edit-with-acrobat-text{vertical-align:middle!important}

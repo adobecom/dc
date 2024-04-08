@@ -142,6 +142,13 @@
       "includePaths": [ "**.docx**" ],
       "passConfig": true,
       "passReferrer": true
+    },
+    {
+      "containerId": "tools",
+      "id": "bulk",
+      "title": "Bulk operations",
+      "environments": [ "edit", "dev", "preview", "live" ],
+      "url": "https://main--dc--adobecom.hlx.page/tools/bulk-publish"
     }
   ]
 }
