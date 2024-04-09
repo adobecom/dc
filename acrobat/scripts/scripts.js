@@ -277,7 +277,7 @@ const CONFIG = {
   },
   locales,
   // geoRouting: 'on',
-  prodDomains: ['www.adobe.com'],
+  prodDomains: ['www.adobe.com', 'business.adobe.com', 'helpx.adobe.com'],
   jarvis: {
     id: 'DocumentCloudWeb1',
     version: '1.0',
