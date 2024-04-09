@@ -1,0 +1,376 @@
+.interactive-marquee {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  opacity: 0;
+}
+
+.interactive-marquee.active {
+  opacity: 1;
+}
+
+.hide-video {
+  opacity: 0;
+}
+
+.interactive-marquee.light,
+.interactive-marquee.mobile-light,
+.interactive-marquee.quiet:not(.dark),
+.interactive-marquee.inline {
+  color: var(--text-color);
+}
+
+.interactive-marquee .icon-area picture,
+.interactive-marquee .icon-area a {
+  display: contents;
+}
+
+.interactive-marquee .foreground {
+  position: relative;
+  padding: var(--spacing-xxl) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}
+
+.slider {
+  position: relative;
+}
+
+.slider-title-container {
+  display: none;
+}
+
+.slider-deck {
+  min-height: 225px;
+}
+
+.slider-tabs {
+  border-radius: 4px;
+  display: flex;
+  background: #FFF;
+  padding: 8px;
+  gap: 8px;
+  justify-content: space-between;
+  height: 50px;
+  margin-top: 24px;
+  margin-bottom: 91px;
+}
+
+.slider-tab {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 32%;
+  padding: 8px;
+  border: 1px solid #E6E6E6;
+  border-radius: 4px;
+  gap: 0;
+}
+
+.slide {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  transition: 0;
+}
+
+.slide .milo-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 225px;
+  padding: 0;
+  position: relative;
+}
+
+.slider-label {
+  font-size: var(--type-body-xxs-size);
+  line-height: 12px;
+  text-align: center;
+  margin: 0;
+  font-weight: 700;
+}
+
+.slider-tab.active {
+  background-color: #1273E6;
+  border-color: #1273E6;
+  color: white;
+}
+
+.slide.active {
+  display: block;
+  position: relative;
+  opacity: 1;
+  z-index: 1;
+}
+
+.slider-tab span.icon.margin-right {
+  margin: 0 !important;
+  line-height: 0;
+}
+
+.slider-tab svg.icon-milo {
+  height: var(--spacing-xs);
+  top: 0;
+}
+
+.interactive-marquee .action-area {
+  display: inline-flex;
+  margin: 0;
+  gap: var(--spacing-s);
+  flex-flow: column wrap;
+  font-size: var(--type-body-l-size);
+  line-height: var(--type-body-l-lh);
+  font-weight: 700;
+  width: 100%;
+}
+
+.interactive-marquee .icon-area img {
+  height: 49px;
+  width: auto;
+  display: block;
+  margin-right: var(--spacing-xs);
+}
+
+.interactive-marquee .background img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.interactive-marquee .background video {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.interactive-marquee .background .tablet-only,
+.interactive-marquee .background .desktop-only {
+  display: none;
+}
+
+.interactive-marquee .background picture {
+  display: block;
+  position: absolute;
+  inset: 0;
+  line-height: 0;
+}
+
+.interactive-marquee .text {
+  order: 2;
+}
+
+.interactive-marquee .text p {
+  margin: 0 0 var(--spacing-s);
+}
+
+.interactive-marquee .text p:last-of-type {
+  margin-bottom: 0;
+}
+
+
+.interactive-marquee .text .detail-l,
+.interactive-marquee .text .heading-xl,
+.interactive-marquee .text .heading-xxl {
+  margin-bottom: var(--spacing-xs);
+}
+
+
+@media screen and (min-width: 600px) {
+  .interactive-marquee .action-area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-s);
+  }
+
+}
+
+
+@media screen and (min-width: 600px) {
+  .slider-title-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    left: calc(var(--spacing-xs) * -1);
+    width: 570px;
+    margin: 0 auto var(--spacing-xs);
+  }
+
+  .slider-arrow {
+    height: 54px;
+    width: 38px;
+    position: absolute;
+    top: var(--spacing-xs);
+    left: -29px;
+  }
+
+  .slider-deck{
+    width: 570px;
+    margin: 0 auto;
+  }
+
+  .slide .milo-video {
+    min-height: 430px;
+    max-width: 100%;
+  }
+
+  .slider-tabs {
+    padding: var(--spacing-xs);
+    gap: var(--spacing-xs);
+    height: 57px;
+    max-width: 468px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  .slider-tab svg.icon-milo {
+    height: 20px;
+  }
+
+
+  .slider-label {
+    font-size: var(--type-body-xs-size);
+    line-height: 21px;
+    text-align: center;
+    margin: 0;
+  }
+}
+
+
+@media screen and (min-width: 1200px) {
+  .interactive-marquee .foreground .text {
+    padding: var(--spacing-xl) 0;
+    order: unset;
+    display: block;
+    max-width: 500px;
+    margin: 0 0 0 auto;
+    position: relative;
+  }
+
+  .interactive-marquee .foreground .interactive-container {
+    order: unset;
+    width: 50%;
+    height: 100%;
+    margin: 0;
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .interactive-marquee {
+    min-height: 700px;
+    flex-direction: row;
+    position: relative;
+    display: flex;
+  }
+
+  .interactive-marquee .foreground {
+    padding: 0;
+    gap: 100px;
+    flex-direction: row;
+    align-items: center;
+    order: unset;
+    width: 100%;
+    position: relative;
+    display: flex;
+    margin: 0 auto;
+  }
+
+
+  html[dir="rtl"] .interactive-marquee .foreground {
+    flex-direction: row-reverse;
+  }
+
+  .interactive-marquee .foreground .text {
+    padding: var(--spacing-xl) 0;
+    order: unset;
+    display: block;
+    max-width: 500px;
+  }
+
+  .interactive-marquee .icon-area img {
+    height: 80px;
+  }
+
+  .interactive-marquee .background .mobile-only,
+  .interactive-marquee .background .tablet-only {
+    display: none;
+  }
+
+  .interactive-marquee .background .desktop-only {
+    display: block;
+  }
+
+  .slider {
+    max-width: 570px;
+    margin: 40px auto;
+  }
+
+  .slider-deck{
+    display: flex;
+    align-items: center;
+  }
+
+  .slide .milo-video {
+    min-height: 428px;
+  }
+
+  .slider-tabs {
+    position: absolute;
+    right: calc(105.5px * -1);
+    z-index: 1;
+    margin: 0;
+    flex-direction: column;
+    height: auto;
+    bottom: 3px;
+    width: 211px;
+  }
+
+  .slider-tab {
+    cursor: pointer;
+    width: 177px;
+    padding: var(--spacing-xs);
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  .slider-tab svg.icon-milo {
+    height: 40px;
+  }
+
+  .slider-label {
+    font-size: var(--type-body-m-size);
+    line-height: 24px;
+    text-align: left;
+    margin: 0;
+  }
+}
+
+
+
+
+@media screen and (max-width: 1437px) and (min-width: 1200px) {
+  .slider-tabs {
+    right: 4px;
+  }
+}
+
+@media screen and (max-width: 1649px) and (min-width: 1438px) {
+  .slider-tabs {
+    right: -32px;
+  }
+}
