@@ -3,6 +3,7 @@ import { defaultReporter, summaryReporter } from '@web/test-runner';
 import { playwrightLauncher } from '@web/test-runner-playwright';
 import { takeScreenshotPlugin } from './wtr/screenshot-plugin.mjs';
 import { pageRoutePlugin } from './wtr/page-route-plugin.mjs';
+import { rollupReplacePlugin } from './wtr/rollup-replace-plugin.mjs';
 
 export default {
   browsers: [
@@ -32,6 +33,6 @@ export default {
     defaultReporter({ reportTestResults: true, reportTestProgress: true }),
     summaryReporter(),
   ],
-  plugins: [pageRoutePlugin(), takeScreenshotPlugin()],
+  plugins: [pageRoutePlugin(), takeScreenshotPlugin(), rollupReplacePlugin()],
   testFramework: { config: { timeout: '10000' } },
 };
