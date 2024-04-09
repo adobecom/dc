@@ -23,8 +23,7 @@ Feature: Analytics - Frictionless Pages
 
   @MWPW-130084 @regression @analytics @extension
   Scenario Outline: Display the modal if Acrobat extension is not already installed
-    Given I have a new browser context
-      And I go to the <Verb> page
+    Given I go to the <Verb> page
       And I resize the browser window to 1366x768
      When I upload the file "<File>"
       And I wait for the conversion
@@ -32,11 +31,12 @@ Feature: Analytics - Frictionless Pages
      When I dismiss the extension modal
       And I wait for 3 seconds     
       And I read expected analytics data with replacements "browser"  
-     Then I should see analytics data posted within all logs matched with "Close the extension modal"     
+     Then I should see analytics data posted within all logs matched with "Extension modal"     
+  #  Then I should see analytics data posted within all logs matched with "Close the extension modal"     
 
   Examples:
       | Verb         | File                 |
-      | excel-to-pdf | test-files/test.xlsx |
+      | ppt-to-pdf | test-files/test.pptx   |
 
   @MWPW-130085 @regression @analytics
   Scenario Outline: Analytics - Review block

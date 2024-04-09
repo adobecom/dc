@@ -41,7 +41,7 @@ Feature: Frictionless Browser Extension Modal
 
   Examples:
       | Verb         | File                 |
-      | excel-to-pdf | test-files/test.xlsx |
+      | ppt-to-pdf | test-files/test.pptx   |
 
   @MWPW-130086 @regression @extension @headed
   Scenario Outline: User dismisses the Acrobat extension modal
