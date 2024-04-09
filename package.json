@@ -66,6 +66,9 @@
     "bowser": "^2.11.0",
     "jest-fetch-mock": "^3.0.3"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.14.1"
+  },  
   "jest": {
     "testRegex": "\\.jest\\.(js|jsx)$",
     "collectCoverageFrom": [
