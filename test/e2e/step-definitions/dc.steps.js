@@ -628,7 +628,7 @@ Then(/^I switch to the new page$/, async function () {
 })
 
 Then(/^I record phone number on the page$/, async function () {
-  this.phoneNumber = await this.page.native.locator("a[href^='tel']").textContent();
+  this.phoneNumber = await this.page.native.locator("a[daa-ll^='Device Phone']").textContent();
   console.log("Phone number without geo-ip:", this.phoneNumber);
 })
 
@@ -637,9 +637,9 @@ Then(/^I go to the page "([^"]*)" with geo-ip spoof "([^"]*)"$/, async function 
   await this.page.open();
 })
 
-Then(/^I confirm phone number is not changed$/, async function () {
-  const geoIpPhoneNumber = await this.page.native.locator("a[href^='tel']").textContent();
-  expect(this.phoneNumber).toEqual(geoIpPhoneNumber);
+Then(/^I confirm phone number is different and has geo-ip value "([^"]*)"$/, async function (geoIpPhoneNumberValue) {
+  const geoIpPhoneNumber = await this.page.native.locator("a[daa-ll^='Device Phone']").textContent();
   console.log("Phone number with geo-ip:", geoIpPhoneNumber);
-
+  expect(this.phoneNumber).not.toEqual(geoIpPhoneNumber);
+  expect(geoIpPhoneNumber).toEqual(geoIpPhoneNumberValue);
 })
