@@ -1,7 +1,6 @@
 Feature: Validate the Jarvis chat
 
   @MWPW-137198 @regression @jarvis
-
   Scenario Outline: Verifying the Jarvis chat functionality
     Given I go to "<page>"
      Then I should see a chat icon
@@ -11,5 +10,5 @@ Feature: Validate the Jarvis chat
 
 
   Examples:
-      | page                                      |
-      | /acrobat/resources/best-pdf-software.html |
+      | page                                               |
+      | /acrobat/resources/how-to-convert-html-to-pdf.html |

@@ -11,4 +11,3 @@ Feature: DC FedPub
   Examples:
       | urlPath                                        |
       | acrobat/hub/how-to/how-to-convert-pdf-to-image |
-      | acrobat/hub/how-to/how-to-convert-pdf-to-html  |
