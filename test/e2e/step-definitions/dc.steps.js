@@ -626,3 +626,20 @@ Then(/^I switch to the new page$/, async function () {
   await newPage.bringToFront();
   this.page.native = newPage;
 })
+
+Then(/^I record phone number on the page$/, async function () {
+  this.phoneNumber = await this.page.native.locator("a[daa-ll^='Device Phone']").textContent();
+  console.log("Phone number without geo-ip:", this.phoneNumber);
+})
+
+Then(/^I go to the page "([^"]*)" with geo-ip spoof "([^"]*)"$/, async function (pageUrl, akamaiLocale) {
+  this.page = new DCPage(pageUrl + '?akamaiLocale=' + akamaiLocale);
+  await this.page.open();
+})
+
+Then(/^I confirm phone number is different and has geo-ip value "([^"]*)"$/, async function (geoIpPhoneNumberValue) {
+  const geoIpPhoneNumber = await this.page.native.locator("a[daa-ll^='Device Phone']").textContent();
+  console.log("Phone number with geo-ip:", geoIpPhoneNumber);
+  expect(this.phoneNumber).not.toEqual(geoIpPhoneNumber);
+  expect(geoIpPhoneNumber).toEqual(geoIpPhoneNumberValue);
+})
