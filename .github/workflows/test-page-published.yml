@@ -13,7 +13,7 @@ jobs:
     name: Running tests
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.38.1-jammy
+      image: mcr.microsoft.com/playwright:v1.43.0-jammy
 
     steps: 
     - name: Checkout repository

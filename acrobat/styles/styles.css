@@ -522,3 +522,7 @@ div.how-to ol li::before{
     min-height: 1899px;
   }
 }
+
+main {
+  isolation: isolate;
+}

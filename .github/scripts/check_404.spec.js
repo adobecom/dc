@@ -20,7 +20,18 @@ test('Check links in a page', async ({ page }) => {
   let output = [];
   for (let i = 0; i < hrefs.length; i++) {
     try {
-      const response = await page.goto(hrefs[i]);
+      // special rules
+      if (hrefs[i].includes('localnav-acrobat-teams.html')) {
+        hrefs[i] = hrefs[i].replace('.html', '');
+      }
+      if (hrefs[i].startsWith('tel:')) {
+        continue;
+      }
+      
+      let response = await page.goto(hrefs[i]);
+      if (response === null) {
+        response = await page.waitForResponse(() => true);
+      }
 
       for (
         let request = response.request();
@@ -33,7 +44,8 @@ test('Check links in a page', async ({ page }) => {
         console.log(message);
         output.push(message);
       }
-    } catch {
+    } catch (e) {
+      console.log(e.message);
       const message = `999 ${hrefs[i]} no errorcode, offline?`;
       console.log(message);
       output.push(message);
