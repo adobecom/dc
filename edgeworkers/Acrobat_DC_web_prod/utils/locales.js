@@ -52,7 +52,7 @@ export default {
   ua: 'uk-ua',
   au: 'en-au',
   hk_en: 'en-hk',
-  in: 'en-gb',
+  in: 'en-us',
   in_hi: 'hi-in',
   nz: 'en-nz',
   hk_zh: 'zh-hant-hk',
