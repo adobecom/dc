@@ -24,7 +24,14 @@ test('Check links in a page', async ({ page }) => {
       if (hrefs[i].includes('localnav-acrobat-teams.html')) {
         hrefs[i] = hrefs[i].replace('.html', '');
       }
-      const response = await page.goto(hrefs[i]);
+      if (hrefs[i].startsWith('tel:')) {
+        continue;
+      }
+      
+      let response = await page.goto(hrefs[i]);
+      if (response === null) {
+        response = await page.waitForResponse(() => true);
+      }
 
       for (
         let request = response.request();
