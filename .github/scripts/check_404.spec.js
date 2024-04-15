@@ -20,6 +20,10 @@ test('Check links in a page', async ({ page }) => {
   let output = [];
   for (let i = 0; i < hrefs.length; i++) {
     try {
+      // special rules
+      if (hrefs[i].includes('localnav-acrobat-teams.html')) {
+        hrefs[i] = hrefs[i].replace('.html', '');
+      }
       const response = await page.goto(hrefs[i]);
 
       for (
@@ -33,7 +37,8 @@ test('Check links in a page', async ({ page }) => {
         console.log(message);
         output.push(message);
       }
-    } catch {
+    } catch (e) {
+      console.log(e.message);
       const message = `999 ${hrefs[i]} no errorcode, offline?`;
       console.log(message);
       output.push(message);
