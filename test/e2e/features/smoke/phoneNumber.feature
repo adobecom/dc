@@ -1,5 +1,5 @@
 Feature: Phone number test
-  @MWPW-144460 @smoke @geo-phoneNumber
+  @MWPW-144460 @geo-phoneNumber
   Scenario Outline: Geo IP phone number
     Given I go to the DC page '<urlPath>'
     Then I wait for 2 seconds
