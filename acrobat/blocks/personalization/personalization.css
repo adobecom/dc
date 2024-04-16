@@ -33,7 +33,3 @@ div[data-tag='upsell'] {
   max-height: 0;
   overflow: hidden;
 }
-
-main {
-  isolation: isolate;
-}

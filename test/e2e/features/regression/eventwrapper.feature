@@ -25,7 +25,7 @@ Feature: Frictionless Event Wrapper Block
       | pdf-to-ppt   | test-files/test.pdf  |
     # | pdf-to-word  | test-files/test.pdf  |
       | pdf-to-excel | test-files/test.pdf  |
-      | convert-pdf  | test-files/test.docx |
+    # | convert-pdf  | test-files/test.docx |
       | ppt-to-pdf   | test-files/test.pptx |
       | jpg-to-pdf   | test-files/test.jpg  |
       | word-to-pdf  | test-files/test.docx |

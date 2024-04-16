@@ -8,6 +8,11 @@ on:
         required: true
         default: 'stage'
         type: string
+      miloBranch:
+        description: 'Milo Branch'
+        required: true
+        default: 'stage'
+        type: string
 
 jobs:
   run-integration-tests:     
@@ -35,6 +40,8 @@ jobs:
 
       - name: Run the tests
         run: npm run int3
+        env:
+          MILOLIBS: ${{ github.event.inputs.miloBranch }}
         
       - name: Save test logs
         if: ${{ always() }}

@@ -23,6 +23,7 @@ Feature: Frictionless Converter Block
       | extract-pdf-pages | test-files/test2.pdf |
       | pdf-editor        | test-files/test.pdf  |
       | sign-pdf          | test-files/test.pdf  |
+      | convert-pdf       | test-files/test.jpg  |
 
   @MWPW-124781 @regression @converter
   Scenario Outline: L2 Verbs - Upload and download
@@ -36,7 +37,6 @@ Feature: Frictionless Converter Block
       | pdf-to-ppt   | test-files/test.pdf  |
       | pdf-to-word  | test-files/test.pdf  |
       | pdf-to-excel | test-files/test.pdf  |
-      | convert-pdf  | test-files/test.jpg  |
       | ppt-to-pdf   | test-files/test.pptx |
       | jpg-to-pdf   | test-files/test.jpg  |
       | word-to-pdf  | test-files/test.docx |
@@ -54,11 +54,13 @@ Feature: Frictionless Converter Block
       | pdf-to-jpg | test-files/test.pdf |
 
   @MWPW-127201 @regression @converter
-  Scenario Outline: L2 Verbs - Upload and download
+  Scenario Outline: L1 Verbs - Upload and sign-in
     Given I go to the <Verb> page
      Then I upload the files "<Files>"
      Then I merge the uploaded files
-     Then I download the converted file
+     Then I continue with AdobeID
+     Then I wait for 5 seconds
+     Then I should see the address bar contains ".services.adobe.com"
 
   Examples:
       | Verb      | Files                                    |
