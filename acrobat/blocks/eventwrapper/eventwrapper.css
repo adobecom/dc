@@ -201,7 +201,8 @@ body.l2-state div[data-section='widget'].widget-default-height {
   aspect-ratio: 1 / 1;
 }
 
-picture {
+picture,
+img {
   aspect-ratio: auto;
 }
 
