@@ -454,7 +454,7 @@ div.how-to ol li::before{
   font-family: sans-serif;
 }
 
-.hlx-Review-commentFields input {
+.hlx-Review-commentFields input[type='submit'] {
   line-height: normal;
 }
 
@@ -464,7 +464,7 @@ div.how-to ol li::before{
   left: 4px;
 }
 
-.accordion dt button {
+.accordion dt .accordion-trigger {
   color: #000;
 }
 
