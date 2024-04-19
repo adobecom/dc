@@ -287,6 +287,7 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
   ],
+  imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
 };
 
 // Setting alternative Jarcis client ID for these paths
