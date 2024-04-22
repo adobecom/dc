@@ -56,4 +56,13 @@ describe('dc-converter-widget block', () => {
     await delay(1000);
     expect(document.querySelector('#CID')).to.be.exist;
   });
+
+  it('no multiple inits', async () => {
+    const block = document.body.querySelector('.dc-converter-widget');
+    await init(block);
+    const widgets = document.querySelectorAll('div[data-section="widget"]');
+    expect(widgets.length).to.be.equal(1);
+    const scripts = document.querySelectorAll('#adobe_dc_sdk_launcher');
+    expect(scripts.length).to.be.equal(1);
+  });
 });
