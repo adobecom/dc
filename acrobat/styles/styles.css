@@ -132,11 +132,29 @@ div[data-section="widget"] {
   padding: 0;
 }
 
+.feds-topnav .feds-brand-image img {
+  aspect-ratio: 1/1;
+  width: 100%;
+  object-fit: contain;
+}
+
+.how-to .how-to-image img {
+  aspect-ratio: 5/3;
+  width: 100%;
+  object-fit: contain;
+}
+
 .how-to .text ol li {
   list-style-type: none;
   counter-increment: custom-counter;
   margin: 1rem;
   padding-left: 1.5rem;
+}
+
+.media .image img {
+  aspect-ratio: 5/3;
+  width: 100%;
+  object-fit: contain;
 }
 
 .accordion-container.verb-subfooter-moblie .accordion ul {
@@ -409,6 +427,7 @@ div.how-to ol li::before{
   fill: #fa0f00;
 }
 
+
 .hlx-Review-ratingFields input[name='rating'] {
   background-image: url('/acrobat/img/icons/star-outline.svg') !important;
 }
@@ -435,7 +454,7 @@ div.how-to ol li::before{
   font-family: sans-serif;
 }
 
-.hlx-Review-commentFields input {
+.hlx-Review-commentFields input[type='submit'] {
   line-height: normal;
 }
 
@@ -445,7 +464,7 @@ div.how-to ol li::before{
   left: 4px;
 }
 
-.accordion dt button {
+.accordion dt .accordion-trigger {
   color: #000;
 }
 
