@@ -25,7 +25,7 @@ div[data-section="widget"] {
 
 #dc-converter-widget[verb=chat-pdf] {
   background-color: #fff;
-  background-image: url(../img/backgrounds/chat-pdf.png);
+  background-image: url('../img/backgrounds/chat-pdf.png');
   background-position: top left;
   min-height: 623px;
   background-repeat: no-repeat;
