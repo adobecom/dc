@@ -112,6 +112,7 @@ const verbRedirMap = {
   'png-to-pdf': 'jpgtopdf',
   'number-pages': 'number',
   'ocr-pdf': 'ocr',
+  'chat-pdf': 'chat',
 };
 
 const exhLimitCookieMap = {
