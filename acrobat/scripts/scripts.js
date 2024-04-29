@@ -295,7 +295,7 @@ if (window.location.pathname.match('/sign/')
   || window.location.pathname.match('/documentcloud/')
   || window.location.pathname.match('/acrobat/business/')) {
   CONFIG.jarvis.id = 'DocumentCloudsignAcro';
-};
+}
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
@@ -321,6 +321,7 @@ const { ietf } = getLocale(locales);
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');
     widgetBlock.id = 'dc-converter-widget';
+    widgetBlock.setAttribute('verb', verb);
     const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
     const INLINE_SNIPPET = document.querySelector('section#edge-snippet');
     const dcUrls = INLINE_SNIPPET ? [] : [
