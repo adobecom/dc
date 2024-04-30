@@ -45,7 +45,9 @@ jobs:
           npm run ewbuild
           npm run ewprod2stg
           npm run ewsetbundle ${{ inputs.edgeworker }} "${{ inputs.description }}"
-     
+        env:
+          EDGERC: ${{ secrets.AKAMAI_EDGERC }}
+
       - name: Deploy Edge Worker
         uses: jdmevo123/akamai-edgeworker-action@1.1
         env:
