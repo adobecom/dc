@@ -21,6 +21,7 @@ const verbMap = {
     'extract-pages': 'organize_pdf',
     L1: 'organize_pdf',
     'ocr-pdf': 'ocr_pdf',
+    'chat-pdf': 'create_pdf',
   },
   upsellMap: {
     'word-to-pdf': 'createPDF',
@@ -43,6 +44,7 @@ const verbMap = {
     'insert-pdf': 'l1Verbs',
     'extract-pages': 'l1Verbs',
     'ocr-pdf': 'ocrPDF',
+    'chat-pdf': 'createPDF',
   },
 };
 

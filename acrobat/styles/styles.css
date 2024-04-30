@@ -23,6 +23,20 @@ div[data-section="widget"] {
   min-height: 570px;
 }
 
+#dc-converter-widget[verb=chat-pdf] {
+  background-color: #fff;
+  background-image: url('../img/backgrounds/chat-pdf.png');
+  background-position: top left;
+  min-height: 623px;
+  background-repeat: no-repeat;
+  background-size: contain; 
+}
+
+/* DC Widget Override */
+div [class *= PdfnowLifecycle__dropzone2___] {
+  background-color: transparent;
+}
+
 /* ootb widget */
 .dc-converter-widget > div:first-of-type {
   display: none;
