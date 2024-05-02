@@ -247,7 +247,7 @@ const CONFIG = {
   imsClientId: 'acrobatmilo',
   commerce: { checkoutClientId: 'doc_cloud' },
   local: {
-    edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga',
+    edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
     pdfViewerClientId: 'ec572982b2a849d4b16c47d9558d66d1',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
@@ -260,18 +260,18 @@ const CONFIG = {
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   stage: {
-    edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
+    edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
     pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   live: {
-    edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
+    edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
     pdfViewerClientId: '18e9175fc6754b9892d315cae9f346f1',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   prod: {
-    edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961',
+    edgeConfigId: '913eac4d-900b-45e8-9ee7-306216765cd2',
     pdfViewerClientId: '8a1d0707bf0f45af8af9f3bead0d213e',
     pdfViewerReportSuite: 'adbadobenonacdcprod,adbadobedxprod,adbadobeprototype',
   },
@@ -321,6 +321,7 @@ const { ietf } = getLocale(locales);
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');
     widgetBlock.id = 'dc-converter-widget';
+    widgetBlock.setAttribute('verb', verb);
     const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
     const INLINE_SNIPPET = document.querySelector('section#edge-snippet');
     const dcUrls = INLINE_SNIPPET ? [] : [
