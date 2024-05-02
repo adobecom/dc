@@ -112,6 +112,7 @@ const verbRedirMap = {
   'png-to-pdf': 'jpgtopdf',
   'number-pages': 'number',
   'ocr-pdf': 'ocr',
+  'chat-pdf': 'chat',
 };
 
 const exhLimitCookieMap = {
@@ -135,6 +136,7 @@ const langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
 
 export default async function init(element) {
+  if (document.querySelector('div[data-section="widget"]')) return;
   element.closest('main > div').dataset.section = 'widget';
   const widget = element;
   const DC_WIDGET_VERSION_FALLBACK = '3.7.1_2.14.0';
