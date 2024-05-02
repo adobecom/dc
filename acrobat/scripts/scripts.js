@@ -259,6 +259,10 @@ const CONFIG = {
     pdfViewerClientId: '2522674a708e4ddf8bbd62e18585ae4b',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
+    page: {
+    pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
   stage: {
     edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
