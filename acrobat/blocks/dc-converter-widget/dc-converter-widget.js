@@ -285,7 +285,7 @@ export default async function init(element) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
   if (IMS_GUEST) {
-    dcScript.dataset.guest = 'true';
+    dcScript.dataset.ims_guests = 'true';
   }
 
   widget.appendChild(dcScript);
