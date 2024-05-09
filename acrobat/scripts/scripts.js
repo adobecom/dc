@@ -290,13 +290,6 @@ const CONFIG = {
   imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
 };
 
-// Setting alternative Jarvis client ID for these paths
-if (window.location.pathname.match('/sign/')
-  || window.location.pathname.match('/documentcloud/')
-  || window.location.pathname.match('/acrobat/business/')) {
-  CONFIG.jarvis.id = 'DocumentCloudsignAcro';
-}
-
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
   const lcpImg = document.querySelector('img');
