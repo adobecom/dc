@@ -20,7 +20,8 @@
     "update-csp": "node ./tools/cspUpdate/cspUpdate.js",
     "ewtest": "jest --testPathPattern=edgeworkers",
     "ewprod2stg": "node ./edgeworkers/scripts/prod2stg.js",
-    "ewbuild": "node ./edgeworkers/scripts/build.js"
+    "ewbuild": "node ./edgeworkers/scripts/build.js",
+    "ewsetbundle": "node ./edgeworkers/scripts/setbundle.js"
   },
   "repository": {
     "type": "git",
@@ -54,7 +55,9 @@
     "sinon": "13.0.1",
     "stylelint": "14.6.0",
     "stylelint-config-prettier": "9.0.3",
-    "stylelint-config-standard": "25.0.0"
+    "stylelint-config-standard": "25.0.0",
+    "akamai-edgegrid": "^3.4.5",
+    "compare-versions": "^6.1.0"
   },
   "dependencies": {
     "@web/test-runner": "0.18.1",
