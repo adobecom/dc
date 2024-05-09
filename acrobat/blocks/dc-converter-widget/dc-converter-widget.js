@@ -143,7 +143,7 @@ export default async function init(element) {
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '2.14.0';
   const STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
   const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
-  const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.getAttribute('content');
+  const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
 
   let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
   let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');

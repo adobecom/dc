@@ -240,11 +240,20 @@ const locales = {
   vn_en: { ietf: 'en-VN', tk: 'pps7abe.css' },
 };
 
+// if guest add new guest IMS & adobeid {Raff will }
+const CLIENT_ID = document.querySelector('meta[name="ims-cid"]')?.content;
+const accessToken = function (accessToken) {
+  if (callbacks.onAccessToken) {
+    callbacks.onAccessToken(accessToken);
+  }
+};  
+
 // Add any config options.
 const CONFIG = {
   codeRoot: '/acrobat',
   contentRoot: '/dc-shared',
-  imsClientId: 'acrobatmilo',
+  imsClientId: CLIENT_ID || 'acrobatmilo',
+  accessToken: accessToken,
   commerce: { checkoutClientId: 'doc_cloud' },
   local: {
     edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
@@ -257,10 +266,6 @@ const CONFIG = {
   },
   dcstage: {
     pdfViewerClientId: '2522674a708e4ddf8bbd62e18585ae4b',
-    pdfViewerReportSuite: 'adbadobedxqa',
-  },
-    page: {
-    pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   stage: {
@@ -291,7 +296,6 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
   ],
-  imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
 };
 
 // Setting alternative Jarvis client ID for these paths
@@ -385,13 +389,14 @@ const { ietf } = getLocale(locales);
   lanaLogging();
 
   // IMS Ready
+  // import load IMS from MILO and remove this
   const imsReady = setInterval(() => {
     if (window.adobeIMS && window.adobeIMS.initialized) {
       clearInterval(imsReady);
       const imsIsReady = new CustomEvent('IMS:Ready');
       window.dispatchEvent(imsIsReady);
     }
-  }, 1000);
+  }, 10);
 
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
