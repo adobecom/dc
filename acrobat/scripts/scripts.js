@@ -259,10 +259,6 @@ const CONFIG = {
     pdfViewerClientId: '2522674a708e4ddf8bbd62e18585ae4b',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
-    page: {
-    pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
-    pdfViewerReportSuite: 'adbadobedxqa',
-  },
   stage: {
     edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
@@ -293,13 +289,6 @@ const CONFIG = {
   ],
   imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
 };
-
-// Setting alternative Jarvis client ID for these paths
-if (window.location.pathname.match('/sign/')
-  || window.location.pathname.match('/documentcloud/')
-  || window.location.pathname.match('/acrobat/business/')) {
-  CONFIG.jarvis.id = 'DocumentCloudsignAcro';
-}
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
