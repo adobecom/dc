@@ -16,7 +16,7 @@ describe('marquee_desktop', function () {
   before(async () => {
     document.head.innerHTML = await readFile({ path: '../mocks/head.html' });
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-    await setViewport({ width: 1200, height: 1000 });
+    await setViewport({ width: 1200, height: 600 });
     await import('../../../acrobat/scripts/scripts.js');
     await waitFor(() => document.querySelector('.marquee.small.light'), 5000, 1000);
   });

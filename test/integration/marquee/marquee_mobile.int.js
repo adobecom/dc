@@ -16,7 +16,7 @@ describe('marquee_mobile', function () {
   before(async () => {
     document.head.innerHTML = await readFile({ path: '../mocks/head.html' });
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-    await setViewport({ width: 600, height: 1200 });
+    await setViewport({ width: 500, height: 600 });
     await import('../../../acrobat/scripts/scripts.js');
     await waitFor(() => document.querySelector('.foreground.container'), 5000, 1000);
   });
