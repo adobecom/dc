@@ -32,12 +32,17 @@ describe('Test scripts.js', () => {
   });
 });
 
-describe('Test media', () => {
+describe('Test replace dot media', () => {
   before(async () => {
     document.body.innerHTML = await readFile({ path: './mocks/replaceDotMedia.body.html' });
   });
 
-  it('Replaced dot media', () => {
+  it('Without scripts should be not null', () => {
+    expect(document.querySelector('img[src*="./media_"]')).not.to.be.null;
+  });
+
+  it('With scripts should be null', async () => {
+    await import('../../acrobat/scripts/scripts.js');
     expect(document.querySelector('img[src*="./media_"]')).to.be.null;
   });
 });
