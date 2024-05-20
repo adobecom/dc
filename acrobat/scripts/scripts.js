@@ -311,12 +311,22 @@ if (IMS_GUEST) {
   };
 }
 
-// Setting alternative Jarvis client ID for these paths
-if (window.location.pathname.match('/sign/')
-  || window.location.pathname.match('/documentcloud/')
-  || window.location.pathname.match('/acrobat/business/')) {
-  CONFIG.jarvis.id = 'DocumentCloudsignAcro';
+function replaceDotMedia(area = document) {
+  // eslint-disable-next-line compat/compat
+  const currUrl = new URL(window.location);
+  const pathSeg = currUrl.pathname.split('/').length;
+  if (pathSeg >= 3) return;
+  const resetAttributeBase = (tag, attr) => {
+    area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
+      // eslint-disable-next-line compat/compat
+      el[attr] = `${new URL(`${CONFIG.contentRoot}${el.getAttribute(attr).substring(1)}`, window.location).href}`;
+    });
+  };
+  resetAttributeBase('img', 'src');
+  resetAttributeBase('source', 'srcset');
 }
+
+replaceDotMedia(document);
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
