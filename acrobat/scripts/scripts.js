@@ -289,23 +289,24 @@ const CONFIG = {
   ],
 };
 
-// if guest add new guest IMS & adobeid {Raff will }
 const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
-const CLIENT_ID = document.querySelector('meta[name="ims-cid"]')?.content;
-const callbacks = {};
 
 if (IMS_GUEST) {
+  const CLIENT_ID = document.querySelector('meta[name="ims-cid"]')?.content;
+
   CONFIG.adobeid = {
     client_id: CLIENT_ID,
-    api_parameters: { check_token: { guest_allowed: IMS_GUEST } },
+
+    api_parameters: { check_token: { guest_allowed: true } },
+
     onAccessToken: (accessToken) => {
-      callbacks.onAccessToken?.(accessToken);
+      window.dc_hosted?.ims_callbacks?.onAccessToken?.(accessToken);
     },
-    onReauthAccessToken: (onReauthAccessToken) => {
-      callbacks.onReauthAccessToken?.(onReauthAccessToken);
+    onReauthAccessToken: (reauthTokenInformation) => {
+      window.dc_hosted?.ims_callbacks?.onReauthAccessToken?.(reauthTokenInformation);
     },
     onAccessTokenHasExpired: () => {
-      callbacks.onAccessTokenHasExpired?.();
+      window.dc_hosted?.ims_callbacks?.onAccessTokenHasExpired?.();
     },
   };
 }
