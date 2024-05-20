@@ -188,7 +188,7 @@ const locales = {
   se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
   ch_it: { ietf: 'it-CH', tk: 'bbf5pok.css' },
   tr: { ietf: 'tr-TR', tk: 'aaz7dvd.css' },
-  ae_en: { ietf: 'ar-EN', tk: 'pps7abe.css' },
+  ae_en: { ietf: 'ar-EN', tk: 'pps7abe.css', dir: 'ltr' },
   uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
   at: { ietf: 'de-AT', tk: 'vin7zsi.css' },
   cz: { ietf: 'cs-CZ', tk: 'aaz7dvd.css' },
@@ -289,6 +289,23 @@ const CONFIG = {
   ],
   imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
 };
+
+function replaceDotMedia(area = document) {
+  // eslint-disable-next-line compat/compat
+  const currUrl = new URL(window.location);
+  const pathSeg = currUrl.pathname.split('/').length;
+  if (pathSeg >= 3) return;
+  const resetAttributeBase = (tag, attr) => {
+    area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
+      // eslint-disable-next-line compat/compat
+      el[attr] = `${new URL(`${CONFIG.contentRoot}${el.getAttribute(attr).substring(1)}`, window.location).href}`;
+    });
+  };
+  resetAttributeBase('img', 'src');
+  resetAttributeBase('source', 'srcset');
+}
+
+replaceDotMedia(document);
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
