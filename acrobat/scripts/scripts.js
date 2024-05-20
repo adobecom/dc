@@ -240,20 +240,11 @@ const locales = {
   vn_en: { ietf: 'en-VN', tk: 'pps7abe.css' },
 };
 
-// if guest add new guest IMS & adobeid {Raff will }
-const CLIENT_ID = document.querySelector('meta[name="ims-cid"]')?.content;
-const accessToken = function (accessToken) {
-  if (callbacks.onAccessToken) {
-    callbacks.onAccessToken(accessToken);
-  }
-};  
-
 // Add any config options.
 const CONFIG = {
   codeRoot: '/acrobat',
   contentRoot: '/dc-shared',
-  imsClientId: CLIENT_ID || 'acrobatmilo',
-  accessToken: accessToken,
+  imsClientId: 'acrobatmilo',
   commerce: { checkoutClientId: 'doc_cloud' },
   local: {
     edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
@@ -297,6 +288,27 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
   ],
 };
+
+// if guest add new guest IMS & adobeid {Raff will }
+const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
+const CLIENT_ID = document.querySelector('meta[name="ims-cid"]')?.content;
+const callbacks = {};
+
+if (IMS_GUEST) {
+  CONFIG.adobeid = {
+    client_id: CLIENT_ID,
+    api_parameters: { check_token: { guest_allowed: IMS_GUEST } },
+    onAccessToken: (accessToken) => {
+      callbacks.onAccessToken?.(accessToken);
+    },
+    onReauthAccessToken: (onReauthAccessToken) => {
+      callbacks.onReauthAccessToken?.(onReauthAccessToken);
+    },
+    onAccessTokenHasExpired: () => {
+      callbacks.onAccessTokenHasExpired?.();
+    },
+  };
+}
 
 // Setting alternative Jarvis client ID for these paths
 if (window.location.pathname.match('/sign/')
