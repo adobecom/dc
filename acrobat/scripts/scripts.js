@@ -188,7 +188,7 @@ const locales = {
   se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
   ch_it: { ietf: 'it-CH', tk: 'bbf5pok.css' },
   tr: { ietf: 'tr-TR', tk: 'aaz7dvd.css' },
-  ae_en: { ietf: 'ar-EN', tk: 'pps7abe.css' },
+  ae_en: { ietf: 'ar-EN', tk: 'pps7abe.css', dir: 'ltr' },
   uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
   at: { ietf: 'de-AT', tk: 'vin7zsi.css' },
   cz: { ietf: 'cs-CZ', tk: 'aaz7dvd.css' },
@@ -251,11 +251,11 @@ const CONFIG = {
     pdfViewerClientId: 'ec572982b2a849d4b16c47d9558d66d1',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
-  dcmain: {
+  page: {
     pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
-  dcstage: {
+  stagePage: {
     pdfViewerClientId: '2522674a708e4ddf8bbd62e18585ae4b',
     pdfViewerReportSuite: 'adbadobedxqa',
   },

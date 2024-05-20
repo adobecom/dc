@@ -40,6 +40,17 @@ jobs:
         with:
           ref: ${{ inputs.testCodeBranch }}
 
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
       - name: Build Edge Worker Scripts
         run: |
           npm run ewbuild
