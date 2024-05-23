@@ -28,7 +28,6 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
         with:
-          persist-credentials: false
           ref: ${{ inputs.syncBranch }}
 
       - name: Clone Floodgate Repository and Checkout Selected Branch
