@@ -421,7 +421,7 @@ const { ietf } = getLocale(locales);
       const imsIsReady = new CustomEvent('IMS:Ready');
       window.dispatchEvent(imsIsReady);
     }
-  }, 10);
+  }, 1000);
 
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
