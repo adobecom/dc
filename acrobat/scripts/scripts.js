@@ -414,7 +414,6 @@ const { ietf } = getLocale(locales);
   lanaLogging();
 
   // IMS Ready
-  // import load IMS from MILO and remove this
   const imsReady = setInterval(() => {
     if (window.adobeIMS && window.adobeIMS.initialized) {
       clearInterval(imsReady);
