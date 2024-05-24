@@ -130,7 +130,7 @@
   line-height: 130%;
   margin: 0;
   padding: 0 0 0 40px;
-  /* width: 360px; */
+  text-align: left;
 }
 
 .widget-copy {
