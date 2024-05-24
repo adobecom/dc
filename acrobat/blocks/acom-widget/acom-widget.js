@@ -226,7 +226,7 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     // Step 5: Fetch Download URI
     const downloadUriEndpoint = `${baseApiUrl}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`;
     // eslint-disable-next-line compat/compat
-    const downloadUriResponse = await fetch(downloadUriEndpoint, { headers: { Authorization: `Bearer ${accessToken}` } });
+    const downloadUriResponse = await fetch(downloadUriEndpoint, { mode: 'no-cors', headers: { Authorization: `Bearer ${accessToken}` } });
 
     if (!downloadUriResponse.ok) {
       throw new Error(`Failed to fetch download URI: ${downloadUriResponse.statusText}`);
