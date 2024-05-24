@@ -87,7 +87,7 @@ const getAdobeToken = async () => {
 const encodeBlobUrl = (blobUrl = {}) => {
   try {
     const encodedBlobUrl = btoa(JSON.stringify(blobUrl));
-    console('Encoded Blob URL:', encodedBlobUrl);
+    console.log('Encoded Blob URL:', encodedBlobUrl);
     return encodedBlobUrl.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   } catch (err) {
     console.error(err.message);
@@ -206,34 +206,10 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
       });
     };
 
-    const statusResult = await checkJobStatus();
+    await checkJobStatus();
 
-    // Step 4: Fetch Metadata
-    const metadataEndpoint = `${baseApiUrl}/${expiry}/assets/metadata`;
-    // eslint-disable-next-line compat/compat
-    const metadataResponse = await fetch(`${metadataEndpoint}?asset_uri=${encodeURIComponent(assetUri)}`, { headers: { Authorization: `Bearer ${accessToken}` } });
-
-    if (!metadataResponse.ok) {
-      throw new Error(`Failed to fetch metadata: ${metadataResponse.statusText}`);
-    }
-
-    const metadataResult = await metadataResponse.json();
-    console.log('Upload and conversion completed. Metadata:', metadataResult);
-
-    // Optionally, display the resulting PDF link
-    console.log(`PDF created successfully: ${metadataResult.asset_id}`);
-
-    // Step 5: Fetch Download URI
-    const downloadUriEndpoint = `${baseApiUrl}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`;
-    // eslint-disable-next-line compat/compat
-    const downloadUriResponse = await fetch(downloadUriEndpoint, { headers: { Authorization: `Bearer ${accessToken}` } });
-
-    if (!downloadUriResponse.ok) {
-      throw new Error(`Failed to fetch download URI: ${downloadUriResponse.statusText}`);
-    }
-
-    const downloadUriResult = await downloadUriResponse.json();
-    const downloadUri = downloadUriResult.uri;
+    // const downloadUriResult = await downloadUriResponse.json();
+    const downloadUri = `${baseApiUrl}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}`;
 
     // Step 6: Generate Blob URL and Display PDF
     const blobUrlStructure = {
@@ -245,6 +221,7 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     const encodedBlobUrl = encodeBlobUrl(blobUrlStructure);
     const blobViewerUrl = `https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${assetUri}#${downloadUri}`;
     console.log('Blob URL:', blobViewerUrl);
+    window.location.href = blobViewerUrl;
   } catch (error) {
     console.error('Error during upload:', error);
     alert('An error occurred during the upload process. Please try again later.');
