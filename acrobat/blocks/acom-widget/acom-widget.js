@@ -11,8 +11,11 @@ function getEnv() {
   const query = PAGE_URL.searchParams.get('env');
 
   if (query) return ENVS[query];
-  if (host.includes('hlx.page') || host.includes('localhost') || host.includes('hlx.live') || host.includes('stage.adobe') || host.includes('corp.adobe')) {
+  if (host.includes('stage.adobe') || host.includes('corp.adobe') || host.includes('stage')) {
     return ENVS.stage;
+  }
+  if (host.includes('hlx.page') || host.includes('localhost') || host.includes('hlx.live')) {
+    return ENVS.dev;
   }
   return ENVS.prod;
 }
@@ -70,6 +73,13 @@ const handleDrop = (e) => {
   }
 };
 
+const getExpiryTimestamp = () => {
+  console.log('Getting expiry timestamp...');
+  // Generate an expiry timestamp (e.g., 1 hour from now)
+  const expiry = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
+  return expiry;
+};
+
 const getAdobeToken = async () => {
   try {
     console.log('Getting Adobe token...');
@@ -77,7 +87,7 @@ const getAdobeToken = async () => {
     const response = await fetch(tokenEndpoint, { method: 'POST' });
     const data = await response.json();
     console.log('Adobe token:', data);
-    return { accessToken: data.access_token, expiry: data.discovery.expiry };
+    return data.access_token;
   } catch (error) {
     console.error('Error getting Adobe token:', error);
     throw error;
@@ -87,13 +97,35 @@ const getAdobeToken = async () => {
 const encodeBlobUrl = (blobUrl = {}) => {
   try {
     const encodedBlobUrl = btoa(JSON.stringify(blobUrl));
-    console('Encoded Blob URL:', encodedBlobUrl);
+    console.log('Encoded Blob URL:', encodedBlobUrl);
     return encodedBlobUrl.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   } catch (err) {
     console.error(err.message);
     throw err;
   }
 };
+
+async function getAssetMetadata(assetUri, accessToken) {
+  const url = `${assetUri}`;
+  const mode = 'no-cors';
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+    Accept: `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/asset_metadata_basic_v1.json"`,
+  };
+
+  try {
+    // eslint-disable-next-line compat/compat
+    const response = await fetch(url, { mode, headers });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching asset metadata:', error);
+    throw error;
+  }
+}
 
 const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
   const filename = file.name;
@@ -131,7 +163,8 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
   }, 305);
 
   try {
-    const { accessToken, expiry } = await getAdobeToken();
+    const accessToken = await getAdobeToken();
+    const expiry = getExpiryTimestamp();
 
     // Step 1: Upload File
     const formData = new FormData();
@@ -144,7 +177,7 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     })], { type: `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/asset_upload_parameters_v1.json"` }));
     formData.append('file', file, filename);
 
-    const uploadEndpoint = `${baseApiUrl}/${expiry}/assets`;
+    const uploadEndpoint = `${baseApiUrl}/${getExpiryTimestamp()}/assets`;
     // eslint-disable-next-line compat/compat
     const uploadResponse = await fetch(uploadEndpoint, {
       method: 'POST',
@@ -158,9 +191,12 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
 
     const uploadResult = await uploadResponse.json();
     const assetUri = uploadResult.uri;
+    const autasset = `{$baseApiUrl}/assets/${uploadResult.uri.split('/').pop()}`;
+
+    console.log('Upload completed. Asset URI:', uploadResult);
 
     // Step 2: Create PDF
-    const createPdfEndpoint = `${baseApiUrl}/${expiry}/assets/createpdf`;
+    const createPdfEndpoint = `${baseApiUrl}/${getExpiryTimestamp()}/assets/createpdf`;
     // eslint-disable-next-line compat/compat
     const createPdfResponse = await fetch(createPdfEndpoint, {
       method: 'POST',
@@ -180,12 +216,13 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     }
 
     const createPdfResult = await createPdfResponse.json();
+    console.log('PDF creation completed:', createPdfResult);
     const jobUri = createPdfResult.job_uri;
 
     // Step 3: Check Job Status
     const checkJobStatus = async () => {
       // eslint-disable-next-line compat/compat
-      const statusResponse = await fetch(`${baseApiUrl}/${expiry}/jobs/status?job_uri=${encodeURIComponent(jobUri)}`, { headers: { Authorization: `Bearer ${accessToken}` } });
+      const statusResponse = await fetch(`${baseApiUrl}/${getExpiryTimestamp()}/jobs/status?job_uri=${encodeURIComponent(jobUri)}`, { headers: { Authorization: `Bearer ${accessToken}` } });
 
       if (!statusResponse.ok) {
         throw new Error(`Failed to check job status: ${statusResponse.statusText}`);
@@ -206,12 +243,26 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
       });
     };
 
-    const statusResult = await checkJobStatus();
+    await checkJobStatus();
 
-    // // Step 4: Fetch Metadata
-    // const metadataEndpoint = `${baseApiUrl}/${expiry}/assets/metadata`;
+    // Usage example
+
+    // await getAssetMetadata(assetUri, accessToken)
+    //   .then((data) => console.log('Asset metadata:', data))
+    //   .catch((error) => console.error('Error:', error));
+
+    // // // Step 4: Fetch Metadata
+
+    // const metadataEndpoint = `${baseApiUrl}/${getExpiryTimestamp()}/assets/metadata?asset_uri=${encodeURIComponent(autasset)}`;
     // // eslint-disable-next-line compat/compat
-    // const metadataResponse = await fetch(`${metadataEndpoint}?asset_uri=${encodeURIComponent(assetUri)}`, { mode: 'no-cors', headers: { Authorization: `Bearer ${accessToken}` } });
+    // const metadataResponse = await fetch(metadataEndpoint, {
+    //   mode: 'no-cors',
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/asset_metadata_basic_v1.json"`,
+    //     Authorization: `Bearer ${accessToken}`,
+    //   },
+    // });
 
     // if (!metadataResponse.ok) {
     //   throw new Error(`Failed to fetch metadata: ${metadataResponse.statusText}`);
@@ -220,13 +271,17 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     // const metadataResult = await metadataResponse.json();
     // console.log('Upload and conversion completed. Metadata:', metadataResult);
 
-    // // Optionally, display the resulting PDF link
-    // console.log(`PDF created successfully: ${metadataResult.asset_id}`);
-
     // Step 5: Fetch Download URI
-    // const downloadUriEndpoint = `${baseApiUrl}/${expiry}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`;
+    // const downloadUriEndpoint = `${baseApiUrl}/${getExpiryTimestamp()}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true&action=system`;
     // // eslint-disable-next-line compat/compat
-    // const downloadUriResponse = await fetch(downloadUriEndpoint, { mode: 'no-cors', headers: { Authorization: `Bearer ${accessToken}` } });
+    // const downloadUriResponse = await fetch(downloadUriEndpoint, {
+    //   mode: 'no-cors',
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/asset_uri_download_v1.json";charset=UTF-8"`,
+    //     Authorization: `Bearer ${accessToken}`,
+    //   },
+    // });
 
     // if (!downloadUriResponse.ok) {
     //   throw new Error(`Failed to fetch download URI: ${downloadUriResponse.statusText}`);
@@ -234,18 +289,18 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
 
     // const downloadUriResult = await downloadUriResponse.json();
     // const downloadUri = downloadUriResult.uri;
+    // console.log('Download URI:', downloadUri);
 
     // Step 6: Generate Blob URL and Display PDF
     const blobUrlStructure = {
-      source: `${baseApiUrl}/${expiry}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`,
+      source: 'signed-uri',
       itemName: filename,
       itemType: 'application/pdf',
     };
 
-    console.log(`${baseApiUrl}/${expiry}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`);
     const encodedBlobUrl = encodeBlobUrl(blobUrlStructure);
-    const blobViewerUrl = `https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${assetUri}#${downloadUri}`;
-    console.log('Blob URL:', blobViewerUrl);
+    const blobViewerUrl = `https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${encodeURIComponent(assetUri)}`;
+    console.log(`<a href="${blobViewerUrl}" target="_blank">View PDF</a>`);
   } catch (error) {
     console.error('Error during upload:', error);
     alert('An error occurred during the upload process. Please try again later.');
