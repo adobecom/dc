@@ -84,6 +84,17 @@ const getAdobeToken = async () => {
   }
 };
 
+const encodeBlobUrl = (blobUrl = {}) => {
+  try {
+    const encodedBlobUrl = btoa(JSON.stringify(blobUrl));
+    console('Encoded Blob URL:', encodedBlobUrl);
+    return encodedBlobUrl.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  } catch (err) {
+    console.error(err.message);
+    throw err;
+  }
+};
+
 const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
   const filename = file.name;
   // const encodeFileName = encodeURIComponent(filename);
@@ -189,7 +200,7 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
       if (statusResult.status === 'failed') {
         throw new Error('Job failed');
       }
-
+      // eslint-disable-next-line compat/compat
       return new Promise((resolve) => {
         setTimeout(() => resolve(checkJobStatus()), statusResult.retry_interval || 2000);
       });
@@ -211,6 +222,29 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
 
     // Optionally, display the resulting PDF link
     console.log(`PDF created successfully: ${metadataResult.asset_id}`);
+
+    // Step 5: Fetch Download URI
+    const downloadUriEndpoint = `${baseApiUrl}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`;
+    // eslint-disable-next-line compat/compat
+    const downloadUriResponse = await fetch(downloadUriEndpoint, { headers: { Authorization: `Bearer ${accessToken}` } });
+
+    if (!downloadUriResponse.ok) {
+      throw new Error(`Failed to fetch download URI: ${downloadUriResponse.statusText}`);
+    }
+
+    const downloadUriResult = await downloadUriResponse.json();
+    const downloadUri = downloadUriResult.uri;
+
+    // Step 6: Generate Blob URL and Display PDF
+    const blobUrlStructure = {
+      source: downloadUri,
+      itemName: filename,
+      itemType: 'application/pdf',
+    };
+
+    const encodedBlobUrl = encodeBlobUrl(blobUrlStructure);
+    const blobViewerUrl = `https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${assetUri}#${downloadUri}`;
+    console.log('Blob URL:', blobViewerUrl);
   } catch (error) {
     console.error('Error during upload:', error);
     alert('An error occurred during the upload process. Please try again later.');
