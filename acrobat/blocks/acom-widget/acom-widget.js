@@ -224,7 +224,7 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     // console.log(`PDF created successfully: ${metadataResult.asset_id}`);
 
     // Step 5: Fetch Download URI
-    const downloadUriEndpoint = `${baseApiUrl}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`;
+    const downloadUriEndpoint = `${baseApiUrl}/${expiry}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`;
     // eslint-disable-next-line compat/compat
     const downloadUriResponse = await fetch(downloadUriEndpoint, { mode: 'no-cors', headers: { Authorization: `Bearer ${accessToken}` } });
 
