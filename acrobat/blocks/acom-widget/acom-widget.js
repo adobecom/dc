@@ -211,7 +211,7 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     // Step 4: Fetch Metadata
     const metadataEndpoint = `${baseApiUrl}/${expiry}/assets/metadata`;
     // eslint-disable-next-line compat/compat
-    const metadataResponse = await fetch(`${metadataEndpoint}?asset_uri=${encodeURIComponent(assetUri)}`, { headers: { Authorization: `Bearer ${accessToken}` } });
+    const metadataResponse = await fetch(`${metadataEndpoint}?asset_uri=${encodeURIComponent(assetUri)}`, { mode: 'no-cors', headers: { Authorization: `Bearer ${accessToken}` } });
 
     if (!metadataResponse.ok) {
       throw new Error(`Failed to fetch metadata: ${metadataResponse.statusText}`);
