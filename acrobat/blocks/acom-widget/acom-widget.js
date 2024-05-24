@@ -208,20 +208,20 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
 
     const statusResult = await checkJobStatus();
 
-    // Step 4: Fetch Metadata
-    const metadataEndpoint = `${baseApiUrl}/${expiry}/assets/metadata`;
-    // eslint-disable-next-line compat/compat
-    const metadataResponse = await fetch(`${metadataEndpoint}?asset_uri=${encodeURIComponent(assetUri)}`, { mode: 'no-cors', headers: { Authorization: `Bearer ${accessToken}` } });
+    // // Step 4: Fetch Metadata
+    // const metadataEndpoint = `${baseApiUrl}/${expiry}/assets/metadata`;
+    // // eslint-disable-next-line compat/compat
+    // const metadataResponse = await fetch(`${metadataEndpoint}?asset_uri=${encodeURIComponent(assetUri)}`, { mode: 'no-cors', headers: { Authorization: `Bearer ${accessToken}` } });
 
-    if (!metadataResponse.ok) {
-      throw new Error(`Failed to fetch metadata: ${metadataResponse.statusText}`);
-    }
+    // if (!metadataResponse.ok) {
+    //   throw new Error(`Failed to fetch metadata: ${metadataResponse.statusText}`);
+    // }
 
-    const metadataResult = await metadataResponse.json();
-    console.log('Upload and conversion completed. Metadata:', metadataResult);
+    // const metadataResult = await metadataResponse.json();
+    // console.log('Upload and conversion completed. Metadata:', metadataResult);
 
-    // Optionally, display the resulting PDF link
-    console.log(`PDF created successfully: ${metadataResult.asset_id}`);
+    // // Optionally, display the resulting PDF link
+    // console.log(`PDF created successfully: ${metadataResult.asset_id}`);
 
     // Step 5: Fetch Download URI
     const downloadUriEndpoint = `${baseApiUrl}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`;
