@@ -247,9 +247,9 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
 
     // Usage example
 
-    // await getAssetMetadata(assetUri, accessToken)
-    //   .then((data) => console.log('Asset metadata:', data))
-    //   .catch((error) => console.error('Error:', error));
+    await getAssetMetadata(assetUri, accessToken)
+      .then((data) => console.log('Asset metadata:', data))
+      .catch((error) => console.error('Error:', error));
 
     // // // Step 4: Fetch Metadata
 
