@@ -224,13 +224,13 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     // console.log(`PDF created successfully: ${metadataResult.asset_id}`);
 
     // Step 5: Fetch Download URI
-    const downloadUriEndpoint = `${baseApiUrl}/${expiry}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`;
-    // eslint-disable-next-line compat/compat
-    const downloadUriResponse = await fetch(downloadUriEndpoint, { mode: 'no-cors', headers: { Authorization: `Bearer ${accessToken}` } });
+    // const downloadUriEndpoint = `${baseApiUrl}/${expiry}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`;
+    // // eslint-disable-next-line compat/compat
+    // const downloadUriResponse = await fetch(downloadUriEndpoint, { mode: 'no-cors', headers: { Authorization: `Bearer ${accessToken}` } });
 
-    if (!downloadUriResponse.ok) {
-      throw new Error(`Failed to fetch download URI: ${downloadUriResponse.statusText}`);
-    }
+    // if (!downloadUriResponse.ok) {
+    //   throw new Error(`Failed to fetch download URI: ${downloadUriResponse.statusText}`);
+    // }
 
     const downloadUriResult = await downloadUriResponse.json();
     const downloadUri = downloadUriResult.uri;
@@ -242,6 +242,7 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
       itemType: 'application/pdf',
     };
 
+    console.log(`${baseApiUrl}/${expiry}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`);
     const encodedBlobUrl = encodeBlobUrl(blobUrlStructure);
     const blobViewerUrl = `https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${assetUri}#${downloadUri}`;
     console.log('Blob URL:', blobViewerUrl);
