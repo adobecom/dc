@@ -232,12 +232,12 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     //   throw new Error(`Failed to fetch download URI: ${downloadUriResponse.statusText}`);
     // }
 
-    const downloadUriResult = await downloadUriResponse.json();
-    const downloadUri = downloadUriResult.uri;
+    // const downloadUriResult = await downloadUriResponse.json();
+    // const downloadUri = downloadUriResult.uri;
 
     // Step 6: Generate Blob URL and Display PDF
     const blobUrlStructure = {
-      source: downloadUri,
+      source: `${baseApiUrl}/${expiry}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}&make_direct_storage_uri=true`,
       itemName: filename,
       itemType: 'application/pdf',
     };
