@@ -305,7 +305,7 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     const encodedBlobUrl = encodeBlobUrl(blobUrlStructure);
     const blobViewerUrl = `https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${assetUri}#${downloadUri}`;
     console.log('Blob URL:', blobViewerUrl);
-    // window.location.href = blobViewerUrl;
+    window.location.href = blobViewerUrl;
   } catch (error) {
     console.error('Error during upload:', error);
     alert('An error occurred during the upload process. Please try again later.');
