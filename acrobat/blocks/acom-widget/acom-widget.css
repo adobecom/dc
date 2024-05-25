@@ -122,6 +122,7 @@
   width: 0%;
   background: #6338ee;
   border-radius: 25px;
+  max-width: 100% !important;
 }
 
 .widget-heading {
