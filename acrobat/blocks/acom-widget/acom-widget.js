@@ -90,6 +90,7 @@ const getAnonymousToken = async () => {
   const headers = { Accept: `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/anonymous_token_v1.json"` };
 
   try {
+    // eslint-disable-next-line compat/compat
     const response = await fetch(url, { headers, method: 'POST' });
     if (!response.ok) {
       throw new Error(`Failed to fetch anonymous token: ${response.statusText}`);
@@ -186,64 +187,67 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
       throw new Error(`Failed to upload file: ${uploadResponse.statusText}`);
     }
 
+
+
     const uploadResult = await uploadResponse.json();
     console.log('Upload Result:', uploadResult);
     const assetUri = uploadResult.uri;
 
+    if (contentType !== 'application/pdf') {
+      // Step 2: Create PDF
+      const createPdfEndpoint = discoveryResources.assets.createpdf.uri;
+      // eslint-disable-next-line compat/compat
+      const createPdfResponse = await fetch(createPdfEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/createpdf_parameters_v1.json"`,
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          asset_uri: assetUri,
+          name: filename,
+          persistence: 'transient',
+        }),
+      });
 
-    // Step 2: Create PDF
-    const createPdfEndpoint = discoveryResources.assets.createpdf.uri;
-    // eslint-disable-next-line compat/compat
-    const createPdfResponse = await fetch(createPdfEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/createpdf_parameters_v1.json"`,
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        asset_uri: assetUri,
-        name: filename,
-        persistence: 'transient',
-      }),
-    });
-
-    if (!createPdfResponse.ok) {
-      throw new Error(`Failed to create PDF: ${createPdfResponse.statusText}`);
-    }
-
-    const createPdfResult = await createPdfResponse.json();
-    const jobUri = createPdfResult.job_uri;
-    console.log('Job URI:', jobUri);
-
-    // Step 3: Check Job Status
-    const checkJobStatus = async () => {
-      const jobStatusUrlTemplate = discoveryResources.jobs.status.uri;
-      const url = jobStatusUrlTemplate.replace('{?job_uri}', `?job_uri=${encodeURIComponent(jobUri)}`);
-
-      try {
-        // eslint-disable-next-line compat/compat
-        const statusResponse = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
-        if (!statusResponse.ok) {
-          throw new Error(`Failed to check job status: ${statusResponse.statusText}`);
-        }
-        const statusResult = await statusResponse.json();
-        if (statusResult.status === 'done') {
-          return statusResult;
-        }
-        if (statusResult.status === 'failed') {
-          throw new Error('Job failed');
-        }
-        // eslint-disable-next-line compat/compat
-        return new Promise((resolve) => {
-          setTimeout(() => resolve(checkJobStatus()), statusResult.retry_interval || 2000);
-        });
-      } catch (error) {
-        console.error('Error checking job status:', error);
-        throw error;
+      if (!createPdfResponse.ok) {
+        throw new Error(`Failed to create PDF: ${createPdfResponse.statusText}`);
       }
-    };
 
-    await checkJobStatus();
+      const createPdfResult = await createPdfResponse.json();
+      const jobUri = createPdfResult.job_uri;
+      console.log('Job URI:', jobUri);
+
+      // Step 3: Check Job Status
+      const checkJobStatus = async () => {
+        const jobStatusUrlTemplate = discoveryResources.jobs.status.uri;
+        const url = jobStatusUrlTemplate.replace('{?job_uri}', `?job_uri=${encodeURIComponent(jobUri)}`);
+
+        try {
+          // eslint-disable-next-line compat/compat
+          const statusResponse = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+          if (!statusResponse.ok) {
+            throw new Error(`Failed to check job status: ${statusResponse.statusText}`);
+          }
+          const statusResult = await statusResponse.json();
+          if (statusResult.status === 'done') {
+            return statusResult;
+          }
+          if (statusResult.status === 'failed') {
+            throw new Error('Job failed');
+          }
+          // eslint-disable-next-line compat/compat
+          return new Promise((resolve) => {
+            setTimeout(() => resolve(checkJobStatus()), statusResult.retry_interval || 2000);
+          });
+        } catch (error) {
+          console.error('Error checking job status:', error);
+          throw error;
+        }
+      };
+
+      await checkJobStatus();
+    }
 
     const getAssetMetadata = async () => {
       const getMetadataUrlTemplate = discoveryResources.assets.get_metadata.uri;
@@ -301,7 +305,7 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     const encodedBlobUrl = encodeBlobUrl(blobUrlStructure);
     const blobViewerUrl = `https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${assetUri}#${downloadUri}`;
     console.log('Blob URL:', blobViewerUrl);
-    window.location.href = blobViewerUrl;
+    // window.location.href = blobViewerUrl;
   } catch (error) {
     console.error('Error during upload:', error);
     alert('An error occurred during the upload process. Please try again later.');
