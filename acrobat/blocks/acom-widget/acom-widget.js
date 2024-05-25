@@ -11,15 +11,17 @@ function getEnv() {
   const query = PAGE_URL.searchParams.get('env');
 
   if (query) return ENVS[query];
-  if (host.includes('hlx.page') || host.includes('localhost') || host.includes('hlx.live') || host.includes('stage.adobe') || host.includes('corp.adobe')) {
+  if (host.includes('stage.adobe') || host.includes('corp.adobe') || host.includes('stage')) {
     return ENVS.stage;
+  }
+  if (host.includes('hlx.page') || host.includes('localhost') || host.includes('hlx.live')) {
+    return ENVS.dev;
   }
   return ENVS.prod;
 }
 
 const baseApiUrl = getEnv();
-const tokenEndpoint = `${baseApiUrl}/users/anonymous_token`;
-const discoveryEndpoint = `${baseApiUrl}/discovery`;
+const DISCOVERY_URL = `${baseApiUrl}/discovery`;
 
 let percent = 0;
 
@@ -83,6 +85,35 @@ const getAdobeToken = async () => {
     throw error;
   }
 };
+const getAnonymousToken = async () => {
+  const url = `${baseApiUrl}/users/anonymous_token`;
+  const headers = { Accept: `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/anonymous_token_v1.json"` };
+
+  try {
+    const response = await fetch(url, { headers, method: 'POST' });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch anonymous token: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching anonymous token:', error);
+    throw error;
+  }
+};
+
+const initializePdfAssetManager = async () => {
+  const anonymousTokenResponse = await getAnonymousToken();
+  const { access_token: accessToken, discovery } = anonymousTokenResponse;
+
+  const discoveryResources = discovery.resources;
+
+  return {
+    accessToken,
+    discoveryResources,
+  };
+};
 
 const encodeBlobUrl = (blobUrl = {}) => {
   try {
@@ -131,8 +162,8 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
   }, 305);
 
   try {
-    const { accessToken, expiry } = await getAdobeToken();
-
+    const { accessToken, discoveryResources } = await initializePdfAssetManager();
+    const uploadEndpoint = discoveryResources.assets.upload.uri;
     // Step 1: Upload File
     const formData = new FormData();
     formData.append('parameters', new Blob([JSON.stringify({
@@ -144,7 +175,6 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     })], { type: `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/asset_upload_parameters_v1.json"` }));
     formData.append('file', file, filename);
 
-    const uploadEndpoint = `${baseApiUrl}/${expiry}/assets`;
     // eslint-disable-next-line compat/compat
     const uploadResponse = await fetch(uploadEndpoint, {
       method: 'POST',
@@ -157,10 +187,12 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
     }
 
     const uploadResult = await uploadResponse.json();
+    console.log('Upload Result:', uploadResult);
     const assetUri = uploadResult.uri;
 
+
     // Step 2: Create PDF
-    const createPdfEndpoint = `${baseApiUrl}/${expiry}/assets/createpdf`;
+    const createPdfEndpoint = discoveryResources.assets.createpdf.uri;
     // eslint-disable-next-line compat/compat
     const createPdfResponse = await fetch(createPdfEndpoint, {
       method: 'POST',
@@ -181,43 +213,91 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
 
     const createPdfResult = await createPdfResponse.json();
     const jobUri = createPdfResult.job_uri;
+    console.log('Job URI:', jobUri);
 
     // Step 3: Check Job Status
     const checkJobStatus = async () => {
-      // eslint-disable-next-line compat/compat
-      const statusResponse = await fetch(`${baseApiUrl}/${expiry}/jobs/status?job_uri=${encodeURIComponent(jobUri)}`, { headers: { Authorization: `Bearer ${accessToken}` } });
+      const jobStatusUrlTemplate = discoveryResources.jobs.status.uri;
+      const url = jobStatusUrlTemplate.replace('{?job_uri}', `?job_uri=${encodeURIComponent(jobUri)}`);
 
-      if (!statusResponse.ok) {
-        throw new Error(`Failed to check job status: ${statusResponse.statusText}`);
+      try {
+        // eslint-disable-next-line compat/compat
+        const statusResponse = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+        if (!statusResponse.ok) {
+          throw new Error(`Failed to check job status: ${statusResponse.statusText}`);
+        }
+        const statusResult = await statusResponse.json();
+        if (statusResult.status === 'done') {
+          return statusResult;
+        }
+        if (statusResult.status === 'failed') {
+          throw new Error('Job failed');
+        }
+        // eslint-disable-next-line compat/compat
+        return new Promise((resolve) => {
+          setTimeout(() => resolve(checkJobStatus()), statusResult.retry_interval || 2000);
+        });
+      } catch (error) {
+        console.error('Error checking job status:', error);
+        throw error;
       }
-
-      const statusResult = await statusResponse.json();
-
-      if (statusResult.status === 'done') {
-        return statusResult;
-      }
-
-      if (statusResult.status === 'failed') {
-        throw new Error('Job failed');
-      }
-      // eslint-disable-next-line compat/compat
-      return new Promise((resolve) => {
-        setTimeout(() => resolve(checkJobStatus()), statusResult.retry_interval || 2000);
-      });
     };
 
     await checkJobStatus();
 
-    // const downloadUriResult = await downloadUriResponse.json();
-    const downloadUri = `${baseApiUrl}/assets/download_uri?asset_uri=${encodeURIComponent(assetUri)}`;
+    const getAssetMetadata = async () => {
+      const getMetadataUrlTemplate = discoveryResources.assets.get_metadata.uri;
+      const url = getMetadataUrlTemplate.replace('{?asset_uri}', `?asset_uri=${encodeURIComponent(assetUri)}`);
 
-    // Step 6: Generate Blob URL and Display PDF
-    const blobUrlStructure = {
-      source: downloadUri,
-      itemName: filename,
-      itemType: 'application/pdf',
+      try {
+        // eslint-disable-next-line compat/compat
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/createpdf_parameters_v1.json"`,
+          },
+        });
+        console.log('Meta:', response);
+      } catch (error) {
+        console.error('Error fetching asset metadata:', error);
+        throw error;
+      }
     };
+    await getAssetMetadata();
 
+    const getDownloadUri = async (makeTicket = true, makeDirectStorageUri = true) => {
+      const downloadUriTemplate = discoveryResources.assets.download_uri.uri;
+      // eslint-disable-next-line compat/compat
+      const url = new URL(downloadUriTemplate.replace('{?asset_uri,make_direct_storage_uri,action}', ''));
+      url.searchParams.append('asset_uri', assetUri);
+      if (makeTicket) {
+        url.searchParams.append('make_ticket', 'true');
+      }
+      if (makeDirectStorageUri) {
+        url.searchParams.append('make_direct_storage_uri', 'true');
+      }
+      console.log('Download URI:', url);
+      try {
+        // eslint-disable-next-line compat/compat
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': `application/vnd.adobe.dc+json;profile="${baseApiUrl}/asset_uri_download_v1.json"`,
+          },
+        });
+        const data = await response.json();
+        console.log('Download URI:', data.uri);
+        return data.uri;
+      } catch (error) {
+        console.error('Error fetching download URI:', error);
+        throw error;
+      }
+    };
+    const downloadUri = await getDownloadUri();
+    console.log('Download URI:', downloadUri);
+
+    // Generate Blob URL and Display PDF
+    const blobUrlStructure = { source: 'signed-uri', itemName: filename, itemType: 'application/pdf' };
     const encodedBlobUrl = encodeBlobUrl(blobUrlStructure);
     const blobViewerUrl = `https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${assetUri}#${downloadUri}`;
     console.log('Blob URL:', blobViewerUrl);
