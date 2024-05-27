@@ -65,11 +65,16 @@ const formatBytes = (bytes, decimals = 2) => {
   return `${(bytes / k ** i).toFixed(dm)} ${sizes[i]}`;
 };
 
-const uploadToAdobe = async (file, progressBarWrapper, progressBar, statusMessage, retryButton, fileInput) => {
+const uploadToAdobe = async (file, progressSection) => {
+  const { progressBarWrapper, progressBar } = progressSection;
+  const statusBar = document.querySelector('.status-bar');
+  const cancelButton = document.querySelector('.widget-cancel');
+
   const filename = file.name;
   const fileSize = file.size;
   const extension = filename.split('.').slice(-1)[0].toLowerCase();
   let contentType;
+  let xhr;
 
   switch (extension) {
     case 'png':
@@ -91,33 +96,41 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar, statusMessag
   }
 
   // Progress Bar Setup
-  document.querySelector('.widget-button').insertAdjacentElement('afterend', progressBarWrapper);
-  document.querySelector('.widget-button').remove();
+  document.querySelector('.widget-copy').classList.add('hide');
+  document.querySelector('.widget-button').classList.add('hide');
+  statusBar.classList.remove('hide');
+  cancelButton.classList.remove('hide');
+  document.querySelector('.action-area').insertAdjacentElement('beforebegin', progressBarWrapper);
   progressBarWrapper.appendChild(progressBar);
-  progressBarWrapper.appendChild(statusMessage);
+  progressBarWrapper.insertAdjacentElement('beforebegin', statusBar);
 
   // Display file details
-  statusMessage.textContent = `File: ${filename} (${formatBytes(fileSize)}) - Type: ${contentType}`;
+  // statusMessage.textContent = `File: ${filename} (${formatBytes(fileSize)}) - Type: ${contentType}`;
 
   const updateProgressBar = (event) => {
     if (event.lengthComputable) {
       const percentComplete = (event.loaded / event.total) * 100;
       progressBar.style.width = `${percentComplete}%`;
-      statusMessage.textContent = `Uploading... ${percentComplete.toFixed(2)}% (${formatBytes(event.loaded)} / ${formatBytes(event.total)})`;
+      statusBar.querySelector('.percentage').textContent = `${percentComplete.toFixed(2)}%`;
+
+      // statusMessage.textContent = `Uploading ${formatBytes(fileSize)} file... ${percentComplete.toFixed(2)}% (${formatBytes(event.loaded)} / ${formatBytes(event.total)})`;
     }
   };
 
-  const resetForm = () => {
-    fileInput.value = '';
+  const cancelUpload = () => {
+    xhr.abort();
+    document.querySelector('#file-upload').value = null;
+    document.querySelector('.widget-button').classList.remove('hide');
+    progressBarWrapper.classList.add('hide');
     progressBar.style.width = '0%';
-    statusMessage.textContent = '';
-    retryButton.style.display = 'none';
+    cancelButton.classList.add('hide');
+    statusBar.classList.add('hide');
+    // Reset the UI for a new upload
+    document.querySelector('.widget-copy').classList.remove('hide');
+    document.querySelector('.widget-button').classList.remove('hide');
   };
 
-  const showError = (message) => {
-    statusMessage.textContent = `Error: ${message}`;
-    retryButton.style.display = 'inline';
-  };
+  cancelButton.addEventListener('click', cancelUpload);
 
   try {
     const { accessToken, discoveryResources } = await initializePdfAssetManager();
@@ -126,7 +139,7 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar, statusMessag
     // Step 1: Prepare Form Data and Upload File with Progress Tracking
     const formData = prepareFormData(file, filename);
 
-    const xhr = new XMLHttpRequest();
+    xhr = new XMLHttpRequest();
     xhr.open('POST', uploadEndpoint, true);
     xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
@@ -136,7 +149,9 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar, statusMessag
       if (xhr.readyState === 4) {
         if (xhr.status === 201) {
           const uploadResult = JSON.parse(xhr.responseText);
+          console.log('Upload Result:', uploadResult);
           const assetUri = uploadResult.uri;
+
           if (contentType !== 'application/pdf') {
             // Step 2: Create PDF
             const createPdfEndpoint = discoveryResources.assets.createpdf.uri;
@@ -145,61 +160,62 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar, statusMessag
               name: filename,
               persistence: 'transient',
             };
-            statusMessage.textContent = 'Creating PDF...';
             createPdf(createPdfEndpoint, createPdfPayload, accessToken).then((createPdfResult) => {
+              console.log('Create PDF result:', createPdfResult);
               const jobUri = createPdfResult.job_uri;
+              console.log('Job URI:', jobUri);
 
               // Step 3: Check Job Status
               checkJobStatus(jobUri, accessToken, discoveryResources).then(() => {
-                statusMessage.textContent = 'PDF created successfully!';
+                cancelButton.classList.add('hide');
               });
             }).catch((error) => {
-              showError('Failed to create PDF');
-              throw new Error('Error creating PDF:', error);
+              console.error('Error creating PDF:', error);
+              alert('Failed to create PDF');
+              cancelButton.classList.add('hide');
             });
           }
 
           getDownloadUri(assetUri, accessToken, discoveryResources).then((downloadUri) => {
+            console.log('Download URI:', downloadUri);
+
             // Generate Blob URL and Display PDF
             const blobViewerUrl = getAcrobatWebLink(filename, assetUri, downloadUri);
-            statusMessage.appendChild(document.createElement('br'));
-            statusMessage.append(document.createTextNode('Download PDF: '));
+            console.log('Blob URL:', blobViewerUrl);
             const downloadLink = document.createElement('a');
             downloadLink.href = blobViewerUrl;
             downloadLink.textContent = filename;
             downloadLink.target = '_blank';
-            statusMessage.appendChild(downloadLink);
+            cancelButton.classList.add('hide');
           }).catch((error) => {
-            showError('Failed to fetch download URI');
-            throw new Error('Error fetching download URI:', error);
+            console.error('Error fetching download URI:', error);
+            alert('Failed to fetch download URI');
+            cancelButton.classList.add('hide');
           });
         } else {
-          showError(`${xhr.statusText} - ${xhr.responseText} - ${xhr.status}`);
+          // statusBar.appendChild(document.createTextNode(`${xhr.statusText} - ${xhr.responseText} - ${xhr.status}`));
+          cancelButton.classList.add('hide');
         }
       }
     };
 
-    xhr.onerror = () => {
-      showError('Network error occurred during the upload.');
-    };
-
     xhr.send(formData);
   } catch (error) {
-    showError('An error occurred during the upload process. Please try again.');
-    throw new Error('Error uploading file:', error);
+    console.error('Error during upload:', error);
+    alert('An error occurred during the upload process. Please try again later.');
+    cancelButton.classList.add('hide');
   }
-
-  retryButton.onclick = () => {
-    resetForm();
-    uploadToAdobe(file, progressBarWrapper, progressBar, statusMessage, retryButton, fileInput);
-  };
 };
 
-const upload = (pbw, pb, sm, retryButton, fileInput) => {
-  const file = fileInput.files[0];
-  if (file) {
-    uploadToAdobe(file, pbw, pb, sm, retryButton, fileInput);
-  }
+const createProgressSection = () => {
+  const progressBarWrapper = createTag('div', { class: 'pBar-wrapper' });
+  const progressBar = createTag('div', { class: 'pBar' });
+  const cancelButton = document.querySelector('.cancel-button');
+  return {
+    progressBarWrapper,
+    progressBar,
+    cancelButton,
+  };
 };
 
 export default function init(element) {
@@ -215,7 +231,13 @@ export default function init(element) {
   const heading = createTag('h1', { class: 'widget-heading' }, `${content[1].textContent}`);
   const dropZone = createTag('div', { id: 'dZone', class: 'widget-center' });
   const copy = createTag('p', { class: 'widget-copy' }, `${content[2].textContent}`);
+  const actionArea = createTag('p', { class: 'action-area' });
+  const statusBar = createTag('p', { class: 'status-bar hide' });
+  const statusMessage = createTag('span', { class: 'message' }, 'Uploading file to acrobat.adobe.com');
+  const statusPercentage = createTag('span', { class: 'percentage' }, '0%');
+
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
+  const cancelButton = createTag('button', { class: 'widget-cancel con-button outline button-xl hide' }, 'Cancel');
   const buttonLabel = createTag('label', { for: 'file-upload', class: 'widget-button' }, `${content[3].textContent}`);
   const legal = createTag('p', { class: 'widget-legal' }, `${content[4].textContent}`);
   const subTitle = createTag('p', { class: 'widget-sub' }, 'Adobe Acrobat');
@@ -223,25 +245,24 @@ export default function init(element) {
   const iconSecurity = createTag('div', { class: 'security-icon' });
   const icon = createTag('div', { class: 'widget-big-icon' });
   const footer = createTag('div', { class: 'widget-footer' });
-  const progressBarWrapper = createTag('div', { class: 'pBar-wrapper' });
-  const progressBar = createTag('div', { class: 'pBar' });
-  const statusMessage = createTag('p', { class: 'status-message' });
-  const retryButton = createTag('button', { class: 'retry-button', style: 'display: none;' }, 'Retry');
 
   wrapper.append(subTitle);
   subTitle.prepend(iconLogo);
   wrapper.append(icon);
   wrapper.append(heading);
   wrapper.append(copy);
-  wrapper.append(button);
-  wrapper.append(buttonLabel);
+  statusBar.append(statusMessage);
+  statusBar.append(statusPercentage);
+  wrapper.append(statusBar);
+  actionArea.append(button);
+  actionArea.append(cancelButton);
+  actionArea.append(buttonLabel);
+  wrapper.append(actionArea);
   footer.append(iconSecurity);
   footer.append(legal);
   element.append(wrapper);
   element.append(footer);
   element.append(wrappernew);
-  progressBarWrapper.appendChild(retryButton);
-  element.append(statusMessage);
 
   if (Number(window.localStorage.limit) > 1) {
     const upsell = createTag('div', { class: 'upsell' }, 'You have reached your limit. Please upgrade.');
@@ -252,7 +273,11 @@ export default function init(element) {
   dropZone.addEventListener('dragover', handleDragOver);
   dropZone.addEventListener('drop', handleDrop);
 
-  document.getElementById('file-upload').addEventListener('change', (e) => {
-    upload(progressBarWrapper, progressBar, statusMessage, retryButton, e.target);
+  button.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    const progressSection = createProgressSection();
+    if (file) {
+      uploadToAdobe(file, progressSection);
+    }
   });
 }

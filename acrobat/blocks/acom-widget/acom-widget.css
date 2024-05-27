@@ -64,7 +64,7 @@
 .widget-big-icon {
   width: 500px;
   height: 500px;
-  background-image: url(../../img/icons/chat-pdf.png);
+  background-image: url('../../img/icons/chat-pdf.svg');
   background-size: contain;
   margin: auto;
   background-repeat: no-repeat;
@@ -107,6 +107,19 @@
   transition: visibility 0s, opacity 0.5s linear;
 }
 
+.status-bar {
+  margin-left: 40px;
+  font-size: 16px;
+  color: #464646;
+  display: inline-flex;
+  max-width: 550px;
+  justify-content: space-between;
+}
+
+.status-bar.hide {
+  display: none;
+}
+
 .pBar-wrapper {
   height: 8px;
   width: 550px;
@@ -115,6 +128,7 @@
   margin-top: 20px;
   border-radius: 25px;
 }
+
 
 .pBar {
   position: relative;
@@ -126,7 +140,7 @@
 }
 
 .widget-heading {
-  font-size: 82px;
+  font-size: 72px;
   font-weight: 600;
   line-height: 130%;
   margin: 0;
@@ -145,8 +159,8 @@
 
 .widget-wrapper {
   margin: 5px;
-  background-color: #ffffff;
-  min-height: 570px;
+  background-color: #fff;
+  min-height: 443px;
   height: 100%;
   width: 100%;
   display: flex;
@@ -156,17 +170,21 @@
   border-radius: 20px;
 }
 
+.action-area {
+  margin-top: 32px;
+  padding: 0 40px;
+}
+
 .widget-button {
   border-radius: 24px;
-  max-width: 138px;
-  padding: 10px;
-  background: #0265dc;
-  text-align: center;
-  color: #fff;
-  margin: 32px 0 0 40px;
   font-size: 18px;
   font-weight: 700;
-  margin-bottom: 48px;-
+  height: 48px;
+  padding: 12px 24px;
+  white-space: nowrap;
+  background-color: #0265dc;
+  color: white;
+  border-color: transparent;
 }
 
 .widget-button:hover {
