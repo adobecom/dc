@@ -1,34 +1,18 @@
-const ENVS = {
-  prod: 'https://pdfnow.adobe.io',
-  stage: 'https://pdfnow-stage.adobe.io',
-  dev: 'https://pdfnow-dev.adobe.io',
-};
-
-function getEnv() {
-  const { host } = window.location;
-  // eslint-disable-next-line compat/compat
-  const PAGE_URL = new URL(window.location.href);
-  const query = PAGE_URL.searchParams.get('env');
-
-  if (query) return ENVS[query];
-  if (host.includes('stage.adobe') || host.includes('corp.adobe') || host.includes('stage')) {
-    return ENVS.stage;
-  }
-  if (host.includes('hlx.page') || host.includes('localhost') || host.includes('hlx.live')) {
-    return ENVS.dev;
-  }
-  return ENVS.prod;
-}
-
-const baseApiUrl = getEnv();
-const DISCOVERY_URL = `${baseApiUrl}/discovery`;
-
-let percent = 0;
+import {
+  initializePdfAssetManager,
+  createPdf,
+  checkJobStatus,
+  getDownloadUri,
+  prepareFormData,
+  getAcrobatWebLink,
+} from './pdfAssetManager.js';
 
 const createTag = (tag, attributes, html) => {
   const el = document.createElement(tag);
   if (html) {
-    if (html instanceof HTMLElement || html instanceof SVGElement || html instanceof DocumentFragment) {
+    if (html instanceof HTMLElement
+      || html instanceof SVGElement
+      || html instanceof DocumentFragment) {
       el.append(html);
     } else if (Array.isArray(html)) {
       el.append(...html);
@@ -72,64 +56,18 @@ const handleDrop = (e) => {
   }
 };
 
-const getAdobeToken = async () => {
-  try {
-    console.log('Getting Adobe token...');
-    // eslint-disable-next-line compat/compat
-    const response = await fetch(tokenEndpoint, { method: 'POST' });
-    const data = await response.json();
-    console.log('Adobe token:', data);
-    return { accessToken: data.access_token, expiry: data.discovery.expiry };
-  } catch (error) {
-    console.error('Error getting Adobe token:', error);
-    throw error;
-  }
-};
-const getAnonymousToken = async () => {
-  const url = `${baseApiUrl}/users/anonymous_token`;
-  const headers = { Accept: `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/anonymous_token_v1.json"` };
-
-  try {
-    // eslint-disable-next-line compat/compat
-    const response = await fetch(url, { headers, method: 'POST' });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch anonymous token: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching anonymous token:', error);
-    throw error;
-  }
+const formatBytes = (bytes, decimals = 2) => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${(bytes / k ** i).toFixed(dm)} ${sizes[i]}`;
 };
 
-const initializePdfAssetManager = async () => {
-  const anonymousTokenResponse = await getAnonymousToken();
-  const { access_token: accessToken, discovery } = anonymousTokenResponse;
-
-  const discoveryResources = discovery.resources;
-
-  return {
-    accessToken,
-    discoveryResources,
-  };
-};
-
-const encodeBlobUrl = (blobUrl = {}) => {
-  try {
-    const encodedBlobUrl = btoa(JSON.stringify(blobUrl));
-    console.log('Encoded Blob URL:', encodedBlobUrl);
-    return encodedBlobUrl.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  } catch (err) {
-    console.error(err.message);
-    throw err;
-  }
-};
-
-const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
+const uploadToAdobe = async (file, progressBarWrapper, progressBar, statusMessage, retryButton, fileInput) => {
   const filename = file.name;
-  // const encodeFileName = encodeURIComponent(filename);
+  const fileSize = file.size;
   const extension = filename.split('.').slice(-1)[0].toLowerCase();
   let contentType;
 
@@ -156,168 +94,111 @@ const uploadToAdobe = async (file, progressBarWrapper, progressBar) => {
   document.querySelector('.widget-button').insertAdjacentElement('afterend', progressBarWrapper);
   document.querySelector('.widget-button').remove();
   progressBarWrapper.appendChild(progressBar);
-  const movepb = document.querySelector('.pBar');
-  const interval = setInterval(() => {
-    percent += 10;
-    movepb.style.width = `${percent}%`;
-  }, 305);
+  progressBarWrapper.appendChild(statusMessage);
+
+  // Display file details
+  statusMessage.textContent = `File: ${filename} (${formatBytes(fileSize)}) - Type: ${contentType}`;
+
+  const updateProgressBar = (event) => {
+    if (event.lengthComputable) {
+      const percentComplete = (event.loaded / event.total) * 100;
+      progressBar.style.width = `${percentComplete}%`;
+      statusMessage.textContent = `Uploading... ${percentComplete.toFixed(2)}% (${formatBytes(event.loaded)} / ${formatBytes(event.total)})`;
+    }
+  };
+
+  const resetForm = () => {
+    fileInput.value = '';
+    progressBar.style.width = '0%';
+    statusMessage.textContent = '';
+    retryButton.style.display = 'none';
+  };
+
+  const showError = (message) => {
+    statusMessage.textContent = `Error: ${message}`;
+    retryButton.style.display = 'inline';
+  };
 
   try {
     const { accessToken, discoveryResources } = await initializePdfAssetManager();
     const uploadEndpoint = discoveryResources.assets.upload.uri;
-    // Step 1: Upload File
-    const formData = new FormData();
-    formData.append('parameters', new Blob([JSON.stringify({
-      options: {
-        ignore_content_type: true,
-        name: filename,
-      },
 
-    })], { type: `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/asset_upload_parameters_v1.json"` }));
-    formData.append('file', file, filename);
+    // Step 1: Prepare Form Data and Upload File with Progress Tracking
+    const formData = prepareFormData(file, filename);
 
-    // eslint-disable-next-line compat/compat
-    const uploadResponse = await fetch(uploadEndpoint, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${accessToken}` },
-      body: formData,
-    });
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', uploadEndpoint, true);
+    xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
-    if (!uploadResponse.ok) {
-      throw new Error(`Failed to upload file: ${uploadResponse.statusText}`);
-    }
+    xhr.upload.addEventListener('progress', updateProgressBar, false);
 
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 201) {
+          const uploadResult = JSON.parse(xhr.responseText);
+          const assetUri = uploadResult.uri;
+          if (contentType !== 'application/pdf') {
+            // Step 2: Create PDF
+            const createPdfEndpoint = discoveryResources.assets.createpdf.uri;
+            const createPdfPayload = {
+              asset_uri: assetUri,
+              name: filename,
+              persistence: 'transient',
+            };
+            statusMessage.textContent = 'Creating PDF...';
+            createPdf(createPdfEndpoint, createPdfPayload, accessToken).then((createPdfResult) => {
+              const jobUri = createPdfResult.job_uri;
 
-
-    const uploadResult = await uploadResponse.json();
-    console.log('Upload Result:', uploadResult);
-    const assetUri = uploadResult.uri;
-
-    if (contentType !== 'application/pdf') {
-      // Step 2: Create PDF
-      const createPdfEndpoint = discoveryResources.assets.createpdf.uri;
-      // eslint-disable-next-line compat/compat
-      const createPdfResponse = await fetch(createPdfEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/createpdf_parameters_v1.json"`,
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          asset_uri: assetUri,
-          name: filename,
-          persistence: 'transient',
-        }),
-      });
-
-      if (!createPdfResponse.ok) {
-        throw new Error(`Failed to create PDF: ${createPdfResponse.statusText}`);
-      }
-
-      const createPdfResult = await createPdfResponse.json();
-      const jobUri = createPdfResult.job_uri;
-      console.log('Job URI:', jobUri);
-
-      // Step 3: Check Job Status
-      const checkJobStatus = async () => {
-        const jobStatusUrlTemplate = discoveryResources.jobs.status.uri;
-        const url = jobStatusUrlTemplate.replace('{?job_uri}', `?job_uri=${encodeURIComponent(jobUri)}`);
-
-        try {
-          // eslint-disable-next-line compat/compat
-          const statusResponse = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
-          if (!statusResponse.ok) {
-            throw new Error(`Failed to check job status: ${statusResponse.statusText}`);
+              // Step 3: Check Job Status
+              checkJobStatus(jobUri, accessToken, discoveryResources).then(() => {
+                statusMessage.textContent = 'PDF created successfully!';
+              });
+            }).catch((error) => {
+              showError('Failed to create PDF');
+              throw new Error('Error creating PDF:', error);
+            });
           }
-          const statusResult = await statusResponse.json();
-          if (statusResult.status === 'done') {
-            return statusResult;
-          }
-          if (statusResult.status === 'failed') {
-            throw new Error('Job failed');
-          }
-          // eslint-disable-next-line compat/compat
-          return new Promise((resolve) => {
-            setTimeout(() => resolve(checkJobStatus()), statusResult.retry_interval || 2000);
+
+          getDownloadUri(assetUri, accessToken, discoveryResources).then((downloadUri) => {
+            // Generate Blob URL and Display PDF
+            const blobViewerUrl = getAcrobatWebLink(filename, assetUri, downloadUri);
+            statusMessage.appendChild(document.createElement('br'));
+            statusMessage.append(document.createTextNode('Download PDF: '));
+            const downloadLink = document.createElement('a');
+            downloadLink.href = blobViewerUrl;
+            downloadLink.textContent = filename;
+            downloadLink.target = '_blank';
+            statusMessage.appendChild(downloadLink);
+          }).catch((error) => {
+            showError('Failed to fetch download URI');
+            throw new Error('Error fetching download URI:', error);
           });
-        } catch (error) {
-          console.error('Error checking job status:', error);
-          throw error;
+        } else {
+          showError(`${xhr.statusText} - ${xhr.responseText} - ${xhr.status}`);
         }
-      };
-
-      await checkJobStatus();
-    }
-
-    const getAssetMetadata = async () => {
-      const getMetadataUrlTemplate = discoveryResources.assets.get_metadata.uri;
-      const url = getMetadataUrlTemplate.replace('{?asset_uri}', `?asset_uri=${encodeURIComponent(assetUri)}`);
-
-      try {
-        // eslint-disable-next-line compat/compat
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/createpdf_parameters_v1.json"`,
-          },
-        });
-        console.log('Meta:', response);
-      } catch (error) {
-        console.error('Error fetching asset metadata:', error);
-        throw error;
       }
     };
-    await getAssetMetadata();
 
-    const getDownloadUri = async (makeTicket = true, makeDirectStorageUri = true) => {
-      const downloadUriTemplate = discoveryResources.assets.download_uri.uri;
-      // eslint-disable-next-line compat/compat
-      const url = new URL(downloadUriTemplate.replace('{?asset_uri,make_direct_storage_uri,action}', ''));
-      url.searchParams.append('asset_uri', assetUri);
-      if (makeTicket) {
-        url.searchParams.append('make_ticket', 'true');
-      }
-      if (makeDirectStorageUri) {
-        url.searchParams.append('make_direct_storage_uri', 'true');
-      }
-      console.log('Download URI:', url);
-      try {
-        // eslint-disable-next-line compat/compat
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': `application/vnd.adobe.dc+json;profile="${baseApiUrl}/asset_uri_download_v1.json"`,
-          },
-        });
-        const data = await response.json();
-        console.log('Download URI:', data.uri);
-        return data.uri;
-      } catch (error) {
-        console.error('Error fetching download URI:', error);
-        throw error;
-      }
+    xhr.onerror = () => {
+      showError('Network error occurred during the upload.');
     };
-    const downloadUri = await getDownloadUri();
-    console.log('Download URI:', downloadUri);
 
-    // Generate Blob URL and Display PDF
-    const blobUrlStructure = { source: 'signed-uri', itemName: filename, itemType: 'application/pdf' };
-    const encodedBlobUrl = encodeBlobUrl(blobUrlStructure);
-    const blobViewerUrl = `https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${assetUri}#${downloadUri}`;
-    console.log('Blob URL:', blobViewerUrl);
-    window.location.href = blobViewerUrl;
+    xhr.send(formData);
   } catch (error) {
-    console.error('Error during upload:', error);
-    alert('An error occurred during the upload process. Please try again later.');
-  } finally {
-    clearInterval(interval);
+    showError('An error occurred during the upload process. Please try again.');
+    throw new Error('Error uploading file:', error);
   }
+
+  retryButton.onclick = () => {
+    resetForm();
+    uploadToAdobe(file, progressBarWrapper, progressBar, statusMessage, retryButton, fileInput);
+  };
 };
 
-const upload = (pbw, pb) => {
-  const file = document.getElementById('file-upload').files[0];
+const upload = (pbw, pb, sm, retryButton, fileInput) => {
+  const file = fileInput.files[0];
   if (file) {
-    uploadToAdobe(file, pbw, pb);
+    uploadToAdobe(file, pbw, pb, sm, retryButton, fileInput);
   }
 };
 
@@ -344,6 +225,8 @@ export default function init(element) {
   const footer = createTag('div', { class: 'widget-footer' });
   const progressBarWrapper = createTag('div', { class: 'pBar-wrapper' });
   const progressBar = createTag('div', { class: 'pBar' });
+  const statusMessage = createTag('p', { class: 'status-message' });
+  const retryButton = createTag('button', { class: 'retry-button', style: 'display: none;' }, 'Retry');
 
   wrapper.append(subTitle);
   subTitle.prepend(iconLogo);
@@ -357,6 +240,8 @@ export default function init(element) {
   element.append(wrapper);
   element.append(footer);
   element.append(wrappernew);
+  progressBarWrapper.appendChild(retryButton);
+  element.append(statusMessage);
 
   if (Number(window.localStorage.limit) > 1) {
     const upsell = createTag('div', { class: 'upsell' }, 'You have reached your limit. Please upgrade.');
@@ -368,6 +253,6 @@ export default function init(element) {
   dropZone.addEventListener('drop', handleDrop);
 
   document.getElementById('file-upload').addEventListener('change', (e) => {
-    upload(progressBarWrapper, progressBar);
+    upload(progressBarWrapper, progressBar, statusMessage, retryButton, e.target);
   });
 }
