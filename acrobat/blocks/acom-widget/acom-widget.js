@@ -153,7 +153,6 @@ const uploadToAdobe = async (file, progressSection) => {
       if (xhr.readyState === 4) {
         if (xhr.status === 201) {
           const uploadResult = JSON.parse(xhr.responseText);
-          console.log('Upload Result:', uploadResult);
           const assetUri = uploadResult.uri;
 
           if (contentType !== 'application/pdf') {
@@ -165,18 +164,12 @@ const uploadToAdobe = async (file, progressSection) => {
               persistence: 'transient',
             };
             createPdf(createPdfEndpoint, createPdfPayload, accessToken).then((createPdfResult) => {
-              console.log('Create PDF result:', createPdfResult);
               const jobUri = createPdfResult.job_uri;
-              console.log('Job URI:', jobUri);
-
               // Step 3: Check Job Status
-              checkJobStatus(jobUri, accessToken, discoveryResources).then(() => {
-                cancelButton.classList.add('hide');
-              });
+              checkJobStatus(jobUri, accessToken, discoveryResources);
             }).catch((error) => {
-              console.error('Error creating PDF:', error);
               alert('Failed to create PDF');
-              cancelButton.classList.add('hide');
+              throw Error('Error creating PDF:', error);
             });
           }
 
@@ -186,14 +179,12 @@ const uploadToAdobe = async (file, progressSection) => {
             if (redirect !== 'off') {
               window.location = blobViewerUrl;
             } else {
+              // eslint-disable-next-line no-console
               console.log('Blob Viewer URL:', `<a href="${blobViewerUrl}" target="_blank">View PDF</a>`);
             }
-            cancelButton.classList.add('hide');
           }).catch((error) => {
             throw Error('Error getting download URI:', error);
           });
-        } else {
-          cancelButton.classList.add('hide');
         }
       }
     };
