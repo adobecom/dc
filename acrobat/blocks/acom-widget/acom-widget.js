@@ -7,6 +7,10 @@ import {
   getAcrobatWebLink,
 } from './pdfAssetManager.js';
 
+// eslint-disable-next-line compat/compat
+const PAGE_URL = new URL(window.location.href);
+const redirect = PAGE_URL.searchParams.get('redirect');
+
 const createTag = (tag, attributes, html) => {
   const el = document.createElement(tag);
   if (html) {
@@ -177,23 +181,18 @@ const uploadToAdobe = async (file, progressSection) => {
           }
 
           getDownloadUri(assetUri, accessToken, discoveryResources).then((downloadUri) => {
-            console.log('Download URI:', downloadUri);
-
             // Generate Blob URL and Display PDF
             const blobViewerUrl = getAcrobatWebLink(filename, assetUri, downloadUri);
-            console.log('Blob URL:', blobViewerUrl);
-            const downloadLink = document.createElement('a');
-            downloadLink.href = blobViewerUrl;
-            downloadLink.textContent = filename;
-            downloadLink.target = '_blank';
+            if (redirect !== 'off') {
+              window.location = blobViewerUrl;
+            } else {
+              console.log('Blob Viewer URL:', `<a href="${blobViewerUrl}" target="_blank">View PDF</a>`);
+            }
             cancelButton.classList.add('hide');
           }).catch((error) => {
-            console.error('Error fetching download URI:', error);
-            alert('Failed to fetch download URI');
-            cancelButton.classList.add('hide');
+            throw Error('Error getting download URI:', error);
           });
         } else {
-          // statusBar.appendChild(document.createTextNode(`${xhr.statusText} - ${xhr.responseText} - ${xhr.status}`));
           cancelButton.classList.add('hide');
         }
       }
@@ -201,9 +200,8 @@ const uploadToAdobe = async (file, progressSection) => {
 
     xhr.send(formData);
   } catch (error) {
-    console.error('Error during upload:', error);
-    alert('An error occurred during the upload process. Please try again later.');
-    cancelButton.classList.add('hide');
+    alert('An error occurred during the upload process. Please try again.');
+    throw Error('Error uploading file:', error);
   }
 };
 
