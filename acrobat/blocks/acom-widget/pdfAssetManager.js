@@ -4,21 +4,16 @@ const ENVS = {
   dev: 'https://pdfnow-dev.adobe.io',
 };
 
-function getEnv() {
-  const { host } = window.location;
+const getEnv = () => {
   // eslint-disable-next-line compat/compat
-  const PAGE_URL = new URL(window.location.href);
-  const query = PAGE_URL.searchParams.get('env');
+  const { host, searchParams } = new URL(window.location.href);
+  const query = searchParams.get('env');
 
   if (query) return ENVS[query];
-  if (host.includes('stage.adobe') || host.includes('corp.adobe') || host.includes('stage')) {
-    return ENVS.stage;
-  }
-  if (host.includes('hlx.page') || host.includes('localhost') || host.includes('hlx.live')) {
-    return ENVS.dev;
-  }
+  if (host.includes('stage.adobe') || host.includes('corp.adobe') || host.includes('stage')) return ENVS.stage;
+  if (host.includes('hlx.page') || host.includes('localhost') || host.includes('hlx.live')) return ENVS.dev;
   return ENVS.prod;
-}
+};
 
 const baseApiUrl = getEnv();
 
@@ -31,15 +26,10 @@ const fetchWithAuth = async (url, accessToken, options = {}) => {
   try {
     // eslint-disable-next-line compat/compat
     const response = await fetch(url, { ...options, headers });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+    return response.json();
   } catch (error) {
-    throw new Error(`Error fetching ${url}:`, error);
+    throw new Error(`Error fetching ${url}: ${error}`);
   }
 };
 
@@ -50,37 +40,28 @@ const getAnonymousToken = async () => {
   try {
     // eslint-disable-next-line compat/compat
     const response = await fetch(url, { headers, method: 'POST' });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch anonymous token: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
+    if (!response.ok) throw new Error(`Failed to fetch anonymous token: ${response.statusText}`);
+    return response.json();
   } catch (error) {
-    throw new Error(`Error fetching ${url}:`, error);
+    throw new Error(`Error fetching ${url}: ${error}`);
   }
 };
 
-export async function initializePdfAssetManager() {
-  const anonymousTokenResponse = await getAnonymousToken();
-  const { access_token: accessToken, discovery } = anonymousTokenResponse;
-  const discoveryResources = discovery.resources;
-  return {
-    accessToken,
-    discoveryResources,
-  };
-}
-export async function uploadAsset(uploadUrl, formData, accessToken) {
+export const initializePdfAssetManager = async () => {
+  const { access_token: accessToken, discovery } = await getAnonymousToken();
+  return { accessToken, discoveryResources: discovery.resources };
+};
+
+export const uploadAsset = async (uploadUrl, formData, accessToken) => {
   try {
-    const response = await fetchWithAuth(uploadUrl, accessToken, {
+    return await fetchWithAuth(uploadUrl, accessToken, {
       method: 'POST',
       body: formData,
     });
-    return response;
   } catch (error) {
-    throw new Error('Error uploading asset:', error);
+    throw new Error(`Error uploading asset: ${error}`);
   }
-}
+};
 
 export const prepareFormData = (file, filename) => {
   const formData = new FormData();
@@ -94,58 +75,36 @@ export const prepareFormData = (file, filename) => {
   return formData;
 };
 
-export async function createPdf(createPdfUrl, payload, accessToken) {
+export const createPdf = async (createPdfUrl, payload, accessToken) => {
   try {
-    const response = await fetchWithAuth(createPdfUrl, accessToken, {
+    return await fetchWithAuth(createPdfUrl, accessToken, {
       method: 'POST',
       headers: { 'Content-Type': `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/createpdf_parameters_v1.json"` },
       body: JSON.stringify(payload),
     });
-    return response;
   } catch (error) {
-    throw new Error('Error creating PDF:', error);
+    throw new Error(`Error creating PDF: ${error}`);
   }
-}
+};
 
-export async function checkJobStatus(jobUri, accessToken, discoveryResources) {
+export const checkJobStatus = async (jobUri, accessToken, discoveryResources) => {
   const jobStatusUrlTemplate = discoveryResources.jobs.status.uri;
   const url = jobStatusUrlTemplate.replace('{?job_uri}', `?job_uri=${encodeURIComponent(jobUri)}`);
 
   try {
     const statusResult = await fetchWithAuth(url, accessToken);
-
-    if (statusResult.status === 'done') {
-      return statusResult;
-    }
-
-    if (statusResult.status === 'failed') {
-      throw new Error('Job failed');
-    }
-
-    const RETRY_INTERVAL = 2000;
-
-    setTimeout(() => {
-      checkJobStatus(jobUri, accessToken, discoveryResources)
-        .catch((error) => {
-          throw new Error('Error checking job status:', error);
-        });
-    }, statusResult.retry_interval || RETRY_INTERVAL);
+    if (statusResult.status === 'done' || statusResult.status === 'failed') return statusResult;
+    setTimeout(() => checkJobStatus(
+      jobUri,
+      accessToken,
+      discoveryResources,
+    ), statusResult.retry_interval || 2000);
   } catch (error) {
-    throw new Error('Error checking job status:', error);
+    throw new Error(`Error checking job status: ${error}`);
   }
   return null;
-}
-export async function getAssetMetadata(assetUri, accessToken, discoveryResources) {
-  const getMetadataUrlTemplate = discoveryResources.assets.get_metadata.uri;
-  const url = getMetadataUrlTemplate.replace('{?asset_uri}', `?asset_uri=${encodeURIComponent(assetUri)}`);
+};
 
-  try {
-    const response = await fetchWithAuth(url, accessToken);
-    return response;
-  } catch (error) {
-    throw new Error('Error checking job status:', error);
-  }
-}
 const encodeBlobUrl = (blobUrl = {}) => {
   const encodedBlobUrl = btoa(JSON.stringify(blobUrl));
   return encodedBlobUrl.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -158,28 +117,23 @@ export const getAcrobatWebLink = (filename, assetUri, downloadUri) => {
   return `${acrobatDomain}/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${assetUri}#${downloadUri}`;
 };
 
-export async function getDownloadUri(
+export const getDownloadUri = async (
   assetUri,
   accessToken,
   discoveryResources,
   makeTicket = false,
   makeDirectStorageUri = false,
-) {
+) => {
   const downloadUriTemplate = discoveryResources.assets.download_uri.uri;
   let url = `${downloadUriTemplate.replace('{?asset_uri,make_direct_storage_uri,action}', '')}?asset_uri=${encodeURIComponent(assetUri)}`;
 
-  if (makeTicket) {
-    url += '&make_ticket=true';
-  }
-
-  if (makeDirectStorageUri) {
-    url += '&make_direct_storage_uri=true';
-  }
+  if (makeTicket) url += '&make_ticket=true';
+  if (makeDirectStorageUri) url += '&make_direct_storage_uri=true';
 
   try {
-    const response = await fetchWithAuth(url.toString(), accessToken);
+    const response = await fetchWithAuth(url, accessToken);
     return response.uri;
   } catch (error) {
-    throw error('Error checking job status:', error);
+    throw new Error(`Error fetching download URI: ${error}`);
   }
-}
+};
