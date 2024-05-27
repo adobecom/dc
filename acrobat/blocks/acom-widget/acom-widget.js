@@ -109,15 +109,12 @@ const uploadToAdobe = async (file, progressSection) => {
   progressBarWrapper.insertAdjacentElement('beforebegin', statusBar);
 
   // Display file details
-  // statusMessage.textContent = `File: ${filename} (${formatBytes(fileSize)}) - Type: ${contentType}`;
 
   const updateProgressBar = (event) => {
     if (event.lengthComputable) {
       const percentComplete = (event.loaded / event.total) * 100;
       progressBar.style.width = `${percentComplete}%`;
-      statusBar.querySelector('.percentage').textContent = `${percentComplete.toFixed(2)}%`;
-
-      // statusMessage.textContent = `Uploading ${formatBytes(fileSize)} file... ${percentComplete.toFixed(2)}% (${formatBytes(event.loaded)} / ${formatBytes(event.total)})`;
+      statusBar.querySelector('.percentage').textContent = `${percentComplete.toFixed(0)}%`;
     }
   };
 
