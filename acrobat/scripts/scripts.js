@@ -290,6 +290,29 @@ const CONFIG = {
   imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
 };
 
+const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
+
+if (IMS_GUEST) {
+  const CLIENT_ID = document.querySelector('meta[name="ims-cid"]')?.content;
+
+  CONFIG.adobeid = {
+    client_id: CLIENT_ID,
+    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations',
+
+    api_parameters: { check_token: { guest_allowed: true } },
+
+    onAccessToken: (accessToken) => {
+      window.dc_hosted?.ims_callbacks?.onAccessToken?.(accessToken);
+    },
+    onReauthAccessToken: (reauthTokenInformation) => {
+      window.dc_hosted?.ims_callbacks?.onReauthAccessToken?.(reauthTokenInformation);
+    },
+    onAccessTokenHasExpired: () => {
+      window.dc_hosted?.ims_callbacks?.onAccessTokenHasExpired?.();
+    },
+  };
+}
+
 function replaceDotMedia(area = document) {
   // eslint-disable-next-line compat/compat
   const currUrl = new URL(window.location);
