@@ -1,0 +1,67 @@
+name: Floodgate Repo Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      syncBranch:
+        description: 'Branch to sync'
+        required: true
+        default: 'stage'
+        type: choice
+        options:
+          - 'stage'
+          - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.FG_SYNC_APP_ID }}
+          private-key: ${{ secrets.FG_SYNC_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: "dc-pink"
+
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.syncBranch }}
+
+      - name: Clone Floodgate Repository and Checkout Selected Branch
+        run: |
+          git clone https://github.com/adobecom/dc-pink.git ../dc-pink
+          cd ../dc-pink
+          git checkout $FG_SYNC_BRANCH
+          echo "dc-pink branch"
+          git branch
+          cd ../dc
+          echo "dc branch"
+          git branch
+        env:
+          FG_SYNC_BRANCH: ${{ inputs.syncBranch }}
+
+      - name: Overwrite floodgate repo files with latest from source repo
+        run: |
+          rsync -av --exclude='fstab.yaml' --exclude='.github' --exclude='.kodiak' --exclude='.git' --exclude='.idea' --exclude='.husky' --exclude='.vscode' --exclude='tools/sidekick/config.json' ./ ../dc-pink/
+
+      - name: Commit and Push Changes to Floodgate Repository
+        run: |
+          cd ../dc-pink
+          echo "dc-pink branch"
+          git branch
+          git config user.email "$FG_SYNC_BOT_EMAIL"
+          git config user.name "$FG_SYNC_BOT_NAME"
+          git status          
+          git remote set-url origin https://oauth2:$GITHUB_TOKEN@github.com/adobecom/dc-pink.git
+          git remote -v
+          git add .
+          git commit -m "Syncing dc to dc-pink"
+          git push origin $FG_SYNC_BRANCH --force
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          FG_SYNC_BOT_EMAIL: ${{ secrets.FG_SYNC_BOT_EMAIL }}
+          FG_SYNC_BOT_NAME: ${{ secrets.FG_SYNC_BOT_NAME }}
+          FG_SYNC_BRANCH: ${{ inputs.syncBranch }}

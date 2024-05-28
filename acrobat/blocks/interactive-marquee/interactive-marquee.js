@@ -119,6 +119,7 @@ function createTab(slide, index, isFirst) {
     'data-index': index,
     'aria-selected': isFirst ? 'true' : 'false',
     'aria-labelledby': `Viewing ${slide.label}`,
+    'daa-ll': `btn-${index + 1}`,
   }, slide.icon);
 
   const tabLabel = createTag('p', { class: 'slider-label' }, slide.label);
@@ -138,6 +139,8 @@ function createSlideComponents(slides) {
   const tabs = createTag('ul', { class: 'slider-tabs', role: 'tablist' });
   const deck = createTag('div', { class: 'slider-deck' });
   let firstSlideActive = true;
+  // track the index of the slide
+  tabs.setAttribute('daa-lh', 'marquee-nav');
 
   slides.forEach((slide, index) => {
     const tab = createTab(slide, index, firstSlideActive);
