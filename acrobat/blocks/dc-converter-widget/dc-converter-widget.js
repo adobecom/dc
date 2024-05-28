@@ -53,7 +53,7 @@ const localeMap = {
   ua: 'uk-ua',
   au: 'en-au',
   hk_en: 'en-hk',
-  in: 'en-us',
+  in: 'en-in',
   in_hi: 'hi-in',
   nz: 'en-nz',
   hk_zh: 'zh-hant-hk',
