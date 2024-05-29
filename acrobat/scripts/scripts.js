@@ -422,6 +422,12 @@ const { ietf } = getLocale(locales);
     }
   }, 1000);
 
+  window.addEventListener('IMS:Ready', async () => {
+    if (!window.adobeIMS.isSignedInUser()) {
+      document.querySelector('.dropZoneContent').style.pointerEvents = 'auto';
+    }
+  });
+
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
     if (window.dc_hosted) {
