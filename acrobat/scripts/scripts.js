@@ -394,7 +394,7 @@ const { ietf } = getLocale(locales);
   }
 
   // Import base milo features and run them
-  const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana, getMetadata, loadIms } = await import(`${miloLibs}/utils/utils.js`);
 
   addLocale(ietf);
 
@@ -414,13 +414,12 @@ const { ietf } = getLocale(locales);
   lanaLogging();
 
   // IMS Ready
-  const imsReady = setInterval(() => {
-    if (window.adobeIMS && window.adobeIMS.initialized) {
-      clearInterval(imsReady);
-      const imsIsReady = new CustomEvent('IMS:Ready');
-      window.dispatchEvent(imsIsReady);
-    }
-  }, 1000);
+  loadIms().then(() => {
+    const imsIsReady = new CustomEvent('IMS:Ready');
+    window.dispatchEvent(imsIsReady);
+  }).catch((e) => {
+    console.error(e);
+  });
 
   window.addEventListener('IMS:Ready', async () => {
     if (!window.adobeIMS.isSignedInUser()) {
