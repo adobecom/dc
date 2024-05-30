@@ -422,10 +422,6 @@ const { ietf } = getLocale(locales);
     }
   });
 
-  window.addEventListener('IMS:Ready', async () => {
-
-  });
-
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
     if (window.dc_hosted) {
