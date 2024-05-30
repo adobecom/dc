@@ -414,6 +414,7 @@ const { ietf } = getLocale(locales);
   lanaLogging();
 
   // IMS Ready
+  // eslint-disable-next-line
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
