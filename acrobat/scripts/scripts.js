@@ -417,14 +417,13 @@ const { ietf } = getLocale(locales);
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
-  }).catch((e) => {
-    console.error(e);
+    if (!window.adobeIMS.isSignedInUser()) {
+      widgetBlock.querySelector('.dropZoneContent').style.pointerEvents = 'auto';
+    }
   });
 
   window.addEventListener('IMS:Ready', async () => {
-    if (!window.adobeIMS.isSignedInUser()) {
-      document.querySelector('.dropZoneContent').style.pointerEvents = 'auto';
-    }
+
   });
 
   // DC Hosted Ready...
