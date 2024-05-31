@@ -1,4 +1,4 @@
-/* eslint-disable no-console, compat/compat */
+/* eslint-disable no-console, compat/compat, import/no-unresolved */
 const MILO_TEMPLATES = [
   '404',
   'featured-story',
@@ -901,6 +901,7 @@ export const combineMepSources = async (persEnabled, promoEnabled, mepParam) => 
 };
 
 async function checkForPageMods() {
+  // eslint-disable-next-line ecmalist/no-object-fromentries
   const { mep: mepParam } = Object.fromEntries(PAGE_URL.searchParams);
   if (mepParam === 'off') return;
   const persEnabled = getMepEnablement('personalization');
