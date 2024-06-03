@@ -190,6 +190,13 @@ body.l2-state div[data-section='widget'].widget-default-height {
   }
 }
 
+@media(max-width: 400px) {
+  body.l2-state #dc-converter-widget {
+    height: unset;
+    min-height: unset;
+  }
+}
+
 picture,
 img {
   aspect-ratio: auto;
