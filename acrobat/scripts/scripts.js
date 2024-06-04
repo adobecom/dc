@@ -417,13 +417,11 @@ const { ietf } = getLocale(locales);
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
-  }).catch((e) => {
-    console.error(e);
-  });
-
-  window.addEventListener('IMS:Ready', async () => {
     if (!window.adobeIMS.isSignedInUser()) {
-      document.querySelector('.dropZoneContent').style.pointerEvents = 'auto';
+      const dropZoneContentStyle = widgetBlock?.querySelector('.dropZoneContent')?.style;
+      if (dropZoneContentStyle) {
+        dropZoneContentStyle.pointerEvents = 'auto';
+      }
     }
   });
 
