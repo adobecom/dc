@@ -297,7 +297,7 @@ if (IMS_GUEST) {
 
   CONFIG.adobeid = {
     client_id: CLIENT_ID,
-    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations',
+    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read',
 
     api_parameters: { check_token: { guest_allowed: true } },
 
