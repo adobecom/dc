@@ -417,12 +417,6 @@ const { ietf } = getLocale(locales);
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
-    if (!window.adobeIMS.isSignedInUser()) {
-      const dropZoneContentStyle = widgetBlock?.querySelector('.dropZoneContent')?.style;
-      if (dropZoneContentStyle) {
-        dropZoneContentStyle.pointerEvents = 'auto';
-      }
-    }
   });
 
   // DC Hosted Ready...
