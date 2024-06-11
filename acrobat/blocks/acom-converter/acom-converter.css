@@ -1,0 +1,159 @@
+.acom-converter {
+  background-color: #fc6767;
+  min-height: 570px;
+}
+
+.acom-converter_wrapper {
+  align-items: center;
+  background: white;
+  border: grey;
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  width: 100%;
+  width: 75%;
+  max-width: 75%;
+  height: auto;
+  margin: auto;
+  position: relative;
+  left: 0;
+  top: 30px;
+  right: 0;
+  z-index: 1;
+}
+
+.acom-converter_title-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  line-height: 22px;
+  padding: 42px 24px 0;
+}
+
+.acom-converter_title-img {
+  width: 24px;
+  height: 24px;
+  background-image: url('/acrobat/img/icons/widget-icon.png');
+  background-size: cover;
+  display: inline-block;
+  margin-right: 14px;
+}
+
+.acom-converter_title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.acom-converter_heading {
+  padding: 0 0 16px;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 56px;
+  margin: 0;
+  text-align: center;
+}
+
+.acom-converter_dropzone {
+  border: 3px dashed grey;
+  /* height: calc(100% - 44px); */
+  pointer-events: auto;
+  width: calc(100% - 56px);
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.acom-converter_artwork {
+  width: 140px;
+  height: 154px;
+  padding: 15px 0 0;
+}
+
+.acom-converter_copy {
+  font-size: 18px;
+  line-height: 22px;
+  margin-top: 16px;
+}
+
+.acom-converter_cta {
+  flex-grow: 1;
+  margin: 23px 0 47px;
+  align-items: center;
+  display: flex;
+  border: 0 none;
+  box-sizing: border-box;
+  width: 411px;
+  background-color: #0265dc;
+  border-radius: 24px;
+  font-size: 18px;
+  height: 48px;
+  text-align: center;
+  color: white;
+  user-select: none;
+  touch-action: none;
+  cursor: default;
+  isolation: isolate;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.3;
+  text-decoration: none;
+  display: inline-flex;
+  position: relative;
+  overflow: visible;
+}
+
+.acom-converter_footer {
+  align-items: center;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.acom-converter_secure-icon {
+  background-image: url('/acrobat/img/icons/widget-sec.png');
+  display: flex;
+  height: 48px;
+  width: 48px;
+  width: 28px;
+  height: 35px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 9px 10px 6px;
+}
+
+.acom-converter_legal-wrapper {
+  align-items: flex-start;
+  color: #505050;
+  display: flex;
+  flex-flow: column;
+  line-height: 0;
+  padding: 0 5px;
+  font-size: 12px;
+}
+
+.acom-converter_legal_info-icon {
+  line-height: 15px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+
+.acom-converter_legal_info-icon::after {
+  background-image: url('/acrobat/img/icons/info.png');
+  content: "";
+  width: 14px;
+  height: 14px;
+  margin: 0 9px;
+}
