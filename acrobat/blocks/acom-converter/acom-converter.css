@@ -58,7 +58,7 @@
 }
 
 .acom-converter_dropzone {
-  border: 3px dashed grey;
+  border: 3px dashed #e1e1e1;
   /* height: calc(100% - 44px); */
   pointer-events: auto;
   width: calc(100% - 56px);
@@ -70,6 +70,15 @@
   height: 100%;
   justify-content: center;
   text-align: center;
+  cursor: pointer;
+}
+
+.acom-converter_dropzone:hover {
+  border: 3px dashed #cbcaca;
+}
+
+.acom-converter_dropzone.dragover {
+  border: 3px solid #1473e6;
 }
 
 .acom-converter_artwork {
@@ -100,7 +109,7 @@
   color: white;
   user-select: none;
   touch-action: none;
-  cursor: default;
+  cursor: pointer;
   isolation: isolate;
   justify-content: center;
   align-items: center;

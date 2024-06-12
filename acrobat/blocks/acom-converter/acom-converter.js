@@ -17,7 +17,7 @@ export default async function init(element) {
   const dropZone = createTag('div', { class: 'acom-converter_dropzone' });
   const artwork = createTag('img', { class: 'acom-converter_artwork', src: `${content[1].querySelector('img').src}` });
   const copy = createTag('div', { class: 'acom-converter_copy' }, 'Select a Microsoft Word document (DOCX or DOC) to convert to PDF.');
-  const cta = createTag('button', { class: 'hide', type: 'file', id: 'file-upload' });
+  const cta = createTag('input', { class: 'hide', type: 'file', id: 'file-upload' });
   const ctaLabel = createTag('label', { for: 'file-upload', class: 'acom-converter_cta' }, content[3].textContent);
 
   const converterFooter = createTag('div', { class: 'acom-converter_footer' });
@@ -34,7 +34,46 @@ export default async function init(element) {
   converterLegalWrapper.append(converterLegalIcon, converterLegal);
   element.append(wrapper);
 
-  cta.addEventListener('change', (e) => {
-    console.log(e);
+  //Setup listeners
+  setupEventListener(dropZone, cta);
+  setupDragDropListeners(dropZone)
+}
+
+function setupEventListener(dropzone, cta) {
+  dropzone.addEventListener('click', (e) => {
+    e.preventDefault();
+    cta.click();
+  })
+
+  cta.addEventListener('click', (e) => {
+    e.stopPropagation();
+  })
+}
+
+function preventDefaults(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+function setupDragDropListeners(dropzone) {
+  dropzone.addEventListener('dragenter', (e) => {
+    preventDefaults(e);
+    dropzone.classList.add('dragover');
+  })
+
+  dropzone.addEventListener('dragover', (e) => {
+    preventDefaults(e);
+    dropzone.classList.add('dragover');
+  });
+
+  dropzone.addEventListener('dragleave', (e) => {
+    preventDefaults(e);
+    dropzone.classList.remove('dragover');
+  });
+
+  dropzone.addEventListener('drop', (e) => {
+    preventDefaults(e);
+    dropzone.classList.remove('dragover');
+    //TODO: handle drop
   });
 }
