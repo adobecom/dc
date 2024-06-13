@@ -3,6 +3,45 @@ import { setLibs } from '../../scripts/utils.js';
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
+function setupEventListener(dropzone, cta) {
+  dropzone.addEventListener('click', (e) => {
+    e.preventDefault();
+    cta.click();
+  })
+
+  cta.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+}
+
+function preventDefaults(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+function setupDragDropListeners(dropzone) {
+  dropzone.addEventListener('dragenter', (e) => {
+    preventDefaults(e);
+    dropzone.classList.add('dragover');
+  });
+
+  dropzone.addEventListener('dragover', (e) => {
+    preventDefaults(e);
+    dropzone.classList.add('dragover');
+  });
+
+  dropzone.addEventListener('dragleave', (e) => {
+    preventDefaults(e);
+    dropzone.classList.remove('dragover');
+  });
+
+  dropzone.addEventListener('drop', (e) => {
+    preventDefaults(e);
+    dropzone.classList.remove('dragover');
+    // TODO: handle drop
+  });
+}
+
 export default async function init(element) {
   await createTag();
   const content = Array.from(element.querySelectorAll(':scope > div'));
@@ -16,12 +55,11 @@ export default async function init(element) {
   const heading = createTag('div', { class: 'acom-converter_heading' }, content[0].textContent);
   const dropZone = createTag('div', { class: 'acom-converter_dropzone' });
   const artwork = createTag('img', { class: 'acom-converter_artwork', src: `${content[1].querySelector('img').src}` });
-  const artworkWrapper = createTag('div', {class: 'acom-converter_artwork-wrapper'});
+  const artworkWrapper = createTag('div', { class: 'acom-converter_artwork-wrapper' });
   const copy = createTag('div', { class: 'acom-converter_copy' }, 'Select a Microsoft Word document (DOCX or DOC) to convert to PDF.');
   const cta = createTag('input', { class: 'hide', type: 'file', id: 'file-upload' });
   const ctaLabel = createTag('label', { for: 'file-upload', class: 'acom-converter_cta' }, content[3].textContent);
-  const ctaWrapper = createTag('div', {class: 'acom-converter_cta-wrapper'});
-
+  const ctaWrapper = createTag('div', { class: 'acom-converter_cta-wrapper' });
 
   const converterFooter = createTag('div', { class: 'acom-converter_footer' });
   const converterSecureIcon = createTag('i', { class: 'acom-converter_secure-icon' });
@@ -39,46 +77,7 @@ export default async function init(element) {
   converterLegalWrapper.append(converterLegalIcon, converterLegal);
   element.append(wrapper);
 
-  //Setup listeners
+  // Setup listeners
   setupEventListener(dropZone, cta);
-  setupDragDropListeners(dropZone)
-}
-
-function setupEventListener(dropzone, cta) {
-  dropzone.addEventListener('click', (e) => {
-    e.preventDefault();
-    cta.click();
-  })
-
-  cta.addEventListener('click', (e) => {
-    e.stopPropagation();
-  })
-}
-
-function preventDefaults(e) {
-  e.preventDefault();
-  e.stopPropagation();
-}
-
-function setupDragDropListeners(dropzone) {
-  dropzone.addEventListener('dragenter', (e) => {
-    preventDefaults(e);
-    dropzone.classList.add('dragover');
-  })
-
-  dropzone.addEventListener('dragover', (e) => {
-    preventDefaults(e);
-    dropzone.classList.add('dragover');
-  });
-
-  dropzone.addEventListener('dragleave', (e) => {
-    preventDefaults(e);
-    dropzone.classList.remove('dragover');
-  });
-
-  dropzone.addEventListener('drop', (e) => {
-    preventDefaults(e);
-    dropzone.classList.remove('dragover');
-    //TODO: handle drop
-  });
+  setupDragDropListeners(dropZone);
 }
