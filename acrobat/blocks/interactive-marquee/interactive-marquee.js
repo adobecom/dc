@@ -14,6 +14,17 @@ const blockTypeSizes = {
   },
 };
 
+const getImage = (el) => {
+  const img = el.querySelector('picture') || el.querySelector('.icon');
+  if (img) {
+    const wrapper = document.createElement('span');
+    wrapper.classList.add('icon-wrapper');
+    wrapper.appendChild(img);
+    return wrapper;
+  }
+  return null;
+};
+
 function decorateText(el, size) {
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const heading = headings[headings.length - 1];
@@ -108,6 +119,7 @@ function createTab(slide, index, isFirst) {
     'data-index': index,
     'aria-selected': isFirst ? 'true' : 'false',
     'aria-labelledby': `Viewing ${slide.label}`,
+    'daa-ll': `btn-${index + 1}`,
   }, slide.icon);
 
   const tabLabel = createTag('p', { class: 'slider-label' }, slide.label);
@@ -123,9 +135,12 @@ function createSlide(slide) {
 }
 
 function createSlideComponents(slides) {
+  const nav = createTag('div', { class: 'slider-nav' });
   const tabs = createTag('ul', { class: 'slider-tabs', role: 'tablist' });
   const deck = createTag('div', { class: 'slider-deck' });
   let firstSlideActive = true;
+  // track the index of the slide
+  tabs.setAttribute('daa-lh', 'marquee-nav');
 
   slides.forEach((slide, index) => {
     const tab = createTab(slide, index, firstSlideActive);
@@ -135,10 +150,11 @@ function createSlideComponents(slides) {
       firstSlideActive = false;
     }
     tabs.append(tab);
+    nav.append(tabs);
     deck.append(slideElement);
   });
 
-  return { tabs, deck };
+  return { nav, deck, tabs };
 }
 
 function addDarkClassIfNecessary(element) {
@@ -169,7 +185,7 @@ export default async function init(el) {
         title.icon = info[2].innerHTML;
       } else {
         const data = {
-          icon: info[0].querySelector('.icon') || null,
+          icon: getImage(info[0]),
           label: info[1].innerHTML !== '' ? info[1].innerHTML : null,
           video: info[2].querySelectorAll('a').length > 0 ? info[2].querySelectorAll('a') : null,
         };
@@ -184,9 +200,9 @@ export default async function init(el) {
     const interactive = createTag('div', { class: 'interactive-container' });
     const slider = createTag('div', { class: 'slider' });
     const text = createTitleElement(title);
-    const { tabs, deck } = createSlideComponents(slides);
-    if (text) slider.append(text);
-    slider.append(deck, tabs);
+    const { nav, deck, tabs } = createSlideComponents(slides);
+    if (text) nav.append(text);
+    slider.append(deck, nav);
     handleSlideChange(tabs, deck);
     interactive.append(slider);
     foreground.append(interactive);

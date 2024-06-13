@@ -188,7 +188,7 @@ const locales = {
   se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
   ch_it: { ietf: 'it-CH', tk: 'bbf5pok.css' },
   tr: { ietf: 'tr-TR', tk: 'aaz7dvd.css' },
-  ae_en: { ietf: 'ar-EN', tk: 'pps7abe.css' },
+  ae_en: { ietf: 'ar-EN', tk: 'pps7abe.css', dir: 'ltr' },
   uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
   at: { ietf: 'de-AT', tk: 'vin7zsi.css' },
   cz: { ietf: 'cs-CZ', tk: 'aaz7dvd.css' },
@@ -290,6 +290,46 @@ const CONFIG = {
   imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
 };
 
+const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
+
+if (IMS_GUEST) {
+  const CLIENT_ID = document.querySelector('meta[name="ims-cid"]')?.content;
+
+  CONFIG.adobeid = {
+    client_id: CLIENT_ID,
+    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read',
+
+    api_parameters: { check_token: { guest_allowed: true } },
+
+    onAccessToken: (accessToken) => {
+      window.dc_hosted?.ims_callbacks?.onAccessToken?.(accessToken);
+    },
+    onReauthAccessToken: (reauthTokenInformation) => {
+      window.dc_hosted?.ims_callbacks?.onReauthAccessToken?.(reauthTokenInformation);
+    },
+    onAccessTokenHasExpired: () => {
+      window.dc_hosted?.ims_callbacks?.onAccessTokenHasExpired?.();
+    },
+  };
+}
+
+function replaceDotMedia(area = document) {
+  // eslint-disable-next-line compat/compat
+  const currUrl = new URL(window.location);
+  const pathSeg = currUrl.pathname.split('/').length;
+  if (pathSeg >= 3) return;
+  const resetAttributeBase = (tag, attr) => {
+    area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
+      // eslint-disable-next-line compat/compat
+      el[attr] = `${new URL(`${CONFIG.contentRoot}${el.getAttribute(attr).substring(1)}`, window.location).href}`;
+    });
+  };
+  resetAttributeBase('img', 'src');
+  resetAttributeBase('source', 'srcset');
+}
+
+replaceDotMedia(document);
+
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
   const lcpImg = document.querySelector('img');
@@ -354,7 +394,7 @@ const { ietf } = getLocale(locales);
   }
 
   // Import base milo features and run them
-  const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana, getMetadata, loadIms } = await import(`${miloLibs}/utils/utils.js`);
 
   addLocale(ietf);
 
@@ -374,13 +414,10 @@ const { ietf } = getLocale(locales);
   lanaLogging();
 
   // IMS Ready
-  const imsReady = setInterval(() => {
-    if (window.adobeIMS && window.adobeIMS.initialized) {
-      clearInterval(imsReady);
-      const imsIsReady = new CustomEvent('IMS:Ready');
-      window.dispatchEvent(imsIsReady);
-    }
-  }, 1000);
+  loadIms().then(() => {
+    const imsIsReady = new CustomEvent('IMS:Ready');
+    window.dispatchEvent(imsIsReady);
+  });
 
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
