@@ -16,9 +16,12 @@ export default async function init(element) {
   const heading = createTag('div', { class: 'acom-converter_heading' }, content[0].textContent);
   const dropZone = createTag('div', { class: 'acom-converter_dropzone' });
   const artwork = createTag('img', { class: 'acom-converter_artwork', src: `${content[1].querySelector('img').src}` });
+  const artworkWrapper = createTag('div', {class: 'acom-converter_artwork-wrapper'});
   const copy = createTag('div', { class: 'acom-converter_copy' }, 'Select a Microsoft Word document (DOCX or DOC) to convert to PDF.');
   const cta = createTag('input', { class: 'hide', type: 'file', id: 'file-upload' });
   const ctaLabel = createTag('label', { for: 'file-upload', class: 'acom-converter_cta' }, content[3].textContent);
+  const ctaWrapper = createTag('div', {class: 'acom-converter_cta-wrapper'});
+
 
   const converterFooter = createTag('div', { class: 'acom-converter_footer' });
   const converterSecureIcon = createTag('i', { class: 'acom-converter_secure-icon' });
@@ -29,7 +32,9 @@ export default async function init(element) {
   // Consutruction of Widget
   titleWrapper.append(titleImg, title);
   wrapper.append(titleWrapper, heading, dropZone, converterFooter);
-  dropZone.append(artwork, copy, ctaLabel, cta);
+  artworkWrapper.append(artwork);
+  ctaWrapper.append(ctaLabel, cta);
+  dropZone.append(artworkWrapper, copy, ctaWrapper);
   converterFooter.append(converterSecureIcon, converterLegalWrapper);
   converterLegalWrapper.append(converterLegalIcon, converterLegal);
   element.append(wrapper);
