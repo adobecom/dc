@@ -7,7 +7,7 @@ function setupEventListener(dropzone, cta) {
   dropzone.addEventListener('click', (e) => {
     e.preventDefault();
     cta.click();
-  })
+  });
 
   cta.addEventListener('click', (e) => {
     e.stopPropagation();
