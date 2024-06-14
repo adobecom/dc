@@ -110,7 +110,7 @@ describe('Test scripts', () => {
       await require('../../acrobat/scripts/scripts.js');
       await delay(100);
       const config = await getConfig();
-      expect(config.miloLibs).toEqual('https://www.stage.adobe.com/libs');
+      expect(config.miloLibs).toEqual('/libs');
     });
   });
 
@@ -121,7 +121,7 @@ describe('Test scripts', () => {
       await require('../../acrobat/scripts/scripts.js');
       await delay(100);
       const config = await getConfig();
-      expect(config.miloLibs).toEqual('http://localhost:6456/libs');
+      expect(config.miloLibs).toEqual('/libs');
     });
   });
 
@@ -154,7 +154,7 @@ describe('Test scripts', () => {
       await require('../../acrobat/scripts/scripts.js');
       await delay(100);
       const config = await getConfig();
-      expect(config.miloLibs).toEqual('https://main--milo--adobecom.hlx.page/libs');
+      expect(config.miloLibs).toEqual('https://main--milo--adobecom.hlx.live/libs');
     });
   });
 
@@ -165,7 +165,7 @@ describe('Test scripts', () => {
       await require('../../acrobat/scripts/scripts.js');
       await delay(100);
       const config = await getConfig();
-      expect(config.miloLibs).toEqual('https://main--milo--tsayadobe.hlx.page/libs');
+      expect(config.miloLibs).toEqual('https://main--milo--tsayadobe.hlx.live/libs');
     });
   });
 });
