@@ -1,0 +1,194 @@
+.acom-widget {
+  background-color: #fc6767;
+  min-height: 570px;
+  color: transparent;
+  background-color: #fff;
+  background-image: radial-gradient(at 1% 0,#ff715b 0,transparent 50%),radial-gradient(at 48% 89%,#fff 0,transparent 50%),radial-gradient(at 100% 88%,#fff 0,transparent 50%),radial-gradient(at 1% 85%,#fff 0,transparent 50%),radial-gradient(at 93% 33%,#6d51f9 0,transparent 50%),radial-gradient(at 44% 55%,#c8e1fd 0,transparent 50%),radial-gradient(at 11% 22%,#fe4b38 0,transparent 50%),radial-gradient(at 88% 4%,#ea0f00 0,transparent 50%),radial-gradient(at 45% 0,#fe4b38 0,transparent 50%);
+  min-height: 623px;
+}
+
+.demo-text {
+  text-align: center;
+  font-size: 8px;
+  margin: 0;
+  background: #7396ff;
+}
+
+.acom-widget.ready {
+  color: initial;
+}
+
+.widget-sub {
+  margin: 0;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+  padding: 40px 0 0 40px;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.widget-center {
+  border: 3px #e1e1e1 dashed;
+  width: calc(100% - 48px);
+  margin: auto;
+  height: 70%;
+  border-radius: 8px;
+}
+
+.widget-center.dragging {
+  border: 3px #7396ff solid;
+}
+
+.widget-legal {
+  margin-top: 30px;
+  font-size: 14px;
+  line-height: 20px;
+  max-width: 527px;
+  text-align: left;
+  display: inline-block;
+
+}
+
+.widget-icon {
+  width: 20px;
+  height: 20px;
+  background-image: url('../../img/icons/widget-icon.png');
+  background-size: cover;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.widget-big-icon {
+  width: 500px;
+  height: 500px;
+  background-image: url('../../img/icons/chat-pdf.svg');
+  background-size: contain;
+  margin: auto;
+  background-repeat: no-repeat;
+  display: inline;
+  float: right;
+  position: absolute;
+  right: 0;
+  top: 40px;
+}
+
+.security-icon {
+  width: 42px;
+  height: 42px;
+  background-image: url(../../img/icons/widget-sec.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.widget-footer {
+  padding-top: 24px;
+  margin-top: 70px;
+  text-align: center;
+}
+
+
+#CIDTWO {
+  /* display: none; */
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+
+
+#CID.facade {
+  position: absolute;
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+
+.status-bar {
+  margin-left: 40px;
+  font-size: 16px;
+  color: #464646;
+  display: inline-flex;
+  max-width: 550px;
+  justify-content: space-between;
+}
+
+.status-bar.hide {
+  display: none;
+}
+
+.pBar-wrapper {
+  height: 8px;
+  width: 550px;
+  background: #d5d5d5;
+  margin-left: 40px;
+  margin-top: 20px;
+  border-radius: 25px;
+}
+
+
+.pBar {
+  position: relative;
+  height: 8px;
+  width: 0%;
+  background: #6338ee;
+  border-radius: 25px;
+  max-width: 100% !important;
+}
+
+.widget-heading {
+  font-size: 72px;
+  font-weight: 600;
+  line-height: 130%;
+  margin: 0;
+  padding: 0 0 0 40px;
+  text-align: left;
+}
+
+.widget-copy {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 33px;
+  text-align: left;
+  padding: 0 0 0 40px;
+  width: 466px;
+}
+
+.widget-wrapper {
+  margin: 5px;
+  background-color: #fff;
+  min-height: 443px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  border: 2px dashed #d5d5d5;
+  border-radius: 20px;
+}
+
+.action-area {
+  margin-top: 32px;
+  padding: 0 40px;
+}
+
+.widget-button {
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: 700;
+  height: 48px;
+  padding: 12px 24px;
+  white-space: nowrap;
+  background-color: #0265dc;
+  color: white;
+  border-color: transparent;
+}
+
+.widget-button:hover {
+  text-decoration: none;
+  color: #fff;
+  background: #0054b6;
+}
