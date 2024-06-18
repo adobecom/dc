@@ -107,7 +107,7 @@ function createAcomWidget(element, content) {
   converterLegalWrapper.append(converterLegalIcon, converterLegal);
   element.append(wrapper);
 
-  return {dropZone, cta};
+  return { dropZone, cta };
 }
 
 export default async function init(element) {
