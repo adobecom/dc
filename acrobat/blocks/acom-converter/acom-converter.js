@@ -49,8 +49,8 @@ function createGenAiWidget(element, content) {
   const title = createTag('div', { class: 'acom-converter_title' }, 'Adobe Acrobat');
   const heading = createTag('div', { class: 'acom-converter_heading gen-ai' }, content[0].textContent);
   const copy = createTag('div', { class: 'acom-converter_copy gen-ai' }, content[2].textContent);
-  const textWrapper = createTag('div', {class: 'text-wrapper'});
-  const innerTextWrapper = createTag('div', {class: 'inner-text-wrapper'});
+  const textWrapper = createTag('div', { class: 'text-wrapper' });
+  const innerTextWrapper = createTag('div', { class: 'inner-text-wrapper' });
   const dropZone = createTag('div', { class: 'acom-converter_dropzone gen-ai' });
   const artwork = createTag('img', { class: 'acom-converter_artwork gen-ai', src: `${content[1].querySelector('img').src}` });
   const artworkWrapper = createTag('div', { class: 'acom-converter_artwork-wrapper gen-ai' });
@@ -65,7 +65,7 @@ function createGenAiWidget(element, content) {
   titleWrapper.append(titleImg, title);
   ctaWrapper.append(ctaLabel, cta);
 
-  innerTextWrapper.append(titleWrapper, heading, copy, ctaWrapper)
+  innerTextWrapper.append(titleWrapper, heading, copy, ctaWrapper);
   textWrapper.append(innerTextWrapper);
   wrapper.append(dropZone, converterFooter);
   artworkWrapper.append(artwork);
@@ -74,7 +74,7 @@ function createGenAiWidget(element, content) {
   converterLegalWrapper.append(converterLegalIcon, converterLegal);
   element.append(wrapper);
 
-  return {dropZone, cta};
+  return { dropZone, cta };
 }
 
 function createAcomWidget(element, content) {
@@ -117,9 +117,8 @@ export default async function init(element) {
   content.forEach((con) => con.classList.add('hide'));
   element.dataset.verb = VERB.trim();
 
-  const {dropZone, cta} = element.classList.contains('chat-pdf') ? createGenAiWidget(element, content) : createAcomWidget(element, content);
+  const { dropZone, cta } = element.classList.contains('chat-pdf') ? createGenAiWidget(element, content) : createAcomWidget(element, content);
   // Setup listeners
   setupEventListener(dropZone, cta);
   setupDragDropListeners(dropZone);
-
 }
