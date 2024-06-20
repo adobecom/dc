@@ -61,8 +61,8 @@ export default async function init(element) {
   const VERB = element.classList.value.replace('mobile-widget', '');
   content.forEach((con) => con.classList.add('hide'));
   element.dataset.verb = VERB.trim();
-  if(window.browser.isMobile) {
-    if(element.classList.contains('chat-pdf')) {
+  if (window.browser.isMobile) {
+    if (element.classList.contains('chat-pdf')) {
       createGenAiMobileWidget(element, content)
     } else {
       createMobileWidget(element, content)
