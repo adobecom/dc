@@ -63,9 +63,9 @@ export default async function init(element) {
   element.dataset.verb = VERB.trim();
   if (window.browser.isMobile) {
     if (element.classList.contains('chat-pdf')) {
-      createGenAiMobileWidget(element, content)
+      createGenAiMobileWidget(element, content);
     } else {
-      createMobileWidget(element, content)
+      createMobileWidget(element, content);
     }
   }
 }
