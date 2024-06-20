@@ -10,7 +10,7 @@ function createGenAiMobileWidget(element, content) {
   const title = createTag('div', { class: 'mobile-widget_title' }, 'Adobe Acrobat');
   const heading = createTag('div', { class: 'mobile-widget_heading gen-ai' }, content[0].textContent);
   const copy = createTag('div', { class: 'mobile-widget_copy gen-ai' }, content[2].textContent);
-  const subcopy = createTag('div', { class: 'mobile-widget_subcopy gen-ai'}, content[3].textContent);
+  const subcopy = createTag('div', { class: 'mobile-widget_subcopy gen-ai' }, content[3].textContent);
   const textWrapper = createTag('div', { class: 'text-wrapper' });
   const innerTextWrapper = createTag('div', { class: 'inner-text-wrapper' });
   const dropZone = createTag('div', { class: 'mobile-widget_dropzone gen-ai' });
@@ -61,5 +61,11 @@ export default async function init(element) {
   const VERB = element.classList.value.replace('mobile-widget', '');
   content.forEach((con) => con.classList.add('hide'));
   element.dataset.verb = VERB.trim();
-  if(window.browser.isMobile) element.classList.contains('chat-pdf') ? createGenAiMobileWidget(element, content) : createMobileWidget(element, content);
+  if(window.browser.isMobile) {
+    if(element.classList.contains('chat-pdf')) {
+      createGenAiMobileWidget(element, content)
+    } else {
+      createMobileWidget(element, content)
+    }
+  }
 }
