@@ -38,8 +38,10 @@ function createMobileWidget(element, content) {
   const titleImg = createTag('div', { class: 'mobile-widget_title-img' });
   const title = createTag('div', { class: 'mobile-widget_title' }, 'Adobe Acrobat');
   const heading = createTag('div', { class: 'mobile-widget_heading' }, content[0].textContent);
+  const headerWrapper = createTag('div', { class: 'mobile-widget_header-wrapper' });
   const dropZone = createTag('div', { class: 'mobile-widget_dropzone' });
   const artwork = createTag('img', { class: 'mobile-widget_artwork', src: `${content[1].querySelector('img').src}` });
+  const artworkInnerWrapper = createTag('div', { class: 'mobile-widget_artwork-inner-wrapper' });
   const artworkWrapper = createTag('div', { class: 'mobile-widget_artwork-wrapper' });
   const copy = createTag('div', { class: 'mobile-widget_copy' }, content[2].textContent);
   // TODO: Add check for OS and apply correct href
@@ -48,8 +50,10 @@ function createMobileWidget(element, content) {
 
   // construction of Widget
   titleWrapper.append(titleImg, title);
-  wrapper.append(titleWrapper, heading, dropZone);
-  artworkWrapper.append(artwork);
+  headerWrapper.append(titleWrapper, heading);
+  wrapper.append(headerWrapper, dropZone);
+  artworkInnerWrapper.append(artwork);
+  artworkWrapper.append(artworkInnerWrapper);
   ctaWrapper.append(mobileCta);
   dropZone.append(artworkWrapper, copy, ctaWrapper);
   element.append(wrapper);
