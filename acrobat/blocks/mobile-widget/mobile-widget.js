@@ -45,7 +45,13 @@ function createMobileWidget(element, content) {
   const artworkWrapper = createTag('div', { class: 'mobile-widget_artwork-wrapper' });
   const copy = createTag('div', { class: 'mobile-widget_copy' }, content[2].textContent);
   // TODO: Add check for OS and apply correct href
-  const mobileCta = createTag('a', { class: 'mobile-widget_cta', href: content[4].textContent.toString().trim() }, content[3].textContent);
+  let appLink = '';
+  if (/iPad|iPhone|iPod/.test(window?.browser?.ua) && !window.MSStream) {
+    appLink = content[4].textContent.toString().trim();
+  } else if (/android/i.test(window?.browser?.ua)) {
+    appLink = content[5].textContent.toString().trim();
+  }
+  const mobileCta = createTag('a', { class: 'mobile-widget_cta', href: appLink }, content[3].textContent);
   const ctaWrapper = createTag('div', { class: 'mobile-widget_cta-wrapper' });
 
   // construction of Widget
