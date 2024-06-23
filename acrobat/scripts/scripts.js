@@ -354,8 +354,16 @@ const { ietf } = getLocale(locales);
 (async function loadPage() {
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
+  const mobileAppBlock = document.querySelector('[class*="mobile-widget"]');
+  const hasMobileAppBlock = window.browser.isMobile && document.querySelector('meta[name="mobile-widget"]')?.content === 'true';
 
-  if (widgetBlock) {
+  if (hasMobileAppBlock) {
+    widgetBlock?.remove();
+  } else {
+    mobileAppBlock?.remove();
+  }
+
+  if (widgetBlock && !hasMobileAppBlock) {
     document.body.classList.add('dc-bc');
     document.querySelector('header').className = 'global-navigation has-breadcrumbs';
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
@@ -425,12 +433,6 @@ const { ietf } = getLocale(locales);
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
-    if (!window.adobeIMS.isSignedInUser()) {
-      const dropZoneContentStyle = widgetBlock?.querySelector('.dropZoneContent')?.style;
-      if (dropZoneContentStyle) {
-        dropZoneContentStyle.pointerEvents = 'auto';
-      }
-    }
   });
 
   // DC Hosted Ready...

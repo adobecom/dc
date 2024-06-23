@@ -34,10 +34,6 @@ div [class *= PdfnowLifecycle__dropzone2___] {
   background-color: transparent;
 }
 
-.dropZoneContent {
-  pointer-events: none;
-}
-
 /* ootb widget */
 .dc-converter-widget > div:first-of-type {
   display: none;

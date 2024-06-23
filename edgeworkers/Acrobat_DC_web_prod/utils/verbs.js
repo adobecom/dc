@@ -13,5 +13,6 @@ export default {
   'convert-pdf': 'createpdf',
   'pdf-to-jpg': 'pdf-to-image',
   'rotate-pdf': 'rotate-pages',
-  'crop-pdf': 'crop-pages'
+  'crop-pdf': 'crop-pages',
+  'ai-chat-pdf': 'chat-pdf'
 };
