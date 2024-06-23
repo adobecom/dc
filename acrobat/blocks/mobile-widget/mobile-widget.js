@@ -8,7 +8,7 @@ function createMobileWidget(element, content) {
   const titleWrapper = createTag('div', { class: 'mobile-widget_title-wrapper' });
   const titleImg = createTag('div', { class: 'mobile-widget_title-img' });
   const title = createTag('div', { class: 'mobile-widget_title' }, 'Adobe Acrobat');
-  const heading = createTag('div', { class: 'mobile-widget_heading' }, content[0].textContent);
+  const heading = createTag('h1', { class: 'mobile-widget_heading' }, content[0].textContent);
   const headerWrapper = createTag('div', { class: 'mobile-widget_header-wrapper' });
   const dropZone = createTag('div', { class: 'mobile-widget_dropzone' });
   const artwork = createTag('img', { class: 'mobile-widget_artwork', src: `${content[1].querySelector('img').src}` });
@@ -21,6 +21,9 @@ function createMobileWidget(element, content) {
     appLink = content[4].textContent.toString().trim();
   } else if (/android/i.test(window?.browser?.ua)) {
     appLink = content[5].textContent.toString().trim();
+  } else {
+    // default to iOS App Store
+    appLink = content[4].textContent.toString().trim();
   }
   const mobileCta = createTag('a', { class: 'mobile-widget_cta', href: appLink }, content[3].textContent);
   const ctaWrapper = createTag('div', { class: 'mobile-widget_cta-wrapper' });
