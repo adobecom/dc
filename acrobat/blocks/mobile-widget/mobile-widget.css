@@ -142,6 +142,17 @@
   font-weight: 700;
 }
 
+.mobile-widget_cta:active {
+  text-decoration: none;
+  color: #fff;
+  background-color: #004491;
+}
+
+.mobile-widget_cta:hover {
+  text-decoration: none;
+  color: #fff;
+}
+
 @media (min-width: 48rem) and (max-width: 57.5rem) {
   .mobile-widget_wrapper {
     max-width: 90%;
