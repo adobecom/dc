@@ -41,7 +41,10 @@
     "@babel/register": "7.22.15",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@web/dev-server-import-maps": "^0.0.6",
+    "akamai-edgegrid": "^3.4.5",
+    "braces": "^3.0.3",
     "chai": "4.3.6",
+    "compare-versions": "^6.1.0",
     "eslint": "8.11.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-chai-friendly": "^0.7.2",
@@ -55,23 +58,21 @@
     "sinon": "13.0.1",
     "stylelint": "14.6.0",
     "stylelint-config-prettier": "9.0.3",
-    "stylelint-config-standard": "25.0.0",
-    "akamai-edgegrid": "^3.4.5",
-    "compare-versions": "^6.1.0"
+    "stylelint-config-standard": "25.0.0"
   },
   "dependencies": {
+    "@rollup/plugin-replace": "5.0.5",
+    "@web/dev-server-import-maps": "0.2.0",
+    "@web/dev-server-rollup": "0.6.1",
     "@web/test-runner": "0.18.1",
     "@web/test-runner-commands": "0.9.0",
     "@web/test-runner-playwright": "0.11.0",
-    "@web/dev-server-import-maps": "0.2.0",
-    "@web/dev-server-rollup": "0.6.1",
-    "@rollup/plugin-replace": "5.0.5",    
     "bowser": "^2.11.0",
     "jest-fetch-mock": "^3.0.3"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.14.1"
-  },  
+  },
   "jest": {
     "testRegex": "\\.jest\\.(js|jsx)$",
     "collectCoverageFrom": [
