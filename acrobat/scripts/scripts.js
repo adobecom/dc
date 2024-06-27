@@ -342,8 +342,14 @@ replaceDotMedia(document);
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
-  const lcpImg = document.querySelector('img');
-  lcpImg?.setAttribute('loading', 'eager');
+  const marquee = document.querySelector('.marquee'); // first marquee only
+  if (marquee) {
+    const index = window.browser.isMobile ? 1 : 3;
+    const selectorBG = `.marquee > div:nth-child(1) > div:nth-of-type(${index}) img`;
+    const selectorFG = '.marquee > div:nth-child(2) img';
+    marquee.querySelector(selectorBG)?.setAttribute('loading', 'eager');
+    marquee.querySelector(selectorFG)?.setAttribute('loading', 'eager');
+  }
 }());
 
 /*
