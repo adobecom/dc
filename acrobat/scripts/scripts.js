@@ -342,8 +342,9 @@ replaceDotMedia(document);
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
-  const lcpImg = document.querySelector('img');
-  lcpImg?.setAttribute('loading', 'eager');
+  const index = window.browser.isMobile ? 1 : 3;
+  const selector = `.marquee:not(.small) > div > div:nth-of-type(${index}) img, .marquee.small img`;
+  document.querySelector(selector)?.setAttribute('loading', 'eager');
 }());
 
 /*
