@@ -118,4 +118,22 @@ describe('dc-converter-widget', () => {
     window.dispatchEvent(new CustomEvent('IMS:Ready'));
     expect(window.location.href).toBe('https://www.adobe.com/go/acrobat-fillsign-stage');
   });
+  it.each`
+    hostname
+    ${'www.adobe.com'}
+  `('redirects when signed in', async ({ hostname }) => {
+    window.fetch = jest.fn(() => Promise.resolve(
+      {
+        status: 200,
+        text: () => Promise.resolve(fs.readFileSync(path.resolve(__dirname, './mocks/body.html'))),
+      },
+    ));
+    window.adobeIMS = { isSignedInUser: jest.fn(() => true) };
+    delete window.location;
+    window.location = new URL(`https://${hostname}/acrobat/online/sign-pdf.html`);
+    const block = document.querySelector('.mobile-widget');
+    await init(block);
+    window.dispatchEvent(new CustomEvent('IMS:Ready'));
+    expect(window.location.href).toBe('https://www.adobe.com/go/acrobat-fillsign');
+  });
 });
