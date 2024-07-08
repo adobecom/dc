@@ -18,6 +18,7 @@ export default async function geoPhoneNumber() {
     newLocale = `/${newLocale}/`;
   }
   const updatePhoneNumber = (visNum, i) => {
+    visNum = visNum.replace(/\u00A0/g, ' ');
     const phoneNumberEle = document.querySelector(`.${i}`);
     phoneNumberEle.href = `tel:${visNum}`;
     if (phoneNumberEle.childNodes.length > 1) {
