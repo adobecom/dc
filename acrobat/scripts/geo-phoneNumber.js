@@ -32,7 +32,7 @@ export default async function geoPhoneNumber() {
   const placeHolderJsonData = await placeHolderJson.json();
   placeHolderJsonData.data = placeHolderJsonData.data.map((val) => ({
     ...val,
-    value: val.value.replace(/\u00A0/g, ' ')
+    value: val.value.replace(/\u00A0/g, ' '),
   }));
   window.dcpns = placeHolderJsonData.data;
   const globalPhoneNumbers = new CustomEvent('DCNumbers:Ready');
