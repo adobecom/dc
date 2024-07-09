@@ -359,7 +359,7 @@ const { ietf } = getLocale(locales);
   const mobileAppBlock = document.querySelector('[class*="mobile-widget"]');
   const hasMobileAppBlock = window.browser.isMobile && document.querySelector('meta[name="mobile-widget"]')?.content === 'true';
 
-  if (hasMobileAppBlock) {
+  if (hasMobileAppBlock && mobileAppBlock) {
     widgetBlock?.remove();
   } else {
     mobileAppBlock?.remove();
