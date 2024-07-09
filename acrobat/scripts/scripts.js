@@ -435,10 +435,8 @@ const { ietf } = getLocale(locales);
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
-    if (!window.adobeIMS.isSignedInUser()) {
-      if (widgetBlock) {
-        widgetBlock.style.pointerEvents = 'auto';
-      }
+    if (widgetBlock && !window.adobeIMS.isSignedInUser()) {
+      widgetBlock.style.pointerEvents = 'auto';
     }
   });
 
