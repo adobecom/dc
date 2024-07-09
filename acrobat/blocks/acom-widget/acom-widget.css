@@ -76,7 +76,7 @@
 .security-icon {
   width: 42px;
   height: 42px;
-  background-image: url(../../img/icons/widget-sec.png);
+  background-image: url('../../img/icons/widget-sec.png');
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
