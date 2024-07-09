@@ -178,11 +178,6 @@
     padding-top: 0;
   }
 
-  .mobile-widget_heading {
-    font-size: 28px;
-    line-height: 35px
-  }
-
   .mobile-widget_dropzone {
     height: calc(100% - 24px);
     width: calc(100% - 24px);
