@@ -17,8 +17,7 @@ const connectSrc = [
   '*.blob.core.windows.net',
   '*.mktoresp.com',
   'tag-logger.demandbase.com',
-  'accounts.google.com/gsi/log',
-  'accounts.google.com/gsi/status',
+  'accounts.google.com/gsi/',
   'acom-reviews--adobe.hlx.live/reviews-api/',
   'ade0164.d41.co/',
   'adobe.tt.omtrdc.net',
@@ -55,7 +54,6 @@ const defaultSrc = [
   'acrobat.adobe.com',
   'auth.services.adobe.com',
   'documentcloud.adobe.com',
-  'acrobat.adobe.com',
   ';',
 ];
 

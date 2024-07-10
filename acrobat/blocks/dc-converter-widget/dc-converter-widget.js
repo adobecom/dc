@@ -53,7 +53,7 @@ const localeMap = {
   ua: 'uk-ua',
   au: 'en-au',
   hk_en: 'en-hk',
-  in: 'en-us',
+  in: 'en-in',
   in_hi: 'hi-in',
   nz: 'en-nz',
   hk_zh: 'zh-hant-hk',
@@ -143,6 +143,7 @@ export default async function init(element) {
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '2.14.0';
   const STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
   const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
+  const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
 
   let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
   let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
@@ -199,8 +200,7 @@ export default async function init(element) {
   if (window?.browser?.name === 'Internet Explorer'
     || (window?.browser?.name === 'Microsoft Edge' && window?.browser?.version?.split('.')[0] < 86)
     || (window?.browser?.name === 'Microsoft Edge' && !window?.browser?.version)
-    || (window?.browser?.name === 'Safari' && window?.browser?.version?.split('.')[0] < 14)
-    || (window?.browser?.name === 'Safari' && !window?.browser?.version)) {
+    || (window?.browser?.name === 'Safari' && window?.browser?.version?.split('.')[0] < 14)) {
     window.location.href = EOLBrowserPage;
   }
 
@@ -282,6 +282,9 @@ export default async function init(element) {
   dcScript.dataset.enable_unload_prompt = 'true';
   if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
+  }
+  if (IMS_GUEST) {
+    dcScript.dataset.ims_guests = 'true';
   }
 
   widget.appendChild(dcScript);

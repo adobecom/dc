@@ -3,6 +3,17 @@
   "host": "www.adobe.com",
   "plugins": [
     {
+      "id": "path",
+      "title": "Path",
+      "environments": [ "edit" ],
+      "url": "https://milo.adobe.com/tools/path-finder",
+      "isPalette": true,
+      "passReferrer": true,
+      "passConfig": true,
+      "paletteRect": "top: 50%; left: 50%; transform: translate(-50%,-50%); height: 84px; width: 900px; overflow: hidden; border-radius: 6px; box-shadow: 0 20px 35px 0px rgba(0, 0, 0, 0.5);",
+      "includePaths": [ "**.docx**", "**.xlsx**" ]
+    },
+    {
       "id": "library",
       "title": "Library",
       "environments": [
@@ -40,6 +51,16 @@
       "title": "Localize (V2)",
       "environments": [ "edit" ],
       "url": "https://main--dc--adobecom.hlx.page/tools/loc?milolibs=locui",
+      "passReferrer": true,
+      "passConfig": true,
+      "includePaths": [ "**.xlsx**" ]
+    },
+    {
+      "containerId": "tools",
+      "id": "floodgate",
+      "title": "Floodgate",
+      "environments": [ "edit" ],
+      "url": "https://main--dc--adobecom.hlx.page/tools/floodgate?milolibs=floodgateui",
       "passReferrer": true,
       "passConfig": true,
       "includePaths": [ "**.xlsx**" ]

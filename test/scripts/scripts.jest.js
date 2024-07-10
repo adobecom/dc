@@ -35,6 +35,7 @@ describe('Test scripts', () => {
       getLocale: jest.fn().mockImplementation(() => ({ ietf: 'en-US' })),
       setConfig: mockSetConfig,
       getMetadata: jest.fn().mockReturnValue('123'),
+      loadIms: jest.fn().mockImplementation(() => Promise.resolve()),
     }));
     jest.mock(
       'https://main--milo--adobecom.hlx.page/libs/utils/utils.js',
@@ -45,6 +46,7 @@ describe('Test scripts', () => {
         getLocale: jest.fn().mockImplementation(() => ({ ietf: 'en-US' })),
         setConfig: mockSetConfig,
         getMetadata: jest.fn().mockReturnValue('123'),
+        loadIms: jest.fn().mockImplementation(() => Promise.resolve()),
       }),
     );
     jest.mock('/libs/utils/utils.js', () => ({
@@ -54,6 +56,7 @@ describe('Test scripts', () => {
       getLocale: jest.fn().mockImplementation(() => ({ ietf: 'en-US' })),
       setConfig: mockSetConfig,
       getMetadata: jest.fn().mockReturnValue('123'),
+      loadIms: jest.fn().mockImplementation(() => Promise.resolve()),
     }));
     window.adobeIMS = {
       initialized: true,

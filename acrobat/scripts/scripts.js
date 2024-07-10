@@ -278,6 +278,14 @@ const CONFIG = {
   locales,
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'business.adobe.com', 'helpx.adobe.com'],
+  stageDomainsMap: {
+    'www.adobe.com': 'www.stage.adobe.com',
+    'business.adobe.com': 'business.stage.adobe.com',
+    'helpx.adobe.com': 'helpx.stage.adobe.com',
+    'blog.adobe.com': 'blog.stage.adobe.com',
+    'developer.adobe.com': 'developer-stage.adobe.com',
+    'news.adobe.com': 'news.stage.adobe.com',
+  },
   jarvis: {
     id: 'DocumentCloudWeb1',
     version: '1.0',
@@ -289,6 +297,31 @@ const CONFIG = {
   ],
   imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
 };
+
+const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
+
+if (IMS_GUEST) {
+  const CLIENT_ID = document.querySelector('meta[name="ims-cid"]')?.content;
+
+  CONFIG.adobeid = {
+    client_id: CLIENT_ID,
+    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read',
+
+    guest_token_force_refresh: true,
+
+    api_parameters: { check_token: { guest_allowed: true } },
+
+    onAccessToken: (accessToken) => {
+      window.dc_hosted?.ims_callbacks?.onAccessToken?.(accessToken);
+    },
+    onReauthAccessToken: (reauthTokenInformation) => {
+      window.dc_hosted?.ims_callbacks?.onReauthAccessToken?.(reauthTokenInformation);
+    },
+    onAccessTokenHasExpired: () => {
+      window.dc_hosted?.ims_callbacks?.onAccessTokenHasExpired?.();
+    },
+  };
+}
 
 function replaceDotMedia(area = document) {
   // eslint-disable-next-line compat/compat
@@ -309,8 +342,14 @@ replaceDotMedia(document);
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
-  const lcpImg = document.querySelector('img');
-  lcpImg?.setAttribute('loading', 'eager');
+  const marquee = document.querySelector('.marquee'); // first marquee only
+  if (marquee) {
+    const index = window.browser.isMobile ? 1 : 3;
+    const selectorBG = `.marquee > div:nth-child(1) > div:nth-of-type(${index}) img`;
+    const selectorFG = '.marquee > div:nth-child(2) img';
+    marquee.querySelector(selectorBG)?.setAttribute('loading', 'eager');
+    marquee.querySelector(selectorFG)?.setAttribute('loading', 'eager');
+  }
 }());
 
 /*
@@ -323,8 +362,16 @@ const { ietf } = getLocale(locales);
 (async function loadPage() {
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
+  const mobileAppBlock = document.querySelector('[class*="mobile-widget"]');
+  const hasMobileAppBlock = window.browser.isMobile && document.querySelector('meta[name="mobile-widget"]')?.content === 'true';
 
-  if (widgetBlock) {
+  if (hasMobileAppBlock && mobileAppBlock) {
+    widgetBlock?.remove();
+  } else {
+    mobileAppBlock?.remove();
+  }
+
+  if (widgetBlock && !hasMobileAppBlock) {
     document.body.classList.add('dc-bc');
     document.querySelector('header').className = 'global-navigation has-breadcrumbs';
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
@@ -371,7 +418,7 @@ const { ietf } = getLocale(locales);
   }
 
   // Import base milo features and run them
-  const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana, getMetadata, loadIms } = await import(`${miloLibs}/utils/utils.js`);
 
   addLocale(ietf);
 
@@ -391,13 +438,13 @@ const { ietf } = getLocale(locales);
   lanaLogging();
 
   // IMS Ready
-  const imsReady = setInterval(() => {
-    if (window.adobeIMS && window.adobeIMS.initialized) {
-      clearInterval(imsReady);
-      const imsIsReady = new CustomEvent('IMS:Ready');
-      window.dispatchEvent(imsIsReady);
+  loadIms().then(() => {
+    const imsIsReady = new CustomEvent('IMS:Ready');
+    window.dispatchEvent(imsIsReady);
+    if (widgetBlock && !window.adobeIMS.isSignedInUser()) {
+      widgetBlock.style.pointerEvents = 'auto';
     }
-  }, 1000);
+  });
 
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
