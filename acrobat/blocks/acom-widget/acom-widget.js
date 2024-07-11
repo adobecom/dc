@@ -1,5 +1,6 @@
 import {
   initializePdfAssetManager,
+  validateSSRF,
   createPdf,
   checkJobStatus,
   getDownloadUri,
@@ -8,6 +9,7 @@ import {
 } from './pdfAssetManager.js';
 
 import { setLibs } from '../../scripts/utils.js';
+
 const miloLibs = setLibs('/libs');
 
 // eslint-disable-next-line compat/compat
@@ -71,7 +73,7 @@ const uploadToAdobe = async (file, progressSection) => {
 
   try {
     const { accessToken, discoveryResources } = await initializePdfAssetManager();
-    const uploadEndpoint = discoveryResources.assets.upload.uri;
+    const uploadEndpoint = validateSSRF(discoveryResources.assets.upload.uri);
     const formData = prepareFormData(file, filename);
 
     xhr = new XMLHttpRequest();
@@ -85,7 +87,7 @@ const uploadToAdobe = async (file, progressSection) => {
         const assetUri = uploadResult.uri;
 
         if (contentType !== 'application/pdf') {
-          const createPdfEndpoint = discoveryResources.assets.createpdf.uri;
+          const createPdfEndpoint = validateSSRF(discoveryResources.assets.createpdf.uri);
           const createPdfPayload = {
             asset_uri: assetUri,
             name: filename,
@@ -103,7 +105,7 @@ const uploadToAdobe = async (file, progressSection) => {
 
         try {
           const downloadUri = await getDownloadUri(assetUri, accessToken, discoveryResources);
-          const blobViewerUrl = getAcrobatWebLink(filename, assetUri, downloadUri);
+          const blobViewerUrl = validateSSRF(getAcrobatWebLink(filename, assetUri, downloadUri));
           if (redirect !== 'off') {
             window.location = blobViewerUrl;
           } else {
