@@ -34,6 +34,7 @@ const uploadToAdobe = async (file, progressSection) => {
 
   const contentType = contentTypes[extension];
   if (!contentType) {
+    // eslint-disable-next-line no-alert
     alert('This file is invalid');
     return;
   }
@@ -94,7 +95,10 @@ const uploadToAdobe = async (file, progressSection) => {
             persistence: 'transient',
           };
           try {
-            const createPdfResult = await createPdf(createPdfEndpoint, createPdfPayload, accessToken);
+            const createPdfResult = await createPdf(createPdfEndpoint,
+              createPdfPayload,
+              accessToken,
+            );
             const jobUri = createPdfResult.job_uri;
             await checkJobStatus(jobUri, accessToken, discoveryResources);
           } catch (error) {
@@ -109,6 +113,7 @@ const uploadToAdobe = async (file, progressSection) => {
           if (redirect !== 'off') {
             window.location = blobViewerUrl;
           } else {
+            // eslint-disable-next-line no-console
             console.log('Blob Viewer URL:', `<a href="${blobViewerUrl}" target="_blank">View PDF</a>`);
           }
         } catch (error) {
@@ -119,6 +124,7 @@ const uploadToAdobe = async (file, progressSection) => {
 
     xhr.send(formData);
   } catch (error) {
+    // eslint-disable-next-line no-alert
     alert('An error occurred during the upload process. Please try again.');
     throw new Error('Error uploading file:', error);
   }
