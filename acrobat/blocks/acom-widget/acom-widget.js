@@ -1,5 +1,6 @@
 import {
   initializePdfAssetManager,
+  validateSSRF,
   createPdf,
   checkJobStatus,
   getDownloadUri,
@@ -7,29 +8,13 @@ import {
   getAcrobatWebLink,
 } from './pdfAssetManager.js';
 
+import { setLibs } from '../../scripts/utils.js';
+
+const miloLibs = setLibs('/libs');
+
 // eslint-disable-next-line compat/compat
 const PAGE_URL = new URL(window.location.href);
 const redirect = PAGE_URL.searchParams.get('redirect');
-
-const createTag = (tag, attributes, html) => {
-  const el = document.createElement(tag);
-  if (html) {
-    if (html instanceof HTMLElement
-      || html instanceof SVGElement
-      || html instanceof DocumentFragment
-    ) {
-      el.append(html);
-    } else if (Array.isArray(html)) {
-      el.append(...html);
-    } else {
-      el.insertAdjacentHTML('beforeend', html);
-    }
-  }
-  if (attributes) {
-    Object.entries(attributes).forEach(([key, val]) => el.setAttribute(key, val));
-  }
-  return el;
-};
 
 const uploadToAdobe = async (file, progressSection) => {
   const { progressBarWrapper, progressBar } = progressSection;
@@ -88,7 +73,7 @@ const uploadToAdobe = async (file, progressSection) => {
 
   try {
     const { accessToken, discoveryResources } = await initializePdfAssetManager();
-    const uploadEndpoint = discoveryResources.assets.upload.uri;
+    const uploadEndpoint = validateSSRF(discoveryResources.assets.upload.uri);
     const formData = prepareFormData(file, filename);
 
     xhr = new XMLHttpRequest();
@@ -102,7 +87,7 @@ const uploadToAdobe = async (file, progressSection) => {
         const assetUri = uploadResult.uri;
 
         if (contentType !== 'application/pdf') {
-          const createPdfEndpoint = discoveryResources.assets.createpdf.uri;
+          const createPdfEndpoint = validateSSRF(discoveryResources.assets.createpdf.uri);
           const createPdfPayload = {
             asset_uri: assetUri,
             name: filename,
@@ -120,7 +105,7 @@ const uploadToAdobe = async (file, progressSection) => {
 
         try {
           const downloadUri = await getDownloadUri(assetUri, accessToken, discoveryResources);
-          const blobViewerUrl = getAcrobatWebLink(filename, assetUri, downloadUri);
+          const blobViewerUrl = validateSSRF(getAcrobatWebLink(filename, assetUri, downloadUri));
           if (redirect !== 'off') {
             window.location = blobViewerUrl;
           } else {
@@ -139,13 +124,14 @@ const uploadToAdobe = async (file, progressSection) => {
   }
 };
 
-const createProgressSection = () => ({
+const createProgressSection = (createTag) => ({
   progressBarWrapper: createTag('div', { class: 'pBar-wrapper' }),
   progressBar: createTag('div', { class: 'pBar' }),
   cancelButton: document.querySelector('.cancel-button'),
 });
 
-export default function init(element) {
+export default async function init(element) {
+  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const content = Array.from(element.querySelectorAll(':scope > div'));
   content.forEach((con) => con.classList.add('hide'));
 
@@ -187,7 +173,7 @@ export default function init(element) {
 
   button.addEventListener('change', (e) => {
     const file = e.target.files[0];
-    const progressSection = createProgressSection();
+    const progressSection = createProgressSection(createTag);
     if (file) {
       uploadToAdobe(file, progressSection);
     }
