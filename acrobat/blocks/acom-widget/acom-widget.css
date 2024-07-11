@@ -1,6 +1,4 @@
 .acom-widget {
-  background-color: #fc6767;
-  min-height: 570px;
   color: transparent;
   background-color: #fff;
   background-image: radial-gradient(at 1% 0,#ff715b 0,transparent 50%),radial-gradient(at 48% 89%,#fff 0,transparent 50%),radial-gradient(at 100% 88%,#fff 0,transparent 50%),radial-gradient(at 1% 85%,#fff 0,transparent 50%),radial-gradient(at 93% 33%,#6d51f9 0,transparent 50%),radial-gradient(at 44% 55%,#c8e1fd 0,transparent 50%),radial-gradient(at 11% 22%,#fe4b38 0,transparent 50%),radial-gradient(at 88% 4%,#ea0f00 0,transparent 50%),radial-gradient(at 45% 0,#fe4b38 0,transparent 50%);
@@ -78,7 +76,7 @@
 .security-icon {
   width: 42px;
   height: 42px;
-  background-image: url(../../img/icons/widget-sec.png);
+  background-image: url('../../img/icons/widget-sec.png');
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
