@@ -21,7 +21,7 @@ export const validateSSRF = (url) => {
   try {
     // eslint-disable-next-line compat/compat
     const parsedUrl = new URL(url);
-    const allowedHosts = ['pdfnow.adobe.io', 'pdfnow-stage.adobe.io', 'pdfnow-dev.adobe.io'];
+    const allowedHosts = ['pdfnow.adobe.io', 'pdfnow-stage.adobe.io', 'pdfnow-dev.adobe.io', 'acrobat.adobe.com'];
     if (!allowedHosts.includes(parsedUrl.host)) {
       throw new Error('Invalid host');
     }
@@ -32,7 +32,7 @@ export const validateSSRF = (url) => {
 };
 
 const fetchWithAuth = async (url, accessToken, options = {}) => {
-  const urlSSRF = validateSSRF(url);
+  const SSRFurl = validateSSRF(url);
   const headers = {
     Authorization: `Bearer ${accessToken}`,
     ...options.headers,
@@ -40,11 +40,11 @@ const fetchWithAuth = async (url, accessToken, options = {}) => {
 
   try {
     // eslint-disable-next-line compat/compat
-    const response = await fetch(urlSSRF, { ...options, headers });
+    const response = await fetch(SSRFurl, { ...options, headers });
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
     return response.json();
   } catch (error) {
-    throw new Error(`Error fetching ${urlSSRF}: ${error}`);
+    throw new Error(`Error fetching ${SSRFurl}: ${error}`);
   }
 };
 

@@ -95,13 +95,15 @@ const uploadToAdobe = async (file, progressSection) => {
             persistence: 'transient',
           };
           try {
-            const createPdfResult = await createPdf(createPdfEndpoint,
+            const createPdfResult = await createPdf(
+              createPdfEndpoint,
               createPdfPayload,
               accessToken,
             );
             const jobUri = createPdfResult.job_uri;
             await checkJobStatus(jobUri, accessToken, discoveryResources);
           } catch (error) {
+            // eslint-disable-next-line no-alert
             alert('Failed to create PDF');
             throw new Error('Error creating PDF:', error);
           }
