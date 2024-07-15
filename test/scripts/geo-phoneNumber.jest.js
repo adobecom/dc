@@ -4,12 +4,18 @@
 import geoPhoneNumber from '../../acrobat/scripts/geo-phoneNumber';
 
 // Mocking fetch API
-window.fetch = jest.fn(() =>
-  Promise.resolve({
-    json: () => Promise.resolve({ country: 'us' }),
+window.fetch = jest.fn((url) => {
+  const response = {
     status: 200,
-  }),
-);
+    json: () => {
+      if (url.includes('dc-shared/placeholders.json')) {
+        return Promise.resolve({ data: [{ key: 'phone-business', value: '800\u00A0915\u00A09430' }]});
+      }
+      return Promise.resolve({ country: 'us' });
+    },
+  };
+  return Promise.resolve(response);
+});
 
 // Mocking sessionStorage
 global.sessionStorage = {
@@ -51,4 +57,12 @@ describe('geoPhoneNumber', () => {
     expect(dispatchEventSpy.mock.calls[0][0] instanceof CustomEvent).toBe(true);
     expect(dispatchEventSpy.mock.calls[0][0].type).toBe('DCNumbers:Ready');
   });
+
+  it('should remove special characters for empty space', async () => {
+    document.body.innerHTML = '<header><main><p class="geo-pn3"><a class="geo-pn" number-type="phone-business" href="tel:%20%7B%7Bphone-business-geo%7D%7D">{{phone-business}}</a></p></main></header>';
+    await geoPhoneNumber();
+    const phoneLink = document.querySelector('.geo-pn3 a');
+    expect(phoneLink.textContent).toEqual('800 915 9430');
+    expect(phoneLink.href).toEqual('tel:800 915 9430');
+  })
 });

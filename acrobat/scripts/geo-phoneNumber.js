@@ -30,6 +30,10 @@ export default async function geoPhoneNumber() {
   const placeHolderJson = await fetch(`${newLocale}dc-shared/placeholders.json`);
   if (placeHolderJson.status !== 200) return;
   const placeHolderJsonData = await placeHolderJson.json();
+  placeHolderJsonData.data = placeHolderJsonData.data.map((val) => ({
+    ...val,
+    value: val.value.replace(/\u00A0/g, ' '),
+  }));
   window.dcpns = placeHolderJsonData.data;
   const globalPhoneNumbers = new CustomEvent('DCNumbers:Ready');
   window.dispatchEvent(globalPhoneNumbers);
