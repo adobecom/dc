@@ -40,11 +40,14 @@ const uploadToAdobe = async (file, progressSection) => {
 
   // Progress Bar Setup
   document.querySelector('.widget-copy').classList.add('hide');
-  document.querySelector('.widget-button').classList.add('hide');
+  document.querySelector('.widget-subCopy').classList.add('hide');
+  document.querySelector('.widget-upload-button').classList.add('hide');
+  document.querySelector('.demo.widget-upload-button').classList.add('hide');
+
   statusBar.classList.remove('hide');
   cancelButton.classList.remove('hide');
   document
-    .querySelector('.action-area')
+    .querySelector('.button-wrapper')
     .insertAdjacentElement('beforebegin', progressBarWrapper);
   progressBarWrapper.append(progressBar);
   progressBarWrapper.insertAdjacentElement('beforebegin', statusBar);
@@ -138,31 +141,43 @@ export default async function init(element) {
   element.classList.add('ready');
 
   const wrapperNew = createTag('div', { id: 'CIDTWO', class: 'fsw widget-wrapper facade' });
-  const wrapper = createTag('div', { id: 'CID', class: 'fsw widget-wrapper' });
+  const wrapper = createTag('div', { id: 'CID', class: 'fsw acom-widget-wrapper' });
+  const wrapperInner = createTag('div', { class: 'wrapper-inner' });
+  const textWrapper = createTag('div', { class: 'text-wrapper' });
+  const headerWrapper = createTag('div', { class: 'header-wrapper' });
+  const subTitle = createTag('p', { class: 'widget-sub' }, 'Adobe Acrobat');
+  const iconLogo = createTag('div', { class: 'widget-icon' });
+  const artworkWrapper = createTag('div', { class: 'artwork-wrapper' });
+  const artworkWrapperInner = createTag('div', { class: 'artwork-wrapper-inner' });
+  const buttonWrapper = createTag('div', { class: 'button-wrapper' });
   const heading = createTag('h1', { class: 'widget-heading' }, content[1].textContent);
-  const copy = createTag('p', { class: 'widget-copy' }, content[2].textContent);
-  const actionArea = createTag('p', { class: 'action-area' });
+  const copy = createTag('p', { class: 'widget-copy' }, content[3].textContent);
+  const subCopy = createTag('div', { class: 'widget-subCopy' }, content[4].textContent);
+  const demoButton = createTag('button', { class: 'demo widget-upload-button' }, 'Try with demo file');
   const statusBar = createTag('p', { class: 'status-bar hide' });
   const statusMessage = createTag('span', { class: 'message' }, 'Uploading file to acrobat.adobe.com');
   const statusPercentage = createTag('span', { class: 'percentage' }, '0%');
 
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
   const cancelButton = createTag('button', { class: 'widget-cancel con-button outline button-xl hide' }, 'Cancel');
-  const buttonLabel = createTag('label', { for: 'file-upload', class: 'widget-button' }, content[3].textContent);
-  const legal = createTag('p', { class: 'widget-legal' }, content[4].textContent);
-  const subTitle = createTag('p', { class: 'widget-sub' }, 'Adobe Acrobat');
-  const iconLogo = createTag('div', { class: 'widget-icon' });
+  const buttonLabel = createTag('label', { for: 'file-upload', class: 'widget-upload-button' }, content[5].textContent);
+  const legal = createTag('p', { class: 'widget-legal' }, content[6].textContent);
   const iconSecurity = createTag('div', { class: 'security-icon' });
-  const icon = createTag('div', { class: 'widget-big-icon' });
+  const artwork = createTag('img', { class: 'widget-image', src: `${content[2].querySelector('img').src}` });
+  const svgArtwork = createTag('svg', { class: 'widget-big-icon' });
   const footer = createTag('div', { class: 'widget-footer' });
 
-  wrapper.append(subTitle);
-  subTitle.prepend(iconLogo);
-  wrapper.append(icon, heading, copy, statusBar);
+  headerWrapper.append(iconLogo, subTitle);
+  buttonWrapper.append(button, buttonLabel, demoButton, cancelButton);
+  textWrapper.append(headerWrapper, heading, copy, subCopy, buttonWrapper, statusBar);
+
   statusBar.append(statusMessage, statusPercentage);
-  actionArea.append(button, cancelButton, buttonLabel);
-  wrapper.append(actionArea);
+  svgArtwork.append(artwork);
+  artworkWrapperInner.append(svgArtwork);
+  artworkWrapper.append(artworkWrapperInner);
+  wrapperInner.append(textWrapper, artworkWrapper);
   footer.append(iconSecurity, legal);
+  wrapper.append(wrapperInner);
   element.append(wrapper, footer, wrapperNew);
 
   if (Number(window.localStorage.limit) > 1) {
