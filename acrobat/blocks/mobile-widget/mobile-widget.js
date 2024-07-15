@@ -63,6 +63,38 @@ function redDir(verb) {
   }
   window.location.href = newLocation;
 }
+function analytics(verb) {
+  const lh = `verb-${verb}:goto-app:clicked`;
+
+  const event = {
+    documentUnloading: true,
+    data: {
+      eventType: 'web.webinteraction.linkClicks',
+      web: {
+        webInteraction: {
+          linkClicks: { value: 1 },
+          type: 'other',
+          name: lh,
+        },
+      },
+      _adobe_corpnew: {
+        digitalData: {
+          primaryEvent: {
+            eventInfo: {
+              interaction: {
+                click: lh,
+                iclick: 'true',
+              },
+              eventName: lh,
+            },
+          },
+        },
+      },
+    },
+  };
+  // eslint-disable-next-line no-underscore-dangle
+  window._satellite.track('event', event);
+}
 
 function createMobileWidget(createTag, element, content) {
   const wrapper = createTag('div', { class: 'mobile-widget_wrapper' });
@@ -76,6 +108,7 @@ function createMobileWidget(createTag, element, content) {
   const artworkInnerWrapper = createTag('div', { class: 'mobile-widget_artwork-inner-wrapper' });
   const artworkWrapper = createTag('div', { class: 'mobile-widget_artwork-wrapper' });
   const copy = createTag('div', { class: 'mobile-widget_copy' }, content[2].textContent);
+  const VERB = element.classList.value.replace('mobile-widget', '').trim();
 
   let appLink = '';
   if (/iPad|iPhone|iPod/.test(window?.browser?.ua) && !window.MSStream) {
@@ -86,8 +119,9 @@ function createMobileWidget(createTag, element, content) {
     appLink = content[4].textContent.toString().trim();
   }
 
-  const mobileCta = createTag('a', { class: 'mobile-widget_cta', href: appLink }, content[3].textContent);
+  const mobileCta = createTag('a', { class: 'mobile-widget_cta', href: appLink, 'daa-ll': `acrobat:verb-${VERB}:goto-app:clicked`, target: '_blank' }, content[3].textContent);
   const ctaWrapper = createTag('div', { class: 'mobile-widget_cta-wrapper' });
+  mobileCta.addEventListener('click', () => analytics(VERB));
 
   titleWrapper.append(titleImg, title);
   headerWrapper.append(titleWrapper, heading);
