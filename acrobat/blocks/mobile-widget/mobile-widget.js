@@ -1,4 +1,6 @@
 import { setLibs } from '../../scripts/utils.js';
+import mobileAnalytics from '../../scripts/alloy/mobile-widget.js';
+import mobileAnalyticsShown from '../../scripts/alloy/mobile-widget-shown.js';
 
 const miloLibs = setLibs('/libs');
 
@@ -64,7 +66,9 @@ function redDir(verb) {
   window.location.href = newLocation;
 }
 
-function createMobileWidget(createTag, element, content) {
+function createMobileWidget(createTag, element, content, verb) {
+  const aaVerbName = `${verbRedirMap[verb] || verb}`;
+
   const wrapper = createTag('div', { class: 'mobile-widget_wrapper' });
   const titleWrapper = createTag('div', { class: 'mobile-widget_title-wrapper' });
   const titleImg = createTag('div', { class: 'mobile-widget_title-img' });
@@ -97,6 +101,12 @@ function createMobileWidget(createTag, element, content) {
   ctaWrapper.append(mobileCta);
   dropZone.append(artworkWrapper, copy, ctaWrapper);
   element.append(wrapper);
+
+  // Adobe Analytics
+  mobileAnalyticsShown(aaVerbName);
+  mobileCta.addEventListener('click', () => {
+    mobileAnalytics(aaVerbName);
+  });
 }
 
 export default async function init(element) {
@@ -104,7 +114,7 @@ export default async function init(element) {
   const content = Array.from(element.querySelectorAll(':scope > div'));
   const VERB = element.classList.value.replace('mobile-widget', '').trim();
   content.forEach((con) => con.classList.add('hide'));
-  createMobileWidget(createTag, element, content);
+  createMobileWidget(createTag, element, content, VERB);
   // Listen for the IMS:Ready event and call redDir if user is signed in
   window.addEventListener('IMS:Ready', async () => {
     if (window.adobeIMS.isSignedInUser()) {
