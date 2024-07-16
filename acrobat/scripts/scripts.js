@@ -307,7 +307,8 @@ if (IMS_GUEST) {
     client_id: CLIENT_ID,
     scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read',
 
-    guest_token_force_refresh: true,
+    enableGuestAccounts: true,
+    enableGuestTokenForceRefresh: true,
 
     api_parameters: { check_token: { guest_allowed: true } },
 
