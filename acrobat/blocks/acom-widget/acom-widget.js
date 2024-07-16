@@ -161,8 +161,9 @@ export default async function init(element) {
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
   const cancelButton = createTag('button', { class: 'widget-cancel con-button outline button-xl hide' }, 'Cancel');
   const buttonLabel = createTag('label', { for: 'file-upload', class: 'widget-upload-button' }, content[5].textContent);
-  const legal = createTag('p', { class: 'widget-legal' }, content[6].textContent);
+  const legal = createTag('span', { class: 'widget-legal' }, content[6].textContent);
   const iconSecurity = createTag('div', { class: 'security-icon' });
+  const iconInformation = createTag('div', { class: 'information-icon' });
   const artwork = createTag('img', { class: 'widget-image', src: `${content[2].querySelector('img').src}` });
   const svgArtwork = createTag('svg', { class: 'widget-big-icon' });
   const footer = createTag('div', { class: 'widget-footer' });
@@ -176,7 +177,7 @@ export default async function init(element) {
   artworkWrapperInner.append(svgArtwork);
   artworkWrapper.append(artworkWrapperInner);
   wrapperInner.append(textWrapper, artworkWrapper);
-  footer.append(iconSecurity, legal);
+  footer.append(iconSecurity, legal, iconInformation);
   wrapper.append(wrapperInner);
   element.append(wrapper, footer, wrapperNew);
 

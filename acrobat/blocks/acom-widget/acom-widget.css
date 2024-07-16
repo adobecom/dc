@@ -85,16 +85,29 @@
   margin-right: 10px;
 }
 
+.widget-image {
+  width: 300px;
+  height: 206.25px;
+}
+
 .widget-big-icon {
-  height: 100%;
   padding: 0;
-  width: 100%;
+  transform: scale3d(2,2,2);
 }
 
 .security-icon {
   width: 42px;
   height: 42px;
   background-image: url('../../img/icons/widget-sec.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.information-icon {
+  width: 15px;
+  height: 15px;
+  background-image: url('../../img/icons/info-icon.svg');
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
