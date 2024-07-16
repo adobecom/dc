@@ -21,7 +21,7 @@ export const validateSSRF = (url) => {
   try {
     // eslint-disable-next-line compat/compat
     const parsedUrl = new URL(url);
-    const allowedHosts = ['pdfnow.adobe.io', 'pdfnow-stage.adobe.io', 'pdfnow-dev.adobe.io'];
+    const allowedHosts = ['pdfnow.adobe.io', 'pdfnow-stage.adobe.io', 'pdfnow-dev.adobe.io', 'acrobat.adobe.com'];
     if (!allowedHosts.includes(parsedUrl.host)) {
       throw new Error('Invalid host');
     }
