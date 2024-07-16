@@ -16,6 +16,42 @@ const miloLibs = setLibs('/libs');
 const PAGE_URL = new URL(window.location.href);
 const redirect = PAGE_URL.searchParams.get('redirect');
 
+function preventDefaults(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+function processFileUpload(e, createTag) {
+  const file = e.target.files ? e.target.files[0] : e.dataTransfer.files[0];
+  const progressSection = createProgressSection(createTag);
+  if (file) {
+    uploadToAdobe(file, progressSection);
+  }
+}
+
+function setupDragDropListeners(dropzone, createTag) {
+  dropzone.addEventListener('dragenter', (e) => {
+    preventDefaults(e);
+    dropzone.classList.add('dragover');
+  });
+
+  dropzone.addEventListener('dragover', (e) => {
+    preventDefaults(e);
+    dropzone.classList.add('dragover');
+  });
+
+  dropzone.addEventListener('dragleave', (e) => {
+    preventDefaults(e);
+    dropzone.classList.remove('dragover');
+  });
+
+  dropzone.addEventListener('drop', (e) => {
+    preventDefaults(e);
+    dropzone.classList.remove('dragover');
+    processFileUpload(e, createTag);
+  });
+}
+
 const uploadToAdobe = async (file, progressSection) => {
   const { progressBarWrapper, progressBar } = progressSection;
   const statusBar = document.querySelector('.status-bar');
@@ -63,13 +99,13 @@ const uploadToAdobe = async (file, progressSection) => {
   const cancelUpload = () => {
     xhr.abort();
     document.querySelector('#file-upload').value = null;
-    document.querySelector('.widget-button').classList.remove('hide');
+    document.querySelector('.widget-upload-button').classList.remove('hide');
+    document.querySelector('.demo.widget-upload-button').classList.remove('hide');
     progressBarWrapper.classList.add('hide');
     progressBar.style.width = '0%';
     cancelButton.classList.add('hide');
     statusBar.classList.add('hide');
     document.querySelector('.widget-copy').classList.remove('hide');
-    document.querySelector('.widget-button').classList.remove('hide');
   };
 
   cancelButton.addEventListener('click', cancelUpload);
@@ -157,7 +193,6 @@ export default async function init(element) {
   const statusBar = createTag('p', { class: 'status-bar hide' });
   const statusMessage = createTag('span', { class: 'message' }, 'Uploading file to acrobat.adobe.com');
   const statusPercentage = createTag('span', { class: 'percentage' }, '0%');
-
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
   const cancelButton = createTag('button', { class: 'widget-cancel con-button outline button-xl hide' }, 'Cancel');
   const buttonLabel = createTag('label', { for: 'file-upload', class: 'widget-upload-button' }, content[5].textContent);
@@ -171,7 +206,6 @@ export default async function init(element) {
   headerWrapper.append(iconLogo, subTitle);
   buttonWrapper.append(button, buttonLabel, demoButton, cancelButton);
   textWrapper.append(headerWrapper, heading, copy, subCopy, buttonWrapper, statusBar);
-
   statusBar.append(statusMessage, statusPercentage);
   svgArtwork.append(artwork);
   artworkWrapperInner.append(svgArtwork);
@@ -187,11 +221,9 @@ export default async function init(element) {
     element.append(wrapper);
   }
 
+  setupDragDropListeners(wrapper, createTag);
+
   button.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    const progressSection = createProgressSection(createTag);
-    if (file) {
-      uploadToAdobe(file, progressSection);
-    }
+    processFileUpload(e, createTag);
   });
 }
