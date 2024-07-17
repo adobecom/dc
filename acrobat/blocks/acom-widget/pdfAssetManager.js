@@ -17,7 +17,22 @@ const getEnv = () => {
 
 const baseApiUrl = getEnv();
 
+export const validateSSRF = (url) => {
+  try {
+    // eslint-disable-next-line compat/compat
+    const parsedUrl = new URL(url);
+    const allowedHosts = ['pdfnow.adobe.io', 'pdfnow-stage.adobe.io', 'pdfnow-dev.adobe.io', 'acrobat.adobe.com'];
+    if (!allowedHosts.includes(parsedUrl.host)) {
+      throw new Error('Invalid host');
+    }
+    return parsedUrl.href;
+  } catch (error) {
+    throw new Error(`Invalid URL: ${url}`);
+  }
+};
+
 const fetchWithAuth = async (url, accessToken, options = {}) => {
+  const SSRFurl = validateSSRF(url);
   const headers = {
     Authorization: `Bearer ${accessToken}`,
     ...options.headers,
@@ -25,16 +40,16 @@ const fetchWithAuth = async (url, accessToken, options = {}) => {
 
   try {
     // eslint-disable-next-line compat/compat
-    const response = await fetch(url, { ...options, headers });
+    const response = await fetch(SSRFurl, { ...options, headers });
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
     return response.json();
   } catch (error) {
-    throw new Error(`Error fetching ${url}: ${error}`);
+    throw new Error(`Error fetching ${SSRFurl}: ${error}`);
   }
 };
 
 const getAnonymousToken = async () => {
-  const url = `${baseApiUrl}/users/anonymous_token`;
+  const url = validateSSRF(`${baseApiUrl}/users/anonymous_token`);
   const headers = { Accept: `application/vnd.adobe.dc+json;profile="${baseApiUrl}/schemas/anonymous_token_v1.json"` };
 
   try {
