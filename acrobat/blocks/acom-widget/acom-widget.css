@@ -284,3 +284,60 @@
   color: black;
   border: 2px solid #909090;
 }
+
+.toast-container {
+  display: flex;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  z-index: 9999;
+  background-color: #d31510;
+  margin: 16px;
+  transform: translateX(-50%);
+  padding: 8px 8px 8px 16px;
+  align-items: center;
+}
+
+.toast-container.hide {
+  display: none;
+}
+
+.toast-text {
+  font-weight: 400;
+  font-size: 15px;
+  color: white;
+  margin-right: 16px;
+}
+
+.warning-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  background-image: url('../../img/icons/warning-icon.svg');
+  background-size: cover;
+  display: inline-block;
+}
+
+.close-icon {
+  width: 18px;
+  height: 18px;
+  background-image: url('../../img/icons/close-icon.svg');
+  background-size: contain; /* Ensure the image maintains its aspect ratio */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat;
+  display: inline-block;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.close-icon-wrapper {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  border-left: 1px solid white;
+  padding-left: 8px;
+  align-items: center;
+}

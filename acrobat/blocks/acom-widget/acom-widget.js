@@ -16,6 +16,43 @@ const miloLibs = setLibs('/libs');
 const PAGE_URL = new URL(window.location.href);
 const redirect = PAGE_URL.searchParams.get('redirect');
 
+const ErrorType = {
+  UNSUPPORTED_FILE_TYPE: 1,
+  FILE_SIZE_OVER_LIMIT: 2
+}
+
+function initToastDialog(createTag) {
+  const toastContainer = createTag('div', { class: 'toast-container' });
+  const errorText = createTag('span', { class: 'toast-text' });
+  const warningIcon = createTag('div', { class: 'warning-icon' });
+  const closeIconWrapper = createTag('div', { class: 'close-icon-wrapper' });
+  const closeIcon = createTag('button', { class: 'close-icon' });
+  closeIconWrapper.append(closeIcon);
+  toastContainer.append(warningIcon, errorText, closeIconWrapper);
+  document.querySelector('main').append(toastContainer);
+  toastContainer.classList.add('hide');
+  closeIconWrapper.addEventListener('click', (e) => closeToastDialog());
+}
+
+function showToastDialog(fileName, errorType) {
+  const toastContainer = document.querySelector('.toast-container');
+  if(errorType === 1)
+    document.querySelector('.toast-text').textContent = `"${fileName}" is in a format not supported for AI Assistent`;
+  else if(errorType === 2)
+    document.querySelector('.toast-text').textContent = 'This tool supports files that are 25MB or less. Upload a smaller PDF.';
+
+  setTimeout(() => {
+    toastContainer.classList.remove('hide');
+  }, 100);
+  setTimeout(() => {
+    toastContainer.classList.add('hide');
+  }, 5000);
+}
+
+function closeToastDialog() {
+  document.querySelector('.toast-container').classList.add('hide')
+}
+
 function preventDefaults(e) {
   e.preventDefault();
   e.stopPropagation();
@@ -58,19 +95,26 @@ const uploadToAdobe = async (file, progressSection) => {
   const cancelButton = document.querySelector('.widget-cancel');
   const filename = file.name;
   const extension = filename.split('.').pop().toLowerCase();
+  const fileSize = file.size;
+  const fileSizeInMb = fileSize / (1024 * 1024);
   let xhr;
 
   const contentTypes = {
-    png: 'image/png',
-    jpg: 'image/jpeg',
-    jpeg: 'image/jpeg',
-    svg: 'image/svg+xml',
     pdf: 'application/pdf',
+    docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    txt: 'text/plain',
+    rtf: 'application/rtf',
   };
 
   const contentType = contentTypes[extension];
   if (!contentType) {
-    alert('This file is invalid');
+    showToastDialog(filename, ErrorType.UNSUPPORTED_FILE_TYPE);
+    return;
+  }
+
+  if(fileSizeInMb > 25) {
+    showToastDialog(filename, ErrorType.FILE_SIZE_OVER_LIMIT);
     return;
   }
 
@@ -214,6 +258,8 @@ export default async function init(element) {
   footer.append(iconSecurity, legal, iconInformation);
   wrapper.append(wrapperInner);
   element.append(wrapper, footer, wrapperNew);
+
+  initToastDialog(createTag);
 
   if (Number(window.localStorage.limit) > 1) {
     const upsell = createTag('div', { class: 'upsell' }, 'You have reached your limit. Please upgrade.');
