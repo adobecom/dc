@@ -7,7 +7,7 @@ export default function init(verb) {
         webInteraction: {
           linkClicks: { value: 1 },
           type: 'other',
-          name: `acrobat:verb-${verb}:goto-app:clicked`,
+          name: `acrobat:verb-${verb}:goto-app:clicked:migration_testing`,
         },
       },
     },

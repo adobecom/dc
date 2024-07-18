@@ -11,7 +11,7 @@ const verbRedirMap = {
   'extract-pages': 'extract',
   'combine-pdf': 'combine',
   'protect-pdf': 'protect',
-  'add-comment': 'addcomment',
+  'add-comment': 'add-comment',
   'pdf-to-image': 'pdftoimage',
   'reorder-pages': 'reorderpages',
   sendforsignature: 'sendforsignature',
