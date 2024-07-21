@@ -36,7 +36,7 @@ export default function init(verb) {
       _adobe_corpnew: {
         digitalData: {
           dcweb2: {
-            event: { pagename: `acrobat:verb-${verb}:landing:shown:migration_testing` },
+            event: { pagename: `acrobat:verb-${verb}:landing:shown` },
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,
