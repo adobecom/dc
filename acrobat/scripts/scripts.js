@@ -398,6 +398,21 @@ const { ietf } = getLocale(locales);
 
     const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);
     await dcConverter(widgetBlock);
+    // Prevent signed users
+    const dcIMS = setInterval(() => {
+      const dropZoneContent = widgetBlock?.querySelector('.dropZoneContent');
+      if (dropZoneContent) {
+        dropZoneContent.style.pointerEvents = 'none';
+      }
+      if (window.adobeIMS) {
+        clearInterval(dcIMS);
+        const imsIsReady = new CustomEvent('IMS:Ready');
+        window.dispatchEvent(imsIsReady);
+        if (!window.adobeIMS.isSignedInUser() && dropZoneContent) {
+          dropZoneContent.style.pointerEvents = 'auto';
+        }
+      }
+    }, 200);
   }
 
   // Setup CSP
