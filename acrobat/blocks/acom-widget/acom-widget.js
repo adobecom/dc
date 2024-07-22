@@ -113,7 +113,7 @@ const uploadToAdobe = async (file, progressSection) => {
           const downloadUri = await getDownloadUri(assetUri, accessToken, discoveryResources);
           const blobViewerUrl = validateSSRF(getAcrobatWebLink(filename, assetUri, downloadUri));
           if (redirect !== 'off') {
-            window.location = blobViewerUrl;
+            window.location.href = blobViewerUrl;
           } else {
             // eslint-disable-next-line no-console
             console.log('Blob Viewer URL:', `<a href="${blobViewerUrl}" target="_blank">View PDF</a>`);
