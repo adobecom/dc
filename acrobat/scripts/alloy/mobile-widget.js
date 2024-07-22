@@ -35,9 +35,9 @@ export default function init(verb) {
       },
       _adobe_corpnew: {
         digitalData: {
-          dcweb: { event: { pagename: `acrobat:verb-${verb}:goto-app:clicked` } },
+          dcweb: { event: { pagename: `acrobat:verb-${verb}:goto-app:clicked:migration_testingDCW` } },
           dcweb2: {
-            event: { pagename: `acrobat:verb-${verb}:goto-app:clicked` },
+            event: { pagename: `acrobat:verb-${verb}:goto-app:clicked:migration_testingDCW2` },
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,
