@@ -420,7 +420,7 @@ const { ietf } = getLocale(locales);
   }
 
   // Import base milo features and run them
-  const { loadArea, setConfig, loadLana, getMetadata, loadIms } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
 
   addLocale(ietf);
 
@@ -440,28 +440,12 @@ const { ietf } = getLocale(locales);
   lanaLogging();
 
   // Load IMS
-  async function asyncImsLoad(loadIMS) {
-    let isSignedInUser = false;
-    try {
-      await loadIMS();
-      const imsIsReady = new CustomEvent('IMS:Ready');
-      window.dispatchEvent(imsIsReady);
-      if (window.adobeIMS?.isSignedInUser()) {
-        isSignedInUser = true;
-      }
-    } catch (error) {
-      window.lana?.log('IMS check failed:', error);
-    }
-    if (!isSignedInUser) {
+  const { default: dcLoadIMS } = await import('./dcIMS.js');
+  dcLoadIMS().then(() => {
+    const isSignedInUser = window.adobeIMS?.isSignedInUser();
+    if (widgetBlock && !isSignedInUser) {
       widgetBlock.setAttribute('prevent-click', 'false');
     }
-    return isSignedInUser;
-  }
-
-  asyncImsLoad(loadIms).then((isSignedInUser) => {
-    window.lana?.log(`User is ${isSignedInUser ? 'signed in' : 'not signed in'}.`);
-  }).catch((error) => {
-    window.lana?.log('Error during IMS check:', error);
   });
 
   // DC Hosted Ready...
