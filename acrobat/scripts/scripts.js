@@ -398,21 +398,7 @@ const { ietf } = getLocale(locales);
 
     const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);
     await dcConverter(widgetBlock);
-    // Prevent signed users
-    const dcIMS = setInterval(() => {
-      const dropZoneContent = widgetBlock?.querySelector('.dropZoneContent');
-      if (dropZoneContent) {
-        dropZoneContent.style.pointerEvents = 'none';
-      }
-      if (window.adobeIMS) {
-        clearInterval(dcIMS);
-        const imsIsReady = new CustomEvent('IMS:Ready');
-        window.dispatchEvent(imsIsReady);
-        if (!window.adobeIMS.isSignedInUser() && dropZoneContent) {
-          dropZoneContent.style.pointerEvents = 'auto';
-        }
-      }
-    }, 200);
+    widgetBlock.setAttribute('prevent-click', 'true');
   }
 
   // Setup CSP
@@ -453,10 +439,29 @@ const { ietf } = getLocale(locales);
   const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
 
-  // IMS Ready
-  loadIms().then(() => {
-    const imsIsReady = new CustomEvent('IMS:Ready');
-    window.dispatchEvent(imsIsReady);
+  // Load IMS
+  async function asyncImsLoad(loadIMS) {
+    let isSignedInUser = false;
+    try {
+      await loadIMS();
+      const imsIsReady = new CustomEvent('IMS:Ready');
+      window.dispatchEvent(imsIsReady);
+      if (window.adobeIMS?.isSignedInUser()) {
+        isSignedInUser = true;
+      }
+    } catch (error) {
+      window.lana?.log('IMS check failed:', error);
+    }
+    if (!isSignedInUser) {
+      widgetBlock.setAttribute('prevent-click', 'false');
+    }
+    return isSignedInUser;
+  }
+
+  asyncImsLoad(loadIms).then((isSignedInUser) => {
+    window.lana?.log(`User is ${isSignedInUser ? 'signed in' : 'not signed in'}.`);
+  }).catch((error) => {
+    window.lana?.log('Error during IMS check:', error);
   });
 
   // DC Hosted Ready...

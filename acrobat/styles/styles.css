@@ -29,6 +29,10 @@ div[data-section="widget"] {
   min-height: 623px;
 }
 
+#dc-converter-widget[prevent-click=true] .dropZoneContent {
+  pointer-events: none;
+}
+
 /* DC Widget Override */
 div [class *= PdfnowLifecycle__dropzone2___] {
   background-color: transparent;
