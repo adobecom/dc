@@ -30,14 +30,14 @@ export default function init(verb) {
         webInteraction: {
           linkClicks: { value: 1 },
           type: 'other',
-          name: `acrobat:verb-${verb}:landing:shown:migration_testing`,
+          name: `acrobat:verb-${verb}:landing:shown`,
         },
       },
       _adobe_corpnew: {
         digitalData: {
-          dcweb: { event: { pagename: `acrobat:verb-${verb}:landing:shown:migration_testing_DCW` } },
+          dcweb: { event: { pagename: `acrobat:verb-${verb}:landing:shown` } },
           dcweb2: {
-            event: { pagename: `acrobat:verb-${verb}:landing:shown:migration_testing_DCW2` },
+            event: { pagename: `acrobat:verb-${verb}:landing:shown` },
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,
