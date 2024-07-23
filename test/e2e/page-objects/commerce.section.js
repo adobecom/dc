@@ -4,7 +4,7 @@ export class CommerceSection extends Section {
   constructor() {
     super();
     this.buildProps({
-      checkoutPrice: '[class*=CartItemView__item-price] > span',
+      checkoutPrice: 'div[data-testid="selectable-option-1"] >> span[aria-label]',
     });
   }
 
