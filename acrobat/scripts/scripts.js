@@ -117,13 +117,28 @@ if (hostname.endsWith('.ing')) {
   if (!canonEl?.href.endsWith('.html')) canonEl?.setAttribute('href', `${canonEl.href}.html`);
 }
 
-function loadStyles(paths) {
-  paths.forEach((path) => {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', path);
+function loadLink(href, { as, callback, crossorigin, rel, fetchpriority } = {}) {
+  let link = document.head.querySelector(`link[href="${href}"]`);
+  if (!link) {
+    link = document.createElement('link');
+    link.setAttribute('rel', rel);
+    if (as) link.setAttribute('as', as);
+    if (crossorigin) link.setAttribute('crossorigin', crossorigin);
+    if (fetchpriority) link.setAttribute('fetchpriority', fetchpriority);
+    link.setAttribute('href', href);
+    if (callback) {
+      link.onload = (e) => callback(e.type);
+      link.onerror = (e) => callback(e.type);
+    }
     document.head.appendChild(link);
-  });
+  } else if (callback) {
+    callback('noop');
+  }
+  return link;
+}
+
+function loadStyle(href, callback) {
+  return loadLink(href, { rel: 'stylesheet', callback });
 }
 
 function addLocale(locale) {
@@ -415,7 +430,20 @@ const { ietf } = getLocale(locales);
   if (!document.getElementById('inline-milo-styles')) {
     const paths = [`${miloLibs}/styles/styles.css`];
     if (STYLES) { paths.push(STYLES); }
-    loadStyles(paths);
+    paths.forEach((css) => loadStyle(css));
+  }
+
+  // Configurable preloads
+  const preloads = document.querySelector('meta[name="preloads"]')?.content;
+  if (preloads) {
+    preloads.split(',').forEach((x) => {
+      const link = x.trim().replace('$MILOLIBS', miloLibs);
+      if (link.endsWith('.js')) {
+        loadLink(link, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
+      } else if (link.endsWith('.css')) {
+        loadStyle(link);
+      }
+    });
   }
 
   // Import base milo features and run them
