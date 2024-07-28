@@ -8,11 +8,15 @@ notifications:
     default:
       project: MWPW # Mandatory
       filters:
+      exclude:
+          branch:
+            - main
+            - stage
         include:
           risk_rating: R5
       fields:
         assignee:
-          name: gunn
+          name: jrivero
         customfield_11800: MWPW-140779 #epic link
         customfield_12900:
           value: Slytherin
