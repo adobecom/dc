@@ -441,12 +441,17 @@ const { ietf } = getLocale(locales);
 
   // Load IMS
   const { default: dcLoadIMS } = await import('./dcIMS.js');
-  dcLoadIMS().then(() => {
-    const isSignedInUser = window.adobeIMS?.isSignedInUser();
-    if (widgetBlock && !isSignedInUser) {
-      widgetBlock.setAttribute('prevent-click', 'false');
+  dcLoadIMS();
+
+  const intervalIMS = setInterval(() => {
+    if (window.adobeIMS) {
+      clearInterval(intervalIMS);
+      const isSignedInUser = window.adobeIMS?.isSignedInUser();
+      if (widgetBlock && !isSignedInUser) {
+        widgetBlock.setAttribute('prevent-click', 'false');
+      }
     }
-  });
+  }, 500);
 
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
