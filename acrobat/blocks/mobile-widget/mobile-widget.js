@@ -114,7 +114,7 @@ export default async function init(element) {
   element.closest('main > div').dataset.section = 'widget';
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const content = Array.from(element.querySelectorAll(':scope > div'));
-  const VERB = element.classList.value.replace('mobile-widget', '').trim();
+  const VERB = element.dataset.verb;
   content.forEach((con) => con.classList.add('hide'));
   createMobileWidget(createTag, element, content, VERB);
   // Listen for the IMS:Ready event and call redDir if user is signed in

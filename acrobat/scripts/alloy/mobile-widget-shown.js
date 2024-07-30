@@ -60,7 +60,11 @@ export default function init(verb) {
       },
     },
   };
-  setTimeout(() => {
-    window?._satellite?.track('event', event);
+  // Alloy Ready...
+  const AlloyReady = setInterval(() => {
+    if (window?._satellite?.track) {
+      clearInterval(AlloyReady);
+      window?._satellite?.track('event', event);
+    }
   }, 1000);
 }
