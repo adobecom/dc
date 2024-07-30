@@ -382,6 +382,8 @@ const { ietf } = getLocale(locales);
   const hasMobileAppBlock = window.browser.isMobile && document.querySelector('meta[name="mobile-widget"]')?.content === 'true';
 
   if (hasMobileAppBlock && mobileAppBlock) {
+    mobileAppBlock.dataset.verb = mobileAppBlock.classList.value.replace('mobile-widget', '').trim();
+    document.body.classList.add('dc-bc');
     mobileAppBlock.removeAttribute('class');
     mobileAppBlock.id = 'mobile-widget';
     const { default: dcConverterq } = await import('../blocks/mobile-widget/mobile-widget.js');
