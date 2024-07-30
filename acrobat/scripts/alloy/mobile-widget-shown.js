@@ -52,7 +52,7 @@ export default function init(verb) {
               id: '',
               is_authenticated: false,
               user_tags: [
-                `${localStorage['pdfnow.auth'] ? 'frictionless_returning_user' : 'frictionless_new_user'}`,
+                `${localStorage['pdfnow.auth'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
               ],
             },
           },
