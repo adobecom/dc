@@ -323,6 +323,15 @@ export default async function init(element) {
         ocrPDF: canNotUpload || (val.ocr_pdf && !val.ocr_pdf.can_process),
       };
       window.doccloudPersonalization = doccloudPersonalization;
+      localStorage.setItem(
+        'doccloudPersonalization_canDownload',
+        Boolean(val.download && val.download.can_download),
+      );
+      localStorage.setItem(
+        'doccloudPersonalization_hasUploaded',
+        Boolean(val.upload && val.upload.has_uploaded),
+      );
+
       // Personalization Ready Event
       const personalizationIsReady = new CustomEvent('Personalization:Ready');
 

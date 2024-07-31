@@ -22,6 +22,13 @@ if (params.dropzone2) {
 }
 
 export default function init(verb) {
+  const user_tags = [];
+  const canDownload = JSON.parse(localStorage.getItem('doccloudPersonalization_canDownload'));
+  const hasUploaded = JSON.parse(localStorage.getItem('doccloudPersonalization_hasUploaded'));
+
+  user_tags.push(hasUploaded ? 'frictionless_return_user' : 'frictionless_new_user');
+  user_tags.push(canDownload ? 'frictionless_can_download' : 'frictionless_cannot_download');
+
   const event = {
     documentUnloading: true,
     data: {
@@ -51,9 +58,7 @@ export default function init(verb) {
               locale: document.documentElement.lang.toLocaleLowerCase(),
               id: '',
               is_authenticated: false,
-              user_tags: [
-                `${localStorage['pdfnow.auth'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
-              ],
+              user_tags
             },
           },
         },

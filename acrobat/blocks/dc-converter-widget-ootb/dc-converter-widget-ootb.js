@@ -287,6 +287,15 @@ export default function init(element) {
         l1Verbs: canNotUpload,
       };
       window.doccloudPersonalization = doccloudPersonalization;
+      localStorage.setItem(
+        'doccloudPersonalization_canDownload',
+        Boolean(val.download && val.download.can_download),
+      );
+      localStorage.setItem(
+        'doccloudPersonalization_hasUploaded',
+        Boolean(val.upload && val.upload.has_uploaded),
+      );
+
       // Personalization Ready Event
       const personalizationIsReady = new CustomEvent('Personalization:Ready');
 
