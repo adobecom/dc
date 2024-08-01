@@ -55,6 +55,9 @@ const connectSrc = [
   '*.hlx.live',
   'cdn.linkedin.oribi.io',
   '*.akstat.io/',
+  'facebook.com',
+  'px.ads.linkedin.com',
+  'tr6.snapchat.com',
   ';',
 ];
 
@@ -163,6 +166,7 @@ const imgSrc = [
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
   'client.messaging.adobe.com/',
+  'ad.doubleclick.net',
   ';',
 ];
 
@@ -255,6 +259,7 @@ const scriptSrc = [
   's.tgm.yahoo-net.jp',
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
+  'tr.snapchat.com',
   ';',
 ];
 

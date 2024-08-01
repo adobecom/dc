@@ -58,6 +58,10 @@ const connectSrc = [
   '*.hlx.live',
   'cdn.linkedin.oribi.io',
   'adobedc.demdex.net/',
+  '*.facebook.com',
+  'px.ads.linkedin.com',
+  'tr6.snapchat.com',
+  'ad.doubleclick.net',
   ';',
 ];
 
@@ -157,6 +161,7 @@ const imgSrc = [
   '*.hlx.page',
   '*.hlx.live',
   'client.messaging.adobe.com/',
+  'ad.doubleclick.net',
   ';',
 ];
 
@@ -213,6 +218,7 @@ const scriptSrc = [
   'api.demandbase.com',
   '*.hlx.page',
   '*.hlx.live',
+  'tr.snapchat.com',
   ';',
 ];
 

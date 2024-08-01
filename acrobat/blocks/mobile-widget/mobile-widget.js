@@ -68,6 +68,7 @@ function redDir(verb) {
 
 function createMobileWidget(createTag, element, content, verb) {
   const aaVerbName = `${verbRedirMap[verb] || verb}`;
+  const artID = content[1].querySelector('a')?.href || content[1].querySelector('img')?.src;
 
   const wrapper = createTag('div', { class: 'mobile-widget_wrapper' });
   const titleWrapper = createTag('div', { class: 'mobile-widget_title-wrapper' });
@@ -76,7 +77,7 @@ function createMobileWidget(createTag, element, content, verb) {
   const heading = createTag('h1', { class: 'mobile-widget_heading' }, content[0].textContent);
   const headerWrapper = createTag('div', { class: 'mobile-widget_header-wrapper' });
   const dropZone = createTag('div', { class: 'mobile-widget_dropzone' });
-  const artwork = createTag('img', { class: 'mobile-widget_artwork', src: `${content[1].querySelector('img').src}` });
+  const artwork = createTag('img', { class: 'mobile-widget_artwork', src: artID });
   const artworkInnerWrapper = createTag('div', { class: 'mobile-widget_artwork-inner-wrapper' });
   const artworkWrapper = createTag('div', { class: 'mobile-widget_artwork-wrapper' });
   const copy = createTag('div', { class: 'mobile-widget_copy' }, content[2].textContent);
@@ -110,9 +111,10 @@ function createMobileWidget(createTag, element, content, verb) {
 }
 
 export default async function init(element) {
+  element.closest('main > div').dataset.section = 'widget';
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const content = Array.from(element.querySelectorAll(':scope > div'));
-  const VERB = element.classList.value.replace('mobile-widget', '').trim();
+  const VERB = element.dataset.verb;
   content.forEach((con) => con.classList.add('hide'));
   createMobileWidget(createTag, element, content, VERB);
   // Listen for the IMS:Ready event and call redDir if user is signed in
