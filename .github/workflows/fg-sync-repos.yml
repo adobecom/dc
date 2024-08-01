@@ -1,6 +1,10 @@
 name: Floodgate Repo Sync
 
 on:
+  push:
+    branches:
+      - stage
+      - main
   workflow_dispatch:
     inputs:
       syncBranch:
@@ -28,7 +32,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.syncBranch }}
+          ref: ${{ inputs.syncBranch || github.ref_name }}
 
       - name: Clone Floodgate Repository and Checkout Selected Branch
         run: |
@@ -41,7 +45,7 @@ jobs:
           echo "dc branch"
           git branch
         env:
-          FG_SYNC_BRANCH: ${{ inputs.syncBranch }}
+          FG_SYNC_BRANCH: ${{ inputs.syncBranch || github.ref_name }}
 
       - name: Overwrite floodgate repo files with latest from source repo
         run: |
@@ -54,14 +58,19 @@ jobs:
           git branch
           git config user.email "$FG_SYNC_BOT_EMAIL"
           git config user.name "$FG_SYNC_BOT_NAME"
-          git status          
-          git remote set-url origin https://oauth2:$GITHUB_TOKEN@github.com/adobecom/dc-pink.git
-          git remote -v
-          git add .
-          git commit -m "Syncing dc to dc-pink"
-          git push origin $FG_SYNC_BRANCH --force
+          git status
+          if [[ -n $(git status -s) ]]; then
+            git remote set-url origin https://oauth2:$GITHUB_TOKEN@github.com/adobecom/dc-pink.git
+            git remote -v
+            git add .
+            git commit -m "Syncing dc to dc-pink"
+            git push origin $FG_SYNC_BRANCH --force
+            echo ":heavy_check_mark: Syncing branch $FG_SYNC_BRANCH on dc to dc-pink completed successfully." >> $GITHUB_STEP_SUMMARY
+          else
+            echo ":heavy_minus_sign: No changes detected on branch $FG_SYNC_BRANCH, nothing to sync." >> $GITHUB_STEP_SUMMARY
+          fi
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           FG_SYNC_BOT_EMAIL: ${{ secrets.FG_SYNC_BOT_EMAIL }}
           FG_SYNC_BOT_NAME: ${{ secrets.FG_SYNC_BOT_NAME }}
-          FG_SYNC_BRANCH: ${{ inputs.syncBranch }}
+          FG_SYNC_BRANCH: ${{ inputs.syncBranch || github.ref_name }}

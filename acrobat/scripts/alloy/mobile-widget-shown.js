@@ -52,8 +52,7 @@ export default function init(verb) {
               id: '',
               is_authenticated: false,
               user_tags: [
-                'frictionless_new_user',
-                'frictionless_can_download',
+                `${localStorage['pdfnow.auth'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
               ],
             },
           },
@@ -61,7 +60,11 @@ export default function init(verb) {
       },
     },
   };
-  setTimeout(() => {
-    window?._satellite?.track('event', event);
+  // Alloy Ready...
+  const AlloyReady = setInterval(() => {
+    if (window?._satellite?.track) {
+      clearInterval(AlloyReady);
+      window?._satellite?.track('event', event);
+    }
   }, 1000);
 }

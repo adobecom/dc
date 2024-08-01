@@ -556,3 +556,317 @@ div.how-to ol li::before{
 main {
   isolation: isolate;
 }
+
+/* Mobile Widget */
+#mobile-widget,
+.mobile-widget {
+  display: flex;
+  background-color: #fc6767;
+  min-height: 570px;
+  margin-bottom: 50px;
+  font-family: 'Adobe Clean', adobe-clean,'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+
+.mobile-widget_wrapper {
+  align-items: center;
+  background: white;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  width: 75%;
+  max-width: 75%;
+  height: auto;
+  margin: auto;
+  position: relative;
+  left: 0;
+  top: 30px;
+  right: 0;
+  z-index: 1;
+}
+
+.mobile-widget_title-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  line-height: 22px;
+  margin-bottom: 6px;
+}
+
+.mobile-widget_title-img {
+  width: 24px;
+  height: 24px;
+  background-image: url('/acrobat/img/icons/widget-icon.png');
+  background-size: cover;
+  display: inline-block;
+  margin-right: 14px;
+}
+
+.mobile-widget_title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.mobile-widget_heading {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 56px;
+  margin: 0;
+  text-align: center;
+}
+
+.mobile-widget_header-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 23px 12px 16px;
+}
+
+.mobile-widget_dropzone {
+  pointer-events: auto;
+  width: calc(100% - 56px);
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  border: 3px solid transparent;
+  padding: 0 0 70px;
+}
+
+.mobile-widget_artwork-wrapper {
+  display: flex;
+  align-items: flex-end;
+  flex-grow: 1;
+  padding: 0 0 20px;
+}
+
+.mobile-widget_artwork-inner-wrapper {
+  width: 140px;
+  height: 140px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-widget_artwork {
+  width: 112px;
+  height: 112px;
+}
+
+.mobile-widget_copy {
+  font-size: 18px;
+  line-height: 22px;
+  margin-top: 16px;
+}
+
+.mobile-widget_cta-wrapper {
+  flex-grow: 1;
+  margin-top: 16px;
+  height: 48px;
+}
+
+.mobile-widget_cta {
+  flex-grow: 1;
+  margin: 16px 0 0;
+  align-items: center;
+  border: 0 none;
+  box-sizing: border-box;
+  width: 411px;
+  background-color: #0265dc;
+  border-radius: 24px;
+  font-size: 18px;
+  height: 48px;
+  text-align: center;
+  color: white;
+  user-select: none;
+  touch-action: none;
+  cursor: pointer;
+  isolation: isolate;
+  justify-content: center;
+  line-height: 1.3;
+  text-decoration: none;
+  display: inline-flex;
+  position: relative;
+  overflow: visible;
+  font-weight: 700;
+}
+
+.mobile-widget_cta:active {
+  text-decoration: none;
+  color: #fff;
+  background-color: #004491;
+}
+
+.mobile-widget_cta:hover {
+  text-decoration: none;
+  color: #fff;
+}
+
+@media (min-width: 48rem) and (max-width: 57.5rem) {
+  .mobile-widget_wrapper {
+    max-width: 90%;
+    width: 90%;
+  }
+
+  .mobile-widget_heading {
+    font-size: 36px;
+  }
+
+  .mobile-widget_copy {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .mobile-widget_cta {
+    width: 348px;
+  }
+}
+
+@media (min-width: 295px) and (max-width: 767.9px) {
+  .mobile-widget_title-wrapper {
+    padding-top: 0;
+  }
+
+  .mobile-widget_dropzone {
+    height: calc(100% - 24px);
+    width: calc(100% - 24px);
+  }
+
+  .mobile-widget_copy {
+    margin-top: 0;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .mobile-widget_cta-wrapper {
+    display: flex;
+    width: 65vw;
+  }
+
+  .mobile-widget_cta {
+    border-radius: 24px;
+    font-size: 18px;
+    height: 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .mobile-widget_wrapper {
+    width: 91.6667%;
+    max-width: 91.6667%;
+    top: 40px;
+    height: calc(100vh - 100px) !important;
+  }
+}
+
+.mobile-widget.gen-ai {
+  border-radius: 20px;
+}
+
+.mobile-widget_dropzone.gen-ai {
+  display: flex;
+  border-radius: 20px;
+  align-items: start;
+  padding: 60px;
+  width: unset;
+}
+
+.text-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.inner-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  text-align: start;
+}
+
+.mobile-widget_artwork-wrapper.gen-ai {
+  display: flex;
+  flex: 1 1 45%;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.mobile-widget_artwork.gen-ai {
+  width: 100%;
+  height: 100%;
+  max-width: 90%;
+  padding: 10% 0 0;
+  transform: scale3d(1.8, 1.8, 1.8);
+  overflow: hidden;
+}
+
+.chat-pdf {
+  background-color: #fff;
+  background-image: radial-gradient(at 1% 0, #ff715b 0, transparent 50%), radial-gradient(at 48% 89%, #fff 0, transparent 50%), radial-gradient(at 100% 88%, #fff 0, transparent 50%), radial-gradient(at 1% 85%, #fff 0, transparent 50%), radial-gradient(at 93% 33%, #6d51f9 0, transparent 50%), radial-gradient(at 44% 55%, #c8e1fd 0, transparent 50%), radial-gradient(at 11% 22%, #fe4b38 0, transparent 50%), radial-gradient(at 88% 4%, #ea0f00 0, transparent 50%), radial-gradient(at 45% 0, #fe4b38 0, transparent 50%);
+  min-height: 623px;
+}
+
+.mobile-widget_wrapper.gen-ai {
+  padding: 0;
+  height: unset !important;
+}
+
+.mobile-widget_copy.gen-ai {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+  margin-left: 0;
+}
+
+.mobile-widget_subcopy.gen-ai {
+  color: #6d6d6d;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+  margin-left: 0;
+}
+
+.mobile-widget_heading.gen-ai {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 35px;
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.mobile-widget_cta.gen-ai {
+  margin: 32px 0 25px;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: 700;
+  height: 48px;
+  padding: 12px 24px;
+  white-space: nowrap;
+  width: 120px;
+}
+
+.mobile-widget_title-wrapper.gen-ai {
+  padding: 0;
+}
+
+.mobile-widget_title-img.gen-ai {
+  margin-right: 8px
+}
+
+@media (min-width: 601px) {
+  .mobile-widget {
+    display: none;
+  }
+}

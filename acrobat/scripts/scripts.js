@@ -294,7 +294,6 @@ const CONFIG = {
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'business.adobe.com', 'helpx.adobe.com'],
   stageDomainsMap: {
-    'www.adobe.com': 'www.stage.adobe.com',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
@@ -382,6 +381,12 @@ const { ietf } = getLocale(locales);
   const hasMobileAppBlock = window.browser.isMobile && document.querySelector('meta[name="mobile-widget"]')?.content === 'true';
 
   if (hasMobileAppBlock && mobileAppBlock) {
+    mobileAppBlock.dataset.verb = mobileAppBlock.classList.value.replace('mobile-widget', '').trim();
+    document.body.classList.add('dc-bc');
+    mobileAppBlock.removeAttribute('class');
+    mobileAppBlock.id = 'mobile-widget';
+    const { default: dcConverterq } = await import('../blocks/mobile-widget/mobile-widget.js');
+    await dcConverterq(mobileAppBlock);
     widgetBlock?.remove();
   } else {
     mobileAppBlock?.remove();
@@ -417,7 +422,7 @@ const { ietf } = getLocale(locales);
 
   // Setup CSP
   (async () => {
-    if (document.querySelector('meta[name="dc-widget-version"]')) {
+    if (document.querySelector('meta[name="dc-widget-version"]') && !hasMobileAppBlock) {
       const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
       ContentSecurityPolicy();
     }
@@ -448,7 +453,6 @@ const { ietf } = getLocale(locales);
 
   // Import base milo features and run them
   const { loadArea, setConfig, loadLana, getMetadata, loadIms } = await import(`${miloLibs}/utils/utils.js`);
-
   addLocale(ietf);
 
   if (getMetadata('commerce')) {
@@ -461,7 +465,6 @@ const { ietf } = getLocale(locales);
 
   // get event back form dc web and then load area
   await loadArea(document, false);
-
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
