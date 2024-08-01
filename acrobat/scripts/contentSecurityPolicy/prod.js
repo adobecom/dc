@@ -46,6 +46,10 @@ const connectSrc = [
   'trial-eum-clienttons-s.akamaihd.net/',
   '*.akstat.io/',
   'rum.hlx.page',
+  'facebook.com',
+  'px.ads.linkedin.com',
+  'tr6.snapchat.com',
+  'ad.doubleclick.net',
   ';',
 ];
 
@@ -238,6 +242,7 @@ const scriptSrc = [
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
   'rum.hlx.page',
+  'tr.snapchat.com',
   ';',
 ];
 
