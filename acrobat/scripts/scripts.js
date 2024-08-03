@@ -455,6 +455,12 @@ const { ietf } = getLocale(locales);
   const { loadArea, setConfig, loadLana, getMetadata, loadIms } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
 
+  // IMS Ready
+  loadIms().then(() => {
+    const imsIsReady = new CustomEvent('IMS:Ready');
+    window.dispatchEvent(imsIsReady);
+  });
+
   if (getMetadata('commerce')) {
     const { default: replacePlaceholdersWithImages } = await import('./imageReplacer.js');
     replacePlaceholdersWithImages(ietf, miloLibs);
@@ -468,12 +474,6 @@ const { ietf } = getLocale(locales);
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
-
-  // IMS Ready
-  loadIms().then(() => {
-    const imsIsReady = new CustomEvent('IMS:Ready');
-    window.dispatchEvent(imsIsReady);
-  });
 
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
