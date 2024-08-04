@@ -173,7 +173,7 @@ export async function responseProvider(request) {
     const csp = contentSecurityPolicy(isProd, scriptHashes);
     const acrobat = isProd ? 'https://acrobat.adobe.com' : 'https://stage.acrobat.adobe.com';
     const pdfnow = isProd ? 'https://pdfnow.adobe.io' : 'https://pdfnow-stage.adobe.io';
-    const adobeid = isProd ? 'adobeid-na1.services.adobe.com' : 'adobeid-na1-stg1.services.adobe.com';
+    const adobeid = isProd ? 'https://adobeid-na1.services.adobe.com' : 'https://adobeid-na1-stg1.services.adobe.com';
     const headers = {
       ...responseHeaders,
       'Content-Security-Policy': csp,
