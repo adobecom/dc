@@ -10,6 +10,7 @@ const connectSrc = [
   '14257-chimera-stage.adobeioruntime.net',
   '14257-chimera.adobeioruntime.net',
   '*.adobe.com',
+  'stage.adobeccstatic.com',
   '*.adobe.io',
   '*.adobelogin.com',
   '*.amazonaws.com',
@@ -18,8 +19,7 @@ const connectSrc = [
   '*.clicktale.net/',
   '*.mktoresp.com',
   'tag-logger.demandbase.com',
-  'accounts.google.com/gsi/log',
-  'accounts.google.com/gsi/status',
+  'accounts.google.com/gsi/',
   'adobe.tt.omtrdc.net',
   'adobeioruntime.net',
   'analytics.tiktok.com',
@@ -58,6 +58,10 @@ const connectSrc = [
   '*.hlx.live',
   'cdn.linkedin.oribi.io',
   'adobedc.demdex.net/',
+  '*.facebook.com',
+  'px.ads.linkedin.com',
+  'tr6.snapchat.com',
+  'ad.doubleclick.net',
   ';',
 ];
 
@@ -116,6 +120,7 @@ const imgSrc = [
   'about:',
   'blob:',
   'data:',
+  'stage.adobeccstatic.com',
   '*.clarity.ms',
   '*.enterprise.adobe.com',
   '*.services.adobe.com',
@@ -156,6 +161,7 @@ const imgSrc = [
   '*.hlx.page',
   '*.hlx.live',
   'client.messaging.adobe.com/',
+  'ad.doubleclick.net',
   ';',
 ];
 
@@ -212,6 +218,7 @@ const scriptSrc = [
   'api.demandbase.com',
   '*.hlx.page',
   '*.hlx.live',
+  'tr.snapchat.com',
   ';',
 ];
 

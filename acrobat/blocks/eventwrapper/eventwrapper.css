@@ -180,11 +180,6 @@ body.l2-state div[data-section='widget'].widget-default-height {
     top: 15px;
   }
 
-  body.l2-state #dc-converter-widget {
-    height: 65vh;
-    min-height: 65vh;
-  }
-
   body.l2-state.hide-content #CID div[class^='PdfnowLifecycle__lifecycle'],
   body.l2-state.hide-content #CID section[class^='LifecycleOrganizeSettings__frictionlessContainer__'] {
     min-height: 66vh;
@@ -193,4 +188,28 @@ body.l2-state div[data-section='widget'].widget-default-height {
   body.l2-state .fsw.wapper-rotate-pages > div > div {
     min-height: 66vh !important;
   }
+}
+
+@media(max-width: 400px) {
+  body.l2-state #dc-converter-widget {
+    height: unset;
+    min-height: unset;
+  }
+}
+
+picture,
+img {
+  aspect-ratio: auto;
+}
+
+.verb-subfooter img {
+  width: 24px;
+  height: 24px;
+  aspect-ratio: 1 / 1;
+}
+
+.icon-block img {
+  width: 42px;
+  height: 42px;
+  aspect-ratio: 1 / 1;
 }

@@ -53,7 +53,7 @@ const localeMap = {
   ua: 'uk-ua',
   au: 'en-au',
   hk_en: 'en-hk',
-  in: 'en-us',
+  in: 'en-in',
   in_hi: 'hi-in',
   nz: 'en-nz',
   hk_zh: 'zh-hant-hk',
@@ -111,6 +111,8 @@ const verbRedirMap = {
   'compress-pdf': 'compress',
   'png-to-pdf': 'jpgtopdf',
   'number-pages': 'number',
+  'ocr-pdf': 'ocr',
+  'chat-pdf': 'chat',
 };
 
 const exhLimitCookieMap = {
@@ -119,6 +121,7 @@ const exhLimitCookieMap = {
   'compress-pdf': 'ac_cm_p_ops',
   'rotate-pages': 'ac_or_p_c',
   createpdf: 'ac_cr_p_c',
+  'ocr-pdf': 'ac_ocr_p_c',
 };
 
 const appEnvCookieMap = {
@@ -133,12 +136,14 @@ const langFromPath = url.pathname.split('/')[1];
 const pageLang = localeMap[langFromPath] || 'en-us';
 
 export default async function init(element) {
+  if (document.querySelector('div[data-section="widget"]')) return;
   element.closest('main > div').dataset.section = 'widget';
   const widget = element;
   const DC_WIDGET_VERSION_FALLBACK = '3.7.1_2.14.0';
   const DC_GENERATE_CACHE_VERSION_FALLBACK = '2.14.0';
   const STG_DC_WIDGET_VERSION = document.querySelector('meta[name="stg-dc-widget-version"]')?.getAttribute('content');
   const STG_DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="stg-dc-generate-cache-version"]')?.getAttribute('content');
+  const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
 
   let DC_DOMAIN = 'https://dev.acrobat.adobe.com';
   let DC_WIDGET_VERSION = document.querySelector('meta[name="dc-widget-version"]')?.getAttribute('content');
@@ -195,8 +200,7 @@ export default async function init(element) {
   if (window?.browser?.name === 'Internet Explorer'
     || (window?.browser?.name === 'Microsoft Edge' && window?.browser?.version?.split('.')[0] < 86)
     || (window?.browser?.name === 'Microsoft Edge' && !window?.browser?.version)
-    || (window?.browser?.name === 'Safari' && window?.browser?.version?.split('.')[0] < 14)
-    || (window?.browser?.name === 'Safari' && !window?.browser?.version)) {
+    || (window?.browser?.name === 'Safari' && window?.browser?.version?.split('.')[0] < 14)) {
     window.location.href = EOLBrowserPage;
   }
 
@@ -279,6 +283,9 @@ export default async function init(element) {
   if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
+  if (IMS_GUEST) {
+    dcScript.dataset.ims_guests = 'true';
+  }
 
   widget.appendChild(dcScript);
 
@@ -312,6 +319,8 @@ export default async function init(element) {
         // L1 VERBS (all of them: request signature, pdf editor, delete pdf pages,
         // rotate pdf, rearrange pdf, split pdf, add pages to pdf, sign pdf, export pdf)
         l1Verbs: canNotUpload,
+        // Half L2/L1
+        ocrPDF: canNotUpload || (val.ocr_pdf && !val.ocr_pdf.can_process),
       };
       window.doccloudPersonalization = doccloudPersonalization;
       // Personalization Ready Event

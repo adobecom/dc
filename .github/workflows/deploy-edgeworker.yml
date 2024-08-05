@@ -14,8 +14,8 @@ on:
         required: true
         default: 'Acrobat_DC_web_stg'
         options:
-            - 'Acrobat_DC_web_stg'          
-            - 'Acrobat_DC_web_prod'        
+          - 'Acrobat_DC_web_stg'          
+          - 'Acrobat_DC_web_prod'        
       network:
         description: 'Network'
         type: choice
@@ -24,6 +24,11 @@ on:
         options:
           - 'staging'          
           - 'production'
+      description:
+        description: 'Bundle Description'
+        type: string
+        required: true
+        default: 'Bundle Description'
 
 jobs:
   deploy-edgeworker:     
@@ -35,11 +40,25 @@ jobs:
         with:
           ref: ${{ inputs.testCodeBranch }}
 
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
       - name: Build Edge Worker Scripts
         run: |
           npm run ewbuild
-          npm run ewprod2stg 
-     
+          npm run ewprod2stg
+          npm run ewsetbundle ${{ inputs.edgeworker }} "${{ inputs.description }}"
+        env:
+          EDGERC: ${{ secrets.AKAMAI_EDGERC }}
+
       - name: Deploy Edge Worker
         uses: jdmevo123/akamai-edgeworker-action@1.1
         env:

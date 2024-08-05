@@ -20,7 +20,8 @@
     "update-csp": "node ./tools/cspUpdate/cspUpdate.js",
     "ewtest": "jest --testPathPattern=edgeworkers",
     "ewprod2stg": "node ./edgeworkers/scripts/prod2stg.js",
-    "ewbuild": "node ./edgeworkers/scripts/build.js"
+    "ewbuild": "node ./edgeworkers/scripts/build.js",
+    "ewsetbundle": "node ./edgeworkers/scripts/setbundle.js"
   },
   "repository": {
     "type": "git",
@@ -33,14 +34,17 @@
   },
   "homepage": "https://github.com/adobecom/dc#readme",
   "devDependencies": {
-    "@amwp/platform-ui-automation": "^0.0.4",
+    "@amwp/platform-ui-automation": "^0.0.6",
     "@amwp/platform-ui-lib-adobe": "^0.0.7",
     "@babel/core": "7.23.2",
     "@babel/eslint-parser": "7.22.15",
     "@babel/register": "7.22.15",
     "@esm-bundle/chai": "4.3.4-fix.0",
-    "@web/dev-server-import-maps": "^0.0.6",
+    "@web/dev-server-import-maps": "^0.2.1",
+    "akamai-edgegrid": "^3.4.5",
+    "braces": "^3.0.3",
     "chai": "4.3.6",
+    "compare-versions": "^6.1.0",
     "eslint": "8.11.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-chai-friendly": "^0.7.2",
@@ -57,10 +61,18 @@
     "stylelint-config-standard": "25.0.0"
   },
   "dependencies": {
+    "@rollup/plugin-replace": "5.0.5",
+    "@web/dev-server-rollup": "0.6.1",
+    "@web/test-runner": "0.18.1",
+    "@web/test-runner-commands": "0.9.0",
+    "@web/test-runner-playwright": "0.11.0",
+    "async": "^3.2.5",
     "bowser": "^2.11.0",
-    "@web/test-runner": "0.13.27",
-    "@web/test-runner-commands": "0.6.1",
-    "@web/test-runner-playwright": "0.11.0"
+    "jest-fetch-mock": "^3.0.3",
+    "ws": "^8.18.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.14.1"
   },
   "jest": {
     "testRegex": "\\.jest\\.(js|jsx)$",

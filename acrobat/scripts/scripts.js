@@ -10,6 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
+const pattern = /{{phone-\S\w*\S\w*}}/g;
+document.querySelectorAll('a').forEach((p, idx) => {
+  if (pattern.exec(p.innerHTML)) {
+    p.setAttribute('number-type', p.innerHTML.match(pattern)[0].replace(/[&/\\#,+()$~%.'":*?<>{}]/g, ''));
+    p.classList.add(`geo-pn${idx}`);
+  }
+});
+
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -99,15 +107,7 @@ const getBrowserData = (userAgent) => {
 // Get browser data
 window.browser = getBrowserData(window.navigator.userAgent);
 
-// Add origin-trial meta tag
 const { hostname } = window.location;
-if (hostname === 'www.stage.adobe.com') {
-  const TRIAL_TOKEN = 'ApPnSNHCIWK27DqNdhiDHtOnC8mmBgtVJX5CLfG0qKTYvEG3MRpIdFTlz35GPStZLs926t+yC9M4Y6Ent+YKbgkAAABkeyJvcmlnaW4iOiJodHRwczovL2Fkb2JlLmNvbTo0NDMiLCJmZWF0dXJlIjoiU2NoZWR1bGVyWWllbGQiLCJleHBpcnkiOjE3MDk2ODMxOTksImlzU3ViZG9tYWluIjp0cnVlfQ==';
-  const tokenElement = document.createElement('meta');
-  tokenElement.httpEquiv = 'origin-trial';
-  tokenElement.content = TRIAL_TOKEN;
-  document.head.appendChild(tokenElement);
-}
 
 // Adding .html to canonical url for .ing pages
 if (hostname.endsWith('.ing')) {
@@ -115,13 +115,28 @@ if (hostname.endsWith('.ing')) {
   if (!canonEl?.href.endsWith('.html')) canonEl?.setAttribute('href', `${canonEl.href}.html`);
 }
 
-function loadStyles(paths) {
-  paths.forEach((path) => {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', path);
+function loadLink(href, { as, callback, crossorigin, rel, fetchpriority } = {}) {
+  let link = document.head.querySelector(`link[href="${href}"]`);
+  if (!link) {
+    link = document.createElement('link');
+    link.setAttribute('rel', rel);
+    if (as) link.setAttribute('as', as);
+    if (crossorigin) link.setAttribute('crossorigin', crossorigin);
+    if (fetchpriority) link.setAttribute('fetchpriority', fetchpriority);
+    link.setAttribute('href', href);
+    if (callback) {
+      link.onload = (e) => callback(e.type);
+      link.onerror = (e) => callback(e.type);
+    }
     document.head.appendChild(link);
-  });
+  } else if (callback) {
+    callback('noop');
+  }
+  return link;
+}
+
+function loadStyle(href, callback) {
+  return loadLink(href, { rel: 'stylesheet', callback });
 }
 
 function addLocale(locale) {
@@ -145,7 +160,7 @@ const locales = {
   ca_fr: { ietf: 'fr-CA', tk: 'vrk5vyv.css' },
   cl: { ietf: 'es-CL', tk: 'oln4yqj.css' },
   co: { ietf: 'es-CO', tk: 'oln4yqj.css' },
-  la: { ietf: 'es-LA', tk: 'oln4yqj.css' },
+  la: { ietf: 'es', tk: 'oln4yqj.css' },
   mx: { ietf: 'es-MX', tk: 'oln4yqj.css' },
   pe: { ietf: 'es-PE', tk: 'oln4yqj.css' },
   '': { ietf: 'en-US', tk: 'hah7vzn.css' },
@@ -176,17 +191,17 @@ const locales = {
   no: { ietf: 'no-NO', tk: 'aaz7dvd.css' },
   pl: { ietf: 'pl-PL', tk: 'aaz7dvd.css' },
   pt: { ietf: 'pt-PT', tk: 'inq1xob.css' },
-  ro: { ietf: 'en-RO', tk: 'aaz7dvd.css' },
-  sa_en: { ietf: 'en', tk: 'pps7abe.css' },
+  ro: { ietf: 'ro-RO', tk: 'qxw8hzm.css' },
+  sa_en: { ietf: 'en-SA', tk: 'pps7abe.css' },
   ch_de: { ietf: 'de-CH', tk: 'vin7zsi.css' },
   si: { ietf: 'sl-SI', tk: 'aaz7dvd.css' },
-  sk: { ietf: 'en-SK', tk: 'aaz7dvd.css' },
+  sk: { ietf: 'sk-SK', tk: 'aaz7dvd.css' },
   ch_fr: { ietf: 'fr-CH', tk: 'vrk5vyv.css' },
   fi: { ietf: 'fi-FI', tk: 'aaz7dvd.css' },
   se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
   ch_it: { ietf: 'it-CH', tk: 'bbf5pok.css' },
   tr: { ietf: 'tr-TR', tk: 'aaz7dvd.css' },
-  ae_en: { ietf: 'en', tk: 'pps7abe.css' },
+  ae_en: { ietf: 'ar-EN', tk: 'pps7abe.css', dir: 'ltr' },
   uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
   at: { ietf: 'de-AT', tk: 'vin7zsi.css' },
   cz: { ietf: 'cs-CZ', tk: 'aaz7dvd.css' },
@@ -194,24 +209,24 @@ const locales = {
   ru: { ietf: 'ru-RU', tk: 'aaz7dvd.css' },
   ua: { ietf: 'uk-UA', tk: 'aaz7dvd.css' },
   il_he: { ietf: 'he', tk: 'nwq1mna.css', dir: 'rtl' },
-  ae_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
+  ae_ar: { ietf: 'ar-AE', tk: 'nwq1mna.css', dir: 'rtl' },
   mena_ar: { ietf: 'ar', tk: 'dis2dpj.css', dir: 'rtl' },
-  sa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
+  sa_ar: { ietf: 'ar-SA', tk: 'nwq1mna.css', dir: 'rtl' },
   // Asia Pacific
   au: { ietf: 'en-AU', tk: 'pps7abe.css' },
   hk_en: { ietf: 'en-HK', tk: 'pps7abe.css' },
-  in: { ietf: 'en-GB', tk: 'pps7abe.css' },
-  id_id: { ietf: 'id', tk: 'czc0mun.css' },
-  id_en: { ietf: 'en', tk: 'pps7abe.css' },
-  my_ms: { ietf: 'ms', tk: 'sxj4tvo.css' },
-  my_en: { ietf: 'en-GB', tk: 'pps7abe.css' },
-  nz: { ietf: 'en-GB', tk: 'pps7abe.css' },
-  ph_en: { ietf: 'en', tk: 'pps7abe.css' },
-  ph_fil: { ietf: 'fil-PH', tk: 'ict8rmp.css' },
+  in: { ietf: 'en-IN', tk: 'pps7abe.css' },
+  id_id: { ietf: 'id-ID', tk: 'czc0mun.css' },
+  id_en: { ietf: 'en-ID', tk: 'pps7abe.css' },
+  my_ms: { ietf: 'ms-MY', tk: 'sxj4tvo.css' },
+  my_en: { ietf: 'en-MY', tk: 'pps7abe.css' },
+  nz: { ietf: 'en-NZ', tk: 'pps7abe.css' },
+  ph_en: { ietf: 'en-PH', tk: 'pps7abe.css' },
+  ph_fil: { ietf: 'tl-PH', tk: 'ict8rmp.css' },
   sg: { ietf: 'en-SG', tk: 'pps7abe.css' },
-  th_en: { ietf: 'en', tk: 'pps7abe.css' },
-  in_hi: { ietf: 'hi', tk: 'aaa8deh.css' },
-  th_th: { ietf: 'th', tk: 'aaz7dvd.css' },
+  th_en: { ietf: 'en-TH', tk: 'pps7abe.css' },
+  in_hi: { ietf: 'hi-IN', tk: 'aaa8deh.css' },
+  th_th: { ietf: 'th-TH', tk: 'aaz7dvd.css' },
   cn: { ietf: 'zh-CN', tk: 'puu3xkp' },
   hk_zh: { ietf: 'zh-HK', tk: 'jay0ecd' },
   tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
@@ -220,22 +235,22 @@ const locales = {
   // Langstore Support.
   langstore: { ietf: 'en-US', tk: 'hah7vzn.css' },
   // geo expansion MWPW-124903
-  za: { ietf: 'en-GB', tk: 'pps7abe.css' }, // South Africa (GB English)
-  ng: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Nigeria (GB English)
-  cr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Costa Rica (Spanish Latin America)
-  ec: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Ecuador (Spanish Latin America)
-  pr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Puerto Rico (Spanish Latin America)
-  gt: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Guatemala (Spanish Latin America)
-  eg_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Egypt (Arabic)
-  kw_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Kuwait (Arabic)
-  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Quatar (Arabic)
-  eg_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Egypt (GB English)
-  kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
-  qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
-  gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
+  za: { ietf: 'en-ZA', tk: 'pps7abe.css' }, // South Africa (GB English)
+  ng: { ietf: 'en-NG', tk: 'pps7abe.css' }, // Nigeria (GB English)
+  cr: { ietf: 'es-CR', tk: 'oln4yqj.css' }, // Costa Rica (Spanish Latin America)
+  ec: { ietf: 'es-EC', tk: 'oln4yqj.css' }, // Ecuador (Spanish Latin America)
+  pr: { ietf: 'es-PR', tk: 'oln4yqj.css' }, // Puerto Rico (Spanish Latin America)
+  gt: { ietf: 'es-GT', tk: 'oln4yqj.css' }, // Guatemala (Spanish Latin America)
+  eg_ar: { ietf: 'ar-EG', tk: 'nwq1mna.css', dir: 'rtl' }, // Egypt (Arabic)
+  kw_ar: { ietf: 'ar-KW', tk: 'nwq1mna.css', dir: 'rtl' }, // Kuwait (Arabic)
+  qa_ar: { ietf: 'ar-QA', tk: 'nwq1mna.css', dir: 'rtl' }, // Quatar (Arabic)
+  eg_en: { ietf: 'en-EG', tk: 'pps7abe.css' }, // Egypt (GB English)
+  kw_en: { ietf: 'en-KW', tk: 'pps7abe.css' }, // Kuwait (GB English)
+  qa_en: { ietf: 'en-QA', tk: 'pps7abe.css' }, // Qatar (GB English)
+  gr_el: { ietf: 'el-GR', tk: 'fnx0rsr.css' }, // Greece (Greek)
   el: { ietf: 'el', tk: 'aaz7dvd.css' },
-  vn_vi: { ietf: 'vi', tk: 'jii8bki.css' },
-  vn_en: { ietf: 'en-GB', tk: 'pps7abe.css' },
+  vn_vi: { ietf: 'vi-VN', tk: 'jii8bki.css' },
+  vn_en: { ietf: 'en-VN', tk: 'pps7abe.css' },
 };
 
 // Add any config options.
@@ -245,47 +260,109 @@ const CONFIG = {
   imsClientId: 'acrobatmilo',
   commerce: { checkoutClientId: 'doc_cloud' },
   local: {
-    edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745cdfdga',
-    pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
+    edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
+    pdfViewerClientId: 'ec572982b2a849d4b16c47d9558d66d1',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
+  page: {
+    pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
+  stagePage: {
+    pdfViewerClientId: '2522674a708e4ddf8bbd62e18585ae4b',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   stage: {
-    edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
+    edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
     pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   live: {
-    edgeConfigId: 'da46a629-be9b-40e5-8843-4b1ac848745c',
+    edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
     pdfViewerClientId: '18e9175fc6754b9892d315cae9f346f1',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   prod: {
-    edgeConfigId: '9f3cee2b-5f73-4bf3-9504-45b51e9a9961',
+    edgeConfigId: '913eac4d-900b-45e8-9ee7-306216765cd2',
     pdfViewerClientId: '8a1d0707bf0f45af8af9f3bead0d213e',
     pdfViewerReportSuite: 'adbadobenonacdcprod,adbadobedxprod,adbadobeprototype',
   },
   locales,
   // geoRouting: 'on',
-  prodDomains: ['www.adobe.com'],
+  prodDomains: ['www.adobe.com', 'business.adobe.com', 'helpx.adobe.com'],
+  stageDomainsMap: {
+    'business.adobe.com': 'business.stage.adobe.com',
+    'helpx.adobe.com': 'helpx.stage.adobe.com',
+    'blog.adobe.com': 'blog.stage.adobe.com',
+    'developer.adobe.com': 'developer-stage.adobe.com',
+    'news.adobe.com': 'news.stage.adobe.com',
+  },
   jarvis: {
     id: 'DocumentCloudWeb1',
     version: '1.0',
     onDemand: false,
   },
+  htmlExclude: [
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
+  ],
+  imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
 };
 
-// Setting alternative Jarcis client ID for these paths
-if (window.location.pathname.match('/sign/')
-  || window.location.pathname.match('/documentcloud/')
-  || window.location.pathname.match('/acrobat/business/')) {
-  CONFIG.jarvis.id = 'DocumentCloudsignAcro';
-};
+const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
+
+if (IMS_GUEST) {
+  const CLIENT_ID = document.querySelector('meta[name="ims-cid"]')?.content;
+
+  CONFIG.adobeid = {
+    client_id: CLIENT_ID,
+    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read',
+
+    enableGuestAccounts: true,
+    enableGuestTokenForceRefresh: true,
+
+    api_parameters: { check_token: { guest_allowed: true } },
+
+    onAccessToken: (accessToken) => {
+      window.dc_hosted?.ims_callbacks?.onAccessToken?.(accessToken);
+    },
+    onReauthAccessToken: (reauthTokenInformation) => {
+      window.dc_hosted?.ims_callbacks?.onReauthAccessToken?.(reauthTokenInformation);
+    },
+    onAccessTokenHasExpired: () => {
+      window.dc_hosted?.ims_callbacks?.onAccessTokenHasExpired?.();
+    },
+  };
+}
+
+function replaceDotMedia(area = document) {
+  // eslint-disable-next-line compat/compat
+  const currUrl = new URL(window.location);
+  const pathSeg = currUrl.pathname.split('/').length;
+  if (pathSeg >= 3) return;
+  const resetAttributeBase = (tag, attr) => {
+    area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
+      // eslint-disable-next-line compat/compat
+      el[attr] = `${new URL(`${CONFIG.contentRoot}${el.getAttribute(attr).substring(1)}`, window.location).href}`;
+    });
+  };
+  resetAttributeBase('img', 'src');
+  resetAttributeBase('source', 'srcset');
+}
+
+replaceDotMedia(document);
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
-  const lcpImg = document.querySelector('img');
-  lcpImg?.setAttribute('loading', 'eager');
+  const marquee = document.querySelector('.marquee'); // first marquee only
+  if (marquee) {
+    const index = window.browser.isMobile ? 1 : 3;
+    const selectorBG = `.marquee > div:nth-child(1) > div:nth-of-type(${index}) img`;
+    const selectorFG = '.marquee > div:nth-child(2) img';
+    marquee.querySelector(selectorBG)?.setAttribute('loading', 'eager');
+    marquee.querySelector(selectorFG)?.setAttribute('loading', 'eager');
+  }
 }());
 
 /*
@@ -298,14 +375,29 @@ const { ietf } = getLocale(locales);
 (async function loadPage() {
   // Fast track the widget
   const widgetBlock = document.querySelector('[class*="dc-converter-widget"]');
+  const mobileAppBlock = document.querySelector('[class*="mobile-widget"]');
+  const hasMobileAppBlock = window.browser.isMobile && document.querySelector('meta[name="mobile-widget"]')?.content === 'true';
 
-  if (widgetBlock) {
+  if (hasMobileAppBlock && mobileAppBlock) {
+    mobileAppBlock.dataset.verb = mobileAppBlock.classList.value.replace('mobile-widget', '').trim();
+    document.body.classList.add('dc-bc');
+    mobileAppBlock.removeAttribute('class');
+    mobileAppBlock.id = 'mobile-widget';
+    const { default: dcConverterq } = await import('../blocks/mobile-widget/mobile-widget.js');
+    await dcConverterq(mobileAppBlock);
+    widgetBlock?.remove();
+  } else {
+    mobileAppBlock?.remove();
+  }
+
+  if (widgetBlock && !hasMobileAppBlock) {
     document.body.classList.add('dc-bc');
     document.querySelector('header').className = 'global-navigation has-breadcrumbs';
     const verb = widgetBlock.children[0].children[0]?.innerText?.trim();
     const blockName = widgetBlock.classList.value;
     widgetBlock.removeAttribute('class');
     widgetBlock.id = 'dc-converter-widget';
+    widgetBlock.setAttribute('verb', verb);
     const DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
     const INLINE_SNIPPET = document.querySelector('section#edge-snippet');
     const dcUrls = INLINE_SNIPPET ? [] : [
@@ -328,7 +420,7 @@ const { ietf } = getLocale(locales);
 
   // Setup CSP
   (async () => {
-    if (document.querySelector('meta[name="dc-widget-version"]')) {
+    if (document.querySelector('meta[name="dc-widget-version"]') && !hasMobileAppBlock) {
       const { default: ContentSecurityPolicy } = await import('./contentSecurityPolicy/csp.js');
       ContentSecurityPolicy();
     }
@@ -341,12 +433,24 @@ const { ietf } = getLocale(locales);
   if (!document.getElementById('inline-milo-styles')) {
     const paths = [`${miloLibs}/styles/styles.css`];
     if (STYLES) { paths.push(STYLES); }
-    loadStyles(paths);
+    paths.forEach((css) => loadStyle(css));
+  }
+
+  // Configurable preloads
+  const preloads = document.querySelector('meta[name="preloads"]')?.content;
+  if (preloads) {
+    preloads.split(',').forEach((x) => {
+      const link = x.trim().replace('$MILOLIBS', miloLibs);
+      if (link.endsWith('.js')) {
+        loadLink(link, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
+      } else if (link.endsWith('.css')) {
+        loadStyle(link);
+      }
+    });
   }
 
   // Import base milo features and run them
-  const { loadArea, setConfig, loadLana, getMetadata } = await import(`${miloLibs}/utils/utils.js`);
-
+  const { loadArea, setConfig, loadLana, getMetadata, loadIms } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
 
   if (getMetadata('commerce')) {
@@ -355,23 +459,19 @@ const { ietf } = getLocale(locales);
   }
 
   setConfig({ ...CONFIG, miloLibs });
-  loadLana({ clientId: 'dxdc', tags: 'Cat=DC_Milo' });
+  loadLana({ clientId: 'dxdc', tags: 'DC_Milo' });
 
   // get event back form dc web and then load area
   await loadArea(document, false);
-
   // Setup Logging
   const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
 
   // IMS Ready
-  const imsReady = setInterval(() => {
-    if (window.adobeIMS && window.adobeIMS.initialized) {
-      clearInterval(imsReady);
-      const imsIsReady = new CustomEvent('IMS:Ready');
-      window.dispatchEvent(imsIsReady);
-    }
-  }, 1000);
+  loadIms().then(() => {
+    const imsIsReady = new CustomEvent('IMS:Ready');
+    window.dispatchEvent(imsIsReady);
+  });
 
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
@@ -381,4 +481,9 @@ const { ietf } = getLocale(locales);
       window.dispatchEvent(imsIsReady);
     }
   }, 1000);
+
+  if (document.querySelectorAll('a[class*="geo-pn"]').length > 0 || document.querySelectorAll('a[href*="geo"]').length > 0) {
+    const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
+    geoPhoneNumber();
+  }
 }());

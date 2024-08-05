@@ -8,10 +8,12 @@ Download:
 
 Leave a review:
   - c.digitalData.primaryEvent.eventInfo.interaction.comment: <comment>
-  - c.digitalData.primaryEvent.eventInfo.interaction.rating: <rating>
+  - c.digitalData.primaryEvent.eventInfo.interaction.rating: "<rating>"
+
+Extension modal:
+  - c.digitalData.primaryEvent.eventInfo.eventName: Get the extension-1|viewer-extension|<browser>-extension
 
 Close the extension modal:
-  - c.digitalData.primaryEvent.eventInfo.eventName: Get the extension-1|viewer-extension|<browser>-extension
   - c.digitalData.primaryEvent.eventInfo.eventName: Get the extension-1|close-viewer-extension|<browser>-extension
 
 

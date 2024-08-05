@@ -9,6 +9,7 @@ const connectSrc = [
   'blob:',
   '14257-chimera.adobeioruntime.net',
   '*.adobe.com',
+  'prod.adobeccstatic.com',
   '*.clicktale.net/',
   '*.adobe.io',
   '*.adobelogin.com',
@@ -16,8 +17,7 @@ const connectSrc = [
   '*.blob.core.windows.net',
   '*.mktoresp.com',
   'tag-logger.demandbase.com',
-  'accounts.google.com/gsi/log',
-  'accounts.google.com/gsi/status',
+  'accounts.google.com/gsi/',
   'acom-reviews--adobe.hlx.live/reviews-api/',
   'ade0164.d41.co/',
   'adobe.tt.omtrdc.net',
@@ -46,6 +46,10 @@ const connectSrc = [
   'trial-eum-clienttons-s.akamaihd.net/',
   '*.akstat.io/',
   'rum.hlx.page',
+  'facebook.com',
+  'px.ads.linkedin.com',
+  'tr6.snapchat.com',
+  'ad.doubleclick.net',
   ';',
 ];
 
@@ -54,7 +58,6 @@ const defaultSrc = [
   'acrobat.adobe.com',
   'auth.services.adobe.com',
   'documentcloud.adobe.com',
-  'acrobat.adobe.com',
   ';',
 ];
 
@@ -109,6 +112,7 @@ const imgSrc = [
   'about:',
   'blob:',
   'data:',
+  'prod.adobeccstatic.com',
   '*.clarity.ms',
   '*.enterprise.adobe.com',
   '*.services.adobe.com',
@@ -208,6 +212,7 @@ const scriptSrc = [
   'servedby.flashtalking.com',
   'snap.licdn.com',
   'so.rlcdn.com/',
+  'prod.adobeccstatic.com',
   'static.ads-twitter.com',
   't.co/i',
   'tag.clrstm.com',
@@ -237,6 +242,7 @@ const scriptSrc = [
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
   'rum.hlx.page',
+  'tr.snapchat.com',
   ';',
 ];
 
@@ -245,7 +251,7 @@ const styleSrc = [
   '\'unsafe-inline\'',
   '*.adobe.com',
   'accounts.google.com/gsi/style',
-  'adobeccstatic.com',
+  'prod.adobeccstatic.com',
   'use.typekit.net',
   'main--milo--adobecom.hlx.page',
   'p.typekit.net',

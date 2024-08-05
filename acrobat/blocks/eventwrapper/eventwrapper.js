@@ -64,8 +64,6 @@ export default function init(element) {
   const handleEvents = (e, converter, verb) => {
     const { name: browserName, isMobile } = window.browser;
     let extID;
-    let locale;
-    if (verb === 'fillsign') locale = document.documentElement.lang;
     if (e === PROCESS_START) converterAnalytics();
     if ((e === CONVERSION_COM && !isMobile)
         || (e === PREVIEW_DIS && !isMobile)) {
@@ -126,7 +124,6 @@ export default function init(element) {
         if (reviewBlock[0]) { reviewBlock[0].classList.add('hide'); }
         break;
       case UPLOAD_COMPLETE:
-        if (verb === 'fillsign' && locale === 'en-US') hideContent();
         setCurrentEvent('uploadcomplete');
         break;
       case PROCESS_CANCELED:

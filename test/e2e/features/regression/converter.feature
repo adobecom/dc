@@ -22,6 +22,8 @@ Feature: Frictionless Converter Block
       | add-pages-to-pdf  | test-files/test.pdf  |
       | extract-pdf-pages | test-files/test2.pdf |
       | pdf-editor        | test-files/test.pdf  |
+      | sign-pdf          | test-files/test.pdf  |
+      | convert-pdf       | test-files/test.jpg  |
 
   @MWPW-124781 @regression @converter
   Scenario Outline: L2 Verbs - Upload and download
@@ -35,7 +37,6 @@ Feature: Frictionless Converter Block
       | pdf-to-ppt   | test-files/test.pdf  |
       | pdf-to-word  | test-files/test.pdf  |
       | pdf-to-excel | test-files/test.pdf  |
-      | convert-pdf  | test-files/test.jpg  |
       | ppt-to-pdf   | test-files/test.pptx |
       | jpg-to-pdf   | test-files/test.jpg  |
       | word-to-pdf  | test-files/test.docx |
@@ -53,11 +54,13 @@ Feature: Frictionless Converter Block
       | pdf-to-jpg | test-files/test.pdf |
 
   @MWPW-127201 @regression @converter
-  Scenario Outline: L2 Verbs - Upload and download
+  Scenario Outline: L1 Verbs - Upload and sign-in
     Given I go to the <Verb> page
      Then I upload the files "<Files>"
      Then I merge the uploaded files
-     Then I download the converted file
+     Then I continue with AdobeID
+     Then I wait for 5 seconds
+     Then I should see the address bar contains ".services.adobe.com"
 
   Examples:
       | Verb      | Files                                    |
@@ -96,27 +99,6 @@ Feature: Frictionless Converter Block
   Examples:
       | Verb       | Files                                    |
       | rotate-pdf | test-files/test.pdf,test-files/test2.pdf |
-
-  @MWPW-137251 @regression @converter
-  Scenario Outline: L2 Verbs - Upload and sign in
-    Given I go to the <Verb> page
-     Then I upload the file "<File>"
-     Then I click "Add signature"
-     Then I fill up signature input
-     Then I click "Add initials"
-     Then I fill up signature input
-     Then I click "Add signature"
-     Then I sign up the document
-     Then I should see signature
-     Then I click "Add initials"
-     Then I sign up the document
-     Then I should see initials
-     Then I wait for 2 seconds
-     Then I click "Sign in to download"
-
-  Examples:
-      | Verb     | File                |
-      | sign-pdf | test-files/test.pdf |
 
   @MWPW-127633 @regression @converter @signedin
   Scenario Outline: L1 Verbs - Redirects for signed-in visitors

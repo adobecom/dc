@@ -6,3 +6,8 @@ node_modules/*
 .idea
 tools/cspUpdate/token.json
 reports/*
+CODEOWNERS
+.github/CODEOWNERS
+
+#Environment
+.env

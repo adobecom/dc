@@ -10,6 +10,7 @@ const connectSrc = [
   '14257-chimera-stage.adobeioruntime.net',
   '14257-chimera.adobeioruntime.net',
   '*.adobe.com',
+  'stage.adobeccstatic.com',
   '*.adobe.io',
   '*.adobelogin.com',
   '*.amazonaws.com',
@@ -17,8 +18,7 @@ const connectSrc = [
   '*.clicktale.net/',
   '*.mktoresp.com',
   'tag-logger.demandbase.com',
-  'accounts.google.com/gsi/log',
-  'accounts.google.com/gsi/status',
+  'accounts.google.com/gsi/',
   'acom-reviews--adobe.hlx.live/reviews-api/',
   'ade0164.d41.co/',
   'adobe.tt.omtrdc.net',
@@ -55,6 +55,9 @@ const connectSrc = [
   '*.hlx.live',
   'cdn.linkedin.oribi.io',
   '*.akstat.io/',
+  'facebook.com',
+  'px.ads.linkedin.com',
+  'tr6.snapchat.com',
   ';',
 ];
 
@@ -119,6 +122,7 @@ const imgSrc = [
   'blob:',
   'data:',
   '*.adobe.com',
+  'stage.adobeccstatic.com',
   '*.clarity.ms',
   '*.enterprise.adobe.com',
   '*.services.adobe.com',
@@ -162,6 +166,7 @@ const imgSrc = [
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
   'client.messaging.adobe.com/',
+  'ad.doubleclick.net',
   ';',
 ];
 
@@ -254,6 +259,7 @@ const scriptSrc = [
   's.tgm.yahoo-net.jp',
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
+  'tr.snapchat.com',
   ';',
 ];
 

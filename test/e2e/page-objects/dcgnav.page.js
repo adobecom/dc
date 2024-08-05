@@ -17,13 +17,18 @@ export class DcGnavPage extends GnavPage {
     // US uses the new gnav. Other locales use the old one.
     // Same in SubMenu()
     this.buildProps({
-      buyNow: '.feds-cta-wrapper a, .gnav-cta a >> visible=true',
+      cta: '.feds-cta-wrapper a, .gnav-cta a >> visible=true',
       commerceButton: 'a[href*="commerce.adobe.com"]',
       signInLabel: '[data-testid="user-title"]:has-text("Signed in as")',
       fedsPopup: '.feds-popup, .gnav-navitem-menu.large-Variant, .gnav-navitem-menu.small-Variant >> visible=true',
       footerPromoHeading: '[data-path^="/dc-shared/fragments/footer-promos"] .heading-l',
       footerPromoBullets: '[data-path^="/dc-shared/fragments/footer-promos"] ul'
     });
+  }
+
+  async clickNavItem(item) {
+    let selector = `.feds-nav .feds-navItem:nth-child(${item + 1})`;
+    await this.native.locator(selector).click();
   }
 
   SubMenu(menu) {

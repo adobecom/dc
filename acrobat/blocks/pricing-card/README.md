@@ -5,18 +5,18 @@
 ```
 | pricing-card                                                                                                                                  |
 |---------------------------------------------------------------------------------------------------------------------------------------------- |
-| title         | Text that will be shown in header of card. Text styled as H1 will have font size 24h, and other text will have font size 20px |
+| title         | Text that will be shown in header of card Text styled as H1 will have font size 24h, and other text will have font size 20px |
 | optionN       |  Options from 1 to N that will be listed as radio buttons in middle section of the pricing card                               |
 | priceN        | Prices from 1 to N that will be displayed below the card title, when corresponding option is selected                         |
 | ctaN          | Button/buttons group from 1 to N  that will be displayed in the footer of the card, when corresponding option is selected     |
 | disclaimerN   | Disclaimer text from 1 to N that will be displayed below the price, when corresponding option is selected                     |
-| initialOption | Optional. Name of option that will be selected by default. If not defined, option1 will be used as default.                                                                               |
+| initialOption | Optional. Name of option that will be selected by default. If not defined, option1 will be used as default..                                                                              |
 | promotionText | Optional property. If defined, card will have yellow border and yellow box in top right corner, with promotion text.          |
 |               | Text styled as H1 inside promotion text will be bold with font-size:14px, and the rest of text will have font-size:12px       |
 
 ```
 
-Pricing cards should be defined inside one section, with section-metadata (style "pricing-card-columns"). For example:
+Pricing cards should be defined inside one section, with section-metadata (style "pricing-card-columns"). For example.:
 
 ---
 |pricing-card|
