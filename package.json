@@ -61,6 +61,7 @@
     "stylelint-config-standard": "25.0.0"
   },
   "dependencies": {
+    "@75lb/deep-merge": "^1.1.2",
     "@rollup/plugin-replace": "5.0.5",
     "@web/dev-server-rollup": "0.6.1",
     "@web/test-runner": "0.18.1",
