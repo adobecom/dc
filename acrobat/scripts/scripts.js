@@ -324,6 +324,10 @@ if (IMS_GUEST) {
   };
 }
 
+// Load IMS
+const { default: dcLoadIMS } = await import('./dcIMS.js');
+dcLoadIMS();
+
 function replaceDotMedia(area = document) {
   // eslint-disable-next-line compat/compat
   const currUrl = new URL(window.location);
@@ -439,9 +443,6 @@ const { ietf } = getLocale(locales);
   const { default: lanaLogging } = await import('./dcLana.js');
   lanaLogging();
 
-  // Load IMS
-  const { default: dcLoadIMS } = await import('./dcIMS.js');
-  dcLoadIMS();
 
   const intervalIMS = setInterval(() => {
     if (window.adobeIMS) {
