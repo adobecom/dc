@@ -7,15 +7,19 @@ const STAGE_ENVS = [
   'www.stage.adobe.com',
   'main--dc--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
-  'stage--dc--adobecom.hlx.page'
+  'stage--dc--adobecom.hlx.page',
 ];
 
 async function getCspEnv() {
   const { hostname } = window.location;
-  const cspEnv =
-    (PROD_ENVS.includes(hostname)) ? 'prod'
-    : (STAGE_ENVS.includes(hostname)) ? 'stage'
-    : 'dev';
+  let cspEnv;
+  if (PROD_ENVS.includes(hostname)) {
+    cspEnv = 'prod';
+  } else if (STAGE_ENVS.includes(hostname)) {
+    cspEnv = 'stage';
+  } else {
+    cspEnv = 'dev';
+  }
   return import(`./${cspEnv}.js`);
 }
 
@@ -42,7 +46,7 @@ export default async function ContentSecurityPolicy() {
 
   // Content Security Policy Logging
   window.cspErrors = [];
-  document.addEventListener("securitypolicyviolation", (e) => {
-    cspErrors.push(`${e.violatedDirective} violation ¶ Refused to load content from ${e.blockedURI}`);
+  document.addEventListener('securitypolicyviolation', (e) => {
+    window.cspErrors.push(`${e.violatedDirective} violation ¶ Refused to load content from ${e.blockedURI}`);
   });
 }

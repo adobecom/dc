@@ -30,14 +30,14 @@ export default function init(verb) {
         webInteraction: {
           linkClicks: { value: 1 },
           type: 'other',
-          name: `acrobat:verb-${verb}:goto-app:clicked:migration_testing`,
+          name: `acrobat:verb-${verb}:goto-app:clicked`,
         },
       },
       _adobe_corpnew: {
         digitalData: {
-          dcweb: { event: { pagename: `acrobat:verb-${verb}:goto-app:clicked:migration_testingDCW` } },
+          dcweb: { event: { pagename: `acrobat:verb-${verb}:goto-app:clicked` } },
           dcweb2: {
-            event: { pagename: `acrobat:verb-${verb}:goto-app:clicked:migration_testingDCW2` },
+            event: { pagename: `acrobat:verb-${verb}:goto-app:clicked` },
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,
@@ -52,8 +52,7 @@ export default function init(verb) {
               id: '',
               is_authenticated: false,
               user_tags: [
-                'frictionless_new_user',
-                'frictionless_can_download',
+                `${localStorage['pdfnow.auth'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
               ],
             },
           },
