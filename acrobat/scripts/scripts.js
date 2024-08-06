@@ -294,7 +294,6 @@ const CONFIG = {
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'business.adobe.com', 'helpx.adobe.com'],
   stageDomainsMap: {
-    'www.adobe.com': 'www.stage.adobe.com',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
@@ -462,19 +461,19 @@ const { ietf } = getLocale(locales);
   }
 
   setConfig({ ...CONFIG, miloLibs });
-  loadLana({ clientId: 'dxdc', tags: 'Cat=DC_Milo' });
 
-  // get event back form dc web and then load area
-  await loadArea(document, false);
-  // Setup Logging
-  const { default: lanaLogging } = await import('./dcLana.js');
-  lanaLogging();
-
-  // IMS Ready
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
   });
+
+  loadLana({ clientId: 'dxdc', tags: 'DC_Milo' });
+
+  await loadArea(document, false);
+
+  // Setup Logging
+  const { default: lanaLogging } = await import('./dcLana.js');
+  lanaLogging();
 
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {

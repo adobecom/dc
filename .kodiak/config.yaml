@@ -10,9 +10,13 @@ notifications:
       filters:
         include:
           risk_rating: R5
+        exclude:
+          files:
+            - acrobat/blocks/acom-widget/acom-widget.js
+            - acrobat/blocks/acom-widget/pdfAssetManager.js
       fields:
         assignee:
-          name: gunn
+          name: joaquinrivero
         customfield_11800: MWPW-140779 #epic link
         customfield_12900:
           value: Slytherin
