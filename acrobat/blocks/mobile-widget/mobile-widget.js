@@ -1,8 +1,5 @@
-import { setLibs } from '../../scripts/utils.js';
 import mobileAnalytics from '../../scripts/alloy/mobile-widget.js';
 import mobileAnalyticsShown from '../../scripts/alloy/mobile-widget-shown.js';
-
-const miloLibs = setLibs('/libs');
 
 const verbRedirMap = {
   createpdf: 'createpdf',
@@ -66,7 +63,20 @@ function redDir(verb) {
   window.location.href = newLocation;
 }
 
-function createMobileWidget(createTag, element, content, verb) {
+function createTag(tag, attributes, html) {
+  const el = document.createElement(tag);
+  if (html) {
+    el.insertAdjacentHTML('beforeend', html);
+  }
+  if (attributes) {
+    Object.entries(attributes).forEach(([key, val]) => {
+      el.setAttribute(key, val);
+    });
+  }
+  return el;
+}
+
+function createMobileWidget(element, content, verb) {
   const aaVerbName = `${verbRedirMap[verb] || verb}`;
   const artID = content[1].querySelector('a')?.href || content[1].querySelector('img')?.src;
 
@@ -112,11 +122,10 @@ function createMobileWidget(createTag, element, content, verb) {
 
 export default async function init(element) {
   element.closest('main > div').dataset.section = 'widget';
-  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const content = Array.from(element.querySelectorAll(':scope > div'));
   const VERB = element.dataset.verb;
   content.forEach((con) => con.classList.add('hide'));
-  createMobileWidget(createTag, element, content, VERB);
+  createMobileWidget(element, content, VERB);
   // Listen for the IMS:Ready event and call redDir if user is signed in
   window.addEventListener('IMS:Ready', async () => {
     if (window.adobeIMS.isSignedInUser()) {
