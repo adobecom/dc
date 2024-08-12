@@ -465,6 +465,8 @@ const { ietf } = getLocale(locales);
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
+  }).catch(() => {
+    window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
   });
 
   loadLana({ clientId: 'dxdc', tags: 'DC_Milo' });

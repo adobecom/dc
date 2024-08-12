@@ -60,9 +60,19 @@ describe('dc-converter-widget block', () => {
   it('no multiple inits', async () => {
     const block = document.body.querySelector('.dc-converter-widget');
     await init(block);
+    await delay(1000);
     const widgets = document.querySelectorAll('div[data-section="widget"]');
     expect(widgets.length).to.be.equal(1);
     const scripts = document.querySelectorAll('#adobe_dc_sdk_launcher');
     expect(scripts.length).to.be.equal(1);
+  });
+
+  it('handle DC_Hosted:Error', async () => {
+    const block = document.body.querySelector('.dc-converter-widget');
+    await init(block);
+    window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
+    await delay(1000);
+    const errorImg = document.querySelector('div[class*="DCHosted__container"] img');
+    expect(errorImg.src).to.contain('error.svg');
   });
 });
