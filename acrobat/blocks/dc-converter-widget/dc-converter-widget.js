@@ -279,6 +279,7 @@ export default async function init(element) {
   dcScript.dataset.verb = VERB;
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
+  dcScript.dataset.log_perf = 'true';
   dcScript.dataset.enable_unload_prompt = 'true';
   if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
