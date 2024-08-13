@@ -68,11 +68,13 @@ describe('dc-converter-widget block', () => {
   });
 
   it('handle DC_Hosted:Error', async () => {
+    window.lana = { log: sinon.stub() };
     const block = document.body.querySelector('.dc-converter-widget');
     await init(block);
     window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
     await delay(1000);
     const errorImg = document.querySelector('div[class*="DCHosted__container"] img');
     expect(errorImg.src).to.contain('error.svg');
+    expect(window.lana.log.getCall(0).args[0]).to.eq('DC Widget failed');
   });
 });

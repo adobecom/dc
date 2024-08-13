@@ -150,7 +150,7 @@ export default async function init(element) {
   let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
   const lanaOptions = {
     sampleRate: 1,
-    tags: 'Cat=DxDC_Frictionless,origin=milo',
+    tags: 'DC_Milo,Frictionless',
   };
   // LANA
   window.dcwErrors = [];
@@ -340,5 +340,6 @@ export default async function init(element) {
       dropZone.innerHTML = '<img src="/acrobat/img/icons/error.svg"><p>We apologize for the inconvenience. We are working hard to make the service available. Please check back shortly.</p>';
     }
     document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
+    window.lana?.log('DC Widget failed', lanaOptions);
   });
 }
