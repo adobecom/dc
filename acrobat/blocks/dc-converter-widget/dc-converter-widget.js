@@ -332,14 +332,15 @@ export default async function init(element) {
   });
 
   window.addEventListener('DC_Hosted:Error', () => {
-    document.querySelector('h1').textContent = 'Currently unavailable';
     const dropZone = document.querySelector('.dropZoneContent');
-    if (dropZone) {
+    if (dropZone && !dropZone.classList.contains('unavailable')) {
+      dropZone.classList.add('unavailable');
       dropZone.style.pointerEvents = 'none';
       dropZone.parentElement.style.border = 'none';
+      document.querySelector('h1').textContent = 'Currently unavailable';
       dropZone.innerHTML = '<img src="/acrobat/img/icons/error.svg"><p>We apologize for the inconvenience. We are working hard to make the service available. Please check back shortly.</p>';
+      document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
     }
-    document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
     window.lana?.log('DC Widget failed', lanaOptions);
   });
 }
