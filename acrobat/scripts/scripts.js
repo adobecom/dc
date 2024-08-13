@@ -381,13 +381,13 @@ const { ietf } = getLocale(locales);
   const hasMobileAppBlock = window.browser.isMobile && document.querySelector('meta[name="mobile-widget"]')?.content === 'true';
 
   if (hasMobileAppBlock && mobileAppBlock) {
+    widgetBlock?.remove();
     mobileAppBlock.dataset.verb = mobileAppBlock.classList.value.replace('mobile-widget', '').trim();
     document.body.classList.add('dc-bc');
     mobileAppBlock.removeAttribute('class');
     mobileAppBlock.id = 'mobile-widget';
     const { default: dcConverterq } = await import('../blocks/mobile-widget/mobile-widget.js');
     await dcConverterq(mobileAppBlock);
-    widgetBlock?.remove();
   } else {
     mobileAppBlock?.remove();
   }
@@ -465,6 +465,8 @@ const { ietf } = getLocale(locales);
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
+  }).catch(() => {
+    window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
   });
 
   loadLana({ clientId: 'dxdc', tags: 'DC_Milo' });
