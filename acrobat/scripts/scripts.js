@@ -386,7 +386,7 @@ const { ietf } = getLocale(locales);
     document.body.classList.add('dc-bc');
     mobileAppBlock.removeAttribute('class');
     mobileAppBlock.id = 'mobile-widget';
-    const { default: dcConverterq } = await import('../blocks/mobile-widget/mobile-widget.js');
+    const { default: dcConverterq } = await import('/acrobat/blocks/mobile-widget/mobile-widget.js');
     await dcConverterq(mobileAppBlock);
   } else {
     mobileAppBlock?.remove();
