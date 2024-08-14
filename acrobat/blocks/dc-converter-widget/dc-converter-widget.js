@@ -279,6 +279,7 @@ export default async function init(element) {
   dcScript.dataset.verb = VERB;
   dcScript.dataset.load_typekit = 'false';
   dcScript.dataset.load_imslib = 'false';
+  dcScript.dataset.log_perf = 'true';
   dcScript.dataset.enable_unload_prompt = 'true';
   if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
@@ -328,5 +329,16 @@ export default async function init(element) {
 
       window.dispatchEvent(personalizationIsReady);
     });
+  });
+
+  window.addEventListener('DC_Hosted:Error', () => {
+    document.querySelector('h1').textContent = 'Currently unavailable';
+    const dropZone = document.querySelector('.dropZoneContent');
+    if (dropZone) {
+      dropZone.style.pointerEvents = 'none';
+      dropZone.parentElement.style.border = 'none';
+      dropZone.innerHTML = '<img src="/acrobat/img/icons/error.svg"><p>We apologize for the inconvenience. We are working hard to make the service available. Please check back shortly.</p>';
+    }
+    document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
   });
 }

@@ -381,13 +381,13 @@ const { ietf } = getLocale(locales);
   const hasMobileAppBlock = window.browser.isMobile && document.querySelector('meta[name="mobile-widget"]')?.content === 'true';
 
   if (hasMobileAppBlock && mobileAppBlock) {
+    widgetBlock?.remove();
     mobileAppBlock.dataset.verb = mobileAppBlock.classList.value.replace('mobile-widget', '').trim();
     document.body.classList.add('dc-bc');
     mobileAppBlock.removeAttribute('class');
     mobileAppBlock.id = 'mobile-widget';
     const { default: dcConverterq } = await import('../blocks/mobile-widget/mobile-widget.js');
     await dcConverterq(mobileAppBlock);
-    widgetBlock?.remove();
   } else {
     mobileAppBlock?.remove();
   }
@@ -461,19 +461,21 @@ const { ietf } = getLocale(locales);
   }
 
   setConfig({ ...CONFIG, miloLibs });
-  loadLana({ clientId: 'dxdc', tags: 'DC_Milo' });
 
-  // get event back form dc web and then load area
-  await loadArea(document, false);
-  // Setup Logging
-  const { default: lanaLogging } = await import('./dcLana.js');
-  lanaLogging();
-
-  // IMS Ready
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
+  }).catch(() => {
+    window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
   });
+
+  loadLana({ clientId: 'dxdc', tags: 'DC_Milo' });
+
+  await loadArea(document, false);
+
+  // Setup Logging
+  const { default: lanaLogging } = await import('./dcLana.js');
+  lanaLogging();
 
   // DC Hosted Ready...
   const dcHostedReady = setInterval(() => {
