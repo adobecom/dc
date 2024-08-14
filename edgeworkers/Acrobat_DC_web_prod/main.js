@@ -173,15 +173,17 @@ export async function responseProvider(request) {
     const csp = contentSecurityPolicy(isProd, scriptHashes);
     const acrobat = isProd ? 'https://acrobat.adobe.com' : 'https://stage.acrobat.adobe.com';
     const pdfnow = isProd ? 'https://pdfnow.adobe.io' : 'https://pdfnow-stage.adobe.io';
+    const adobeid = isProd ? 'https://adobeid-na1.services.adobe.com' : 'https://adobeid-na1-stg1.services.adobe.com';
     const headers = {
       ...responseHeaders,
       'Content-Security-Policy': csp,
       Link: [
         `<${acrobat}>;rel="preconnect"`,
-        '<https://auth.services.adobe.com>;rel="preconnect"',
+        `<${adobeid}>;rel="preconnect"`,
         `<${pdfnow}>;rel="preconnect"`,
         '<https://assets.adobedtm.com>;rel="preconnect"',
         '<https://use.typekit.net>;rel="preconnect"',
+        `</libs/deps/imslib.min.js>;rel="preload";as="script"`,
         `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.js>;rel="preload";as="script"`,
         `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.css>;rel="preload";as="style"`,
       ].join()
