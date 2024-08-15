@@ -11,6 +11,30 @@ import {
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
+const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
+const fallBack = 'https://www.adobe.com/go/acrobat-overview';
+
+const verbRedirMap = {
+  createpdf: 'createpdf',
+  'crop-pages': 'crop',
+  'delete-pages': 'deletepages',
+  'extract-pages': 'extract',
+  'combine-pdf': 'combine',
+  'protect-pdf': 'protect',
+  'add-comment': 'add-comment',
+  'pdf-to-image': 'pdftoimage',
+  'reorder-pages': 'reorderpages',
+  sendforsignature: 'sendforsignature',
+  'rotate-pages': 'rotatepages',
+  fillsign: 'fillsign',
+  'split-pdf': 'split',
+  'insert-pdf': 'insert',
+  'compress-pdf': 'compress',
+  'png-to-pdf': 'jpgtopdf',
+  'number-pages': 'number',
+  'ocr-pdf': 'ocr',
+  'chat-pdf': 'chat',
+};
 
 // eslint-disable-next-line compat/compat
 const PAGE_URL = new URL(window.location.href);
@@ -138,9 +162,49 @@ const createProgressSection = (createTag) => ({
   cancelButton: document.querySelector('.cancel-button'),
 });
 
+const getEnv = () => {
+  const prodHosts = ['www.adobe.com', 'sign.ing', 'edit.ing'];
+  const stageHosts = [
+    'stage--dc--adobecom.hlx.page', 'main--dc--adobecom.hlx.page',
+    'stage--dc--adobecom.hlx.live', 'main--dc--adobecom.hlx.live',
+    'www.stage.adobe.com',
+  ];
+
+  if (prodHosts.includes(window.location.hostname)) return 'prod';
+  if (stageHosts.includes(window.location.hostname)) return 'stage';
+  return 'dev';
+};
+
+const isOldBrowser = () => {
+  const { name, version } = window?.browser || {};
+  return (
+    name === 'Internet Explorer' || (name === 'Microsoft Edge' && (!version || version.split('.')[0] < 86)) || (name === 'Safari' && version.split('.')[0] < 14)
+  );
+};
+
+const redDir = (verb) => {
+  if (isOldBrowser()) {
+    window.location.href = EOLBrowserPage;
+    return;
+  }
+  const hostname = window?.location?.hostname;
+  const ENV = getEnv();
+  const VERB = verb;
+  let newLocation;
+  if (hostname !== 'www.adobe.com' && hostname !== 'sign.ing' && hostname !== 'edit.ing') {
+    newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`;
+  } else {
+    newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
+  }
+  window.location.href = newLocation;
+};
 export default async function init(element) {
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const content = Array.from(element.querySelectorAll(':scope > div'));
+  const VERB = element.classList.value.replace('acom-widget', '').trim();
+
+  redDir(VERB);
+
   content.forEach((con) => con.classList.add('hide'));
 
   element.classList.add('ready');
