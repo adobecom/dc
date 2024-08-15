@@ -173,7 +173,7 @@ const getEnv = () => {
   if (prodHosts.includes(window.location.hostname)) return 'prod';
   if (stageHosts.includes(window.location.hostname)) return 'stage';
   return 'dev';
-}
+};
 
 const isOldBrowser = () => {
   const { name, version } = window?.browser || {};
