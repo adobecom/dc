@@ -6,16 +6,16 @@ import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 import { delay } from '../../helpers/waitfor.js';
 
-document.head.innerHTML = await readFile({ path: './mocks/head.html' });
-document.body.innerHTML = await readFile({ path: './mocks/body_cache.html' });
 const { default: init } = await import(
   '../../../acrobat/blocks/dc-converter-widget/dc-converter-widget.js'
 );
 
 describe('dc-converter-widget block', () => {
-  before(() => {
+  before(async () => {
+    document.head.innerHTML = await readFile({ path: './mocks/head.html' });
+    document.body.innerHTML = await readFile({ path: './mocks/body_cache.html' });
     const block = document.body.querySelector('.dc-converter-widget');
-    init(block);
+    await init(block);
   });
 
   afterEach(() => {
@@ -53,14 +53,14 @@ describe('dc-converter-widget block', () => {
     });
     window.fetch.returns(Promise.resolve(res));
     window.dispatchEvent(new CustomEvent('IMS:Ready'));
-    await delay(1000);
+    await delay(500);
     expect(document.querySelector('#CID')).to.be.exist;
   });
 
   it('no multiple inits', async () => {
     const block = document.body.querySelector('.dc-converter-widget');
     await init(block);
-    await delay(1000);
+    await delay(500);
     const widgets = document.querySelectorAll('div[data-section="widget"]');
     expect(widgets.length).to.be.equal(1);
     const scripts = document.querySelectorAll('#adobe_dc_sdk_launcher');
@@ -68,11 +68,23 @@ describe('dc-converter-widget block', () => {
   });
 
   it('handle DC_Hosted:Error', async () => {
-    const block = document.body.querySelector('.dc-converter-widget');
-    await init(block);
+    window.lana = { log: sinon.stub() };
     window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
-    await delay(1000);
+    await delay(500);
     const errorImg = document.querySelector('div[class*="DCHosted__container"] img');
     expect(errorImg.src).to.contain('error.svg');
+    expect(window.lana.log.getCall(0).args[0]).to.eq('DC Widget failed');
+  });
+
+  it('handle multiple DC_Hosted:Errors', async () => {
+    window.lana = { log: sinon.stub() };
+    window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
+    await delay(100);
+    window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
+    await delay(500);
+    const errorImg = document.querySelector('div[class*="DCHosted__container"] img');
+    expect(errorImg.src).to.contain('error.svg');
+    expect(window.lana.log.getCall(0).args[0]).to.eq('DC Widget failed');
+    expect(window.lana.log.getCall(1).args[0]).to.eq('DC Widget failed');
   });
 });
