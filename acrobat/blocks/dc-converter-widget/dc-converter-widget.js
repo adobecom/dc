@@ -150,7 +150,7 @@ export default async function init(element) {
   let DC_GENERATE_CACHE_VERSION = document.querySelector('meta[name="dc-generate-cache-version"]')?.getAttribute('content');
   const lanaOptions = {
     sampleRate: 1,
-    tags: 'Cat=DxDC_Frictionless,origin=milo',
+    tags: 'DC_Milo,Frictionless',
   };
   // LANA
   window.dcwErrors = [];
@@ -328,17 +328,21 @@ export default async function init(element) {
       const personalizationIsReady = new CustomEvent('Personalization:Ready');
 
       window.dispatchEvent(personalizationIsReady);
+    }).catch(() => {
+      window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
     });
   });
 
   window.addEventListener('DC_Hosted:Error', () => {
-    document.querySelector('h1').textContent = 'Currently unavailable';
     const dropZone = document.querySelector('.dropZoneContent');
-    if (dropZone) {
+    if (dropZone && !dropZone.classList.contains('unavailable')) {
+      dropZone.classList.add('unavailable');
       dropZone.style.pointerEvents = 'none';
       dropZone.parentElement.style.border = 'none';
+      document.querySelector('h1').textContent = 'Currently unavailable';
       dropZone.innerHTML = '<img src="/acrobat/img/icons/error.svg"><p>We apologize for the inconvenience. We are working hard to make the service available. Please check back shortly.</p>';
+      document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
     }
-    document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
+    window.lana?.log('DC Widget failed', lanaOptions);
   });
 }
