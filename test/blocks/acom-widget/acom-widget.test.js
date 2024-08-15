@@ -1,0 +1,153 @@
+/* eslint-disable compat/compat */
+import { readFile } from '@web/test-runner-commands';
+import { expect } from '@esm-bundle/chai';
+import sinon from 'sinon';
+import { delay, waitForElement } from '../../helpers/waitfor.js';
+
+const { default: init } = await import(
+  '../../../acrobat/blocks/acom-widget/acom-widget.js'
+);
+
+const uploadFile = (input, file) => {
+  const changeEvent = new Event('change');
+  Object.defineProperty(changeEvent, 'target', { writable: false, value: { files: [file] } });
+  input.dispatchEvent(changeEvent);
+};
+
+describe('acom-widget block', () => {
+  let xhr;
+
+  beforeEach(async () => {
+    sinon.stub(window, 'fetch');
+    window.fetch.callsFake((x) => {
+      if (x === 'https://pdfnow-dev.adobe.io/status') {
+        return Promise.resolve({ ok: false });
+      }
+      return Promise.resolve({
+        json: () => Promise.resolve({
+          access_token: '123',
+          discovery: {
+            resources: {
+              jobs: { status: { uri: 'https://pdfnow-dev.adobe.io/status' } },
+              assets: {
+                upload: { uri: 'https://pdfnow-dev.adobe.io/upload' },
+                download_uri: { uri: 'https://pdfnow-dev.adobe.io/download' },
+                createpdf: { uri: 'https://pdfnow-dev.adobe.io/createpdf' },
+              },
+            },
+          },
+        }),
+        ok: true,
+      });
+    });
+    xhr = sinon.useFakeXMLHttpRequest();
+    document.head.innerHTML = await readFile({ path: './mocks/head.html' });
+    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    delete window.localStorage.limit;
+  });
+
+  afterEach(() => {
+    xhr.restore();
+    sinon.restore();
+  });
+
+  it('reach limit', async () => {
+    window.localStorage.limit = 2;
+
+    const block = document.body.querySelector('.acom-widget');
+    await init(block);
+
+    expect(document.querySelector('.upsell')).to.exist;
+  });
+
+  it('upload invalid file', async () => {
+    const alert = sinon.stub(window, 'alert').callsFake(() => {});
+
+    const block = document.querySelector('.acom-widget');
+    await init(block);
+
+    const input = document.querySelector('input');
+    const file = new File(['hello'], 'hello.txt', { type: 'text/plain' });
+
+    uploadFile(input, file);
+
+    expect(alert.getCall(0).args[0]).to.eq('This file is invalid');
+  });
+
+  it('cancel upload', async () => {
+    sinon.stub(window, 'alert').callsFake(() => {});
+
+    const block = document.querySelector('.acom-widget');
+    await init(block);
+
+    const input = document.querySelector('input');
+    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+
+    uploadFile(input, file);
+
+    await delay(1000);
+
+    document.querySelector('.widget-cancel').click();
+
+    const upload = await waitForElement('#file-upload');
+    expect(upload).to.be.exist;
+  });
+
+  it('SSRF check', async () => {
+    window.fetch.restore();
+    sinon.stub(window, 'fetch');
+    window.fetch.returns(Promise.resolve({
+      json: () => Promise.resolve({
+        access_token: '123',
+        discovery: { resources: { assets: { upload: { uri: 'https://example.com/upload' } } } },
+      }),
+      ok: true,
+    }));
+    sinon.stub(window, 'alert').callsFake(() => {});
+
+    const block = document.querySelector('.acom-widget');
+    await init(block);
+
+    const input = document.querySelector('input');
+    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+
+    uploadFile(input, file);
+
+    await delay(500);
+
+    expect(alert.getCall(0).args[0]).to.eq('An error occurred during the upload process. Please try again.');
+  });
+
+  it('upload PNG and fail at job status', async () => {
+    sinon.stub(window, 'alert').callsFake(() => {});
+
+    const requests = [];
+
+    xhr.onCreate = (x) => {
+      requests.push(x);
+    };
+
+    const block = document.body.querySelector('.acom-widget');
+    await init(block);
+
+    const input = document.querySelector('input');
+    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+
+    uploadFile(input, file);
+
+    await delay(500);
+
+    requests[0].respond(
+      201,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify({
+        uri: 'https://www.example.com/product',
+        job_uri: 'https://www.example.com/job_uri',
+      }),
+    );
+
+    await delay(500);
+
+    expect(alert.getCall(0).args[0]).to.eq('Failed to create PDF');
+  });
+});
