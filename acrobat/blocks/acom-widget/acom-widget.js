@@ -180,7 +180,7 @@ const isOldBrowser = () => {
   return (
     name === 'Internet Explorer' || (name === 'Microsoft Edge' && (!version || version.split('.')[0] < 86)) || (name === 'Safari' && version.split('.')[0] < 14)
   );
-}
+};
 
 const redDir = (verb) => {
   if (isOldBrowser()) {
