@@ -92,6 +92,29 @@ const localeMap = {
   vn_vi: 'vi-vn',
 };
 
+// import verbToRedirectLinkSuffix from './verbRedirMap.js'
+const verbRedirMap = {
+  createpdf: 'createpdf',
+  'crop-pages': 'crop',
+  'delete-pages': 'deletepages',
+  'extract-pages': 'extract',
+  'combine-pdf': 'combine',
+  'protect-pdf': 'protect',
+  'add-comment': 'addcomment',
+  'pdf-to-image': 'pdftoimage',
+  'reorder-pages': 'reorderpages',
+  sendforsignature: 'sendforsignature',
+  'rotate-pages': 'rotatepages',
+  fillsign: 'fillsign',
+  'split-pdf': 'split',
+  'insert-pdf': 'insert',
+  'compress-pdf': 'compress',
+  'png-to-pdf': 'jpgtopdf',
+  'number-pages': 'number',
+  'ocr-pdf': 'ocr',
+  'chat-pdf': 'chat',
+};
+
 const exhLimitCookieMap = {
   'to-pdf': 'ac_cr_p_c',
   'pdf-to': 'ac_ex_p_c',
@@ -187,6 +210,16 @@ export default async function init(element) {
     GENERATE_CACHE_URL_DIV.remove();
   }
 
+  // Redirect
+  const fallBack = 'https://www.adobe.com/go/acrobat-overview';
+  const redDir = () => {
+    if (window.location.hostname !== 'www.adobe.com' && window.location.hostname !== 'sign.ing' && window.location.hostname !== 'edit.ing') {
+      window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}` || REDIRECT_URL;
+    } else {
+      window.location = REDIRECT_URL || `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
+    }
+  };
+
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'CID';
   widgetContainer.className = `fsw wapper-${VERB}`;
@@ -227,6 +260,12 @@ export default async function init(element) {
   }
 
   window.addEventListener('IMS:Ready', async () => {
+    // Redirect Usage
+    if (window.adobeIMS.isSignedInUser()) {
+      redDir();
+      return;
+    }
+
     const { default: frictionless } = await import('../../scripts/frictionless.js');
     frictionless(VERB);
   });
