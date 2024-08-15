@@ -331,6 +331,8 @@ export default async function init(element) {
       const personalizationIsReady = new CustomEvent('Personalization:Ready');
 
       window.dispatchEvent(personalizationIsReady);
+    }).catch(() => {
+      window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
     });
   });
 
