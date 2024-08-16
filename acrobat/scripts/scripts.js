@@ -465,7 +465,7 @@ const { ietf } = getLocale(locales);
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
-  }).catch(err => {
+  }).catch((err) => {
     const detail = JSON.stringify(err, Object.getOwnPropertyNames(err));
     window.dispatchEvent(new CustomEvent('DC_Hosted:Error', { detail }));
   });
