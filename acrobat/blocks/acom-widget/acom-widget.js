@@ -11,39 +11,13 @@ import {
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
-const fallBack = 'https://www.adobe.com/go/acrobat-overview';
-
-const verbRedirMap = {
-  createpdf: 'createpdf',
-  'crop-pages': 'crop',
-  'delete-pages': 'deletepages',
-  'extract-pages': 'extract',
-  'combine-pdf': 'combine',
-  'protect-pdf': 'protect',
-  'add-comment': 'add-comment',
-  'pdf-to-image': 'pdftoimage',
-  'reorder-pages': 'reorderpages',
-  sendforsignature: 'sendforsignature',
-  'rotate-pages': 'rotatepages',
-  fillsign: 'fillsign',
-  'split-pdf': 'split',
-  'insert-pdf': 'insert',
-  'compress-pdf': 'compress',
-  'png-to-pdf': 'jpgtopdf',
-  'number-pages': 'number',
-  'ocr-pdf': 'ocr',
-  'chat-pdf': 'chat',
-};
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 // eslint-disable-next-line compat/compat
 const PAGE_URL = new URL(window.location.href);
 const redirect = PAGE_URL.searchParams.get('redirect');
 
-const uploadToAdobe = async (file, progressSection) => {
-  const { progressBarWrapper, progressBar } = progressSection;
-  const statusBar = document.querySelector('.status-bar');
-  const cancelButton = document.querySelector('.widget-cancel');
+const uploadToAdobe = async (file) => {
   const filename = file.name;
   const extension = filename.split('.').pop().toLowerCase();
   let xhr;
@@ -62,40 +36,6 @@ const uploadToAdobe = async (file, progressSection) => {
     alert('This file is invalid');
     return;
   }
-
-  // Progress Bar Setup
-  document.querySelector('.widget-copy').classList.add('hide');
-  document.querySelector('.widget-button').classList.add('hide');
-  statusBar.classList.remove('hide');
-  cancelButton.classList.remove('hide');
-  document
-    .querySelector('.action-area')
-    .insertAdjacentElement('beforebegin', progressBarWrapper);
-  progressBarWrapper.append(progressBar);
-  progressBarWrapper.insertAdjacentElement('beforebegin', statusBar);
-
-  const updateProgressBar = (event) => {
-    if (event.lengthComputable) {
-      const percentComplete = (event.loaded / event.total) * 100;
-      progressBar.style.width = `${percentComplete}%`;
-      statusBar.querySelector('.percentage').textContent = `${percentComplete.toFixed(0)}%`;
-    }
-  };
-
-  const cancelUpload = () => {
-    xhr.abort();
-    document.querySelector('#file-upload').value = null;
-    document.querySelector('.widget-button').classList.remove('hide');
-    progressBarWrapper.classList.add('hide');
-    progressBar.style.width = '0%';
-    cancelButton.classList.add('hide');
-    statusBar.classList.add('hide');
-    document.querySelector('.widget-copy').classList.remove('hide');
-    document.querySelector('.widget-button').classList.remove('hide');
-  };
-
-  cancelButton.addEventListener('click', cancelUpload);
-
   try {
     const { accessToken, discoveryResources } = await initializePdfAssetManager();
     const uploadEndpoint = validateSSRF(discoveryResources.assets.upload.uri);
@@ -104,7 +44,6 @@ const uploadToAdobe = async (file, progressSection) => {
     xhr = new XMLHttpRequest();
     xhr.open('POST', uploadEndpoint, true);
     xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-    xhr.upload.addEventListener('progress', updateProgressBar, false);
 
     xhr.onreadystatechange = async () => {
       if (xhr.readyState === 4 && xhr.status === 201) {
@@ -156,98 +95,39 @@ const uploadToAdobe = async (file, progressSection) => {
   }
 };
 
-const createProgressSection = (createTag) => ({
-  progressBarWrapper: createTag('div', { class: 'pBar-wrapper' }),
-  progressBar: createTag('div', { class: 'pBar' }),
-  cancelButton: document.querySelector('.cancel-button'),
-});
-
-const getEnv = () => {
-  const prodHosts = ['www.adobe.com', 'sign.ing', 'edit.ing'];
-  const stageHosts = [
-    'stage--dc--adobecom.hlx.page', 'main--dc--adobecom.hlx.page',
-    'stage--dc--adobecom.hlx.live', 'main--dc--adobecom.hlx.live',
-    'www.stage.adobe.com',
-  ];
-
-  if (prodHosts.includes(window.location.hostname)) return 'prod';
-  if (stageHosts.includes(window.location.hostname)) return 'stage';
-  return 'dev';
-};
-
-const isOldBrowser = () => {
-  const { name, version } = window?.browser || {};
-  return (
-    name === 'Internet Explorer' || (name === 'Microsoft Edge' && (!version || version.split('.')[0] < 86)) || (name === 'Safari' && version.split('.')[0] < 14)
-  );
-};
-
-const redDir = (verb) => {
-  if (isOldBrowser()) {
-    window.location.href = EOLBrowserPage;
-    return;
-  }
-  const hostname = window?.location?.hostname;
-  const ENV = getEnv();
-  const VERB = verb;
-  let newLocation;
-  if (hostname !== 'www.adobe.com' && hostname !== 'sign.ing' && hostname !== 'edit.ing') {
-    newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`;
-  } else {
-    newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
-  }
-  window.location.href = newLocation;
-};
 export default async function init(element) {
-  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-  const content = Array.from(element.querySelectorAll(':scope > div'));
-  const VERB = element.classList.value.replace('acom-widget', '').trim();
+  const children = element.querySelectorAll(':scope > div');
+  children.forEach((child) => {
+    child.remove();
+  });
 
-  redDir(VERB);
-
-  content.forEach((con) => con.classList.add('hide'));
-
-  element.classList.add('ready');
-
-  const wrapperNew = createTag('div', { id: 'CIDTWO', class: 'fsw widget-wrapper facade' });
-  const wrapper = createTag('div', { id: 'CID', class: 'fsw widget-wrapper' });
-  const heading = createTag('h1', { class: 'widget-heading' }, content[1].textContent);
-  const copy = createTag('p', { class: 'widget-copy' }, content[2].textContent);
-  const actionArea = createTag('p', { class: 'action-area' });
-  const statusBar = createTag('p', { class: 'status-bar hide' });
-  const statusMessage = createTag('span', { class: 'message' }, 'Uploading file to acrobat.adobe.com');
-  const statusPercentage = createTag('span', { class: 'percentage' }, '0%');
-
+  const widget = createTag('div', { class: 'acom-wrapper' });
+  const widgetContainer = createTag('div', { class: 'acom-container' });
+  const widgetRow = createTag('div', { class: 'acom-row' });
+  const widgetLeft = createTag('div', { class: 'acom-col' });
+  const widgetRight = createTag('div', { class: 'acom-col' });
+  const widgetIcon = createTag('div', { class: 'acom-icon' });
+  const widgetHeading = createTag('h1', { class: 'acom-heading' }, 'Fill and sign a PDF');
+  const widgetCopy = createTag('p', { class: 'acom-copy' }, 'Drag and drop a PDF to use the Acrobat PDF form filler.');
+  const widgetButton = createTag('lavel', { for: 'file-upload', class: 'acom-cta' }, 'Select a file');
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
-  const cancelButton = createTag('button', { class: 'widget-cancel con-button outline button-xl hide' }, 'Cancel');
-  const buttonLabel = createTag('label', { for: 'file-upload', class: 'widget-button' }, content[3].textContent);
-  const legal = createTag('p', { class: 'widget-legal' }, content[4].textContent);
-  const subTitle = createTag('p', { class: 'widget-sub' }, 'Adobe Acrobat');
-  const iconLogo = createTag('div', { class: 'widget-icon' });
+
+  const legal = createTag('p', { class: 'acom-legal' }, 'Your file will be securely handled by Adobe servers and deleted unless you sign in to save it. By using this service, you agree to the Adobe Terms of Use and Privacy Policy.');
   const iconSecurity = createTag('div', { class: 'security-icon' });
-  const icon = createTag('div', { class: 'widget-big-icon' });
-  const footer = createTag('div', { class: 'widget-footer' });
-
-  wrapper.append(subTitle);
-  subTitle.prepend(iconLogo);
-  wrapper.append(icon, heading, copy, statusBar);
-  statusBar.append(statusMessage, statusPercentage);
-  actionArea.append(button, cancelButton, buttonLabel);
-  wrapper.append(actionArea);
+  const footer = createTag('div', { class: 'acom-footer' });
   footer.append(iconSecurity, legal);
-  element.append(wrapper, footer, wrapperNew);
 
-  if (Number(window.localStorage.limit) > 1) {
-    const upsell = createTag('div', { class: 'upsell' }, 'You have reached your limit. Please upgrade.');
-    wrapper.append(upsell);
-    element.append(wrapper);
-  }
+  widget.append(widgetContainer);
+  widgetContainer.append(widgetRow);
+  widgetRow.append(widgetLeft, widgetRight);
+  widgetLeft.append(widgetIcon, widgetHeading, widgetCopy, widgetButton);
+
+  element.append(widget, footer);
 
   button.addEventListener('change', (e) => {
     const file = e.target.files[0];
-    const progressSection = createProgressSection(createTag);
     if (file) {
-      uploadToAdobe(file, progressSection);
+      uploadToAdobe(file);
     }
   });
 }
