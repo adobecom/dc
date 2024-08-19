@@ -55,7 +55,7 @@ export default function init(verb) {
               is_authenticated: false,
               user_tags: [
                 `${localStorage['pdfnow.auth'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
-                `${localStorage[`${window.location.hostname}_download`] ? 'can_download' : 'cannot_download'}`,
+                `${localStorage['frictionless.download'] === 'cannot_download' ? 'frictionless_cannot_download' : 'frictionless_can_download'}`,
               ],
             },
           },
