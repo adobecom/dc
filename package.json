@@ -11,7 +11,7 @@
     "wtr:file:watch": "npm run wtr:file -- --watch",
     "int": "wtr \"./test/integration/**/*.int.(js|html)\" --node-resolve --port=2000 --concurrent-browsers 3 --config wtr-integration.config.mjs",
     "int:watch": "npm run int -- --watch",
-    "int3": "wtr \"./test/integration/media/media_mobile.int.(js|html)\" --node-resolve --port=2000 --concurrent-browsers 3 --config wtr-int-browsers.config.mjs",
+    "int3": "wtr \"./test/integration/**/*.int.(js|html)\" --node-resolve --port=2000 --concurrent-browsers 3 --config wtr-int-browsers.config.mjs",
     "int3:watch": "npm run int3 -- --watch",
     "jest": "jest --testPathPattern=test --coverage --coverageDirectory=coverage/jest",
     "jest:file": "jest --coverage --coverageDirectory=coverage/jest",
