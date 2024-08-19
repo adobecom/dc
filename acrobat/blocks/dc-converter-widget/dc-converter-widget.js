@@ -284,7 +284,7 @@ export default async function init(element) {
   if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
-  if (IMS_GUEST) {
+  if (IMS_GUEST && !isRedirection) {
     dcScript.dataset.ims_guests = 'true';
   }
 
