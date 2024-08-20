@@ -137,6 +137,17 @@
   background: #0054b6;
 }
 
+.acom-error {
+  background: #d8120b;
+  width: fit-content;
+  border-radius: 8px;
+  padding: 11px 27px;
+  color: white;
+  white-space: nowrap;
+  font-weight: 700;
+  display: flex;
+}
+
 .acom-heading {
   color: #2c2c2c;
   text-align: left;
