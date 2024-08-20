@@ -1,11 +1,11 @@
 :root {
-  --tooltipBackgroundColor: #747474;
-  --tooltipTextColor: #fff;
-  --tooltipTransitionTime: 0.3s;
-  --tooltipZIndex: 50;
-  --commentsTextareaHeight: 60px;
-  --commentsFooterHeight: 25px;
-  --commentsHeight: calc(var(--commentsTextareaHeight) + var(--commentsFooterHeight));
+  --tooltip-background-color: #747474;
+  --tooltip-text-color: #fff;
+  --tooltip-transition-time: 0.3s;
+  --tooltip-z-index: 50;
+  --comments-textarea-height: 60px;
+  --comments-footer-height: 25px;
+  --comments-fieldset-height: calc(var(--comments-textarea-height) + var(--comments-footer-height));
 }
 
 .rnr-container,
@@ -14,7 +14,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
 }
 
 .rnr-title {
@@ -23,6 +23,11 @@
 }
 
 .rnr-rating-fieldset {
+  & legend {
+    position: absolute;
+    clip: rect(0 0 0 0);
+  }
+
   & input {
     padding: 0 0 0 5px;
     outline: none;
@@ -55,7 +60,7 @@
   border-radius: 4px;
   overflow: hidden;
   border: 2px solid var(--color-gray-400);
-  height: var(--commentsHeight);
+  height: var(--comments-fieldset-height);
   box-sizing: content-box;
   flex-direction: column;
   background-color: var(--color-white);
@@ -68,7 +73,7 @@
 
 .rnr-comments {
   width: 310px;
-  height: var(--commentsTextareaHeight);
+  height: var(--comments-textarea-height);
   border: none;
   outline: none;
   padding: 6px 8px 0 8px;
@@ -89,7 +94,7 @@
   display: flex;
   justify-content: space-between;
   padding: 0 12px 0 8px;
-  height: var(--commentsFooterHeight);
+  height: var(--comments-footer-height);
 }
 
 .rnr-comments-character-counter {
@@ -149,23 +154,23 @@
     max-width: 200px;
     padding: 10px;
     border-radius: 4px;
-    background: var(--tooltipBackgroundColor);
-    color: var(--tooltipTextColor);
+    background: var(--tooltip-background-color);
+    color: var(--tooltip-text-color);
     font-size: 12px;
     opacity: 0;
-    transition: var(--tooltipTransitionTime);
+    transition: var(--tooltip-transition-time);
     visibility: hidden;
   }
 
   &:after {
     content: '';
-    top: 100%;
+    top: calc(100% + 12px);
     position: absolute;
-    margin: 12px 1px 0 1px;
-    border: 5px solid var(--tooltipBackgroundColor);
-    border-color: transparent transparent var(--tooltipBackgroundColor);
+    margin: 0 1px;
+    border: 5px solid var(--tooltip-background-color);
+    border-color: transparent transparent var(--tooltip-background-color);
     opacity: 0;
-    transition: var(--tooltipTransitionTime);
+    transition: var(--tooltip-transition-time);
     visibility: hidden;
   }
 
@@ -175,7 +180,7 @@
   &.has-keyboard-focus:after {
     opacity: 1;
     visibility: visible;
-    z-index: var(--tooltipZIndex);
+    z-index: var(--tooltip-z-index);
   }
 }
 

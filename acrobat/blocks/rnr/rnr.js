@@ -46,7 +46,8 @@ function extractMetadata(options) {
   metadata.hideTitleOnUninteractive = options.hidetitle ? options.hidetitle === 'true' : true;
   metadata.initialValue = parseInt(options.initialvalue, 10) || 0;
   metadata.commentsMaxLength = parseInt(options.commentsmaxlength, 10) || COMMENTS_MAX_LENGTH;
-  metadata.showCommentsThreshold = parseInt(options.commentsthreshold, 10) || SHOW_COMMENTS_TRESHOLD;
+  metadata.showCommentsThreshold = parseInt(options.commentsthreshold, 10)
+    || SHOW_COMMENTS_TRESHOLD;
   metadata.interactive = options.interactive ? options.interactive === 'true' : true;
 }
 
@@ -55,6 +56,10 @@ function extractMetadata(options) {
 // #region Init controls
 
 function initRatingFielset(fieldset, rnrForm, showComments) {
+  // Create legend
+  const legend = createTag('legend', {}, metadata.labels.title);
+  fieldset.append(legend);
+
   // Create rating inputs
   const stars = [];
 
@@ -263,7 +268,7 @@ function initControls(element) {
       input[key] = value;
     });
     // TODO submit form
-    console.table(input);
+    // console.table(input);
 
     // Replace rnr with 'Thank you' message
     title.remove();
@@ -305,6 +310,6 @@ export default async function init(element) {
   const options = getOptions(element);
   removeOptionElements(element);
   extractMetadata(options);
-  console.log(metadata);
+  // console.log(metadata);
   initControls(element);
 }
