@@ -129,6 +129,10 @@ const dropFiles = (ev, verb, errorState) => {
   }
 };
 
+const setDraggingClass = (widget, shouldToggle) => {
+  shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
+}
+
 export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
@@ -143,11 +147,14 @@ export default async function init(element) {
   const widgetRow = createTag('div', { class: 'acom-row' });
   const widgetLeft = createTag('div', { class: 'acom-col' });
   const widgetRight = createTag('div', { class: 'acom-col' });
+  const widgetHeader = createTag('div', { class: 'acom-header' });
   const widgetIcon = createTag('div', { class: 'acom-icon' });
+  const widgetTitle =  createTag('div', { class: 'acom-title' }, 'Acrobat');
   const widgetCopy = createTag('p', { class: 'acom-copy' }, 'Drag and drop a PDF to use the Acrobat PDF form filler.');
   const widgetButton = createTag('label', { for: 'file-upload', class: 'acom-cta' }, 'Select a file');
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
   const errorState = createTag('div', { class: 'hide' });
+  const widgetImage = createTag('img', { class: 'acom-image', src: children[1].querySelector('img')?.src });
 
   const legal = createTag('p', { class: 'acom-legal' }, 'Your file will be securely handled by Adobe servers and deleted unless you sign in to save it. By using this service, you agree to the Adobe Terms of Use and Privacy Policy.');
   const iconSecurity = createTag('div', { class: 'security-icon' });
@@ -156,8 +163,10 @@ export default async function init(element) {
 
   widget.append(widgetContainer);
   widgetContainer.append(widgetRow);
+  widgetRight.append(widgetImage);
   widgetRow.append(widgetLeft, widgetRight);
-  widgetLeft.append(widgetIcon, widgetHeading, widgetCopy, errorState, widgetButton, button);
+  widgetHeader.append(widgetIcon, widgetTitle);
+  widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
 
   element.append(widget, footer);
 
@@ -170,10 +179,15 @@ export default async function init(element) {
 
   widget.addEventListener('dragover', (e) => {
     e.preventDefault();
-    // make a function that does the CSS for drag state
+    setDraggingClass(widget, true);
+  });
+
+  widget.addEventListener('dragleave', (file) => {
+    setDraggingClass(widget, false);
   });
 
   widget.addEventListener('drop', (e) => {
     dropFiles(e, VERB, errorState);
+    setDraggingClass(widget, false);
   });
 }
