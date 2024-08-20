@@ -105,7 +105,7 @@
   height: var(--comments-textarea-height);
   border: none;
   outline: none;
-  padding: 6px 8px 0 8px;
+  padding: 6px 8px 0;
   font-size: var(--type-body-xs-size);
   font-style: italic;
   background-color: var(--color-white);
