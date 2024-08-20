@@ -71,38 +71,6 @@
   }
 }
 
-.rnr-comments {
-  width: 310px;
-  height: var(--comments-textarea-height);
-  border: none;
-  outline: none;
-  padding: 6px 8px 0 8px;
-  font-size: var(--type-body-xs-size);
-  font-style: italic;
-  background-color: var(--color-white);
-  box-sizing: border-box;
-  resize: none;
-  overflow: auto;
-
-  &:focus ~ .rnr-comments-footer > .rnr-comments-submit,
-  &:not(:placeholder-shown) ~ .rnr-comments-footer > .rnr-comments-submit {
-    display: block;
-  }
-}
-
-.rnr-comments-footer {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 12px 0 8px;
-  height: var(--comments-footer-height);
-}
-
-.rnr-comments-character-counter {
-  color: var(--color-gray-400);
-  font-size: var(--type-body-xs-size);
-  font-variant-numeric: tabular-nums;
-}
-
 .rnr-comments-submit {
   display: none;
   appearance: none;
@@ -125,6 +93,38 @@
   }
 }
 
+.rnr-comments-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px 0 8px;
+  height: var(--comments-footer-height);
+}
+
+.rnr-comments {
+  width: 310px;
+  height: var(--comments-textarea-height);
+  border: none;
+  outline: none;
+  padding: 6px 8px 0 8px;
+  font-size: var(--type-body-xs-size);
+  font-style: italic;
+  background-color: var(--color-white);
+  box-sizing: border-box;
+  resize: none;
+  overflow: auto;
+
+  &:focus ~ .rnr-comments-footer > .rnr-comments-submit,
+  &:not(:placeholder-shown) ~ .rnr-comments-footer > .rnr-comments-submit {
+    display: block;
+  }
+}
+
+.rnr-comments-character-counter {
+  color: var(--color-gray-400);
+  font-size: var(--type-body-xs-size);
+  font-variant-numeric: tabular-nums;
+}
+
 .rnr-summary-container {
   display: flex;
   gap: 3px;
@@ -144,7 +144,7 @@
 .tooltip {
   position: relative;
 
-  &:before {
+  &::before {
     content: attr(data-tooltip);
     position: absolute;
     right: 50%;
@@ -162,7 +162,7 @@
     visibility: hidden;
   }
 
-  &:after {
+  &::after {
     content: '';
     top: calc(100% + 12px);
     position: absolute;
@@ -174,10 +174,10 @@
     visibility: hidden;
   }
 
-  &.is-hovering:before,
-  &.is-hovering:after,
-  &.has-keyboard-focus:before,
-  &.has-keyboard-focus:after {
+  &.is-hovering::before,
+  &.is-hovering::after,
+  &.has-keyboard-focus::before,
+  &.has-keyboard-focus::after {
     opacity: 1;
     visibility: visible;
     z-index: var(--tooltip-z-index);
