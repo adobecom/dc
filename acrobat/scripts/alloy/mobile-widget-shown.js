@@ -1,6 +1,8 @@
-const params = new Proxy(new URLSearchParams(window.location.search),{
-  get: (searchParams, prop) => searchParams.get(prop),
-});
+const params = new Proxy(
+  // eslint-disable-next-line compat/compat
+  new URLSearchParams(window.location.search),
+  { get: (searchParams, prop) => searchParams.get(prop) },
+);
 
 let appReferrer = params.x_api_client_id || params['x-product'] || '';
 if (params.x_api_client_location || params['x-product-location']) {
@@ -53,6 +55,7 @@ export default function init(verb) {
               is_authenticated: false,
               user_tags: [
                 `${localStorage['pdfnow.auth'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
+                `${localStorage['frictionless.download'] === 'cannot_download' ? 'frictionless_cannot_download' : 'frictionless_can_download'}`,
               ],
             },
           },
@@ -62,8 +65,10 @@ export default function init(verb) {
   };
   // Alloy Ready...
   const AlloyReady = setInterval(() => {
+    // eslint-disable-next-line no-underscore-dangle
     if (window?._satellite?.track) {
       clearInterval(AlloyReady);
+      // eslint-disable-next-line no-underscore-dangle
       window?._satellite?.track('event', event);
     }
   }, 1000);

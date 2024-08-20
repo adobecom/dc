@@ -284,7 +284,7 @@ export default async function init(element) {
   if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
-  if (IMS_GUEST) {
+  if (IMS_GUEST && !isRedirection) {
     dcScript.dataset.ims_guests = 'true';
   }
 
@@ -324,16 +324,20 @@ export default async function init(element) {
         ocrPDF: canNotUpload || (val.ocr_pdf && !val.ocr_pdf.can_process),
       };
       window.doccloudPersonalization = doccloudPersonalization;
+
+      const downloadStatus = doccloudPersonalization.download?.can_download ? 'can_download' : 'cannot_download';
+      localStorage.setItem('frictionless.download', downloadStatus);
       // Personalization Ready Event
       const personalizationIsReady = new CustomEvent('Personalization:Ready');
 
       window.dispatchEvent(personalizationIsReady);
-    }).catch(() => {
-      window.dispatchEvent(new CustomEvent('DC_Hosted:Error'));
+    }).catch((err) => {
+      const detail = JSON.stringify(err, Object.getOwnPropertyNames(err));
+      window.dispatchEvent(new CustomEvent('DC_Hosted:Error', { detail }));
     });
   });
 
-  window.addEventListener('DC_Hosted:Error', () => {
+  window.addEventListener('DC_Hosted:Error', (err) => {
     const dropZone = document.querySelector('.dropZoneContent');
     if (dropZone && !dropZone.classList.contains('unavailable')) {
       dropZone.classList.add('unavailable');
@@ -343,6 +347,6 @@ export default async function init(element) {
       dropZone.innerHTML = '<img src="/acrobat/img/icons/error.svg"><p>We apologize for the inconvenience. We are working hard to make the service available. Please check back shortly.</p>';
       document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
     }
-    window.lana?.log('DC Widget failed', lanaOptions);
+    window.lana?.log(`DC Widget failed. detail: ${JSON.stringify(err.detail)}`, lanaOptions);
   });
 }
