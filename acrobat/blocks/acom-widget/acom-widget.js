@@ -1,54 +1,40 @@
-import {
-  initializePdfAssetManager,
-  validateSSRF,
-  createPdf,
-  checkJobStatus,
-  getDownloadUri,
-  prepareFormData,
-  getAcrobatWebLink,
-} from './pdfAssetManager.js';
-
 import LIMITS from './limits.js';
-
-
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
-// eslint-disable-next-line compat/compat
-const PAGE_URL = new URL(window.location.href);
-const redirect = PAGE_URL.searchParams.get('redirect');
+const handleError = (err, errTxt, str, strTwo) => {
+  err.classList.add('acom-error');
+  err.classList.remove('hide');
+  errTxt.textContent = `${window.mph[str]} ${strTwo || ''}`;
 
-const uploadToAdobe = async (file, verb, err) => {
-  const filename = file.name;
-  let xhr;
+  setTimeout(() => {
+    err.classList.remove('acom-error');
+    err.classList.add('hide');
+  }, 5000);
 
-  // Check file type
+  // Add LANA Logs and AA
+};
+
+const sendToUnity = async (file, verb, err, errTxt) => {
+  // const filename = file.name;
+  // let xhr;
+
+  // Error Check: File Empty
+  if (file.size < 1) {
+    handleError(err, errTxt, 'acom-widget-error-empty');
+  }
+
+  // Error Check: Supported File Type
   if (LIMITS[verb].acceptedFiles.indexOf(file.type) < 0) {
-    err.classList.add('acom-error');
-    err.classList.remove('hide');
-    err.textContent = 'USE mph / not accepted';
-
-    setTimeout(() => {
-      err.classList.remove('acom-error');
-      err.classList.add('hide');
-    }, 3000);
+    handleError(err, errTxt, 'acom-widget-error-unsupported');
     return;
   }
 
-  // Check file size
-  if (file.size > LIMITS[verb].maxFileSize
-    || file.size < 1) {
-    err.classList.add('acom-error');
-    err.classList.remove('hide');
-    err.textContent = `${file.size < 1 ? 'FILE IS EMPTY' : 'FILE IS TOO BIG'}`;
-
-    setTimeout(() => {
-      err.classList.remove('acom-error');
-      err.classList.add('hide');
-    }, 3000);
-    return;
+  // Error Check: File Too Large
+  if (file.size > LIMITS[verb].maxFileSize) {
+    handleError(err, errTxt, 'acom-widget-error-large', LIMITS[verb].maxFileSizeFriendly);
   }
 
   // try {
@@ -110,16 +96,21 @@ const uploadToAdobe = async (file, verb, err) => {
   // }
 };
 
-const dropFiles = (ev, verb, errorState) => {
+const dropFiles = (ev, verb, err, errTxt) => {
   ev.preventDefault();
-  console.log(ev);
-  
+
   if (ev.dataTransfer.items) {
+    // Error Check: File Count
+    if ([...ev.dataTransfer.items].length > LIMITS[verb].maxNumFiles) {
+      handleError(err, errTxt, 'acom-widget-error-multi');
+      return;
+    }
+
     [...ev.dataTransfer.items].forEach((item) => {
       // Add check for multiple files.
       if (item.kind === 'file') {
         const file = item.getAsFile();
-        uploadToAdobe(file, verb, errorState);
+        sendToUnity(file, verb, err, errTxt);
       }
     });
   } else {
@@ -131,7 +122,7 @@ const dropFiles = (ev, verb, errorState) => {
 
 const setDraggingClass = (widget, shouldToggle) => {
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
-}
+};
 
 export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
@@ -149,32 +140,39 @@ export default async function init(element) {
   const widgetRight = createTag('div', { class: 'acom-col' });
   const widgetHeader = createTag('div', { class: 'acom-header' });
   const widgetIcon = createTag('div', { class: 'acom-icon' });
-  const widgetTitle =  createTag('div', { class: 'acom-title' }, 'Acrobat');
-  const widgetCopy = createTag('p', { class: 'acom-copy' }, 'Drag and drop a PDF to use the Acrobat PDF form filler.');
-  const widgetButton = createTag('label', { for: 'file-upload', class: 'acom-cta' }, 'Select a file');
+  const widgetTitle = createTag('div', { class: 'acom-title' }, 'Acrobat');
+  const widgetCopy = createTag('p', { class: 'acom-copy' }, window.mph[`acom-widget-description-${VERB}`]);
+  const widgetButton = createTag('label', { for: 'file-upload', class: 'acom-cta' }, window.mph['acom-widget-cta']);
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
-  const errorState = createTag('div', { class: 'hide' });
   const widgetImage = createTag('img', { class: 'acom-image', src: children[1].querySelector('img')?.src });
-
-  const legal = createTag('p', { class: 'acom-legal' }, 'Your file will be securely handled by Adobe servers and deleted unless you sign in to save it. By using this service, you agree to the Adobe Terms of Use and Privacy Policy.');
+  // Since we're using placeholders we need a solution for the hyperlinks
+  const legal = createTag('p', { class: 'acom-legal' }, window.mph['acom-widget-legal']);
   const iconSecurity = createTag('div', { class: 'security-icon' });
   const footer = createTag('div', { class: 'acom-footer' });
-  footer.append(iconSecurity, legal);
+
+  const errorState = createTag('div', { class: 'hide' });
+  const errorStateText = createTag('p', { class: 'acom-errorText' });
+  const errorIcon = createTag('div', { class: 'acom-errorIcon' });
+  const errorCloseBtn = createTag('div', { class: 'acom-errorBtn' });
 
   widget.append(widgetContainer);
   widgetContainer.append(widgetRow);
   widgetRight.append(widgetImage);
   widgetRow.append(widgetLeft, widgetRight);
   widgetHeader.append(widgetIcon, widgetTitle);
+  errorState.append(errorIcon, errorStateText, errorCloseBtn);
   widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
+  footer.append(iconSecurity, legal);
 
   element.append(widget, footer);
 
   button.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
-      uploadToAdobe(file, VERB, errorState);
+      sendToUnity(file, VERB, errorState, errorStateText);
     }
+    // Clear file so it 'changes' on multiple tries
+    e.target.value = '';
   });
 
   widget.addEventListener('dragover', (e) => {
@@ -182,12 +180,17 @@ export default async function init(element) {
     setDraggingClass(widget, true);
   });
 
-  widget.addEventListener('dragleave', (file) => {
+  widget.addEventListener('dragleave', () => {
     setDraggingClass(widget, false);
   });
 
   widget.addEventListener('drop', (e) => {
-    dropFiles(e, VERB, errorState);
+    dropFiles(e, VERB, errorState, errorStateText);
     setDraggingClass(widget, false);
+  });
+
+  errorCloseBtn.addEventListener('click', () => {
+    errorState.classList.remove('acom-error');
+    errorState.classList.add('hide');
   });
 }
