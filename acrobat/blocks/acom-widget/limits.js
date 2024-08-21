@@ -1,6 +1,7 @@
 const LIMITS = {
   fillsign: {
     maxFileSize: 100000000, // 1 MB
+    maxFileSizeFriendly: '1 MB', // 1 MB
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 1,
   },

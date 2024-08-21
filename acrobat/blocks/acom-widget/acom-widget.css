@@ -152,14 +152,62 @@
 }
 
 .acom-error {
-  background: #d8120b;
-  width: fit-content;
-  border-radius: 8px;
+  background: #D31510;
+  min-width: 506px;
   padding: 11px 27px;
   color: white;
   white-space: nowrap;
   font-weight: 700;
   display: flex;
+  position: absolute;
+  top: 90px;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  font-size: 14px;
+  font-weight: 400; 
+}
+
+.acom-errorText {
+  margin: 0 25px;
+  width: 100%;
+}
+
+.acom-errorBtn {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.acom-errorBtn::after {
+  content: '';
+  background-image: url('/acrobat/img/icons/ui/close.svg');
+  background-repeat: no-repeat;
+  background-size: 45px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.acom-errorIcon {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.acom-errorIcon::after {
+  content: '';
+  background-image: url('/acrobat/img/icons/ui/alert.svg');
+  background-repeat: no-repeat;
+  background-size: 65px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
 }
 
 .acom-heading {
