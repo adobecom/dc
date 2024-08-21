@@ -137,12 +137,13 @@ export default async function init(element) {
   const widgetContainer = createTag('div', { class: 'acom-container' });
   const widgetRow = createTag('div', { class: 'acom-row' });
   const widgetLeft = createTag('div', { class: 'acom-col' });
-  const widgetRight = createTag('div', { class: 'acom-col' });
+  const widgetRight = createTag('div', { class: 'acom-col right' });
   const widgetHeader = createTag('div', { class: 'acom-header' });
   const widgetIcon = createTag('div', { class: 'acom-icon' });
   const widgetTitle = createTag('div', { class: 'acom-title' }, 'Acrobat');
   const widgetCopy = createTag('p', { class: 'acom-copy' }, window.mph[`acom-widget-description-${VERB}`]);
   const widgetButton = createTag('label', { for: 'file-upload', class: 'acom-cta' }, window.mph['acom-widget-cta']);
+  const widgetMobileButton = createTag('label', { class: 'acom-mobile-cta' }, 'Get the App');
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
   const widgetImage = createTag('img', { class: 'acom-image', src: children[1].querySelector('img')?.src });
   // Since we're using placeholders we need a solution for the hyperlinks
@@ -161,7 +162,7 @@ export default async function init(element) {
   widgetRow.append(widgetLeft, widgetRight);
   widgetHeader.append(widgetIcon, widgetTitle);
   errorState.append(errorIcon, errorStateText, errorCloseBtn);
-  widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
+  widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, widgetMobileButton, button);
   footer.append(iconSecurity, legal);
 
   element.append(widget, footer);
