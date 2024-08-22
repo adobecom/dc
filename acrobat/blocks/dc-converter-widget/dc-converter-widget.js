@@ -225,7 +225,7 @@ export default async function init(element) {
   widgetContainer.className = `fsw wapper-${VERB}`;
   widget.appendChild(widgetContainer);
 
-  const isRedirection = /redirect_(?:conversion|files|upsell)=true/.test(window.location.search);
+  const isRedirection = /redirect_(?:conversion|files)=true/.test(window.location.search);
   const { cookie } = document;
   const limitCookie = exhLimitCookieMap[VERB] || exhLimitCookieMap[VERB.match(/^pdf-to|to-pdf$/)?.[0]];
   const cookiePrefix = appEnvCookieMap[ENV] || '';
@@ -284,7 +284,8 @@ export default async function init(element) {
   if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
-  if (IMS_GUEST && !isRedirection) {
+  const isFromChromeExtension = /x_api_client_id=chrome_extension/.test(window.location.search);
+  if (IMS_GUEST && !isRedirection && !isFromChromeExtension) {
     dcScript.dataset.ims_guests = 'true';
   }
 
