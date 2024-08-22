@@ -176,7 +176,7 @@ export default async function init(element) {
 
   button.addEventListener('click', () => {
     acomAnalytics('dropzone:choose-file-clicked', VERB);
-  })
+  });
 
   button.addEventListener('change', (e) => {
     acomAnalytics('choose-file:open', VERB);
@@ -190,7 +190,7 @@ export default async function init(element) {
 
   button.addEventListener('cancel', () => {
     acomAnalytics('choose-file:close', VERB);
-  })
+  });
 
   widget.addEventListener('dragover', (e) => {
     e.preventDefault();

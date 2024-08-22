@@ -38,9 +38,7 @@ export default function init(eventName, verb) {
       _adobe_corpnew: {
         digitalData: {
           dcweb: { event: { pagename: `acrobat:verb-${verb}:${eventName}` } },
-          dcweb2: {
-            event: { pagename: `acrobat:verb-${verb}:${eventName}` },
-          },
+          dcweb2: { event: { pagename: `acrobat:verb-${verb}:${eventName}` } },
         },
       },
     },
