@@ -1,6 +1,5 @@
 import LIMITS from './limits.js';
 import { setLibs } from '../../scripts/utils.js';
-import acomAnalyticsShown from '../../scripts/alloy/acom-widget-shown.js';
 import acomAnalytics from '../../scripts/alloy/acom-widget.js';
 
 const miloLibs = setLibs('/libs');
@@ -172,7 +171,7 @@ export default async function init(element) {
 
   element.append(widget, footer);
 
-  acomAnalyticsShown(VERB);
+  acomAnalytics('landing:shown', VERB);
 
   button.addEventListener('click', () => {
     acomAnalytics('dropzone:choose-file-clicked', VERB);
