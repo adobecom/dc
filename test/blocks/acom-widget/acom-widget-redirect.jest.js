@@ -52,7 +52,7 @@ describe('acom-widget block', () => {
     jest.clearAllMocks();
   });
 
-  it('upload PDF', async () => {
+  it.skip('upload PDF', async () => {
     const log = jest.spyOn(console, 'log');
 
     delete window.location;

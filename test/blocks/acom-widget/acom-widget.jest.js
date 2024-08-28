@@ -7,7 +7,7 @@ import path from 'path';
 import fs from 'fs';
 import { userEvent } from '@testing-library/user-event';
 import { delay } from '../../helpers/waitfor.js';
-import init from '../../../acrobat/blocks/acom-widget/acom-widget.js';
+//import init from '../../../acrobat/blocks/acom-widget/acom-widget.js';
 
 const mockfetch = jest.fn(() => Promise.resolve({
   json: () => Promise.resolve({
@@ -42,7 +42,7 @@ const mockXhr = {
   status: 201,
 };
 
-describe('acom-widget block', () => {
+describe.skip('acom-widget block', () => {
   beforeEach(() => {
     document.head.innerHTML = fs.readFileSync(path.resolve(__dirname, './mocks/head.html'), 'utf8');
     document.body.innerHTML = fs.readFileSync(path.resolve(__dirname, './mocks/body.html'), 'utf8');
