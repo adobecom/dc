@@ -246,7 +246,7 @@ select.np-input {
 
 /* Temporary stuff */
 .nonprofit {
-  height: 1050px;
+  height: 1125px;
   display: flex;
   flex-direction: column;
 }
@@ -261,6 +261,12 @@ select.np-input {
   align-items: center;
   margin-bottom: 50px;
   gap: 10px;
+}
+
+.np-controller-title {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--feds-color-adobeBrand);
 }
 
 .np-controller-section {

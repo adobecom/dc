@@ -618,6 +618,12 @@ function renderApplicationReview(tag) {
 function initStepperController(tag) {
   const containerTag = createTag('div', { class: 'np-controller-container' });
 
+  const titleTag = createTag(
+    'span',
+    { class: 'np-controller-title' },
+    'Stepper controller (for testing)',
+  );
+
   const scenariosTag = createTag('div', { class: 'np-controller-section' });
   const stepsTag = createTag('div', { class: 'np-controller-section' });
 
@@ -662,7 +668,7 @@ function initStepperController(tag) {
     scenariosTag.replaceChildren(foundInSearchTag, notFoundInSearchTag);
   });
 
-  containerTag.append(scenariosTag, stepsTag);
+  containerTag.append(titleTag, scenariosTag, stepsTag);
 
   const bufferTag = createTag('div', { class: 'np-controller-buffer ' });
   tag.append(bufferTag, containerTag);
