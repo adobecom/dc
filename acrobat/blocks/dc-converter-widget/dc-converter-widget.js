@@ -333,7 +333,7 @@ export default async function init(element) {
 
       window.dispatchEvent(personalizationIsReady);
     }).catch((err) => {
-      window.dispatchEvent(new CustomEvent('DC_Hosted:Error', { detail: { wrappedException: err }}));
+      window.dispatchEvent(new CustomEvent('DC_Hosted:Error', { detail: { wrappedException: err } }));
     });
   });
 
@@ -348,7 +348,7 @@ export default async function init(element) {
       document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
     }
     const { message, name, type } = err.detail?.wrappedException || {};
-    const info = `DC Widget failed. type=${type} name=${name} message=${message}`
+    const info = `DC Widget failed. type=${type} name=${name} message=${message}`;
     window.lana?.log(info, lanaOptions);
   });
 }
