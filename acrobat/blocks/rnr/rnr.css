@@ -111,7 +111,7 @@
   border: none;
   outline: none;
   padding: 6px 8px 0;
-  font-size: var(--type-body-xs-size);
+  font-size: 14px;
   font-style: italic;
   background-color: var(--color-white);
   box-sizing: border-box;
@@ -126,7 +126,7 @@
 
 .rnr-comments-character-counter {
   color: var(--color-gray-400);
-  font-size: var(--type-body-xs-size);
+  font-size: 14px;
   font-variant-numeric: tabular-nums;
 }
 
