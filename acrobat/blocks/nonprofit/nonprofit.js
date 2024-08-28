@@ -1,3 +1,4 @@
+/* eslint-disable compat/compat */
 /* eslint-disable max-len */
 import ReactiveStore from '../../scripts/reactiveStore.js';
 import { setLibs } from '../../scripts/utils.js';
@@ -85,6 +86,29 @@ const organizationsStore = new ReactiveStore([]);
 const selectedOrganizationStore = new ReactiveStore();
 
 // #endregion
+
+// #region Percent API integration
+
+function testSandbox() {
+  fetch('https://sandbox-validate.poweredbypercent.com/adobe-acrobat', {
+    method: 'POST',
+    headers: { Authorization: 'sandbox_pk_8b320cc4-5950-4263-a3ac-828c64f6e19b' },
+  })
+    .then((response) => {
+      console.log('response: ', response);
+      return response.json();
+    })
+    .then((result) => {
+      console.log('result: ', result);
+    })
+    .catch((error) => {
+      console.log('error: ', error);
+    });
+}
+
+// #endregion
+
+// UI
 
 function renderStepper(tag) {
   const sliderTag = createTag('div', { class: 'np-stepper-slider' });
@@ -241,9 +265,9 @@ function getOrganizationSelect() {
       hideList();
       return;
     }
-    const listItem = ev.relatedTarget.closest('.np-organization-select-item');
-    // If the newly focused item is a list item, don't hide list
-    if (listItem) return;
+    const organizationSelectTag = ev.relatedTarget.closest('.np-organization-select-tag');
+    // If the newly focused item is part of the select, don't hide list
+    if (organizationSelectTag) return;
     hideList();
   };
 
@@ -256,7 +280,7 @@ function getOrganizationSelect() {
 
     organizations.forEach((organization) => {
       const itemTag = createTag('li', {
-        class: 'np-organization-select-item',
+        class: 'np-organization-select-tag np-organization-select-item',
         tabindex: -1,
       });
 
@@ -304,8 +328,8 @@ function getOrganizationSelect() {
 
     if (loading) {
       const loadingTag = createTag(
-        'li',
-        { class: 'np-organization-select-item np-organization-select-loader' },
+        'div',
+        { class: 'np-organization-select-tag np-organization-select-loader' },
         'Loading...',
       );
       listTag.append(loadingTag);
@@ -315,7 +339,7 @@ function getOrganizationSelect() {
   listContainerTag.append(listTag);
 
   // Render 'cannot find' link
-  const cannotFindTag = createTag('div', { class: 'np-organization-select-cannot-find' });
+  const cannotFindTag = createTag('div', { class: 'np-organization-select-tag np-organization-select-cannot-find' });
   const cannotFindLinkTag = createTag('a', { tabindex: 0 }, metadata.labels.organizationCannotFind);
   // Cannot find action handler
   const switchToNotFound = () => {
@@ -665,6 +689,11 @@ function initNonprofit(element) {
   element.append(containerTag);
   // CO-RE
   initStepperController(element);
+
+  // CO-RE - test api stuff
+  const testSandboxButton = createTag('button', {}, 'Test sandbox');
+  testSandboxButton.addEventListener('click', testSandbox);
+  // element.append(testSandboxButton);
 }
 
 export default function init(element) {

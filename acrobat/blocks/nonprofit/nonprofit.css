@@ -121,6 +121,7 @@ select.np-input {
 }
 
 .np-organization-select-item,
+.np-organization-select-loader,
 .np-organization-select-cannot-find {
   padding: 15px;
   font-size: 16px;
