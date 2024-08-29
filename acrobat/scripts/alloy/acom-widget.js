@@ -24,7 +24,7 @@ export default function init(eventName, verb) {
     if (window?._satellite?.track) {
       clearInterval(AlloyReady);
       // eslint-disable-next-line no-underscore-dangle
-      window?._satellite?.track('event', event);
+      window._satellite?.track('event', event);
     }
   }, 1000);
   // eslint-disable-next-line no-underscore-dangle
