@@ -23,6 +23,11 @@ const verbRedirMap = {
   'chat-pdf': 'chat',
 };
 
+const verbRedirMapAnalytics = {
+  ...verbRedirMap,
+  'add-comment': 'add-comment' // Adjust for analytics map
+};
+
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 
@@ -77,7 +82,7 @@ function createTag(tag, attributes, html) {
 }
 
 function createMobileWidget(element, content, verb) {
-  const aaVerbName = `${verbRedirMap[verb] || verb}`;
+  const aaVerbName = `${verbRedirMapAnalytics[verb] || verb}`;
   const artID = content[1].querySelector('a')?.href || content[1].querySelector('img')?.src;
 
   const wrapper = createTag('div', { class: 'mobile-widget_wrapper' });
