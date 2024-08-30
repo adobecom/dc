@@ -25,7 +25,7 @@ const verbRedirMap = {
 
 const verbRedirMapAnalytics = {
   ...verbRedirMap,
-  'add-comment': 'add-comment' // Adjust for analytics map
+  'add-comment': 'add-comment', // Adjust for analytics map
 };
 
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
