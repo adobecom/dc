@@ -128,6 +128,12 @@ export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'acom-heading' }, children[0].textContent);
+  let mobileLink = null;
+  if (/iPad|iPhone|iPod/.test(window?.browser?.ua) && !window.MSStream) {
+    mobileLink = window.mph['acom-widget-apple-fillsign'];
+  } else if (/android/i.test(window?.browser?.ua)) {
+    mobileLink = window.mph['acom-widget-google-fillsign'];
+  }
 
   children.forEach((child) => {
     child.remove();
@@ -143,7 +149,7 @@ export default async function init(element) {
   const widgetTitle = createTag('div', { class: 'acom-title' }, 'Acrobat');
   const widgetCopy = createTag('p', { class: 'acom-copy' }, window.mph[`acom-widget-description-${VERB}`]);
   const widgetButton = createTag('label', { for: 'file-upload', class: 'acom-cta' }, window.mph['acom-widget-cta']);
-  const widgetMobileButton = createTag('label', { class: 'acom-mobile-cta' }, 'Get the App');
+  const widgetMobileButton = createTag('a', { class: 'acom-mobile-cta', href: mobileLink }, window.mph['acom-widget-cta-mobile']);
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
   const widgetImage = createTag('img', { class: 'acom-image', src: children[1].querySelector('img')?.src });
   // Since we're using placeholders we need a solution for the hyperlinks
@@ -162,7 +168,11 @@ export default async function init(element) {
   widgetRow.append(widgetLeft, widgetRight);
   widgetHeader.append(widgetIcon, widgetTitle);
   errorState.append(errorIcon, errorStateText, errorCloseBtn);
-  widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, widgetMobileButton, button);
+  if (mobileLink && LIMITS[VERB].mobileApp) {
+    widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetMobileButton);
+  } else {
+    widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
+  }
   footer.append(iconSecurity, legal);
 
   element.append(widget, footer);
