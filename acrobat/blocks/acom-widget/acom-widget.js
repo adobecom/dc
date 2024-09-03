@@ -1,5 +1,6 @@
 import LIMITS from './limits.js';
 import { setLibs } from '../../scripts/utils.js';
+import acomAnalytics from '../../scripts/alloy/acom-widget.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
@@ -23,17 +24,20 @@ const sendToUnity = async (file, verb, err, errTxt) => {
 
   // Error Check: File Empty
   if (file.size < 1) {
+    acomAnalytics('error:step01:empty-file', verb);
     handleError(err, errTxt, 'acom-widget-error-empty');
   }
 
   // Error Check: Supported File Type
   if (LIMITS[verb].acceptedFiles.indexOf(file.type) < 0) {
+    acomAnalytics('error:step01:unsupported-file-type', verb);
     handleError(err, errTxt, 'acom-widget-error-unsupported');
     return;
   }
 
   // Error Check: File Too Large
   if (file.size > LIMITS[verb].maxFileSize) {
+    acomAnalytics('error:step01:file-too-large', verb);
     handleError(err, errTxt, 'acom-widget-error-large', LIMITS[verb].maxFileSizeFriendly);
   }
 
@@ -177,13 +181,24 @@ export default async function init(element) {
 
   element.append(widget, footer);
 
+  acomAnalytics('landing:shown', VERB);
+
+  button.addEventListener('click', () => {
+    acomAnalytics('dropzone:choose-file-clicked', VERB);
+  });
+
   button.addEventListener('change', (e) => {
+    acomAnalytics('choose-file:open', VERB);
     const file = e.target.files[0];
     if (file) {
       sendToUnity(file, VERB, errorState, errorStateText);
     }
     // Clear file so it 'changes' on multiple tries
     e.target.value = '';
+  });
+
+  button.addEventListener('cancel', () => {
+    acomAnalytics('choose-file:close', VERB);
   });
 
   widget.addEventListener('dragover', (e) => {
@@ -196,6 +211,7 @@ export default async function init(element) {
   });
 
   widget.addEventListener('drop', (e) => {
+    acomAnalytics('files-dropped', VERB);
     dropFiles(e, VERB, errorState, errorStateText);
     setDraggingClass(widget, false);
   });
