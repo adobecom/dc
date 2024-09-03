@@ -113,6 +113,7 @@ const verbRedirMap = {
   'number-pages': 'number',
   'ocr-pdf': 'ocr',
   'chat-pdf': 'chat',
+  'chat-pdf-student': 'study',
 };
 
 const exhLimitCookieMap = {
@@ -284,7 +285,8 @@ export default async function init(element) {
   if (preRenderDropZone) {
     dcScript.dataset.pre_rendered = 'true'; // TODO: remove this line
   }
-  if (IMS_GUEST && !isRedirection) {
+  const isFromChromeExtension = /x_api_client_id=chrome_extension/.test(window.location.search);
+  if (IMS_GUEST && !isRedirection && !isFromChromeExtension) {
     dcScript.dataset.ims_guests = 'true';
   }
 
@@ -332,8 +334,7 @@ export default async function init(element) {
 
       window.dispatchEvent(personalizationIsReady);
     }).catch((err) => {
-      const detail = JSON.stringify(err, Object.getOwnPropertyNames(err));
-      window.dispatchEvent(new CustomEvent('DC_Hosted:Error', { detail }));
+      window.dispatchEvent(new CustomEvent('DC_Hosted:Error', { detail: { wrappedException: err } }));
     });
   });
 
@@ -347,6 +348,8 @@ export default async function init(element) {
       dropZone.innerHTML = '<img src="/acrobat/img/icons/error.svg"><p>We apologize for the inconvenience. We are working hard to make the service available. Please check back shortly.</p>';
       document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
     }
-    window.lana?.log(`DC Widget failed. detail: ${JSON.stringify(err.detail)}`, lanaOptions);
+    const { message, name, type } = err.detail?.wrappedException || {};
+    const info = `DC Widget failed. type=${type} name=${name} message=${message}`;
+    window.lana?.log(info, lanaOptions);
   });
 }

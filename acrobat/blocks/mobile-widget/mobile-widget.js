@@ -8,7 +8,7 @@ const verbRedirMap = {
   'extract-pages': 'extract',
   'combine-pdf': 'combine',
   'protect-pdf': 'protect',
-  'add-comment': 'add-comment',
+  'add-comment': 'addcomment',
   'pdf-to-image': 'pdftoimage',
   'reorder-pages': 'reorderpages',
   sendforsignature: 'sendforsignature',
@@ -21,6 +21,11 @@ const verbRedirMap = {
   'number-pages': 'number',
   'ocr-pdf': 'ocr',
   'chat-pdf': 'chat',
+};
+
+const verbRedirMapAnalytics = {
+  ...verbRedirMap,
+  'add-comment': 'add-comment', // Adjust for analytics map
 };
 
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -77,7 +82,7 @@ function createTag(tag, attributes, html) {
 }
 
 function createMobileWidget(element, content, verb) {
-  const aaVerbName = `${verbRedirMap[verb] || verb}`;
+  const aaVerbName = `${verbRedirMapAnalytics[verb] || verb}`;
   const artID = content[1].querySelector('a')?.href || content[1].querySelector('img')?.src;
 
   const wrapper = createTag('div', { class: 'mobile-widget_wrapper' });
