@@ -1,3 +1,6 @@
+/* eslint-disable func-names */
+/* eslint-disable compat/compat */
+/* eslint-disable max-len */
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
@@ -7,12 +10,36 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 const COMMENTS_MAX_LENGTH = 500;
 const SHOW_COMMENTS_TRESHOLD = 5;
+const RNR_API_URL = 'https://rnr-stage.adobe.io/v1';
 
 // #endregion
 
-const metadata = JSON.parse('{"labels":{}}');
+// #region Snapshot
+
+const snapshot = (function () {
+  const localSnapshot = localStorage.getItem('rnr-snapshot');
+  if (!localSnapshot) return null;
+  return JSON.parse(localSnapshot);
+}());
+
+function createSnapshot(rating, currentAverage, currentVotes) {
+  const newVotes = currentVotes + 1;
+  const newAverage = (currentAverage * currentVotes + rating) / newVotes;
+  localStorage.setItem(
+    'rnr-snapshot',
+    JSON.stringify({
+      rating,
+      average: newAverage,
+      votes: newVotes,
+    }),
+  );
+}
+
+// #endregion
 
 // #region Extract metadata from options
+
+const metadata = JSON.parse('{"labels":{}}');
 
 const getOptions = (el) => {
   const keyDivs = el.querySelectorAll(':scope > div > div:first-child');
@@ -32,23 +59,113 @@ const removeOptionElements = (el) => {
 };
 
 function extractMetadata(options) {
-  metadata.labels.commentFieldLabel = options.commentfieldlabel;
-  metadata.labels.commentPlaceholder = options.commentplaceholder;
-  metadata.labels.starLabels = (options.ratingnoun || ',').split(',').map((label) => label.trim());
-  metadata.labels.voteLabels = (options.ratingverb || ',').split(',').map((label) => label.trim());
-  metadata.labels.submitLabel = options.submittext;
-  metadata.labels.thankYouLabel = options.thankyoutext;
-  metadata.labels.title = options.title;
-  metadata.labels.ratingLabels = (options.tooltips || ',,,,')
-    .split(',')
-    .map((label) => label.trim());
-  metadata.maxRating = metadata.labels.ratingLabels.length;
   metadata.hideTitleOnUninteractive = options.hidetitle ? options.hidetitle === 'true' : true;
-  metadata.initialValue = parseInt(options.initialvalue, 10) || 0;
+  metadata.initialValue = snapshot ? snapshot.rating : parseInt(options.initialvalue, 10) || 0;
   metadata.commentsMaxLength = parseInt(options.commentsmaxlength, 10) || COMMENTS_MAX_LENGTH;
-  metadata.showCommentsThreshold = parseInt(options.commentsthreshold, 10)
-    || SHOW_COMMENTS_TRESHOLD;
-  metadata.interactive = options.interactive ? options.interactive === 'true' : true;
+  metadata.showCommentsThreshold = parseInt(options.commentsthreshold, 10) || SHOW_COMMENTS_TRESHOLD;
+  metadata.interactive = snapshot ? false : !options.interactive || options.interactive === 'true';
+  metadata.verb = options.verb;
+}
+
+// #endregion
+
+// #region Data
+
+const rnrData = (function () {
+  const data = { average: 5, votes: 0 };
+  if (snapshot) {
+    data.average = snapshot.average;
+    data.votes = snapshot.votes;
+  }
+  return data;
+}());
+
+// #region Linked data
+
+function setJsonLdProductInfo() {
+  const getMetadata = (name) => {
+    const attr = name && name.includes(':') ? 'property' : 'name';
+    const meta = document.head.querySelector(`meta[${attr}="${name}"]`);
+    return meta && meta.content;
+  };
+
+  const name = getMetadata('product-name');
+  const description = getMetadata('product-description');
+  if (!name) return;
+
+  const linkedData = {
+    name,
+    description,
+    '@type': 'Product',
+    '@context': 'http://schema.org',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: rnrData.average.toString(),
+      ratingCount: rnrData.votes.toString(),
+    },
+  };
+
+  const script = document.createElement('script');
+  script.setAttribute('type', 'application/ld+json');
+  const structuredDataText = JSON.stringify(linkedData);
+  script.textContent = structuredDataText;
+  document.head.appendChild(script);
+}
+
+// #endregion
+
+function loadRnrData() {
+  const headers = {
+    Accept: 'application/vnd.adobe-review.review-data-detailed-v1+json',
+    'x-api-key': 'ffc-addon-service',
+  };
+
+  return fetch(`${RNR_API_URL}/reviews?assetType=ACROBAT&assetId=${metadata.verb}`, { headers })
+    .then(async (result) => {
+      if (!result.ok) {
+        const res = await result.json();
+        throw new Error(res.message);
+      }
+      return result.json();
+    })
+    .then(({ aggregatedRating }) => {
+      rnrData.average = aggregatedRating.overallRating;
+      rnrData.votes = Object.keys(aggregatedRating.ratingHistogram).reduce(
+        (total, key) => total + aggregatedRating.ratingHistogram[key],
+        0,
+      );
+      setJsonLdProductInfo();
+    })
+    .catch((error) => {
+      window.lana?.log(`Could not load review data: ${error?.message}`);
+    });
+}
+
+function postReview(data) {
+  const body = JSON.stringify({
+    assetType: 'ACROBAT',
+    assetId: metadata.verb,
+    rating: data.rating,
+    text: data.comments,
+    authorName: 'guest',
+    assetMetadata: { version: 1.1 },
+  });
+  const headers = {
+    Accept: 'application/vnd.adobe-review.review-data-v1+json',
+    'Content-Type': 'application/vnd.adobe-review.review-request-v1+json',
+    'x-api-key': 'rnr-client',
+    Authorization: window.adobeIMS.getAccessToken()?.token,
+  };
+
+  fetch(`${RNR_API_URL}/reviews`, { method: 'POST', body, headers })
+    .then(async (result) => {
+      if (result.ok) return;
+      const res = await result.json();
+      throw new Error(res.message);
+    })
+    .catch((error) => {
+      window.lana?.log(`Could not post review: ${error?.message}`);
+    });
 }
 
 // #endregion
@@ -57,15 +174,20 @@ function extractMetadata(options) {
 
 function initRatingFielset(fieldset, rnrForm, showComments) {
   // Create legend
-  const legend = createTag('legend', {}, metadata.labels.title);
+  const legend = createTag('legend', {}, window.mph['rnr-title']);
   fieldset.append(legend);
 
   // Create rating inputs
   const stars = [];
 
-  metadata.labels.ratingLabels.forEach((label, index) => {
+  const ratingLabels = (window.mph['rnr-rating-tooltips'] || ',,,,')
+    .split(',')
+    .map((tooltip) => tooltip.trim());
+  ratingLabels.forEach((label, index) => {
     const value = index + 1;
-    const starLabel = `${label} ${value} ${value === 1 ? metadata.labels.starLabels[0] : metadata.labels.starLabels[1]}`;
+
+    const starLabels = (window.mph['rnr-rating-noun'] || ',').split(',').map((noun) => noun.trim());
+    const starLabel = `${label} ${value} ${value === 1 ? starLabels[0] : starLabels[1]}`;
     const star = createTag('input', {
       'data-tooltip': label,
       name: 'rating',
@@ -182,11 +304,11 @@ function initCommentsFieldset(fieldset) {
   const textarea = createTag('textarea', {
     class: 'rnr-comments',
     name: 'comments',
-    'aria-label': metadata.labels.commentFieldLabel,
+    'aria-label': window.mph['rnr-comments-label'],
     cols: 40,
     maxLength: metadata.commentsMaxLength,
-    placeholder: metadata.labels.commentPlaceholder,
-    readonly: '',
+    placeholder: window.mph['rnr-comments-placeholder'],
+    readonly: 'readonly',
   });
   if (!metadata.interactive) textarea.setAttribute('disabled', 'disabled');
 
@@ -200,7 +322,7 @@ function initCommentsFieldset(fieldset) {
     class: 'rnr-comments-submit',
     type: 'submit',
     disabled: 'disabled',
-    value: metadata.labels.submitLabel,
+    value: window.mph['rnr-submit-label'],
   });
 
   footerContainer.append(characterCounter, submitTag);
@@ -226,7 +348,7 @@ function initCommentsFieldset(fieldset) {
   function onTextareaKeyup(ev) {
     if (ev.code !== 'Enter') return;
     textarea.removeAttribute('readonly');
-    textarea.removeEventListener(onTextareaKeyup);
+    textarea.removeEventListener('keyup', onTextareaKeyup);
   }
   textarea.addEventListener('keyup', onTextareaKeyup);
 
@@ -234,16 +356,17 @@ function initCommentsFieldset(fieldset) {
 }
 
 function initSummary(container) {
-  const average = 4.2; // Get average
-  const outOf = metadata.maxRating;
-  const votes = 5130; // Get votes
-  const votesLabel = votes === 1 ? metadata.labels.voteLabels[0] : metadata.labels.voteLabels[1];
+  const { average, votes } = rnrData;
+  const outOf = 5;
 
-  const averageTag = createTag('span', { class: 'rnr-summary-average' }, average);
+  const voteLabels = (window.mph['rnr-rating-verb'] || ',').split(',').map((verb) => verb.trim());
+  const votesLabel = votes === 1 ? voteLabels[0] : voteLabels[1];
+
+  const averageTag = createTag('span', { class: 'rnr-summary-average' }, String(average));
   const scoreSeparator = createTag('span', {}, '/');
   const outOfTag = createTag('span', { class: 'rnr-summary-outOf' }, outOf);
   const votesSeparator = createTag('span', {}, '-');
-  const votesTag = createTag('span', { class: 'rnr-summary-votes' }, votes);
+  const votesTag = createTag('span', { class: 'rnr-summary-votes' }, String(votes));
   const votesLabelTag = createTag('span', {}, votesLabel);
 
   container.append(averageTag, scoreSeparator, outOfTag, votesSeparator, votesTag, votesLabelTag);
@@ -251,24 +374,32 @@ function initSummary(container) {
 
 function initControls(element) {
   const container = createTag('div', { class: 'rnr-container' });
-  const title = createTag('h3', { class: 'rnr-title' }, metadata.labels.title);
+  const title = createTag('h3', { class: 'rnr-title' }, window.mph['rnr-title']);
   const form = createTag('form', { class: 'rnr-form' });
   const ratingFieldset = createTag('fieldset', { class: 'rnr-rating-fieldset' });
   const commentsFieldset = createTag('fieldset', { class: 'rnr-comments-fieldset' });
   const summaryContainer = createTag('div', { class: 'rnr-summary-container ' });
-  const thankYou = createTag('div', { class: 'rnr-thank-you' }, metadata.labels.thankYouLabel);
+  const thankYou = createTag('div', { class: 'rnr-thank-you' }, window.mph['rnr-thank-you-label']);
 
   // Submit
   const submit = (ev) => {
     ev.preventDefault();
     if (!metadata.interactive) return;
+
     const formData = new FormData(form);
-    const input = {};
-    formData.forEach((value, key) => {
-      input[key] = value;
-    });
-    // TODO submit form
-    // console.table(input);
+    const data = {
+      rating: parseInt(formData.get('rating'), 10),
+      comments: formData.get('comments'),
+    };
+
+    if (!data.rating) {
+      window.lana?.log(`Invalid rating ${formData.get('rating')}`);
+      return;
+    }
+
+    createSnapshot(data.rating, rnrData.average, rnrData.votes);
+
+    postReview(data);
 
     // Replace rnr with 'Thank you' message
     title.remove();
@@ -310,6 +441,10 @@ export default async function init(element) {
   const options = getOptions(element);
   removeOptionElements(element);
   extractMetadata(options);
-  // console.log(metadata);
+  // Get verb from meta
+  if (!metadata.verb) {
+    window.lana?.log('Verb not configured for the rnr widget');
+  }
+  await loadRnrData();
   initControls(element);
 }
