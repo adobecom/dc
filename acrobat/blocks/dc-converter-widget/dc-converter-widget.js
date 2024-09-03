@@ -113,6 +113,7 @@ const verbRedirMap = {
   'number-pages': 'number',
   'ocr-pdf': 'ocr',
   'chat-pdf': 'chat',
+  'chat-pdf-student': 'study',
 };
 
 const exhLimitCookieMap = {
