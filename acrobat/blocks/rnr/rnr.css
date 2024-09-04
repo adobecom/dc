@@ -1,0 +1,197 @@
+:root {
+  --rnr-tooltip-background-color: #747474;
+  --rnr-tooltip-text-color: #fff;
+  --rnr-tooltip-transition-time: 0.3s;
+  --rnr-tooltip-z-index: 50;
+  --rnr-comments-textarea-height: 60px;
+  --rnr-comments-footer-height: 25px;
+  --rnr-fieldset-height: calc(
+    var(--rnr-comments-textarea-height) + var(--rnr-comments-footer-height)
+  );
+}
+
+.rnr-container,
+.rnr-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.rnr-title {
+  font-size: 20px;
+  margin: 0;
+}
+
+.rnr-comments-fieldset,
+.rnr-rating-fieldset {
+  padding: 0;
+  margin: 0;
+  border: none;
+  display: flex;
+}
+
+.rnr-rating-fieldset {
+  padding-bottom: 20px;
+  margin-bottom: -20px;
+}
+
+.rnr-rating-fieldset legend {
+  position: absolute;
+  clip: rect(0 0 0 0);
+}
+
+.rnr-rating-fieldset input {
+  padding: 0 0 0 5px;
+  outline: none;
+  appearance: none;
+  background-image: url('../../img/icons/star-outline.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  width: 22px;
+  height: 22px;
+}
+
+.rnr-rating-fieldset input.is-active {
+  background-image: url('../../img/icons/star-filled.svg');
+}
+
+.rnr-rating-fieldset input.has-keyboard-focus {
+  outline: -webkit-focus-ring-color auto 1px;
+}
+
+.rnr-comments-fieldset {
+  border-radius: 4px;
+  overflow: hidden;
+  border: 2px solid var(--color-gray-400);
+  height: var(--rnr-fieldset-height);
+  box-sizing: content-box;
+  flex-direction: column;
+  background-color: var(--color-white);
+  cursor: text;
+}
+
+.rnr-comments-fieldset:has(textarea:focus) {
+  outline: -webkit-focus-ring-color auto 2px;
+}
+
+.rnr-comments-submit {
+  display: none;
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: default;
+  color: var(--color-gray-400);
+}
+
+.rnr-comments-submit:not(:disabled) {
+  cursor: pointer;
+  color: var(--color-gray-700);
+}
+
+.rnr-comments-submit:not(:disabled):hover {
+  color: var(--color-black);
+}
+
+.rnr-comments-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
+  height: var(--rnr-comments-footer-height);
+}
+
+.rnr-comments {
+  width: 310px;
+  height: var(--rnr-comments-textarea-height);
+  border: none;
+  outline: none;
+  padding: 6px 8px 0;
+  font-size: 14px;
+  font-style: italic;
+  background-color: var(--color-white);
+  box-sizing: border-box;
+  resize: none;
+  overflow: auto;
+}
+
+.rnr-comments:focus ~ .rnr-comments-footer > .rnr-comments-submit,
+.rnr-comments:not(:placeholder-shown) ~ .rnr-comments-footer > .rnr-comments-submit {
+  display: block;
+}
+
+.rnr-comments-character-counter {
+  color: var(--color-gray-400);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rnr-summary-container {
+  display: flex;
+  gap: 3px;
+  font-size: 16px;
+  font-weight: 200;
+}
+
+.rnr-summary-average,
+.rnr-summary-outOf {
+  font-weight: 700;
+}
+
+.rnr-thank-you {
+  font-size: 24px;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  right: 50%;
+  transform: translateX(50%);
+  top: calc(130% + 15px);
+  width: max-content;
+  max-width: 200px;
+  padding: 10px;
+  border-radius: 4px;
+  background: var(--rnr-tooltip-background-color);
+  color: var(--rnr-tooltip-text-color);
+  font-size: 12px;
+  opacity: 0;
+  transition: var(--rnr-tooltip-transition-time);
+  visibility: hidden;
+}
+
+.tooltip::after {
+  content: '';
+  top: calc(100% + 12px);
+  position: absolute;
+  margin: 0 1px;
+  border: 5px solid var(--rnr-tooltip-background-color);
+  border-color: transparent transparent var(--rnr-tooltip-background-color);
+  opacity: 0;
+  transition: var(--rnr-tooltip-transition-time);
+  visibility: hidden;
+}
+
+.tooltip.is-hovering::before,
+.tooltip.is-hovering::after,
+.tooltip.has-keyboard-focus::before,
+.tooltip.has-keyboard-focus::after {
+  opacity: 1;
+  visibility: visible;
+  z-index: var(--rnr-tooltip-z-index);
+}
+
+@media only screen and (min-width: 1200px) {
+  .rnr-container,
+  .rnr-form {
+    flex-direction: row;
+  }
+}
