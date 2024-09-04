@@ -58,8 +58,12 @@ div [class *= PdfnowLifecycle__dropzone2___] {
   top: 30px;
   right:0;
   z-index: 1;
-  font-family: 'Adobe Clean', adobe-clean,'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif !important;
+}
 
+[class^="LifecycleDropZone"],
+[class^="DropzoneContent"],
+[class^="DropZoneFooter"] {
+  font-family: 'Adobe Clean', adobe-clean , 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 #VERB, .hide {
