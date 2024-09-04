@@ -183,10 +183,17 @@ export async function responseProvider(request) {
     const acrobat = isProd ? 'https://acrobat.adobe.com' : 'https://stage.acrobat.adobe.com';
     const pdfnow = isProd ? 'https://pdfnow.adobe.io' : 'https://pdfnow-stage.adobe.io';
     const adobeid = isProd ? 'https://adobeid-na1.services.adobe.com' : 'https://adobeid-na1-stg1.services.adobe.com';
-    const headers = {
-      ...responseHeaders,
-      'Content-Security-Policy': csp,
-      Link: [
+
+    let headerLink;
+    if (mobileWidget && request.device.isMobile) {
+      headerLink = [
+        `<${adobeid}>;rel="preconnect"`,
+        '<https://assets.adobedtm.com>;rel="preconnect"',
+        '<https://use.typekit.net>;rel="preconnect"',
+        `</libs/deps/imslib.min.js>;rel="preload";as="script"`,
+      ].join();
+    } else {
+      headerLink = [
         `<${acrobat}>;rel="preconnect"`,
         `<${adobeid}>;rel="preconnect"`,
         `<${pdfnow}>;rel="preconnect"`,
@@ -195,7 +202,13 @@ export async function responseProvider(request) {
         `</libs/deps/imslib.min.js>;rel="preload";as="script"`,
         `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.js>;rel="preload";as="script"`,
         `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.css>;rel="preload";as="style"`,
-      ].join()
+      ].join();
+    }
+
+    const headers = {
+      ...responseHeaders,
+      'Content-Security-Policy': csp,
+      Link: headerLink
     };
 
     return createResponse(
