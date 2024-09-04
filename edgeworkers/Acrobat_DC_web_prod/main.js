@@ -36,7 +36,7 @@ export async function responseProvider(request) {
 
     // Make preliminary pass through the content to capture version metadata
     const firstPassRewriter = new HtmlRewritingStream();
-    let version, widgetVersion;
+    let version, widgetVersion, mobileWidget;
     const prefix = isProd ? '' : 'stg-';
     firstPassRewriter.onElement(`meta[name="${prefix}dc-widget-version"]`, el => {
       widgetVersion = el.getAttribute('content');
@@ -44,7 +44,9 @@ export async function responseProvider(request) {
     firstPassRewriter.onElement(`meta[name="${prefix}dc-generate-cache-version"]`, el => {
       version = el.getAttribute('content');
     });
-
+    firstPassRewriter.onElement(`meta[name="mobile-widget"]`, el => {
+      mobileWidget = el.getAttribute('content');
+    });
     const nullWriter = new WritableStream({
       write() {},
       close() {},
@@ -74,7 +76,7 @@ export async function responseProvider(request) {
       delete responseHeaders[prop];
     }
 
-    return [responseStream, responseHeaders, version, widgetVersion];
+    return [responseStream, responseHeaders, version, widgetVersion, mobileWidget];
   };
 
   const fetchResource = async path => {
@@ -86,32 +88,33 @@ export async function responseProvider(request) {
   };
 
   const fetchFrictionlessPageAndInlineSnippet = async () => {
-    const [responseStream, responseHeaders, version, widgetVersion] = await fetchFrictionlessPage();
+    const [responseStream, responseHeaders, version, widgetVersion, mobileWidget] = await fetchFrictionlessPage();
 
     if (!verb || !locale || !version || !widgetVersion) {
       throw new Error('Missing metadata');
     }
 
-    const snippet =
-      await fetchResource(`/dc/dc-generate-cache/dc-hosted-${version}/${verb}-${locale}.html`);
-    const snippetHead = snippet.substring(snippet.indexOf('<head>')+6, snippet.indexOf('</head>'));
-    const snippetBody = snippet.substring(snippet.indexOf('<body>')+6, snippet.indexOf('</body>'));
+    if (!(mobileWidget && request.device.isMobile)) {
+      const snippet =
+        await fetchResource(`/dc/dc-generate-cache/dc-hosted-${version}/${verb}-${locale}.html`);
+      const snippetHead = snippet.substring(snippet.indexOf('<head>')+6, snippet.indexOf('</head>'));
+      const snippetBody = snippet.substring(snippet.indexOf('<body>')+6, snippet.indexOf('</body>'));
 
-    rewriter.onElement('head', el => {
-      el.append(snippetHead);
-    });
-    rewriter.onElement('div.dc-converter-widget', el => {
-      el.append(`<section id="edge-snippet">${snippetBody}</section>`);
-    });
-
+      rewriter.onElement('head', el => {
+        el.append(snippetHead);
+      });
+      rewriter.onElement('div.dc-converter-widget', el => {
+        el.append(`<section id="edge-snippet">${snippetBody}</section>`);
+      });
+    }
     const dcCoreVersion = widgetVersion.split("_")[0];
 
-    return [responseStream, responseHeaders, dcCoreVersion];
+    return [responseStream, responseHeaders, dcCoreVersion, mobileWidget];
   };
 
   const scriptHashes = [];
 
-  const fetchAndInlineScripts = async () => {
+  const fetchAndInlineScripts = async (mobileWidget) => {
     const [
       scripts,
       dcConverter,
@@ -122,13 +125,20 @@ export async function responseProvider(request) {
 
     // Inline dc-converter-widget.js and scripts.js. Remove modular definition and import.
     // Change relative paths to absolute. Remove JS-driven CSP in favor of HTTP header.
-    const inlineScript = dcConverter
-      .replace('export default', 'const dcConverter = ')
-      .replace('import(\'../../scripts/frictionless.js\')', 'import(\'/acrobat/scripts/frictionless.js\')')
-    + scripts
-      .replace('const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);', '')
-      .replace('await import(\'./contentSecurityPolicy/csp.js\')', '{default:()=>{}}')
-      .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')')
+    let inlineScript;
+    if (mobileWidget && request.device.isMobile) {
+      inlineScript = scripts
+        .replace('await import(\'./contentSecurityPolicy/csp.js\')', '{default:()=>{}}')
+        .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')');      
+    } else {
+      inlineScript = dcConverter
+        .replace('export default', 'const dcConverter = ')
+        .replace('import(\'../../scripts/frictionless.js\')', 'import(\'/acrobat/scripts/frictionless.js\')')
+      + scripts
+        .replace('const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);', '')
+        .replace('await import(\'./contentSecurityPolicy/csp.js\')', '{default:()=>{}}')
+        .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')');
+    } 
 
     // Generate hash of inlined script and add to our CSP policy
     const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(inlineScript));
@@ -162,11 +172,10 @@ export async function responseProvider(request) {
   };
 
   try {
-    const [
-      [responseStream, responseHeaders, dcCoreVersion],
-    ] = await Promise.all([
-      fetchFrictionlessPageAndInlineSnippet(),
-      fetchAndInlineScripts(),
+    const [responseStream, responseHeaders, dcCoreVersion, mobileWidget] = await fetchFrictionlessPageAndInlineSnippet();
+
+    await Promise.all([
+      fetchAndInlineScripts(mobileWidget),
       fetchAndInlineStyles(),
     ]);
 
@@ -197,4 +206,14 @@ export async function responseProvider(request) {
   } catch (error) {
     return createResponse(error.status ?? 500, {}, error.body ?? error.message);
   }
+}
+
+export function onClientRequest (request) {
+  request.setVariable('PMUSER_DEVICETYPE', 'Desktop');
+  if (request.device.isMobile) {
+    request.setVariable('PMUSER_DEVICETYPE', 'Mobile');
+  } else if (request.device.isTablet) {
+    request.setVariable('PMUSER_DEVICETYPE', 'Tablet');
+  }
+  request.cacheKey.includeVariable('PMUSER_DEVICETYPE');
 }
