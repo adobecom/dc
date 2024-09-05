@@ -121,14 +121,19 @@ function loadRnrData() {
   };
 
   return fetch(`${RNR_API_URL}/reviews?assetType=ACROBAT&assetId=${metadata.verb}`, { headers })
-    .then(async (result) => {
-      if (!result.ok) {
-        const res = await result.json();
+    .then(async (response) => {
+      if (!response.ok) {
+        const res = await response.json();
         throw new Error(res.message);
       }
-      return result.json();
+      return response.json();
     })
-    .then(({ aggregatedRating }) => {
+    .then((result) => {
+      const { aggregatedRating } = result;
+      if (!aggregatedRating) {
+        window.lana?.log('No aggregated rating found for this assset.');
+        return;
+      }
       rnrData.average = aggregatedRating.overallRating;
       rnrData.votes = Object.keys(aggregatedRating.ratingHistogram).reduce(
         (total, key) => total + aggregatedRating.ratingHistogram[key],
