@@ -106,6 +106,7 @@ const dropFiles = (ev, verb, err, errTxt) => {
   if (ev.dataTransfer.items) {
     // Error Check: File Count
     if ([...ev.dataTransfer.items].length > LIMITS[verb].maxNumFiles) {
+      acomAnalytics('error:step01:multiple-files-selected', verb);
       handleError(err, errTxt, 'acom-widget-error-multi');
       return;
     }
