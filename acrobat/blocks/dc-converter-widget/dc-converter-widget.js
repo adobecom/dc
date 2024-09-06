@@ -1,5 +1,5 @@
 // Could use webpack/rollup. Just manually inline these structures, for now.
-const localeMap = {
+export const localeMap = {
   '': 'en-us',
   br: 'pt-br',
   ca: 'en-ca',

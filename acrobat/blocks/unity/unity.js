@@ -1,4 +1,5 @@
 import { loadStyle } from '../../scripts/utils.js';
+import { localeMap } from "../dc-converter-widget/dc-converter-widget.js";
 
 function getUnityLibs(prodLibs = '/unitylibs') {
   const { hostname } = window.location;
@@ -14,10 +15,13 @@ function getUnityLibs(prodLibs = '/unitylibs') {
 
 export default async function init(el) {
   const unitylibs = getUnityLibs();
+  const langFromPath = window.location.pathname.split('/')[1];
+  const languageCode = localeMap[langFromPath] ? localeMap[langFromPath].split('-')[0] : 'en';
+  const languageRegion = localeMap[langFromPath] ? localeMap[langFromPath].split('-')[1] : 'us';
   const stylePromise = new Promise((resolve) => {
     loadStyle(`${unitylibs}/core/styles/styles.css`, resolve);
   });
   await stylePromise;
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
-  await wfinit(el, 'acrobat', unitylibs, 'v2');
+  await wfinit(el, 'acrobat', unitylibs, 'v2', languageRegion, languageCode);
 }
