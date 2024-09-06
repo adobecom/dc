@@ -1,5 +1,5 @@
 import { loadStyle } from '../../scripts/utils.js';
-import { localeMap } from "../dc-converter-widget/dc-converter-widget.js";
+import { localeMap } from '../dc-converter-widget/dc-converter-widget.js';
 
 function getUnityLibs(prodLibs = '/unitylibs') {
   const { hostname } = window.location;
