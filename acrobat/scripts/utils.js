@@ -35,3 +35,7 @@ export const [setLibs, getLibs] = (() => {
     }, () => libs,
   ];
 })();
+
+const miloLibs = setLibs('/libs');
+const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+export { loadStyle };
