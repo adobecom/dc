@@ -1,17 +1,17 @@
 import LIMITS from './limits.js';
 import { setLibs } from '../../scripts/utils.js';
-import acomAnalytics from '../../scripts/alloy/acom-widget.js';
+import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 const handleError = (err, errTxt, str, strTwo) => {
-  err.classList.add('acom-error');
+  err.classList.add('verb-error');
   err.classList.remove('hide');
   errTxt.textContent = `${window.mph[str]} ${strTwo || ''}`;
 
   setTimeout(() => {
-    err.classList.remove('acom-error');
+    err.classList.remove('verb-error');
     err.classList.add('hide');
   }, 5000);
 
@@ -24,21 +24,21 @@ const sendToUnity = async (file, verb, err, errTxt) => {
 
   // Error Check: File Empty
   if (file.size < 1) {
-    acomAnalytics('error:step01:empty-file', verb);
-    handleError(err, errTxt, 'acom-widget-error-empty');
+    verbAnalytics('error:step01:empty-file', verb);
+    handleError(err, errTxt, 'verb-widget-error-empty');
   }
 
   // Error Check: Supported File Type
   if (LIMITS[verb].acceptedFiles.indexOf(file.type) < 0) {
-    acomAnalytics('error:step01:unsupported-file-type', verb);
-    handleError(err, errTxt, 'acom-widget-error-unsupported');
+    verbAnalytics('error:step01:unsupported-file-type', verb);
+    handleError(err, errTxt, 'verb-widget-error-unsupported');
     return;
   }
 
   // Error Check: File Too Large
   if (file.size > LIMITS[verb].maxFileSize) {
-    acomAnalytics('error:step01:file-too-large', verb);
-    handleError(err, errTxt, 'acom-widget-error-large', LIMITS[verb].maxFileSizeFriendly);
+    verbAnalytics('error:step01:file-too-large', verb);
+    handleError(err, errTxt, 'verb-widget-error-large', LIMITS[verb].maxFileSizeFriendly);
   }
 
   // try {
@@ -106,8 +106,8 @@ const dropFiles = (ev, verb, err, errTxt) => {
   if (ev.dataTransfer.items) {
     // Error Check: File Count
     if ([...ev.dataTransfer.items].length > LIMITS[verb].maxNumFiles) {
-      acomAnalytics('error:step01:multiple-files-selected', verb);
-      handleError(err, errTxt, 'acom-widget-error-multi');
+      verbAnalytics('error:step01:multiple-files-selected', verb);
+      handleError(err, errTxt, 'verb-widget-error-multi');
       return;
     }
 
@@ -132,40 +132,40 @@ const setDraggingClass = (widget, shouldToggle) => {
 export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
-  const widgetHeading = createTag('h1', { class: 'acom-heading' }, children[0].textContent);
+  const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
   let mobileLink = null;
   if (/iPad|iPhone|iPod/.test(window?.browser?.ua) && !window.MSStream) {
-    mobileLink = window.mph['acom-widget-apple-fillsign'];
+    mobileLink = window.mph['verb-widget-apple-fillsign'];
   } else if (/android/i.test(window?.browser?.ua)) {
-    mobileLink = window.mph['acom-widget-google-fillsign'];
+    mobileLink = window.mph['verb-widget-google-fillsign'];
   }
 
   children.forEach((child) => {
     child.remove();
   });
 
-  const widget = createTag('div', { id: 'drop-zone', class: 'acom-wrapper' });
-  const widgetContainer = createTag('div', { class: 'acom-container' });
-  const widgetRow = createTag('div', { class: 'acom-row' });
-  const widgetLeft = createTag('div', { class: 'acom-col' });
-  const widgetRight = createTag('div', { class: 'acom-col right' });
-  const widgetHeader = createTag('div', { class: 'acom-header' });
-  const widgetIcon = createTag('div', { class: 'acom-icon' });
-  const widgetTitle = createTag('div', { class: 'acom-title' }, 'Acrobat');
-  const widgetCopy = createTag('p', { class: 'acom-copy' }, window.mph[`acom-widget-description-${VERB}`]);
-  const widgetButton = createTag('label', { for: 'file-upload', class: 'acom-cta' }, window.mph['acom-widget-cta']);
-  const widgetMobileButton = createTag('a', { class: 'acom-mobile-cta', href: mobileLink }, window.mph['acom-widget-cta-mobile']);
+  const widget = createTag('div', { id: 'drop-zone', class: 'verb-wrapper' });
+  const widgetContainer = createTag('div', { class: 'verb-container' });
+  const widgetRow = createTag('div', { class: 'verb-row' });
+  const widgetLeft = createTag('div', { class: 'verb-col' });
+  const widgetRight = createTag('div', { class: 'verb-col right' });
+  const widgetHeader = createTag('div', { class: 'verb-header' });
+  const widgetIcon = createTag('div', { class: 'verb-icon' });
+  const widgetTitle = createTag('div', { class: 'verb-title' }, 'Acrobat');
+  const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-description-${VERB}`]);
+  const widgetButton = createTag('label', { for: 'file-upload', class: 'verb-cta' }, window.mph['verb-widget-cta']);
+  const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
-  const widgetImage = createTag('img', { class: 'acom-image', src: children[1].querySelector('img')?.src });
+  const widgetImage = createTag('img', { class: 'verb-image', src: children[1].querySelector('img')?.src });
   // Since we're using placeholders we need a solution for the hyperlinks
-  const legal = createTag('p', { class: 'acom-legal' }, window.mph['acom-widget-legal']);
+  const legal = createTag('p', { class: 'verb-legal' }, window.mph['verb-widget-legal']);
   const iconSecurity = createTag('div', { class: 'security-icon' });
-  const footer = createTag('div', { class: 'acom-footer' });
+  const footer = createTag('div', { class: 'verb-footer' });
 
   const errorState = createTag('div', { class: 'hide' });
-  const errorStateText = createTag('p', { class: 'acom-errorText' });
-  const errorIcon = createTag('div', { class: 'acom-errorIcon' });
-  const errorCloseBtn = createTag('div', { class: 'acom-errorBtn' });
+  const errorStateText = createTag('p', { class: 'verb-errorText' });
+  const errorIcon = createTag('div', { class: 'verb-errorIcon' });
+  const errorCloseBtn = createTag('div', { class: 'verb-errorBtn' });
 
   widget.append(widgetContainer);
   widgetContainer.append(widgetRow);
@@ -182,14 +182,14 @@ export default async function init(element) {
 
   element.append(widget, footer);
 
-  acomAnalytics('landing:shown', VERB);
+  verbAnalytics('landing:shown', VERB);
 
   button.addEventListener('click', () => {
-    acomAnalytics('dropzone:choose-file-clicked', VERB);
+    verbAnalytics('dropzone:choose-file-clicked', VERB);
   });
 
   button.addEventListener('change', (e) => {
-    acomAnalytics('choose-file:open', VERB);
+    verbAnalytics('choose-file:open', VERB);
     const file = e.target.files[0];
     if (file) {
       sendToUnity(file, VERB, errorState, errorStateText);
@@ -199,7 +199,7 @@ export default async function init(element) {
   });
 
   button.addEventListener('cancel', () => {
-    acomAnalytics('choose-file:close', VERB);
+    verbAnalytics('choose-file:close', VERB);
   });
 
   widget.addEventListener('dragover', (e) => {
@@ -212,13 +212,13 @@ export default async function init(element) {
   });
 
   widget.addEventListener('drop', (e) => {
-    acomAnalytics('files-dropped', VERB);
+    verbAnalytics('files-dropped', VERB);
     dropFiles(e, VERB, errorState, errorStateText);
     setDraggingClass(widget, false);
   });
 
   errorCloseBtn.addEventListener('click', () => {
-    errorState.classList.remove('acom-error');
+    errorState.classList.remove('verb-error');
     errorState.classList.add('hide');
   });
 }
