@@ -108,7 +108,6 @@ export default async function init(el) {
   const langFromPath = window.location.pathname.split('/')[1];
   const languageCode = localeMap[langFromPath] ? localeMap[langFromPath].split('-')[0] : 'en';
   const languageRegion = localeMap[langFromPath] ? localeMap[langFromPath].split('-')[1] : 'us';
-  await stylePromise;
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
   await wfinit(el, 'acrobat', unitylibs, 'v2', languageRegion, languageCode);
 }
