@@ -125,19 +125,16 @@ export async function responseProvider(request) {
 
     // Inline dc-converter-widget.js and scripts.js. Remove modular definition and import.
     // Change relative paths to absolute. Remove JS-driven CSP in favor of HTTP header.
-    let inlineScript;
-    if (mobileWidget && request.device.isMobile) {
-      inlineScript = scripts
-        .replace('await import(\'./contentSecurityPolicy/csp.js\')', '{default:()=>{}}')
-        .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')');      
-    } else {
+    let inlineScript = scripts
+      .replace('await import(\'./contentSecurityPolicy/csp.js\')', '{default:()=>{}}')
+      .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')');
+
+    if (!(mobileWidget && request.device.isMobile)) {
       inlineScript = dcConverter
         .replace('export default', 'const dcConverter = ')
         .replace('import(\'../../scripts/frictionless.js\')', 'import(\'/acrobat/scripts/frictionless.js\')')
-      + scripts
+      + inlineScript
         .replace('const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);', '')
-        .replace('await import(\'./contentSecurityPolicy/csp.js\')', '{default:()=>{}}')
-        .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')');
     } 
 
     // Generate hash of inlined script and add to our CSP policy
@@ -184,26 +181,21 @@ export async function responseProvider(request) {
     const pdfnow = isProd ? 'https://pdfnow.adobe.io' : 'https://pdfnow-stage.adobe.io';
     const adobeid = isProd ? 'https://adobeid-na1.services.adobe.com' : 'https://adobeid-na1-stg1.services.adobe.com';
 
-    let headerLink;
-    if (mobileWidget && request.device.isMobile) {
-      headerLink = [
+    let headerLink = [
         `<${adobeid}>;rel="preconnect"`,
         '<https://assets.adobedtm.com>;rel="preconnect"',
         '<https://use.typekit.net>;rel="preconnect"',
         `</libs/deps/imslib.min.js>;rel="preload";as="script"`,
-      ].join();
-    } else {
-      headerLink = [
+    ];
+    if (!(mobileWidget && request.device.isMobile)) {
+      headerLink = [...headerLink,
         `<${acrobat}>;rel="preconnect"`,
-        `<${adobeid}>;rel="preconnect"`,
         `<${pdfnow}>;rel="preconnect"`,
-        '<https://assets.adobedtm.com>;rel="preconnect"',
-        '<https://use.typekit.net>;rel="preconnect"',
-        `</libs/deps/imslib.min.js>;rel="preload";as="script"`,
         `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.js>;rel="preload";as="script"`,
         `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.css>;rel="preload";as="style"`,
-      ].join();
+      ];
     }
+    headerLink = headerLink.join();
 
     const headers = {
       ...responseHeaders,
