@@ -129,6 +129,10 @@ function loadRnrData() {
       return response.json();
     })
     .then((result) => {
+      if (!result) {
+        window.lana?.log('Empty response received for this asset.');
+        return;
+      }
       const { aggregatedRating } = result;
       if (!aggregatedRating) {
         window.lana?.log('No aggregated rating found for this assset.');
@@ -261,11 +265,7 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
   stars.forEach((star) => {
     star.addEventListener('click', (ev) => {
       star.setAttribute('aria-checked', 'true');
-      // Click is triggered on arrow key press so a check for a 'real' click is needed
-      if (ev.clientX !== 0 && ev.clientY !== 0) {
-        // Real click
-        selectRating(ev.target.value);
-      }
+      selectRating(ev.target.value);
     });
 
     star.addEventListener('focus', (ev) => {
@@ -297,8 +297,17 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
     });
 
     star.addEventListener('keydown', (ev) => {
-      if (ev.code !== 'Enter') return;
-      selectRating(ev.target.value, true);
+      if (!['ArrowLeft', 'ArrowRight', 'Enter'].includes(ev.code)) return;
+      ev.preventDefault();
+      if (ev.code === 'ArrowLeft' && ev.target.value > 1) {
+        stars[ev.target.value - 2].focus();
+      }
+      if (ev.code === 'ArrowRight' && ev.target.value < 5) {
+        stars[ev.target.value].focus();
+      }
+      if (ev.code === 'Enter') {
+        ev.target.click();
+      }
     });
   });
 
@@ -367,7 +376,7 @@ function initSummary(container) {
   const voteLabels = (window.mph['rnr-rating-verb'] || ',').split(',').map((verb) => verb.trim());
   const votesLabel = votes === 1 ? voteLabels[0] : voteLabels[1];
 
-  const averageTag = createTag('span', { class: 'rnr-summary-average' }, String(average));
+  const averageTag = createTag('span', { class: 'rnr-summary-average' }, average.toFixed(1));
   const scoreSeparator = createTag('span', {}, '/');
   const outOfTag = createTag('span', { class: 'rnr-summary-outOf' }, outOf);
   const votesSeparator = createTag('span', {}, '-');
