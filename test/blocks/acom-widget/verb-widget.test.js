@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import { delay, waitForElement } from '../../helpers/waitfor.js';
 
 const { default: init } = await import(
-  '../../../acrobat/blocks/acom-widget/acom-widget.js'
+  '../../../acrobat/blocks/verb-widget/verb-widget.js'
 );
 
 const uploadFile = (input, file) => {
@@ -41,10 +41,10 @@ describe('acom-widget block', () => {
       });
     });
     window.mph = {
-      'acom-widget-description-compress-pdf': 'Description of Compress-PDF',
-      'acom-widget-error-unsupported': 'Unsupported',
-      'acom-widget-error-empty': 'Empty file',
-      'acom-widget-error-multi': 'Over the limit',
+      'verb-widget-description-compress-pdf': 'Description of Compress-PDF',
+      'verb-widget-error-unsupported': 'Unsupported',
+      'verb-widget-error-empty': 'Empty file',
+      'verb-widget-error-multi': 'Over the limit',
     };
     xhr = sinon.useFakeXMLHttpRequest();
     document.head.innerHTML = await readFile({ path: './mocks/head.html' });
@@ -80,7 +80,7 @@ describe('acom-widget block', () => {
 
     uploadFile(input, file);
 
-    const error = document.querySelector('.acom-error');
+    const error = document.querySelector('.verb-error');
     expect(error.textContent).to.eq('Unsupported ');
   });
 
@@ -93,7 +93,7 @@ describe('acom-widget block', () => {
 
     uploadFile(input, file);
 
-    const error = document.querySelector('.acom-error');
+    const error = document.querySelector('.verb-error');
     expect(error.textContent).to.eq('Empty file ');
   });
 
@@ -106,9 +106,9 @@ describe('acom-widget block', () => {
 
     uploadFile(input, file);
 
-    const errorBtn = document.querySelector('.acom-errorBtn');
+    const errorBtn = document.querySelector('.verb-errorBtn');
     errorBtn.click();
-    const error = document.querySelector('.acom-error');
+    const error = document.querySelector('.verb-error');
     expect(error).to.not.be.exist;
   });
 
