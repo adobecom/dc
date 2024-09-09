@@ -1,5 +1,3 @@
-import { loadStyle } from '../../scripts/utils.js';
-
 const localeMap = {
   '': 'en-us',
   br: 'pt-br',
