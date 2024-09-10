@@ -11,6 +11,7 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 const COMMENTS_MAX_LENGTH = 500;
 const SHOW_COMMENTS_TRESHOLD = 5;
 const RNR_API_URL = 'https://rnr-stage.adobe.io/v1';
+const ASSET_TYPE = 'ADOBE_COM';
 
 // #endregion
 
@@ -116,11 +117,12 @@ function setJsonLdProductInfo() {
 
 function loadRnrData() {
   const headers = {
-    Accept: 'application/vnd.adobe-review.review-data-detailed-v1+json',
+    Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
     'x-api-key': 'ffc-addon-service',
+    Authorization: window.adobeIMS.getAccessToken()?.token,
   };
 
-  return fetch(`${RNR_API_URL}/reviews?assetType=ACROBAT&assetId=${metadata.verb}`, { headers })
+  return fetch(`${RNR_API_URL}/ratings?assetType=${ASSET_TYPE}&assetId=${metadata.verb}`, { headers })
     .then(async (response) => {
       if (!response.ok) {
         const res = await response.json();
@@ -129,14 +131,10 @@ function loadRnrData() {
       return response.json();
     })
     .then((result) => {
-      const { aggregatedRating } = result;
-      if (!aggregatedRating) {
-        window.lana?.log('No aggregated rating found for this assset.');
-        return;
-      }
-      rnrData.average = aggregatedRating.overallRating;
-      rnrData.votes = Object.keys(aggregatedRating.ratingHistogram).reduce(
-        (total, key) => total + aggregatedRating.ratingHistogram[key],
+      const { overallRating, ratingHistogram } = result;
+      rnrData.average = overallRating || 5;
+      rnrData.votes = Object.keys(ratingHistogram).reduce(
+        (total, key) => total + ratingHistogram[key],
         0,
       );
       setJsonLdProductInfo();
@@ -148,7 +146,7 @@ function loadRnrData() {
 
 function postReview(data) {
   const body = JSON.stringify({
-    assetType: 'ACROBAT',
+    assetType: ASSET_TYPE,
     assetId: metadata.verb,
     rating: data.rating,
     text: data.comments,
