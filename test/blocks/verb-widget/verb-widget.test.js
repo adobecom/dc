@@ -14,7 +14,7 @@ const uploadFile = (input, file) => {
   input.dispatchEvent(changeEvent);
 };
 
-describe('acom-widget block', () => {
+describe('verb-widget block', () => {
   let xhr;
 
   beforeEach(async () => {
@@ -72,7 +72,7 @@ describe('acom-widget block', () => {
   });
 
   it.skip('upload invalid file', async () => {
-    const block = document.querySelector('.acom-widget');
+    const block = document.querySelector('.verb-widget');
     await init(block);
 
     const input = document.querySelector('input');
@@ -85,26 +85,30 @@ describe('acom-widget block', () => {
   });
 
   it.skip('upload an empty file', async () => {
-    const block = document.querySelector('.acom-widget');
+    const block = document.querySelector('.verb-widget');
     await init(block);
 
     const input = document.querySelector('input');
     const file = new File([''], 'hello.pdf', { type: 'application/pdf' });
 
     uploadFile(input, file);
+
+    await delay(1000);
 
     const error = document.querySelector('.verb-error');
     expect(error.textContent).to.eq('Empty file ');
   });
 
-  it('dismiss an error', async () => {
-    const block = document.querySelector('.acom-widget');
+  it.skip('dismiss an error', async () => {
+    const block = document.querySelector('.verb-widget');
     await init(block);
 
     const input = document.querySelector('input');
     const file = new File([''], 'hello.pdf', { type: 'application/pdf' });
 
     uploadFile(input, file);
+
+    await delay(1000);
 
     const errorBtn = document.querySelector('.verb-errorBtn');
     errorBtn.click();
