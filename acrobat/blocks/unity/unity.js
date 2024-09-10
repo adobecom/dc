@@ -1,0 +1,119 @@
+import { loadStyle } from '../../scripts/utils.js';
+
+const localeMap = {
+  '': 'en-us',
+  br: 'pt-br',
+  ca: 'en-ca',
+  ca_fr: 'fr-ca',
+  mx: 'es-mx',
+  la: 'es-la',
+  africa: 'en-africa',
+  za: 'en-za',
+  be_nl: 'nl-be',
+  be_fr: 'fr-be',
+  be_en: 'en-be',
+  cz: 'cs-cz',
+  cy_en: 'en-cy',
+  dk: 'da-dk',
+  de: 'de-de',
+  ee: 'et-ee',
+  es: 'es-es',
+  fr: 'fr-fr',
+  gr_en: 'en-gr',
+  gr_el: 'el-gr',
+  ie: 'en-ie',
+  il_en: 'en-il',
+  il_he: 'he-il',
+  it: 'it-it',
+  lv: 'lv-lv',
+  lt: 'lt-lt',
+  lu_de: 'de-lu',
+  lu_en: 'en-lu',
+  lu_fr: 'fr-lu',
+  hu: 'hu-hu',
+  mt: 'en-mt',
+  mena_en: 'en-mena',
+  mena_ar: 'ar-mena',
+  nl: 'nl-nl',
+  no: 'nb-no',
+  at: 'de-at',
+  pl: 'pl-pl',
+  pt: 'pt-pt',
+  ro: 'ro-ro',
+  ch_de: 'de-ch',
+  si: 'sl-si',
+  sk: 'sk-sk',
+  ch_fr: 'fr-ch',
+  fi: 'fi-fi',
+  se: 'sv-se',
+  ch_it: 'it-ch',
+  tr: 'tr-tr',
+  uk: 'en-gb',
+  bg: 'bg-bg',
+  ru: 'ru-ru',
+  ua: 'uk-ua',
+  au: 'en-au',
+  hk_en: 'en-hk',
+  in: 'en-in',
+  in_hi: 'hi-in',
+  nz: 'en-nz',
+  hk_zh: 'zh-hant-hk',
+  tw: 'zh-hant-tw',
+  jp: 'ja-jp',
+  kr: 'ko-kr',
+  ae_en: 'en-ae',
+  ae_ar: 'ar-ae',
+  sa_en: 'en-sa',
+  sa_ar: 'ar-sa',
+  th_en: 'en-th',
+  th_th: 'th-th',
+  sg: 'en-sg',
+  cl: 'es-cl',
+  co: 'es-co',
+  ar: 'es-ar',
+  cr: 'es-cr',
+  pr: 'es-pr',
+  ec: 'es-ec',
+  pe: 'es-pe',
+  eg_en: 'en-eg',
+  eg_ar: 'ar-eg',
+  gt: 'es-gt',
+  id_en: 'en-id',
+  id_id: 'id-id',
+  ph_en: 'en-ph',
+  ph_fil: 'fil-ph',
+  my_en: 'en-my',
+  my_ms: 'ms-my',
+  kw_en: 'en-kw',
+  kw_ar: 'ar-kw',
+  ng: 'en-ng',
+  qa_en: 'en-qa',
+  qa_ar: 'ar-qa',
+  vn_en: 'en-vn',
+  vn_vi: 'vi-vn',
+};
+
+function getUnityLibs(prodLibs = '/unitylibs') {
+  const { hostname } = window.location;
+  if (!hostname.includes('hlx.page')
+    && !hostname.includes('hlx.live')
+    && !hostname.includes('localhost')) {
+    return prodLibs;
+  }
+  const branch = new URLSearchParams(window.location.search).get('unitylibs') || 'main';
+  if (branch.indexOf('--') > -1) return `https://${branch}.hlx.live/unitylibs`;
+  return `https://${branch}--unity--adobecom.hlx.live/unitylibs`;
+}
+
+export default async function init(el) {
+  const unitylibs = getUnityLibs();
+  const langFromPath = window.location.pathname.split('/')[1];
+  const languageCode = localeMap[langFromPath] ? localeMap[langFromPath].split('-')[0] : 'en';
+  const languageRegion = localeMap[langFromPath] ? localeMap[langFromPath].split('-')[1] : 'us';
+  const stylePromise = new Promise((resolve) => {
+    loadStyle(`${unitylibs}/core/styles/styles.css`, resolve);
+  });
+  await stylePromise;
+  const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
+  await wfinit(el, 'acrobat', unitylibs, 'v2', languageRegion, languageCode);
+}
