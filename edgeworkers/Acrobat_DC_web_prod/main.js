@@ -92,10 +92,21 @@ export async function responseProvider(request) {
       throw new Error('Missing metadata');
     }
 
-    const snippet =
-      await fetchResource(`/dc/dc-generate-cache/dc-hosted-${version}/${verb}-${locale}.html`);
+    const [
+      snippet,
+      importMap,
+    ] = await Promise.all([
+      fetchResource(`/dc/dc-generate-cache/dc-hosted-${version}/${verb}-${locale}.html`),
+      fetchResource(`/dc/dc-hosted/${widgetVersion}/import-map-${ isProd ? 'prod' : 'stage' }.json`),
+    ]);
+
     const snippetHead = snippet.substring(snippet.indexOf('<head>')+6, snippet.indexOf('</head>'));
     const snippetBody = snippet.substring(snippet.indexOf('<body>')+6, snippet.indexOf('</body>'));
+
+    // Generate hash of importMap and add to our CSP policy. importMap will be injected at runtime
+    const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(importMap));
+    const hash64 = btoa(String.fromCharCode(...new Uint8Array(hash)));
+    scriptHashes.push(`'sha256-${hash64}'`);
 
     rewriter.onElement('head', el => {
       el.append(snippetHead);
@@ -118,7 +129,7 @@ export async function responseProvider(request) {
     ] = await Promise.all([
       fetchResource('/acrobat/scripts/scripts.js'),
       fetchResource('/acrobat/blocks/dc-converter-widget/dc-converter-widget.js'),
-    ])
+    ]);
 
     // Inline dc-converter-widget.js and scripts.js. Remove modular definition and import.
     // Change relative paths to absolute. Remove JS-driven CSP in favor of HTTP header.
@@ -128,7 +139,7 @@ export async function responseProvider(request) {
     + scripts
       .replace('const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);', '')
       .replace('await import(\'./contentSecurityPolicy/csp.js\')', '{default:()=>{}}')
-      .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')')
+      .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')');
 
     // Generate hash of inlined script and add to our CSP policy
     const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(inlineScript));
