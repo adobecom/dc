@@ -1,5 +1,3 @@
-import { loadStyle } from '../../scripts/utils.js';
-
 const localeMap = {
   '': 'en-us',
   br: 'pt-br',
@@ -110,10 +108,6 @@ export default async function init(el) {
   const langFromPath = window.location.pathname.split('/')[1];
   const languageCode = localeMap[langFromPath] ? localeMap[langFromPath].split('-')[0] : 'en';
   const languageRegion = localeMap[langFromPath] ? localeMap[langFromPath].split('-')[1] : 'us';
-  const stylePromise = new Promise((resolve) => {
-    loadStyle(`${unitylibs}/core/styles/styles.css`, resolve);
-  });
-  await stylePromise;
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
   await wfinit(el, 'acrobat', unitylibs, 'v2', languageRegion, languageCode);
 }
