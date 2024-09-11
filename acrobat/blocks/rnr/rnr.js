@@ -11,6 +11,7 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 const COMMENTS_MAX_LENGTH = 500;
 const SHOW_COMMENTS_TRESHOLD = 5;
 const RNR_API_URL = 'https://rnr-stage.adobe.io/v1';
+const ASSET_TYPE = 'ADOBE_COM';
 
 // #endregion
 
@@ -116,11 +117,12 @@ function setJsonLdProductInfo() {
 
 function loadRnrData() {
   const headers = {
-    Accept: 'application/vnd.adobe-review.review-data-detailed-v1+json',
+    Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
     'x-api-key': 'ffc-addon-service',
+    Authorization: window.adobeIMS.getAccessToken()?.token,
   };
 
-  return fetch(`${RNR_API_URL}/reviews?assetType=ACROBAT&assetId=${metadata.verb}`, { headers })
+  return fetch(`${RNR_API_URL}/ratings?assetType=${ASSET_TYPE}&assetId=${metadata.verb}`, { headers })
     .then(async (response) => {
       if (!response.ok) {
         const res = await response.json();
@@ -129,14 +131,12 @@ function loadRnrData() {
       return response.json();
     })
     .then((result) => {
-      const { aggregatedRating } = result;
-      if (!aggregatedRating) {
-        window.lana?.log('No aggregated rating found for this assset.');
-        return;
-      }
-      rnrData.average = aggregatedRating.overallRating;
-      rnrData.votes = Object.keys(aggregatedRating.ratingHistogram).reduce(
-        (total, key) => total + aggregatedRating.ratingHistogram[key],
+      if (!result) throw new Error(`Received empty ratings data for asset '${metadata.verb}'.`);
+      const { overallRating, ratingHistogram } = result;
+      if (!overallRating || !ratingHistogram) throw new Error(`Missing aggregated rating data in response for asset '${metadata.verb}'.`);
+      rnrData.average = overallRating;
+      rnrData.votes = Object.keys(ratingHistogram).reduce(
+        (total, key) => total + ratingHistogram[key],
         0,
       );
       setJsonLdProductInfo();
@@ -148,7 +148,7 @@ function loadRnrData() {
 
 function postReview(data) {
   const body = JSON.stringify({
-    assetType: 'ACROBAT',
+    assetType: ASSET_TYPE,
     assetId: metadata.verb,
     rating: data.rating,
     text: data.comments,
@@ -261,11 +261,7 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
   stars.forEach((star) => {
     star.addEventListener('click', (ev) => {
       star.setAttribute('aria-checked', 'true');
-      // Click is triggered on arrow key press so a check for a 'real' click is needed
-      if (ev.clientX !== 0 && ev.clientY !== 0) {
-        // Real click
-        selectRating(ev.target.value);
-      }
+      selectRating(ev.target.value);
     });
 
     star.addEventListener('focus', (ev) => {
@@ -297,8 +293,17 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
     });
 
     star.addEventListener('keydown', (ev) => {
-      if (ev.code !== 'Enter') return;
-      selectRating(ev.target.value, true);
+      if (!['ArrowLeft', 'ArrowRight', 'Enter'].includes(ev.code)) return;
+      ev.preventDefault();
+      if (ev.code === 'ArrowLeft' && ev.target.value > 1) {
+        stars[ev.target.value - 2].focus();
+      }
+      if (ev.code === 'ArrowRight' && ev.target.value < 5) {
+        stars[ev.target.value].focus();
+      }
+      if (ev.code === 'Enter') {
+        ev.target.click();
+      }
     });
   });
 
@@ -367,7 +372,7 @@ function initSummary(container) {
   const voteLabels = (window.mph['rnr-rating-verb'] || ',').split(',').map((verb) => verb.trim());
   const votesLabel = votes === 1 ? voteLabels[0] : voteLabels[1];
 
-  const averageTag = createTag('span', { class: 'rnr-summary-average' }, String(average));
+  const averageTag = createTag('span', { class: 'rnr-summary-average' }, average.toFixed(1));
   const scoreSeparator = createTag('span', {}, '/');
   const outOfTag = createTag('span', { class: 'rnr-summary-outOf' }, outOf);
   const votesSeparator = createTag('span', {}, '-');
