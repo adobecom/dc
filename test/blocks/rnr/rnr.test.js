@@ -332,5 +332,47 @@ describe('rnr - Ratings and reviews', () => {
     window.fetch.restore();
   });
 
+  it('should render round average', async () => {
+    sinon.stub(window, 'fetch');
+    window.fetch.returns(
+      Promise.resolve({
+        json: () => Promise.resolve({
+          overallRating: 2.666666666666667,
+          ratingHistogram: { rating1: 0, rating2: 5, rating3: 10, rating4: 0, rating5: 0 },
+        }),
+        ok: true,
+      }),
+    );
+    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    const rnr = document.querySelector('.rnr');
+    await init(rnr);
+    const containerElement = await waitForElement('.rnr-container');
+    expect(containerElement).to.exist;
+    const averageElement = containerElement.querySelector('.rnr-summary-average');
+    expect(averageElement.textContent).to.equal('2.7');
+    window.fetch.restore();
+  });
+
+  it('should render should display integer averages without decimals', async () => {
+    sinon.stub(window, 'fetch');
+    window.fetch.returns(
+      Promise.resolve({
+        json: () => Promise.resolve({
+          overallRating: 2,
+          ratingHistogram: { rating1: 0, rating2: 2, rating3: 0, rating4: 0, rating5: 0 },
+        }),
+        ok: true,
+      }),
+    );
+    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    const rnr = document.querySelector('.rnr');
+    await init(rnr);
+    const containerElement = await waitForElement('.rnr-container');
+    expect(containerElement).to.exist;
+    const averageElement = containerElement.querySelector('.rnr-summary-average');
+    expect(averageElement.textContent).to.equal('2');
+    window.fetch.restore();
+  });
+
   // #endregion
 });

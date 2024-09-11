@@ -10,8 +10,15 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 const COMMENTS_MAX_LENGTH = 500;
 const SHOW_COMMENTS_TRESHOLD = 5;
-const RNR_API_URL = 'https://rnr-stage.adobe.io/v1';
 const ASSET_TYPE = 'ADOBE_COM';
+const RNR_API_URL = (function () {
+  if (
+    window.location.origin === 'main--dc--adobecom.hlx.page'
+    || window.location.origin === 'main--dc--adobecom.hlx.live'
+    || window.location.origin === 'www.adobe.com'
+  ) return 'https://rnr-prod.adobe.io/v1';
+  return 'https://rnr-stage.adobe.io/v1';
+}());
 
 // #endregion
 
@@ -40,7 +47,7 @@ function createSnapshot(rating, currentAverage, currentVotes) {
 
 // #region Extract metadata from options
 
-const metadata = JSON.parse('{"labels":{}}');
+const metadata = JSON.parse('{}');
 
 const getOptions = (el) => {
   const keyDivs = el.querySelectorAll(':scope > div > div:first-child');
@@ -221,12 +228,12 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
   };
 
   let commentsShown = false;
-  const selectRating = (value, triggeredByKeyboard = false) => {
+  const selectRating = (value) => {
     const rating = parseInt(value, 10);
     selectedRating = rating;
     if (commentsShown) return;
     if (rating <= metadata.showCommentsThreshold) {
-      showComments(triggeredByKeyboard);
+      showComments();
       commentsShown = true;
     } else {
       // form.submit() will not trigger the even handler
@@ -318,7 +325,6 @@ function initCommentsFieldset(fieldset) {
     cols: 40,
     maxLength: metadata.commentsMaxLength,
     placeholder: window.mph['rnr-comments-placeholder'],
-    readonly: 'readonly',
   });
   if (!metadata.interactive) textarea.setAttribute('disabled', 'disabled');
 
@@ -350,18 +356,6 @@ function initCommentsFieldset(fieldset) {
     else submitTag.setAttribute('disabled', 'disabled');
   });
 
-  /* This is needed because when the comments area is shown after a rating selection by
-   * keyboard (Enter) that 'Enter' keypress still counts as input for the newly focused
-   * textarea. To prevent this, the textarea is readonly by default, and 'readonly' is
-   * removed after the first keypress, or when the selection was done by mouse (see below)
-   */
-  function onTextareaKeyup(ev) {
-    if (ev.code !== 'Enter') return;
-    textarea.removeAttribute('readonly');
-    textarea.removeEventListener('keyup', onTextareaKeyup);
-  }
-  textarea.addEventListener('keyup', onTextareaKeyup);
-
   fieldset.append(textarea, footerContainer);
 }
 
@@ -372,7 +366,11 @@ function initSummary(container) {
   const voteLabels = (window.mph['rnr-rating-verb'] || ',').split(',').map((verb) => verb.trim());
   const votesLabel = votes === 1 ? voteLabels[0] : voteLabels[1];
 
-  const averageTag = createTag('span', { class: 'rnr-summary-average' }, average.toFixed(1));
+  const averageTag = createTag(
+    'span',
+    { class: 'rnr-summary-average' },
+    average.toFixed(1).replace('.0', ''),
+  );
   const scoreSeparator = createTag('span', {}, '/');
   const outOfTag = createTag('span', { class: 'rnr-summary-outOf' }, outOf);
   const votesSeparator = createTag('span', {}, '-');
@@ -420,11 +418,10 @@ function initControls(element) {
   form.addEventListener('submit', submit);
 
   // Show comments
-  const showComments = (triggeredByKeyboard) => {
+  const showComments = () => {
     form.insertBefore(commentsFieldset, null);
     const textarea = commentsFieldset.querySelector('textarea');
     textarea.focus();
-    if (!triggeredByKeyboard) textarea.removeAttribute('readonly');
   };
 
   // Init rating
