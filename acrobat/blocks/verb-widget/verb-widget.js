@@ -52,9 +52,9 @@ export default async function init(element) {
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
   let mobileLink = null;
   if (/iPad|iPhone|iPod/.test(window?.browser?.ua) && !window.MSStream) {
-    mobileLink = window.mph['verb-widget-apple-fillsign'];
+    mobileLink = window.mph[`verb-widget-apple-${VERB}`];
   } else if (/android/i.test(window?.browser?.ua)) {
-    mobileLink = window.mph['verb-widget-google-fillsign'];
+    mobileLink = window.mph[`verb-widget-google-${VERB}`];
   }
 
   children.forEach((child) => {
