@@ -69,7 +69,9 @@ describe('rnr - Ratings and reviews', () => {
     await init(rnr);
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
-    expect(window.lana.log.getCall(0).args[0]).to.equal('Empty response received for this asset.');
+    expect(window.lana.log.getCall(0).args[0]).to.equal(
+      "Could not load review data: Received empty ratings data for asset 'word-to-pdf'.",
+    );
     window.fetch.restore();
     window.lana.log.restore();
   });
@@ -79,7 +81,7 @@ describe('rnr - Ratings and reviews', () => {
     sinon.stub(window.lana, 'log');
     window.fetch.returns(
       Promise.resolve({
-        json: () => Promise.resolve({ aggregatedRating: null }),
+        json: () => Promise.resolve({ assetType: 'ADOBE_COM' }),
         ok: true,
       }),
     );
@@ -89,7 +91,7 @@ describe('rnr - Ratings and reviews', () => {
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
     expect(window.lana.log.getCall(0).args[0]).to.equal(
-      'No aggregated rating found for this assset.',
+      "Could not load review data: Missing aggregated rating data in response for asset 'word-to-pdf'.",
     );
     window.fetch.restore();
     window.lana.log.restore();
@@ -310,10 +312,8 @@ describe('rnr - Ratings and reviews', () => {
     window.fetch.returns(
       Promise.resolve({
         json: () => Promise.resolve({
-          aggregatedRating: {
-            overallRating: 2.6,
-            ratingHistogram: { rating1: 1, rating2: 5, rating3: 2, rating4: 1, rating5: 1 },
-          },
+          overallRating: 2.6,
+          ratingHistogram: { rating1: 1, rating2: 5, rating3: 2, rating4: 1, rating5: 1 },
         }),
         ok: true,
       }),

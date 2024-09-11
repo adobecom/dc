@@ -131,8 +131,10 @@ function loadRnrData() {
       return response.json();
     })
     .then((result) => {
+      if (!result) throw new Error(`Received empty ratings data for asset '${metadata.verb}'.`);
       const { overallRating, ratingHistogram } = result;
-      rnrData.average = overallRating || 5;
+      if (!overallRating || !ratingHistogram) throw new Error(`Missing aggregated rating data in response for asset '${metadata.verb}'.`);
+      rnrData.average = overallRating;
       rnrData.votes = Object.keys(ratingHistogram).reduce(
         (total, key) => total + ratingHistogram[key],
         0,
