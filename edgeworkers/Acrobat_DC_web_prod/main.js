@@ -114,15 +114,7 @@ export async function responseProvider(request) {
 
   const scriptHashes = [];
 
-  const fetchAndInlineScripts = async (mobileWidget) => {
-    const [
-      scripts,
-      dcConverter,
-    ] = await Promise.all([
-      fetchResource('/acrobat/scripts/scripts.js'),
-      fetchResource('/acrobat/blocks/dc-converter-widget/dc-converter-widget.js'),
-    ])
-
+  const inlineScripts = async (mobileWidget, scripts, dcConverter) => {
     // Inline dc-converter-widget.js and scripts.js. Remove modular definition and import.
     // Change relative paths to absolute. Remove JS-driven CSP in favor of HTTP header.
     let inlineScript = scripts
@@ -153,15 +145,7 @@ export async function responseProvider(request) {
     });
   };
 
-  const fetchAndInlineStyles = async () => {
-    const [
-      dcStyles,
-      miloStyles
-    ] = await Promise.all([
-      fetchResource('/acrobat/styles/styles.css'),
-      fetchResource('/libs/styles/styles.css'),
-    ]);
-
+  const inlineStyles = (dcStyles, miloStyles) => {
     rewriter.onElement('head', el => {
       el.append(`<style id="inline-milo-styles">${miloStyles}</style>`)
       el.append(`<style id="inline-dc-styles">${dcStyles}</style>`)
@@ -169,12 +153,22 @@ export async function responseProvider(request) {
   };
 
   try {
-    const [responseStream, responseHeaders, dcCoreVersion, mobileWidget] = await fetchFrictionlessPageAndInlineSnippet();
-
-    await Promise.all([
-      fetchAndInlineScripts(mobileWidget),
-      fetchAndInlineStyles(),
+    const [
+      [responseStream, responseHeaders, dcCoreVersion, mobileWidget],
+      scripts,
+      dcConverter,
+      dcStyles,
+      miloStyles
+    ] = await Promise.all([
+      fetchFrictionlessPageAndInlineSnippet(),
+      fetchResource('/acrobat/scripts/scripts.js'),
+      fetchResource('/acrobat/blocks/dc-converter-widget/dc-converter-widget.js'),
+      fetchResource('/acrobat/styles/styles.css'),
+      fetchResource('/libs/styles/styles.css'),
     ]);
+
+    await inlineScripts(mobileWidget, scripts, dcConverter);
+    inlineStyles(dcStyles, miloStyles);
 
     const csp = contentSecurityPolicy(isProd, scriptHashes);
     const acrobat = isProd ? 'https://acrobat.adobe.com' : 'https://stage.acrobat.adobe.com';
