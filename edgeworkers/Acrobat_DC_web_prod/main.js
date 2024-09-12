@@ -36,7 +36,7 @@ export async function responseProvider(request) {
 
     // Make preliminary pass through the content to capture version metadata
     const firstPassRewriter = new HtmlRewritingStream();
-    let version, widgetVersion;
+    let version, widgetVersion, mobileWidget;
     const prefix = isProd ? '' : 'stg-';
     firstPassRewriter.onElement(`meta[name="${prefix}dc-widget-version"]`, el => {
       widgetVersion = el.getAttribute('content');
@@ -44,7 +44,9 @@ export async function responseProvider(request) {
     firstPassRewriter.onElement(`meta[name="${prefix}dc-generate-cache-version"]`, el => {
       version = el.getAttribute('content');
     });
-
+    firstPassRewriter.onElement(`meta[name="mobile-widget"]`, el => {
+      mobileWidget = el.getAttribute('content');
+    });
     const nullWriter = new WritableStream({
       write() {},
       close() {},
@@ -74,7 +76,7 @@ export async function responseProvider(request) {
       delete responseHeaders[prop];
     }
 
-    return [responseStream, responseHeaders, version, widgetVersion];
+    return [responseStream, responseHeaders, version, widgetVersion, mobileWidget];
   };
 
   const fetchResource = async path => {
@@ -86,49 +88,46 @@ export async function responseProvider(request) {
   };
 
   const fetchFrictionlessPageAndInlineSnippet = async () => {
-    const [responseStream, responseHeaders, version, widgetVersion] = await fetchFrictionlessPage();
+    const [responseStream, responseHeaders, version, widgetVersion, mobileWidget] = await fetchFrictionlessPage();
 
     if (!verb || !locale || !version || !widgetVersion) {
       throw new Error('Missing metadata');
     }
 
-    const snippet =
-      await fetchResource(`/dc/dc-generate-cache/dc-hosted-${version}/${verb}-${locale}.html`);
-    const snippetHead = snippet.substring(snippet.indexOf('<head>')+6, snippet.indexOf('</head>'));
-    const snippetBody = snippet.substring(snippet.indexOf('<body>')+6, snippet.indexOf('</body>'));
+    if (!(mobileWidget && request.device.isMobile)) {
+      const snippet =
+        await fetchResource(`/dc/dc-generate-cache/dc-hosted-${version}/${verb}-${locale}.html`);
+      const snippetHead = snippet.substring(snippet.indexOf('<head>')+6, snippet.indexOf('</head>'));
+      const snippetBody = snippet.substring(snippet.indexOf('<body>')+6, snippet.indexOf('</body>'));
 
-    rewriter.onElement('head', el => {
-      el.append(snippetHead);
-    });
-    rewriter.onElement('div.dc-converter-widget', el => {
-      el.append(`<section id="edge-snippet">${snippetBody}</section>`);
-    });
-
+      rewriter.onElement('head', el => {
+        el.append(snippetHead);
+      });
+      rewriter.onElement('div.dc-converter-widget', el => {
+        el.append(`<section id="edge-snippet">${snippetBody}</section>`);
+      });
+    }
     const dcCoreVersion = widgetVersion.split("_")[0];
 
-    return [responseStream, responseHeaders, dcCoreVersion];
+    return [responseStream, responseHeaders, dcCoreVersion, mobileWidget];
   };
 
   const scriptHashes = [];
 
-  const fetchAndInlineScripts = async () => {
-    const [
-      scripts,
-      dcConverter,
-    ] = await Promise.all([
-      fetchResource('/acrobat/scripts/scripts.js'),
-      fetchResource('/acrobat/blocks/dc-converter-widget/dc-converter-widget.js'),
-    ])
-
+  const inlineScripts = async (mobileWidget, scripts, dcConverter) => {
     // Inline dc-converter-widget.js and scripts.js. Remove modular definition and import.
     // Change relative paths to absolute. Remove JS-driven CSP in favor of HTTP header.
-    const inlineScript = dcConverter
-      .replace('export default', 'const dcConverter = ')
-      .replace('import(\'../../scripts/frictionless.js\')', 'import(\'/acrobat/scripts/frictionless.js\')')
-    + scripts
-      .replace('const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);', '')
+    let inlineScript = scripts
       .replace('await import(\'./contentSecurityPolicy/csp.js\')', '{default:()=>{}}')
-      .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')')
+      .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')');
+
+    if (!(mobileWidget && request.device.isMobile)) {
+      inlineScript = dcConverter
+        .replace('export default', 'const dcConverter = ')
+        .replace('import(\'../../scripts/frictionless.js\')', 'import(\'/acrobat/scripts/frictionless.js\')')
+      + inlineScript
+        .replace('const { default: dcConverter } = await import(`../blocks/${blockName}/${blockName}.js`);', '')
+    } 
 
     // Generate hash of inlined script and add to our CSP policy
     const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(inlineScript));
@@ -146,15 +145,7 @@ export async function responseProvider(request) {
     });
   };
 
-  const fetchAndInlineStyles = async () => {
-    const [
-      dcStyles,
-      miloStyles
-    ] = await Promise.all([
-      fetchResource('/acrobat/styles/styles.css'),
-      fetchResource('/libs/styles/styles.css'),
-    ]);
-
+  const inlineStyles = (dcStyles, miloStyles) => {
     rewriter.onElement('head', el => {
       el.append(`<style id="inline-milo-styles">${miloStyles}</style>`)
       el.append(`<style id="inline-dc-styles">${dcStyles}</style>`)
@@ -163,30 +154,47 @@ export async function responseProvider(request) {
 
   try {
     const [
-      [responseStream, responseHeaders, dcCoreVersion],
+      [responseStream, responseHeaders, dcCoreVersion, mobileWidget],
+      scripts,
+      dcConverter,
+      dcStyles,
+      miloStyles
     ] = await Promise.all([
       fetchFrictionlessPageAndInlineSnippet(),
-      fetchAndInlineScripts(),
-      fetchAndInlineStyles(),
+      fetchResource('/acrobat/scripts/scripts.js'),
+      fetchResource('/acrobat/blocks/dc-converter-widget/dc-converter-widget.js'),
+      fetchResource('/acrobat/styles/styles.css'),
+      fetchResource('/libs/styles/styles.css'),
     ]);
+
+    await inlineScripts(mobileWidget, scripts, dcConverter);
+    inlineStyles(dcStyles, miloStyles);
 
     const csp = contentSecurityPolicy(isProd, scriptHashes);
     const acrobat = isProd ? 'https://acrobat.adobe.com' : 'https://stage.acrobat.adobe.com';
     const pdfnow = isProd ? 'https://pdfnow.adobe.io' : 'https://pdfnow-stage.adobe.io';
     const adobeid = isProd ? 'https://adobeid-na1.services.adobe.com' : 'https://adobeid-na1-stg1.services.adobe.com';
-    const headers = {
-      ...responseHeaders,
-      'Content-Security-Policy': csp,
-      Link: [
-        `<${acrobat}>;rel="preconnect"`,
+
+    let headerLink = [
         `<${adobeid}>;rel="preconnect"`,
-        `<${pdfnow}>;rel="preconnect"`,
         '<https://assets.adobedtm.com>;rel="preconnect"',
         '<https://use.typekit.net>;rel="preconnect"',
         `</libs/deps/imslib.min.js>;rel="preload";as="script"`,
+    ];
+    if (!(mobileWidget && request.device.isMobile)) {
+      headerLink = [...headerLink,
+        `<${acrobat}>;rel="preconnect"`,
+        `<${pdfnow}>;rel="preconnect"`,
         `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.js>;rel="preload";as="script"`,
         `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.css>;rel="preload";as="style"`,
-      ].join()
+      ];
+    }
+    headerLink = headerLink.join();
+
+    const headers = {
+      ...responseHeaders,
+      'Content-Security-Policy': csp,
+      Link: headerLink
     };
 
     return createResponse(
@@ -197,4 +205,14 @@ export async function responseProvider(request) {
   } catch (error) {
     return createResponse(error.status ?? 500, {}, error.body ?? error.message);
   }
+}
+
+export function onClientRequest (request) {
+  request.setVariable('PMUSER_DEVICETYPE', 'Desktop');
+  if (request.device.isMobile) {
+    request.setVariable('PMUSER_DEVICETYPE', 'Mobile');
+  } else if (request.device.isTablet) {
+    request.setVariable('PMUSER_DEVICETYPE', 'Tablet');
+  }
+  request.cacheKey.includeVariable('PMUSER_DEVICETYPE');
 }
