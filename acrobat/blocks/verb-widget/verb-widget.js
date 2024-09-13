@@ -51,10 +51,10 @@ export default async function init(element) {
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
   let mobileLink = null;
-  if (/iPad|iPhone|iPod/.test(window?.browser?.ua) && !window.MSStream) {
-    mobileLink = window.mph[`verb-widget-apple-${VERB}`];
-  } else if (/android/i.test(window?.browser?.ua)) {
-    mobileLink = window.mph[`verb-widget-google-${VERB}`];
+  if (/iPad|iPhone|iPod/.test(window.browser?.ua) && !window.MSStream) {
+    mobileLink = window.mph[`verb-widget-${VERB}-apple`];
+  } else if (/android/i.test(window.browser?.ua)) {
+    mobileLink = window.mph[`verb-widget-${VERB}-google`];
   }
 
   children.forEach((child) => {
@@ -69,7 +69,7 @@ export default async function init(element) {
   const widgetHeader = createTag('div', { class: 'verb-header' });
   const widgetIcon = createTag('div', { class: 'verb-icon' });
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Acrobat');
-  const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-description-${VERB}`]);
+  const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
   const widgetButton = createTag('label', { for: 'file-upload', class: 'verb-cta' }, window.mph['verb-widget-cta']);
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
