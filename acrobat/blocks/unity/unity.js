@@ -1,3 +1,5 @@
+import LIMITS from '../verb-widget/limits.js';
+
 const localeMap = {
   '': 'en-us',
   br: 'pt-br',
@@ -104,6 +106,16 @@ function getUnityLibs(prodLibs = '/unitylibs') {
 }
 
 export default async function init(el) {
+  // this will be refactored when https://github.com/adobecom/dc/pull/800/files is merged!
+  let mobile;
+  if (/iPad|iPhone|iPod/.test(window.browser?.ua) && !window.MSStream) {
+    mobile = true;
+  } else if (/android/i.test(window.browser?.ua)) {
+    mobile = true;
+  }
+  const element = el.querySelector('span');
+  const verb = element.classList[1].replace('icon-', '');
+  if (mobile && LIMITS[verb].mobileApp) return;
   const unitylibs = getUnityLibs();
   const langFromPath = window.location.pathname.split('/')[1];
   const languageCode = localeMap[langFromPath] ? localeMap[langFromPath].split('-')[0] : 'en';
