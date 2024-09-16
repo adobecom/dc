@@ -1,6 +1,7 @@
 /* eslint-disable func-names */
 /* eslint-disable compat/compat */
 /* eslint-disable max-len */
+import localeMap from '../../scripts/maps/localeMap.js';
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
@@ -122,62 +123,72 @@ function setJsonLdProductInfo() {
 
 // #endregion
 
-function loadRnrData() {
-  const headers = {
-    Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
-    'x-api-key': 'ffc-addon-service',
-    Authorization: window.adobeIMS.getAccessToken()?.token,
-  };
+async function loadRnrData() {
+  try {
+    const headers = {
+      Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
+      'x-api-key': 'ffc-addon-service',
+      Authorization: window.adobeIMS.getAccessToken()?.token,
+    };
 
-  return fetch(`${RNR_API_URL}/ratings?assetType=${ASSET_TYPE}&assetId=${metadata.verb}`, { headers })
-    .then(async (response) => {
-      if (!response.ok) {
-        const res = await response.json();
-        throw new Error(res.message);
-      }
-      return response.json();
-    })
-    .then((result) => {
-      if (!result) throw new Error(`Received empty ratings data for asset '${metadata.verb}'.`);
-      const { overallRating, ratingHistogram } = result;
-      if (!overallRating || !ratingHistogram) throw new Error(`Missing aggregated rating data in response for asset '${metadata.verb}'.`);
-      rnrData.average = overallRating;
-      rnrData.votes = Object.keys(ratingHistogram).reduce(
-        (total, key) => total + ratingHistogram[key],
-        0,
-      );
-      setJsonLdProductInfo();
-    })
-    .catch((error) => {
-      window.lana?.log(`Could not load review data: ${error?.message}`);
-    });
+    const response = await fetch(
+      `${RNR_API_URL}/ratings?assetType=${ASSET_TYPE}&assetId=${metadata.verb}`,
+      { headers },
+    );
+
+    if (!response.ok) {
+      const res = await response.json();
+      throw new Error(res.message);
+    }
+
+    const result = await response.json();
+    if (!result) throw new Error(`Received empty ratings data for asset '${metadata.verb}'.`);
+    const { overallRating, ratingHistogram } = result;
+    if (!overallRating || !ratingHistogram) {
+      throw new Error(`Missing aggregated rating data in response for asset '${metadata.verb}'.`);
+    }
+    rnrData.average = overallRating;
+    rnrData.votes = Object.keys(ratingHistogram).reduce(
+      (total, key) => total + ratingHistogram[key],
+      0,
+    );
+
+    setJsonLdProductInfo();
+  } catch (error) {
+    window.lana?.log(`Could not load review data: ${error?.message}`);
+  }
 }
 
-function postReview(data) {
-  const body = JSON.stringify({
-    assetType: ASSET_TYPE,
-    assetId: metadata.verb,
-    rating: data.rating,
-    text: data.comments,
-    authorName: 'guest',
-    assetMetadata: { version: 1.1 },
-  });
-  const headers = {
-    Accept: 'application/vnd.adobe-review.review-data-v1+json',
-    'Content-Type': 'application/vnd.adobe-review.review-request-v1+json',
-    'x-api-key': 'rnr-client',
-    Authorization: window.adobeIMS.getAccessToken()?.token,
-  };
+async function postReview(data) {
+  try {
+    // Get locale
+    const languageFromPath = window.location.pathname.split('/')[1];
+    const locale = localeMap[languageFromPath] || 'en-us';
 
-  fetch(`${RNR_API_URL}/reviews`, { method: 'POST', body, headers })
-    .then(async (result) => {
-      if (result.ok) return;
-      const res = await result.json();
-      throw new Error(res.message);
-    })
-    .catch((error) => {
-      window.lana?.log(`Could not post review: ${error?.message}`);
+    const body = JSON.stringify({
+      assetType: ASSET_TYPE,
+      assetId: metadata.verb,
+      rating: data.rating,
+      text: data.comments,
+      authorName: window.adobeIMS.getUserProfile?.call()?.name || 'Anonymous',
+      assetMetadata: { locale },
     });
+    const headers = {
+      Accept: 'application/vnd.adobe-review.review-data-v1+json',
+      'Content-Type': 'application/vnd.adobe-review.review-request-v1+json',
+      'x-api-key': 'rnr-client',
+      Authorization: window.adobeIMS.getAccessToken()?.token,
+    };
+
+    const response = await fetch(`${RNR_API_URL}/reviews`, { method: 'POST', body, headers });
+
+    if (response.ok) return;
+
+    const res = await response.json();
+    throw new Error(res.message);
+  } catch (error) {
+    window.lana?.log(`Could not post review: ${error?.message}`);
+  }
 }
 
 // #endregion
