@@ -1,5 +1,6 @@
 import mobileAnalytics from '../../scripts/alloy/mobile-widget.js';
 import mobileAnalyticsShown from '../../scripts/alloy/mobile-widget-shown.js';
+import { getEnv, isOldBrowser } from '../../scripts/utils.js';
 
 const verbRedirMap = {
   createpdf: 'createpdf',
@@ -30,26 +31,6 @@ const verbRedirMapAnalytics = {
 
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
-
-function getEnv() {
-  const prodHosts = ['www.adobe.com', 'sign.ing', 'edit.ing'];
-  const stageHosts = [
-    'stage--dc--adobecom.hlx.page', 'main--dc--adobecom.hlx.page',
-    'stage--dc--adobecom.hlx.live', 'main--dc--adobecom.hlx.live',
-    'www.stage.adobe.com',
-  ];
-
-  if (prodHosts.includes(window.location.hostname)) return 'prod';
-  if (stageHosts.includes(window.location.hostname)) return 'stage';
-  return 'dev';
-}
-
-function isOldBrowser() {
-  const { name, version } = window?.browser || {};
-  return (
-    name === 'Internet Explorer' || (name === 'Microsoft Edge' && (!version || version.split('.')[0] < 86)) || (name === 'Safari' && version.split('.')[0] < 14)
-  );
-}
 
 function redDir(verb) {
   if (isOldBrowser()) {
