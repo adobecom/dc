@@ -1,3 +1,4 @@
+
 import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
@@ -148,11 +149,6 @@ export default async function init(element) {
     verbAnalytics('dropzone:choose-file-clicked', VERB);
   });
 
-  button.addEventListener('change', (e) => {
-    verbAnalytics('choose-file:open', VERB);
-    e.target.value = '';
-  });
-
   button.addEventListener('cancel', () => {
     verbAnalytics('choose-file:close', VERB);
   });
@@ -166,15 +162,19 @@ export default async function init(element) {
     setDraggingClass(widget, false);
   });
 
-  widget.addEventListener('drop', (e) => {
-    e.preventDefault();
-    verbAnalytics('files-dropped', VERB);
-    setDraggingClass(widget, false);
-  });
-
   errorCloseBtn.addEventListener('click', () => {
     errorState.classList.remove('verb-error');
     errorState.classList.add('hide');
+  });
+
+  window.addEventListener('unity:track-analytics', (e) => {
+    if (e.detail.event === 'change') {
+      verbAnalytics('choose-file:open', VERB);
+    }
+    if (e.detail.event === 'drop') {
+      verbAnalytics('files-dropped', VERB);
+      setDraggingClass(widget, false);
+    }
   });
 
   window.addEventListener('IMS:Ready', async () => {
