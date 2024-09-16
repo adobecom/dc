@@ -72,10 +72,6 @@ const setDraggingClass = (widget, shouldToggle) => {
 };
 
 function redDir(verb) {
-  if (isOldBrowser()) {
-    window.location.href = EOLBrowserPage;
-    return;
-  }
   const hostname = window?.location?.hostname;
   const ENV = getEnv();
   const VERB = verb;
@@ -89,6 +85,10 @@ function redDir(verb) {
 }
 
 export default async function init(element) {
+  if (isOldBrowser()) {
+    window.location.href = EOLBrowserPage;
+    return;
+  }
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
