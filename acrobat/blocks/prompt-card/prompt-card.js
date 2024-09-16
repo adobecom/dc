@@ -32,9 +32,9 @@ async function createBlock(element, cfg) {
     setTimeout(() => toast.classList.remove(classToastShow), 5000);
   };
 
-  copyBtn.addEventListener('click', () => {
+  [copyBtn, blade].forEach((el) => el.addEventListener('click', () => {
     copyPrompt();
-  });
+  }));
 
   copyBtn.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
