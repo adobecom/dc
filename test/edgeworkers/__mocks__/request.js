@@ -17,7 +17,7 @@ export const mockJson = jest.fn();
 export const mockText = jest.fn();
 export const mockArrayBuffer = jest.fn();
 
-const Request = jest.fn().mockImplementation(({path}) => {
+const Request = jest.fn().mockImplementation(({path, device}) => {
   return {
     host: "www.adobe.com",
     method: "GET",
@@ -26,7 +26,7 @@ const Request = jest.fn().mockImplementation(({path}) => {
     query: "param1=value1&param2=value2",
     url: `${path}?param1=value1&param2=value2`,
     userLocation: new UserLocation(),
-    device: new Device(),
+    device: new Device(device),
     cpCode: 1191398,
     cacheKey: new CacheKey(),
     respondWith: mockRespondWith,

@@ -23,7 +23,8 @@ div[data-section="widget"] {
   min-height: 570px;
 }
 
-#dc-converter-widget[verb=chat-pdf] {
+#dc-converter-widget[verb=chat-pdf],
+#dc-converter-widget[verb=chat-pdf-student] {
   background-color: #fff;
   background-image: radial-gradient(at 1% 0,#ff715b 0,transparent 50%),radial-gradient(at 48% 89%,#fff 0,transparent 50%),radial-gradient(at 100% 88%,#fff 0,transparent 50%),radial-gradient(at 1% 85%,#fff 0,transparent 50%),radial-gradient(at 93% 33%,#6d51f9 0,transparent 50%),radial-gradient(at 44% 55%,#c8e1fd 0,transparent 50%),radial-gradient(at 11% 22%,#fe4b38 0,transparent 50%),radial-gradient(at 88% 4%,#ea0f00 0,transparent 50%),radial-gradient(at 45% 0,#fe4b38 0,transparent 50%);
   min-height: 623px;
@@ -37,14 +38,6 @@ div [class *= PdfnowLifecycle__dropzone2___] {
 /* ootb widget */
 .dc-converter-widget > div:first-of-type {
   display: none;
-}
-
-#dc-converter-widget > div:first-of-type {
-  display: none;
-}
-
-#dc-converter-widget button, #dc-converter-widget input {
-  font-family: inherit;
 }
 
 #CID {
@@ -353,6 +346,21 @@ div.how-to ol li::before{
 
 .section .columns.browser-extension p:last-child {
   margin-bottom: 10px;
+}
+
+#CID div,
+#CID p,
+#CID span,
+#CID h1 {
+  font-family: 'Adobe Clean', adobe-clean , 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+#dc-converter-widget > div:first-of-type {
+  display: none;
+}
+
+#dc-converter-widget button, #dc-converter-widget input {
+  font-family: inherit;
 }
 
 .section .columns.browser-extension > .row {

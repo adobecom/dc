@@ -1,5 +1,6 @@
 import mobileAnalytics from '../../scripts/alloy/mobile-widget.js';
 import mobileAnalyticsShown from '../../scripts/alloy/mobile-widget-shown.js';
+import { getEnv, isOldBrowser } from '../../scripts/utils.js';
 
 const verbRedirMap = {
   createpdf: 'createpdf',
@@ -8,7 +9,7 @@ const verbRedirMap = {
   'extract-pages': 'extract',
   'combine-pdf': 'combine',
   'protect-pdf': 'protect',
-  'add-comment': 'add-comment',
+  'add-comment': 'addcomment',
   'pdf-to-image': 'pdftoimage',
   'reorder-pages': 'reorderpages',
   sendforsignature: 'sendforsignature',
@@ -23,28 +24,13 @@ const verbRedirMap = {
   'chat-pdf': 'chat',
 };
 
+const verbRedirMapAnalytics = {
+  ...verbRedirMap,
+  'add-comment': 'add-comment', // Adjust for analytics map
+};
+
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
-
-function getEnv() {
-  const prodHosts = ['www.adobe.com', 'sign.ing', 'edit.ing'];
-  const stageHosts = [
-    'stage--dc--adobecom.hlx.page', 'main--dc--adobecom.hlx.page',
-    'stage--dc--adobecom.hlx.live', 'main--dc--adobecom.hlx.live',
-    'www.stage.adobe.com',
-  ];
-
-  if (prodHosts.includes(window.location.hostname)) return 'prod';
-  if (stageHosts.includes(window.location.hostname)) return 'stage';
-  return 'dev';
-}
-
-function isOldBrowser() {
-  const { name, version } = window?.browser || {};
-  return (
-    name === 'Internet Explorer' || (name === 'Microsoft Edge' && (!version || version.split('.')[0] < 86)) || (name === 'Safari' && version.split('.')[0] < 14)
-  );
-}
 
 function redDir(verb) {
   if (isOldBrowser()) {
@@ -77,7 +63,7 @@ function createTag(tag, attributes, html) {
 }
 
 function createMobileWidget(element, content, verb) {
-  const aaVerbName = `${verbRedirMap[verb] || verb}`;
+  const aaVerbName = `${verbRedirMapAnalytics[verb] || verb}`;
   const artID = content[1].querySelector('a')?.href || content[1].querySelector('img')?.src;
 
   const wrapper = createTag('div', { class: 'mobile-widget_wrapper' });

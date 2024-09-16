@@ -1,10 +1,10 @@
-const Device = jest.fn().mockImplementation(() => {
+const Device = jest.fn().mockImplementation((device) => {
     return {
       brandName:"Chrome",
       modelName:"90",
       marketingName:"Chrome 90",
       isWireless:false,
-      isTablet:false,
+      isTablet: device === 'Tablet',
       os:"Mac OS X",
       osVersion:"10.15",
       mobileBrowser:"Chrome",
@@ -18,7 +18,7 @@ const Device = jest.fn().mockImplementation(() => {
       hasFlashSupport:false,
       acceptsThirdPartyCookie:true,
       xhtmlSupportLevel:4,
-      isMobile:false
+      isMobile: device === 'Mobile'
       };
   });
   

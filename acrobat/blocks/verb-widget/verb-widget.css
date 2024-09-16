@@ -1,4 +1,4 @@
-.acom-widget {
+.verb-widget {
   color: transparent;
   background-color: #fff;
   background-image: radial-gradient(at 1% 0,#ff715b 0,transparent 50%),radial-gradient(at 48% 89%,#fff 0,transparent 50%),radial-gradient(at 100% 88%,#fff 0,transparent 50%),radial-gradient(at 1% 85%,#fff 0,transparent 50%),radial-gradient(at 93% 33%,#6d51f9 0,transparent 50%),radial-gradient(at 44% 55%,#c8e1fd 0,transparent 50%),radial-gradient(at 11% 22%,#fe4b38 0,transparent 50%),radial-gradient(at 88% 4%,#ea0f00 0,transparent 50%),radial-gradient(at 45% 0,#fe4b38 0,transparent 50%);
@@ -6,11 +6,11 @@
   padding: 19px;
 }
 
-.acom-widget.ready {
+.verb-widget.ready {
   color: initial;
 }
 
-.acom-legal {
+.verb-legal {
   margin-top: 30px;
   font-size: 14px;
   line-height: 20px;
@@ -20,7 +20,7 @@
   color: #2c2c2c;
 }
 
-.acom-icon {
+.verb-icon {
   height: 56px;
   min-width: 56px;
   background-image: url('../../img/icons/widget-icon.png');
@@ -28,7 +28,7 @@
   display: inline-flex;
 }
 
-.acom-big-icon {
+.verb-big-icon {
   width: 500px;
   height: 500px;
   background-image: url('../../img/icons/chat-pdf.svg');
@@ -51,7 +51,7 @@
   display: inline-block;
 }
 
-.acom-footer {
+.verb-footer {
   text-align: center;
 }
 
@@ -76,7 +76,7 @@
 
 /* new css */
 
-.acom-wrapper {
+.verb-wrapper {
   width: 75%;
   max-width: 75%;
   margin-left: auto;
@@ -92,28 +92,28 @@
   min-height: 560px;
 }
 
-.acom-wrapper.dragging {
+.verb-wrapper.dragging {
   background-color: #ecf5ff;
   border: 3px #0265dc solid;
 }
 
-.acom-row {
+.verb-row {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.acom-col {
+.verb-col {
   flex: 100%;
 }
 
-.acom-col.right {
+.verb-col.right {
   display: flex;
   justify-content: center;
 }
 
-.acom-copy {
+.verb-copy {
   text-align: left;
   font-size: 22px;
   font-weight: 400;
@@ -122,7 +122,7 @@
   margin: revert;
 }
 
-.acom-cta {
+.verb-cta {
   background: #1473e6;
   border-radius: 8px;
   padding: 11px 27px;
@@ -133,9 +133,10 @@
   justify-content: center;
   align-items: center;
   width: 30%;
+  min-width: 130px;
 }
 
-.acom-cta::before {
+.verb-cta::before {
   content: '';
   background-image: url('/acrobat/img/icons/upload-icon.svg');
   background-repeat: no-repeat;
@@ -148,13 +149,13 @@
   height: 28px;
 }
 
-.acom-cta:hover {
+.verb-cta:hover {
   text-decoration: none;
   color: #fff;
   background: #0054b6;
 }
 
-.acom-error {
+.verb-error {
   background: #D31510;
   min-width: 506px;
   padding: 11px 27px;
@@ -170,18 +171,18 @@
   font-weight: 400; 
 }
 
-.acom-errorText {
+.verb-errorText {
   margin: 0 25px;
   width: 100%;
 }
 
-.acom-errorBtn {
+.verb-errorBtn {
   position: absolute;
   right: 0;
   top: 0;
 }
 
-.acom-errorBtn::after {
+.verb-errorBtn::after {
   content: '';
   background-image: url('/acrobat/img/icons/ui/close.svg');
   background-repeat: no-repeat;
@@ -194,13 +195,13 @@
   cursor: pointer;
 }
 
-.acom-errorIcon {
+.verb-errorIcon {
   position: absolute;
   left: 0;
   top: 0;
 }
 
-.acom-errorIcon::after {
+.verb-errorIcon::after {
   content: '';
   background-image: url('/acrobat/img/icons/ui/alert.svg');
   background-repeat: no-repeat;
@@ -212,7 +213,7 @@
   height: 50px;
 }
 
-.acom-heading {
+.verb-heading {
   color: #2c2c2c;
   text-align: left;
   font-weight: 600;
@@ -221,14 +222,14 @@
   margin-bottom: 16px;
 }
 
-.acom-header {
+.verb-header {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-bottom: 24px;
 }
 
-.acom-title {
+.verb-title {
   font-size: 30px;
   font-weight: bold;
   color: black;
@@ -236,7 +237,7 @@
 }
 
 @media screen and (min-width: 768px) {
-  .acom-container {
+  .verb-container {
     align-items: center;
     display: flex;
     flex: 1 1 55%;
@@ -244,47 +245,57 @@
     padding: 48px 0 48px 48px;
   }
 
-  .acom-mobile-cta {
-    display: none;
+  .verb-mobile-cta {
+    /* display: none; */
+    background: #1473e6;
+    border-radius: 8px;
+    padding: 11px 27px;
+    color: white;
+    white-space: nowrap;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
   }
 }
 
 /* responsive design */
 
 @media screen and (max-width: 768px) {
-  .acom-wrapper {
+  .verb-wrapper {
     width: unset;
     max-width: unset;
     padding: 20px;
   }
 
-  .acom-row {
+  .verb-row {
     display: flex;
     flex-direction: column;
   }
 
-  .acom-icon {
+  .verb-icon {
     height: 40px;
     min-width: 40px;
   }
 
-  .acom-title {
+  .verb-title {
     font-size: 27px;
   }
 
-  .acom-heading {
+  .verb-heading {
     font-size: 36px;
   }
 
-  .acom-copy {
+  .verb-copy {
     font-size: 18px;
   }
 
-  .acom-cta {
-    display: none;
+  .verb-cta {
+    /* display: none; */
   }
 
-  .acom-mobile-cta {
+  .verb-mobile-cta {
     display: flex;
     top: 324px;
     left: 40px;
@@ -297,7 +308,6 @@
     justify-content: center;
     align-items: center;
     width: 30%;
-
   }
 }
 
