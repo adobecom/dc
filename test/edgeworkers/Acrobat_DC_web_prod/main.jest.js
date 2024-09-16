@@ -1,6 +1,7 @@
 
 import Request from "request";
 import { responseProvider as replaceResponseProvider } from "../../../edgeworkers/Acrobat_DC_web_prod/main.js";
+import { onClientRequest } from "../../../edgeworkers/Acrobat_DC_web_prod/main.js";
 import { createResponse } from "create-response";
 import { httpRequest } from "http-request";
 import { HttpResponsePdf } from "response-pdf";
@@ -68,7 +69,8 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
         'https://www.adobe.com/acrobat/blocks/dc-converter-widget/dc-converter-widget.js',
         'https://www.adobe.com/acrobat/styles/styles.css',
         'https://www.adobe.com/libs/styles/styles.css',
-        'https://www.adobe.com/dc/dc-generate-cache/dc-hosted-1.0/pdf-to-ppt-en-us.html']);
+        'https://www.adobe.com/dc/dc-generate-cache/dc-hosted-1.0/pdf-to-ppt-en-us.html'
+      ]);
     });
   });
 
@@ -85,9 +87,29 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
         'https://www.adobe.com/acrobat/blocks/dc-converter-widget/dc-converter-widget.js',
         'https://www.adobe.com/acrobat/styles/styles.css',
         'https://www.adobe.com/libs/styles/styles.css',
-        'https://www.adobe.com/dc/dc-generate-cache/dc-hosted-1.0/pdf-to-ppt-ja-jp.html']);
+        'https://www.adobe.com/dc/dc-generate-cache/dc-hosted-1.0/pdf-to-ppt-ja-jp.html'
+      ]);
     });
   });  
+
+  it("responseProvider Mobile", async () => {
+    let requestMock = new Request({path: '/acrobat/online/pdf-to-ppt', device: 'Mobile'});
+
+    const responsePromise = replaceResponseProvider(requestMock);
+    responsePromise.then(response => {
+      expect(response.status).toEqual(200);
+      expect(response.headers['header-to-keep']).toEqual('keep');
+      expect(response.headers).not.toHaveProperty('accept-encoding');
+      expect(response.headers).not.toHaveProperty('vary');
+      expect(fetches).toEqual([
+        'https://www.adobe.com/acrobat/online/pdf-to-ppt.html',
+        'https://www.adobe.com/acrobat/scripts/scripts.js',
+        'https://www.adobe.com/acrobat/blocks/dc-converter-widget/dc-converter-widget.js',
+        'https://www.adobe.com/acrobat/styles/styles.css',
+        'https://www.adobe.com/libs/styles/styles.css'
+      ]);
+    });
+  });
 
   it("404 exception", async () => {
     let requestMock = new Request({path: '/404/online/pdf-to-ppt'});
@@ -122,5 +144,23 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
       expect(response.status).toEqual(500);
       expect(response.body).toContain('Missing metadata');
     });
-  });    
+  });
+
+  it("onClientReqest", async () => {
+    let requestMock = new Request({path: '/acrobat/online/pdf-to-ppt'});
+
+    onClientRequest(requestMock);
+    expect(requestMock.setVariable).toBeCalledWith('PMUSER_DEVICETYPE', 'Desktop');
+    expect(requestMock.cacheKey.includeVariable).toBeCalledWith('PMUSER_DEVICETYPE');
+
+    requestMock = new Request({path: '/acrobat/online/pdf-to-ppt', device: 'Mobile'});
+
+    onClientRequest(requestMock);
+    expect(requestMock.setVariable).toBeCalledWith('PMUSER_DEVICETYPE', 'Mobile');
+
+    requestMock = new Request({path: '/acrobat/online/pdf-to-ppt', device: 'Tablet'});
+
+    onClientRequest(requestMock);
+    expect(requestMock.setVariable).toBeCalledWith('PMUSER_DEVICETYPE', 'Tablet');    
+  });  
 });
