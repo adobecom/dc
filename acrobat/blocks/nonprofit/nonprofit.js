@@ -1,8 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable compat/compat */
 /* eslint-disable max-len */
 import ReactiveStore from '../../scripts/reactiveStore.js';
 import { setLibs } from '../../scripts/utils.js';
-import { mockCountries, mockOrganizations, mockRegistries } from './mock.js';
+import { countries } from './constants.js';
+import nonprofitSelect from './select.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
@@ -13,8 +15,8 @@ const scenarios = Object.freeze({
   FOUND_IN_SEARCH: 'FOUND_IN_SEARCH',
   NOT_FOUND_IN_SEARCH: 'NOT_FOUND_IN_SEARCH',
 });
-
 const SEARCH_DEBOUNCE = 500;
+const FETCH_ON_SCROLL_OFFSET = 100; // px
 
 // #endregion
 
@@ -22,9 +24,15 @@ const SEARCH_DEBOUNCE = 500;
 
 const metadata = {
   labels: {
+    step: {
+      1: 'Find your nonprofit',
+      2: 'Confirm your details',
+      3: 'Verification',
+    },
+
     titleSelectNonProfit: "What's your nonprofit organization?",
     subtitleSelectNonProfit:
-      "We'll search to see if it's on a list of organisations already verified.",
+      "To add your nonprofit and verify eligibility, we partner with <a href='#'>Percent</a> - a leading technology platform for nonprofits. Your information will be used in accordance with Adobe's <a href='#'>privacy policy</a>.",
     titleOrganizationDetails: 'Verify your organization details',
     titleOrganizationAddress: "What's the physical address of your organization?",
     titlePersonalDetails: 'Confirm your details?',
@@ -32,12 +40,14 @@ const metadata = {
       'We need to confirm your name and email in order to finish checking if your organisation is eligible.',
 
     country: 'Country',
+    countryPlaceholder: 'Select country',
     organizationNameOrId: 'Organization name or ID',
     organizationNameOrIdPlaceholder: 'Enter your organization name',
     organizationNameOrIdSerachPlaceholder: 'Type to search',
     organizationCannotFind: "I can't find my nonprofit. I want to add it.",
 
     registry: 'Registry',
+    registryPlaceholder: 'Select registry',
     organizationRegistrationId: 'Organization registration ID',
     organizationRegistrationIdPlaceholder: 'Enter your organization registration ID',
     evidenceNonProfitStatus: 'Evidence of your official non-profit status',
@@ -68,20 +78,26 @@ const metadata = {
 
     titleApplicationReview: 'Your application is being reviewed',
     detail1ApplicationReview:
-      "Adobe has partnered with <a href='#'>Percent</a>, who will review your application.",
+      'Your application is now being reviewed with our partners at <a href="#">Percent</a>.',
     detail2ApplicationReview:
-      "We'll let you know the outcome within 2 - 4 business days by emailing you at john.merrill@gmail.com.",
-    done: 'Done',
+      "We'll email you at <strong>john.merrill@gmail.com</strong> with the outcome in 2-4 business days.",
+    returnToAcrobatForNonprofits: 'Return to Acrobat for nonprofits',
+
+    noSearchResultFound: 'No search result found',
   },
 };
 
 // #endregion
 
+const nonprofitFormData = JSON.parse('{}');
+
 // #region Stores
 
-const nonprofitStore = new ReactiveStore({ step: 1, scenario: scenarios.FOUND_IN_SEARCH }, true);
+const stepperStore = new ReactiveStore({ step: 1, scenario: scenarios.FOUND_IN_SEARCH });
 
 const organizationsStore = new ReactiveStore([]);
+
+const registriesStore = new ReactiveStore([]);
 
 const selectedOrganizationStore = new ReactiveStore();
 
@@ -89,355 +105,376 @@ const selectedOrganizationStore = new ReactiveStore();
 
 // #region Percent API integration
 
-function testSandbox() {
-  fetch('https://sandbox-validate.poweredbypercent.com/adobe-acrobat', {
-    method: 'POST',
-    headers: { Authorization: 'sandbox_pk_8b320cc4-5950-4263-a3ac-828c64f6e19b' },
-  })
-    .then((response) => {
-      console.log('response: ', response);
-      return response.json();
-    })
+// function testSandbox() {
+//   fetch('https://sandbox-validate.poweredbypercent.com/adobe-acrobat', {
+//     method: 'POST',
+//     headers: { Authorization: 'Bearer sandbox_pk_8b320cc4-5950-4263-a3ac-828c64f6e19b' },
+//   })
+//     .then((response) => {
+//       console.log('response: ', response);
+//       return response.json();
+//     })
+//     .then((result) => {
+//       console.log('result: ', result);
+//     })
+//     .catch((error) => {
+//       console.log('error: ', error);
+//     });
+// }
+
+let nextPageUrl;
+
+function fetchOrganizations(search, countryCode, abortController) {
+  organizationsStore.startLoading(true);
+  fetch(
+    `https://sandbox-api.poweredbypercent.com/v1/organisations?countryCode=${countryCode}&query=${search}`,
+    {
+      cache: 'force-cache',
+      signal: abortController.signal,
+      headers: { Authorization: 'sandbox_pk_8b320cc4-5950-4263-a3ac-828c64f6e19b' },
+    },
+  )
+    .then((response) => response.json())
     .then((result) => {
-      console.log('result: ', result);
+      console.log(result);
+      nextPageUrl = result._links.next;
+      organizationsStore.update(result.data);
     })
     .catch((error) => {
-      console.log('error: ', error);
+      console.log(error);
     });
+}
+
+function fetchNextOrganizations(abortController) {
+  if (!nextPageUrl) return;
+  organizationsStore.startLoading();
+  fetch(nextPageUrl, {
+    cache: 'force-cache',
+    signal: abortController.signal,
+    headers: { Authorization: 'sandbox_pk_8b320cc4-5950-4263-a3ac-828c64f6e19b' },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+      nextPageUrl = result._links.next;
+      organizationsStore.update((prev) => [...prev, ...result.data]);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+function fetchRegistries(countryCode, abortController) {
+  registriesStore.startLoading(true);
+  fetch(`https://sandbox-api.poweredbypercent.com/v1/registries?countryCode=${countryCode}`, {
+    cache: 'force-cache',
+    signal: abortController.signal,
+    headers: { Authorization: 'sandbox_pk_8b320cc4-5950-4263-a3ac-828c64f6e19b' },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+      registriesStore.update(result.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+async function sendOrganizationData() {
+  // todo
+  console.log(nonprofitFormData);
 }
 
 // #endregion
 
 // UI
 
-function renderStepper(tag) {
-  const sliderTag = createTag('div', { class: 'np-stepper-slider' });
+function renderStepper(containerTag) {
+  const getStepTag = (number) => {
+    const stepContainerTag = createTag('div', { class: 'np-step-container' });
+    const stepIconTag = createTag('span', { class: 'np-step-icon' }, number);
+    const stepNameTag = createTag('span', { class: 'np-step-name' }, metadata.labels.step[number]);
+    stepContainerTag.append(stepIconTag, stepNameTag);
+    return stepContainerTag;
+  };
 
-  let previousStep = 0;
+  const step1 = getStepTag(1);
+  const step2 = getStepTag(2);
+  const step3 = getStepTag(3);
 
-  nonprofitStore.subscribe(({ step, scenario }) => {
-    const difference = Math.abs(previousStep - step) || 1;
-    const fillMultiplier = scenario === scenarios.FOUND_IN_SEARCH ? 50 : 25;
-    previousStep = step;
-    sliderTag.style.transition = `width ${difference * 300}ms`;
-    sliderTag.style.width = `${step * fillMultiplier}%`;
-  });
+  stepperStore.subscribe(({ step, scenario }) => {
+    // Reset steps
+    step1.classList.remove('is-cleared', 'is-active');
+    step2.classList.remove('is-cleared', 'is-active');
+    step3.classList.remove('is-cleared', 'is-active');
 
-  tag.append(sliderTag);
-}
-
-function renderDescription(tag) {
-  const titleTag = createTag('span', { class: 'np-title' });
-  const subtitleTag = createTag('span', { class: 'np-subtitle' });
-
-  nonprofitStore.subscribe(({ step, scenario }) => {
-    titleTag.textContent = '';
-    subtitleTag.textContent = '';
     if (step === 1) {
-      titleTag.textContent = metadata.labels.titleSelectNonProfit;
-      subtitleTag.textContent = metadata.labels.subtitleSelectNonProfit;
+      step1.classList.add('is-active');
     }
     if (step === 2) {
-      if (scenario === scenarios.FOUND_IN_SEARCH) {
-        titleTag.textContent = metadata.labels.titlePersonalDetails;
-        subtitleTag.textContent = metadata.labels.subtitlePersonalDetails;
-      } else {
-        titleTag.textContent = metadata.labels.titleOrganizationDetails;
-      }
+      step1.classList.add('is-cleared');
+      step2.classList.add('is-active');
     }
     if (step === 3) {
-      titleTag.textContent = metadata.labels.titleOrganizationAddress;
+      if (scenario === scenarios.FOUND_IN_SEARCH) {
+        step1.classList.add('is-cleared');
+        step2.classList.add('is-cleared');
+        step3.classList.add('is-active');
+      } else {
+        step1.classList.add('is-cleared');
+        step2.classList.add('is-active');
+      }
     }
     if (step === 4) {
-      titleTag.textContent = metadata.labels.titlePersonalDetails;
-      subtitleTag.textContent = metadata.labels.subtitlePersonalDetails;
+      step1.classList.add('is-cleared');
+      step2.classList.add('is-active');
+    }
+    if (step === 5) {
+      step1.classList.add('is-cleared');
+      step2.classList.add('is-cleared');
+      step3.classList.add('is-active');
     }
   });
 
-  tag.append(titleTag, subtitleTag);
+  const separatorTag = createTag('div', { class: 'np-step-separator' });
+
+  containerTag.append(step1, separatorTag.cloneNode(), step2, separatorTag.cloneNode(), step3);
 }
 
 // #region Render form
 
+function getDescriptionTag(title, subtitle) {
+  const descriptionTag = createTag('div', { class: 'np-description' });
+  const titleTag = createTag('span', { class: 'np-title' }, title);
+
+  descriptionTag.append(titleTag);
+
+  if (subtitle) {
+    const subtitleTag = createTag('span', { class: 'np-subtitle' }, subtitle);
+
+    descriptionTag.append(subtitleTag);
+  }
+
+  return descriptionTag;
+}
+
+function getSubmitTag() {
+  return createTag('input', {
+    class: 'np-button',
+    type: 'submit',
+    value: metadata.labels.continue,
+  });
+}
+
 function getNonprofitInput(params) {
-  const {
-    type, name, label, placeholder, required, options,
-  } = params;
+  const { type, name, label, placeholder, required } = params;
   const baseParams = { name, placeholder };
   if (required) baseParams.required = 'required';
   const controlTag = createTag('div', { class: 'np-control' });
   const labelTag = createTag('label', { class: 'np-label', for: name }, label);
-  let inputTag;
-  if (type === 'select') {
-    inputTag = createTag('select', { class: 'np-input', ...baseParams });
-    options.forEach((option) => {
-      const optionTag = createTag(
-        'option',
-        { class: 'np-option', value: option.value },
-        option.label,
-      );
-      inputTag.append(optionTag);
-    });
-  } else {
-    inputTag = createTag('input', {
-      class: 'np-input',
-      type,
-      ...baseParams,
-    });
-  }
+  const inputTag = createTag('input', {
+    class: 'np-input',
+    type,
+    ...baseParams,
+  });
   controlTag.append(labelTag, inputTag);
   return controlTag;
 }
 
-function getOrganizationSelect() {
-  const controlTag = createTag('div', { class: 'np-control' });
-  const labelTag = createTag(
-    'label',
-    { class: 'np-label', for: 'organization' },
-    metadata.labels.organizationNameOrId,
-  );
-  const searchTag = createTag('input', {
-    class: 'np-input np-organization-select-search',
-    name: 'organization',
-    type: 'text',
-    placeholder: metadata.labels.organizationNameOrIdSerachPlaceholder,
-    required: 'required',
-  });
-
-  const listContainerTag = createTag('div', { class: 'np-organization-select-list-container' });
-  const listTag = createTag('ul', { class: 'np-organization-select-list' });
-
-  const showList = () => {
-    listContainerTag.style.display = 'block';
-  };
-
-  const hideList = () => {
-    listContainerTag.style.display = 'none';
-    if (selectedOrganizationStore.data) {
-      searchTag.value = selectedOrganizationStore.data.name;
-      organizationsStore.update([selectedOrganizationStore.data]);
-    }
-  };
-
-  let searchTimeout;
-  let mockFetchTimeout;
-
-  // Search onChange
-  searchTag.addEventListener('input', () => {
-    clearTimeout(searchTimeout);
-    clearTimeout(mockFetchTimeout);
-
-    if (!searchTag.value) {
-      hideList();
-      return;
-    }
-
-    // const controller = new AbortController();
-    // const { signal } = controller;
-
-    searchTimeout = setTimeout(() => {
-      organizationsStore.startLoading();
-      showList();
-      mockFetchTimeout = setTimeout(() => {
-        organizationsStore.update(
-          mockOrganizations.filter((mo) => mo.name.toLowerCase().includes(searchTag.value.toLowerCase())),
-        );
-      }, 2000);
-    }, SEARCH_DEBOUNCE);
-  });
-
-  searchTag.addEventListener('focus', () => {
-    if (!searchTag.value) return;
-    showList();
-  });
-
-  searchTag.addEventListener('keydown', (ev) => {
-    if (ev.code !== 'ArrowUp' && ev.code !== 'ArrowDown') return;
-    ev.preventDefault();
-    if (ev.code === 'ArrowDown') {
-      const listItem = document.querySelector('.np-organization-select-item');
-      if (listItem) listItem.focus();
-    }
-  });
-
-  const organizationSelectFocusOut = (ev) => {
-    if (!ev.relatedTarget) {
-      hideList();
-      return;
-    }
-    const organizationSelectTag = ev.relatedTarget.closest('.np-organization-select-tag');
-    // If the newly focused item is part of the select, don't hide list
-    if (organizationSelectTag) return;
-    hideList();
-  };
-
-  searchTag.addEventListener('focusout', organizationSelectFocusOut);
-
-  // Render organization elements
-  organizationsStore.subscribe((organizations, loading) => {
-    // Empty the list
-    listTag.replaceChildren();
-
-    organizations.forEach((organization) => {
-      const itemTag = createTag('li', {
-        class: 'np-organization-select-tag np-organization-select-item',
-        tabindex: -1,
-      });
-
-      const nameTag = createTag(
-        'span',
-        { class: 'np-organization-select-name' },
-        organization.name,
-      );
-      const idTag = createTag('span', { class: 'np-organization-select-id' }, organization.id);
-
-      itemTag.append(nameTag, idTag);
-
-      // Item focus handing
-      itemTag.addEventListener('focusout', organizationSelectFocusOut);
-      itemTag.addEventListener('keydown', (ev) => {
-        if (ev.code !== 'ArrowUp' && ev.code !== 'ArrowDown') return;
-        ev.preventDefault();
-        let sibling;
-        if (ev.code === 'ArrowDown') {
-          sibling = ev.target.nextElementSibling;
-        }
-        if (ev.code === 'ArrowUp') {
-          sibling = ev.target.previousElementSibling;
-        }
-        if (sibling && !sibling.classList.contains('np-organization-select-loader')) {
-          sibling.focus();
-        }
-      });
-
-      // Selection handling
-      const selectItem = () => {
-        hideList();
-        searchTag.value = organization.name;
-        selectedOrganizationStore.update(organization);
-        organizationsStore.update([organization]);
-      };
-      itemTag.addEventListener('click', selectItem);
-      itemTag.addEventListener('keydown', (ev) => {
-        if (ev.code !== 'Enter') return;
-        selectItem();
-      });
-
-      listTag.append(itemTag);
-    });
-
-    if (loading) {
-      const loadingTag = createTag(
-        'div',
-        { class: 'np-organization-select-tag np-organization-select-loader' },
-        'Loading...',
-      );
-      listTag.append(loadingTag);
-    }
-  });
-
-  listContainerTag.append(listTag);
-
-  // Render 'cannot find' link
-  const cannotFindTag = createTag('div', { class: 'np-organization-select-tag np-organization-select-cannot-find' });
-  const cannotFindLinkTag = createTag('a', { tabindex: 0 }, metadata.labels.organizationCannotFind);
-  // Cannot find action handler
-  const switchToNotFound = () => {
-    nonprofitStore.update({ step: 2, scenario: scenarios.NOT_FOUND_IN_SEARCH });
-  };
-  cannotFindLinkTag.addEventListener('click', switchToNotFound);
-  cannotFindLinkTag.addEventListener('keydown', (ev) => {
-    if (ev.code !== 'Enter') return;
-    switchToNotFound();
-  });
-
-  cannotFindLinkTag.addEventListener('focusout', organizationSelectFocusOut);
-
-  cannotFindTag.append(cannotFindLinkTag);
-  listContainerTag.append(cannotFindTag);
-
-  controlTag.append(labelTag, searchTag, listContainerTag);
-  return controlTag;
-}
-
-function getSelectedOrganization() {
+function getSelectedOrganizationTag() {
   const containerTag = createTag('div', { class: 'np-selected-organization-container' });
+
+  const headerTag = createTag('div', { class: 'np-selected-organization-header' });
+
+  const avatarTag = createTag('div', { class: 'np-selected-organization-avatar' });
+  // Get initials
+  const initialsTag = createTag('span', { class: 'np-selected-organization-initials' });
+  avatarTag.append(initialsTag);
+
+  const nameTag = createTag('span', { class: 'np-selected-organization-detail' });
+  headerTag.append(avatarTag, nameTag);
+
+  const separatorTag = createTag('div', { class: 'np-selected-organization-separator' });
+
+  const addressTag = createTag('span', { class: 'np-selected-organization-detail' });
+  const idTag = createTag('span', { class: 'np-selected-organization-detail' });
+
+  const clearTag = createTag('img', {
+    class: 'np-selected-organization-clear',
+    src: '/acrobat/blocks/nonprofit/icons/close.svg',
+  });
+
+  containerTag.append(headerTag, separatorTag, addressTag, idTag, clearTag);
 
   selectedOrganizationStore.subscribe((organization) => {
     if (!organization) {
-      containerTag.replaceChildren();
       containerTag.style.display = 'none';
+      return;
     }
-
-    const headerTag = createTag('div', { class: 'np-selected-organization-header' });
-
-    const avatarTag = createTag('div', { class: 'np-selected-organization-avatar' });
-    // Get initials
-    const initialsTag = createTag('span', { class: 'np-selected-organization-initials' });
     const initialWords = organization.name
       .split(' ')
       .filter((word) => Boolean(word))
       .slice(0, 2);
     const initials = initialWords.map((word) => word.substring(0, 1).toUpperCase()).join('');
     initialsTag.textContent = initials;
-    avatarTag.append(initialsTag);
 
-    const nameTag = createTag(
-      'span',
-      { class: 'np-selected-organization-detail' },
-      organization.name,
-    );
-    headerTag.append(avatarTag, nameTag);
+    nameTag.textContent = organization.name;
 
-    const separatorTag = createTag('div', { class: 'np-selected-organization-separator' });
+    addressTag.textContent = organization.address;
+    idTag.textContent = organization.id;
 
-    const addressTag = createTag(
-      'span',
-      { class: 'np-selected-organization-detail' },
-      organization.address,
-    );
-    const idTag = createTag('span', { class: 'np-selected-organization-detail' }, organization.id);
-
-    containerTag.replaceChildren(headerTag, separatorTag, addressTag, idTag);
     containerTag.style.display = 'flex';
-  });
+  }, false);
+
+  containerTag.onClear = (handler) => {
+    clearTag.addEventListener('click', handler);
+  };
 
   return containerTag;
 }
 
 // Select non-profit
-function renderSelectNonprofit(formTag) {
-  const countryTag = getNonprofitInput({
-    type: 'select',
+function renderSelectNonprofit(containerTag) {
+  // Description
+  const descriptionTag = getDescriptionTag(
+    metadata.labels.titleSelectNonProfit,
+    metadata.labels.subtitleSelectNonProfit,
+  );
+
+  // Form
+  const formTag = createTag('form', { class: 'np-form' });
+
+  const countryTag = nonprofitSelect({
+    createTag,
     name: 'country',
     label: metadata.labels.country,
-    placeholder: metadata.labels.country,
-    required: true,
-    options: mockCountries.map((country) => ({
-      label: country,
-      value: country,
-    })),
+    placeholder: metadata.labels.countryPlaceholder,
+    noOptionsText: metadata.labels.noSearchResultFound,
+    options: countries,
+    labelKey: 'name',
+    valueKey: 'code',
   });
 
-  const organizationTag = getOrganizationSelect();
+  // #region Organization select
 
-  const selectedOrganizationTag = getSelectedOrganization();
+  const organizationTag = nonprofitSelect({
+    createTag,
+    name: 'organization',
+    label: metadata.labels.organizationNameOrId,
+    placeholder: metadata.labels.organizationNameOrIdPlaceholder,
+    noOptionsText: metadata.labels.noSearchResultFound,
+    debounce: SEARCH_DEBOUNCE,
+    store: organizationsStore,
+    disabled: true,
+    withDropdownIcon: false,
+    clearable: true,
+    labelKey: 'name',
+    valueKey: 'id',
+    renderOption: (option, itemTag) => {
+      const nameTag = createTag('span', { class: 'np-organization-select-name' }, option.name);
+      const idTag = createTag('span', { class: 'np-organization-select-id' }, option.id);
 
-  formTag.replaceChildren(countryTag, organizationTag, selectedOrganizationTag);
+      itemTag.append(nameTag, idTag);
+    },
+    footerTag: (() => {
+      const cannotFindTag = createTag('div', { class: 'np-select-list-tag np-select-cannot-find' });
+      const cannotFindLinkTag = createTag(
+        'a',
+        { tabindex: 0 },
+        metadata.labels.organizationCannotFind,
+      );
+      // Cannot find action handler
+      const switchToNotFound = () => {
+        stepperStore.update({ step: 2, scenario: scenarios.NOT_FOUND_IN_SEARCH });
+      };
+      cannotFindLinkTag.addEventListener('click', switchToNotFound);
+      cannotFindLinkTag.addEventListener('keydown', (ev) => {
+        if (ev.code !== 'Enter') return;
+        switchToNotFound();
+      });
+
+      cannotFindTag.append(cannotFindLinkTag);
+
+      return cannotFindTag;
+    })(),
+  });
+
+  organizationTag.onInput((value, abortController) => {
+    if (!value) return;
+    fetchOrganizations(value, countryTag.getValue(), abortController);
+  });
+
+  organizationTag.onSelect((option) => {
+    selectedOrganizationStore.update(option);
+  });
+
+  organizationTag.onScroll((listTag, abortController, hasNewInput) => {
+    if (
+      (Boolean(selectedOrganizationStore.data) && !hasNewInput)
+      || organizationsStore.loading
+      || !nextPageUrl
+    ) return;
+    if (listTag.scrollTop + listTag.clientHeight + FETCH_ON_SCROLL_OFFSET >= listTag.scrollHeight) {
+      fetchNextOrganizations(abortController);
+    }
+  });
+
+  countryTag.onSelect(() => {
+    organizationTag.enable();
+  });
+
+  // #endregion
+
+  const selectedOrganizationTag = getSelectedOrganizationTag();
+
+  selectedOrganizationTag.onClear(() => {
+    organizationTag.clear();
+    selectedOrganizationStore.update(null);
+  });
+
+  const submitTag = getSubmitTag();
+
+  formTag.append(countryTag, organizationTag, selectedOrganizationTag, submitTag);
+
+  formTag.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+
+    const formData = new FormData(formTag);
+    nonprofitFormData.country = formData.get('country');
+    nonprofitFormData.organizationId = formData.get('organizationId');
+
+    stepperStore.update({ scenario: scenarios.FOUND_IN_SEARCH, step: 2 });
+  });
+
+  containerTag.replaceChildren(descriptionTag, formTag);
 }
 
 // Organization details
-function renderOrganizationDetails(formTag) {
-  const countryTag = getNonprofitInput({
-    type: 'select',
+function renderOrganizationDetails(containerTag) {
+  // Description
+  const descriptionTag = getDescriptionTag(metadata.labels.titleOrganizationDetails);
+
+  // Form
+  const formTag = createTag('form', { class: 'np-form' });
+
+  let abortController;
+
+  const countryTag = nonprofitSelect({
+    createTag,
     name: 'country',
     label: metadata.labels.country,
-    placeholder: metadata.labels.country,
-    required: true,
-    options: mockCountries.map((country) => ({
-      label: country,
-      value: country,
-    })),
+    placeholder: metadata.labels.countryPlaceholder,
+    noOptionsText: metadata.labels.noSearchResultFound,
+    options: countries,
+    labelKey: 'name',
+    valueKey: 'code',
+  });
+
+  countryTag.onSelect((option) => {
+    abortController?.abort();
+    abortController = new AbortController();
+    fetchRegistries(option.code, abortController);
   });
 
   const organizationNameIdTag = getNonprofitInput({
@@ -448,16 +485,22 @@ function renderOrganizationDetails(formTag) {
     required: true,
   });
 
-  const registryTag = getNonprofitInput({
-    type: 'select',
-    name: 'registry',
-    label: metadata.labels.country,
-    placeholder: metadata.labels.country,
-    required: true,
-    options: mockRegistries.map((country) => ({
-      label: country,
-      value: country,
-    })),
+  const registryContainerTag = createTag('div');
+
+  registriesStore.subscribe((registries, loading) => {
+    const registryTag = nonprofitSelect({
+      createTag,
+      name: 'registry',
+      label: metadata.labels.registry,
+      placeholder: loading ? 'Loading...' : metadata.labels.registryPlaceholder,
+      noOptionsText: metadata.labels.noSearchResultFound,
+      options: registries,
+      labelKey: 'name',
+      valueKey: 'id',
+      disabled: !countryTag.getValue(),
+    });
+
+    registryContainerTag.replaceChildren(registryTag);
   });
 
   const organizationRegistrationIdTag = getNonprofitInput({
@@ -469,7 +512,7 @@ function renderOrganizationDetails(formTag) {
   });
 
   const evidenceNonProfitStatusTag = getNonprofitInput({
-    type: 'text',
+    type: 'file',
     name: 'evidenceNonProfitStatus',
     label: metadata.labels.evidenceNonProfitStatus,
     placeholder: metadata.labels.evidenceNonProfitStatusPlaceholder,
@@ -484,18 +527,43 @@ function renderOrganizationDetails(formTag) {
     required: true,
   });
 
-  formTag.replaceChildren(
+  const submitTag = getSubmitTag();
+
+  formTag.append(
     countryTag,
     organizationNameIdTag,
-    registryTag,
+    registryContainerTag,
     organizationRegistrationIdTag,
     evidenceNonProfitStatusTag,
     websiteTag,
+    submitTag,
   );
+
+  formTag.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+
+    const formData = new FormData(formTag);
+    nonprofitFormData.country = formData.get('country');
+    nonprofitFormData.organizationNameId = formData.get('organizationNameId');
+    nonprofitFormData.registry = formData.get('registry');
+    nonprofitFormData.organizationRegistrationId = formData.get('organizationRegistrationId');
+    nonprofitFormData.evidenceNonProfitStatus = formData.get('evidenceNonProfitStatus');
+    nonprofitFormData.website = formData.get('website');
+
+    stepperStore.update({ scenario: scenarios.NOT_FOUND_IN_SEARCH, step: 3 });
+  });
+
+  containerTag.replaceChildren(descriptionTag, formTag);
 }
 
 // Organization address
-function renderOrganizationAddress(formTag) {
+function renderOrganizationAddress(containerTag) {
+  // Description
+  const descriptionTag = getDescriptionTag(metadata.labels.titleOrganizationAddress);
+
+  // Form
+  const formTag = createTag('form', { class: 'np-form' });
+
   const streetAddressTag = getNonprofitInput({
     type: 'text',
     name: 'streetAddress',
@@ -536,11 +604,37 @@ function renderOrganizationAddress(formTag) {
     required: true,
   });
 
-  formTag.replaceChildren(streetAddressTag, addressDetailsTag, stateTag, cityTag, zipCodeTag);
+  const submitTag = getSubmitTag();
+
+  formTag.append(streetAddressTag, addressDetailsTag, stateTag, cityTag, zipCodeTag, submitTag);
+
+  formTag.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+
+    const formData = new FormData(formTag);
+    nonprofitFormData.streetAddress = formData.get('streetAddress');
+    nonprofitFormData.addressDetails = formData.get('addressDetails');
+    nonprofitFormData.state = formData.get('state');
+    nonprofitFormData.city = formData.get('city');
+    nonprofitFormData.zipCode = formData.get('zipCode');
+
+    stepperStore.update({ scenario: scenarios.NOT_FOUND_IN_SEARCH, step: 4 });
+  });
+
+  containerTag.replaceChildren(descriptionTag, formTag);
 }
 
 // Personal data
-function renderPersonalData(formTag) {
+function renderPersonalData(containerTag) {
+  // Description
+  const descriptionTag = getDescriptionTag(
+    metadata.labels.titlePersonalDetails,
+    metadata.labels.subtitlePersonalDetails,
+  );
+
+  // Form
+  const formTag = createTag('form', { class: 'np-form' });
+
   const firstNameTag = getNonprofitInput({
     type: 'text',
     name: 'firstName',
@@ -571,31 +665,29 @@ function renderPersonalData(formTag) {
     metadata.labels.personalDataDisclaimer,
   );
 
-  formTag.replaceChildren(firstNameTag, lastNameTag, emailTag, disclaimerTag);
-}
+  const submitTag = getSubmitTag();
 
-function renderForm(formTag) {
-  const { step, scenario } = nonprofitStore.data;
+  formTag.append(firstNameTag, lastNameTag, emailTag, disclaimerTag, submitTag);
 
-  if (step === 1) renderSelectNonprofit(formTag);
-  if (step === 2 && scenario === scenarios.FOUND_IN_SEARCH) renderPersonalData(formTag);
-  if (step === 2 && scenario === scenarios.NOT_FOUND_IN_SEARCH) renderOrganizationDetails(formTag);
-  if (step === 3 && scenario === scenarios.NOT_FOUND_IN_SEARCH) renderOrganizationAddress(formTag);
-  if (step === 4 && scenario === scenarios.NOT_FOUND_IN_SEARCH) renderPersonalData(formTag);
+  formTag.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
 
-  const submitTag = createTag('input', {
-    class: 'np-submit',
-    type: 'submit',
-    value: metadata.labels.continue,
+    const formData = new FormData(formTag);
+    nonprofitFormData.firstName = formData.get('firstName');
+    nonprofitFormData.lastName = formData.get('lastName');
+    nonprofitFormData.email = formData.get('email');
+
+    await sendOrganizationData();
+
+    stepperStore.update((prev) => ({ ...prev, step: 5 }));
   });
 
-  formTag.append(submitTag);
+  containerTag.replaceChildren(descriptionTag, formTag);
 }
 
-// #endregion
+function renderApplicationReview(containerTag) {
+  const applicationReviewTag = createTag('div', { class: 'np-application-review-container' });
 
-function renderApplicationReview(tag) {
-  const container = createTag('div', { class: 'np-application-review-container' });
   const titleTag = createTag('span', { class: 'np-title' }, metadata.labels.titleApplicationReview);
   const detail1Tag = createTag(
     'span',
@@ -607,12 +699,31 @@ function renderApplicationReview(tag) {
     { class: 'np-application-review-detail' },
     metadata.labels.detail2ApplicationReview,
   );
-  const doneTag = createTag('button', { class: 'np-done' }, metadata.labels.done);
 
-  container.append(titleTag, detail1Tag, detail2Tag, doneTag);
+  applicationReviewTag.append(titleTag, detail1Tag, detail2Tag);
 
-  tag.replaceChildren(container);
+  const returnToAcrobatForNonprofitsTag = createTag(
+    'button',
+    { class: 'np-button' },
+    metadata.labels.returnToAcrobatForNonprofits,
+  );
+
+  containerTag.replaceChildren(applicationReviewTag, returnToAcrobatForNonprofitsTag);
 }
+
+function renderStepContent(containerTag) {
+  stepperStore.subscribe(({ step, scenario }) => {
+    if (step === 1) renderSelectNonprofit(containerTag);
+    if (step === 2 && scenario === scenarios.FOUND_IN_SEARCH) renderPersonalData(containerTag);
+    if (step === 2 && scenario === scenarios.NOT_FOUND_IN_SEARCH) renderOrganizationDetails(containerTag);
+    if (step === 3 && scenario === scenarios.FOUND_IN_SEARCH) renderApplicationReview(containerTag);
+    if (step === 3 && scenario === scenarios.NOT_FOUND_IN_SEARCH) renderOrganizationAddress(containerTag);
+    if (step === 4 && scenario === scenarios.NOT_FOUND_IN_SEARCH) renderPersonalData(containerTag);
+    if (step === 5 && scenario === scenarios.NOT_FOUND_IN_SEARCH) renderApplicationReview(containerTag);
+  });
+}
+
+// #endregion
 
 // CO-RE
 function initStepperController(tag) {
@@ -627,8 +738,8 @@ function initStepperController(tag) {
   const scenariosTag = createTag('div', { class: 'np-controller-section' });
   const stepsTag = createTag('div', { class: 'np-controller-section' });
 
-  nonprofitStore.subscribe(() => {
-    const { step, scenario } = nonprofitStore.data;
+  stepperStore.subscribe(() => {
+    const { step, scenario } = stepperStore.data;
 
     const foundInSearchTag = createTag(
       'button',
@@ -636,8 +747,8 @@ function initStepperController(tag) {
       'Found in search',
     );
     foundInSearchTag.addEventListener('click', () => {
-      const newStep = step > 2 ? 1 : step;
-      nonprofitStore.update((prev) => ({
+      const newStep = step > 3 ? 1 : step;
+      stepperStore.update((prev) => ({
         ...prev,
         step: newStep,
         scenario: scenarios.FOUND_IN_SEARCH,
@@ -648,9 +759,9 @@ function initStepperController(tag) {
       { class: `np-controller-button${scenario === scenarios.NOT_FOUND_IN_SEARCH ? ' selected' : ''}` },
       'Not found in search',
     );
-    notFoundInSearchTag.addEventListener('click', () => nonprofitStore.update((prev) => ({ ...prev, scenario: scenarios.NOT_FOUND_IN_SEARCH })));
+    notFoundInSearchTag.addEventListener('click', () => stepperStore.update((prev) => ({ ...prev, scenario: scenarios.NOT_FOUND_IN_SEARCH })));
 
-    const maxSteps = scenario === scenarios.FOUND_IN_SEARCH ? 2 : 4;
+    const maxSteps = scenario === scenarios.FOUND_IN_SEARCH ? 3 : 5;
 
     stepsTag.replaceChildren();
     Array.from({ length: maxSteps })
@@ -661,7 +772,7 @@ function initStepperController(tag) {
           { class: `np-controller-button is-step ${step === value ? ' selected' : ''}` },
           value,
         );
-        stepTag.addEventListener('click', () => nonprofitStore.update((prev) => ({ ...prev, step: value })));
+        stepTag.addEventListener('click', () => stepperStore.update((prev) => ({ ...prev, step: value })));
         stepsTag.append(stepTag);
       });
 
@@ -676,30 +787,16 @@ function initStepperController(tag) {
 
 function initNonprofit(element) {
   const containerTag = createTag('div', { class: 'np-container' });
-  const stepperTag = createTag('div', { class: 'np-stepper' });
-  const descriptionTag = createTag('div', { class: 'np-description' });
-  const formTag = createTag('form', { class: 'np-form' });
+  const stepperContainerTag = createTag('div', { class: 'np-stepper-container' });
+  const contentContainerTag = createTag('div', { class: 'np-content-container' });
 
-  formTag.addEventListener('submit', (ev) => {
-    ev.preventDefault();
-    console.log(ev);
-    // formTag.remove();
-    renderApplicationReview(containerTag);
-  });
+  renderStepper(stepperContainerTag);
+  renderStepContent(contentContainerTag);
 
-  renderStepper(stepperTag);
-  renderDescription(descriptionTag);
-  nonprofitStore.subscribe(() => renderForm(formTag));
-
-  containerTag.append(stepperTag, descriptionTag, formTag);
+  containerTag.append(stepperContainerTag, contentContainerTag);
   element.append(containerTag);
   // CO-RE
   initStepperController(element);
-
-  // CO-RE - test api stuff
-  const testSandboxButton = createTag('button', {}, 'Test sandbox');
-  testSandboxButton.addEventListener('click', testSandbox);
-  // element.append(testSandboxButton);
 }
 
 export default function init(element) {

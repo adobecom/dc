@@ -1,22 +1,24 @@
 export default class ReactiveStore {
+  data = null;
+
+  loaded = false;
+
+  loading = false;
+
   #initialData = null;
-
-  #loaded = false;
-
-  #loading = false;
 
   #subscribers = [];
 
-  constructor(initial = null, isLoaded = false) {
-    if (initial) this.#initialData = initial;
-    this.data = initial;
-    this.#loaded = isLoaded;
+  constructor(initialData = null) {
+    if (initialData) this.#initialData = initialData;
+    this.data = initialData;
   }
 
-  subscribe(fn, triggerIfLoaded = true) {
+  subscribe(fn, withTrigger = true) {
+    if (!fn) return;
     if (!this.#subscribers.includes(fn)) this.#subscribers.push(fn);
-    if (!triggerIfLoaded) return;
-    if (this.#loaded) fn(this.data, this.#loading);
+    if (!withTrigger) return;
+    fn(this.data, this.loading);
   }
 
   unsubscribe(fn) {
@@ -24,21 +26,25 @@ export default class ReactiveStore {
     if (indexOfFn !== -1) this.#subscribers.splice(indexOfFn, 1);
   }
 
+  unsubscribeAll() {
+    this.#subscribers = [];
+  }
+
   update(data) {
     if (typeof data === 'function') this.data = data(this.data);
     else this.data = data;
-    this.#loaded = true;
-    this.#loading = false;
+    this.loaded = true;
+    this.loading = false;
     this.#subscribers.forEach((subscriber) => {
-      subscriber(this.data, this.#loading);
+      subscriber(this.data, this.loading);
     });
   }
 
-  startLoading(resetData = true) {
-    this.#loading = true;
+  startLoading(resetData = false) {
+    this.loading = true;
     if (resetData) this.data = this.#initialData;
     this.#subscribers.forEach((subscriber) => {
-      subscriber(this.data, this.#loading);
+      subscriber(this.data, this.loading);
     });
   }
 }
