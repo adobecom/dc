@@ -349,6 +349,7 @@ export default async function init(element) {
       document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
     }
     const { cause, message, name, type } = err.detail?.wrappedException || {};
+    // eslint-disable-next-line prefer-template
     const info = `DC Widget failed. type=${type} name=${name} message=${message}` + (cause ? ` cause.message=${cause.message}` : '');
     window.lana?.log(info, lanaOptions);
   });
