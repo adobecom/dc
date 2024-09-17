@@ -40,14 +40,6 @@ div [class *= PdfnowLifecycle__dropzone2___] {
   display: none;
 }
 
-#dc-converter-widget > div:first-of-type {
-  display: none;
-}
-
-#dc-converter-widget button, #dc-converter-widget input {
-  font-family: inherit;
-}
-
 #CID {
   width: 75%;
   max-width: 75%;
@@ -354,6 +346,21 @@ div.how-to ol li::before{
 
 .section .columns.browser-extension p:last-child {
   margin-bottom: 10px;
+}
+
+#CID div,
+#CID p,
+#CID span,
+#CID h1 {
+  font-family: 'Adobe Clean', adobe-clean , 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+#dc-converter-widget > div:first-of-type {
+  display: none;
+}
+
+#dc-converter-widget button, #dc-converter-widget input {
+  font-family: inherit;
 }
 
 .section .columns.browser-extension > .row {

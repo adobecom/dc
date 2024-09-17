@@ -1,6 +1,7 @@
 /* eslint-disable func-names */
 /* eslint-disable compat/compat */
 /* eslint-disable max-len */
+import localeMap from '../../scripts/maps/localeMap.js';
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
@@ -10,8 +11,15 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 const COMMENTS_MAX_LENGTH = 500;
 const SHOW_COMMENTS_TRESHOLD = 5;
-const RNR_API_URL = 'https://rnr-stage.adobe.io/v1';
 const ASSET_TYPE = 'ADOBE_COM';
+const RNR_API_URL = (function () {
+  if (
+    window.location.origin === 'main--dc--adobecom.hlx.page'
+    || window.location.origin === 'main--dc--adobecom.hlx.live'
+    || window.location.origin === 'www.adobe.com'
+  ) return 'https://rnr-prod.adobe.io/v1';
+  return 'https://rnr-stage.adobe.io/v1';
+}());
 
 // #endregion
 
@@ -40,7 +48,7 @@ function createSnapshot(rating, currentAverage, currentVotes) {
 
 // #region Extract metadata from options
 
-const metadata = JSON.parse('{"labels":{}}');
+const metadata = JSON.parse('{}');
 
 const getOptions = (el) => {
   const keyDivs = el.querySelectorAll(':scope > div > div:first-child');
@@ -115,60 +123,72 @@ function setJsonLdProductInfo() {
 
 // #endregion
 
-function loadRnrData() {
-  const headers = {
-    Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
-    'x-api-key': 'ffc-addon-service',
-    Authorization: window.adobeIMS.getAccessToken()?.token,
-  };
+async function loadRnrData() {
+  try {
+    const headers = {
+      Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
+      'x-api-key': 'ffc-addon-service',
+      Authorization: window.adobeIMS.getAccessToken()?.token,
+    };
 
-  return fetch(`${RNR_API_URL}/ratings?assetType=${ASSET_TYPE}&assetId=${metadata.verb}`, { headers })
-    .then(async (response) => {
-      if (!response.ok) {
-        const res = await response.json();
-        throw new Error(res.message);
-      }
-      return response.json();
-    })
-    .then((result) => {
-      const { overallRating, ratingHistogram } = result;
-      rnrData.average = overallRating || 5;
-      rnrData.votes = Object.keys(ratingHistogram).reduce(
-        (total, key) => total + ratingHistogram[key],
-        0,
-      );
-      setJsonLdProductInfo();
-    })
-    .catch((error) => {
-      window.lana?.log(`Could not load review data: ${error?.message}`);
-    });
+    const response = await fetch(
+      `${RNR_API_URL}/ratings?assetType=${ASSET_TYPE}&assetId=${metadata.verb}`,
+      { headers },
+    );
+
+    if (!response.ok) {
+      const res = await response.json();
+      throw new Error(res.message);
+    }
+
+    const result = await response.json();
+    if (!result) throw new Error(`Received empty ratings data for asset '${metadata.verb}'.`);
+    const { overallRating, ratingHistogram } = result;
+    if (!overallRating || !ratingHistogram) {
+      throw new Error(`Missing aggregated rating data in response for asset '${metadata.verb}'.`);
+    }
+    rnrData.average = overallRating;
+    rnrData.votes = Object.keys(ratingHistogram).reduce(
+      (total, key) => total + ratingHistogram[key],
+      0,
+    );
+
+    setJsonLdProductInfo();
+  } catch (error) {
+    window.lana?.log(`Could not load review data: ${error?.message}`);
+  }
 }
 
-function postReview(data) {
-  const body = JSON.stringify({
-    assetType: ASSET_TYPE,
-    assetId: metadata.verb,
-    rating: data.rating,
-    text: data.comments,
-    authorName: 'guest',
-    assetMetadata: { version: 1.1 },
-  });
-  const headers = {
-    Accept: 'application/vnd.adobe-review.review-data-v1+json',
-    'Content-Type': 'application/vnd.adobe-review.review-request-v1+json',
-    'x-api-key': 'rnr-client',
-    Authorization: window.adobeIMS.getAccessToken()?.token,
-  };
+async function postReview(data) {
+  try {
+    // Get locale
+    const languageFromPath = window.location.pathname.split('/')[1];
+    const locale = localeMap[languageFromPath] || 'en-us';
 
-  fetch(`${RNR_API_URL}/reviews`, { method: 'POST', body, headers })
-    .then(async (result) => {
-      if (result.ok) return;
-      const res = await result.json();
-      throw new Error(res.message);
-    })
-    .catch((error) => {
-      window.lana?.log(`Could not post review: ${error?.message}`);
+    const body = JSON.stringify({
+      assetType: ASSET_TYPE,
+      assetId: metadata.verb,
+      rating: data.rating,
+      text: data.comments,
+      authorName: window.adobeIMS.getUserProfile?.call()?.name || 'Anonymous',
+      assetMetadata: { locale },
     });
+    const headers = {
+      Accept: 'application/vnd.adobe-review.review-data-v1+json',
+      'Content-Type': 'application/vnd.adobe-review.review-request-v1+json',
+      'x-api-key': 'rnr-client',
+      Authorization: window.adobeIMS.getAccessToken()?.token,
+    };
+
+    const response = await fetch(`${RNR_API_URL}/reviews`, { method: 'POST', body, headers });
+
+    if (response.ok) return;
+
+    const res = await response.json();
+    throw new Error(res.message);
+  } catch (error) {
+    window.lana?.log(`Could not post review: ${error?.message}`);
+  }
 }
 
 // #endregion
@@ -219,12 +239,12 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
   };
 
   let commentsShown = false;
-  const selectRating = (value, triggeredByKeyboard = false) => {
+  const selectRating = (value) => {
     const rating = parseInt(value, 10);
     selectedRating = rating;
     if (commentsShown) return;
     if (rating <= metadata.showCommentsThreshold) {
-      showComments(triggeredByKeyboard);
+      showComments();
       commentsShown = true;
     } else {
       // form.submit() will not trigger the even handler
@@ -259,11 +279,7 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
   stars.forEach((star) => {
     star.addEventListener('click', (ev) => {
       star.setAttribute('aria-checked', 'true');
-      // Click is triggered on arrow key press so a check for a 'real' click is needed
-      if (ev.clientX !== 0 && ev.clientY !== 0) {
-        // Real click
-        selectRating(ev.target.value);
-      }
+      selectRating(ev.target.value);
     });
 
     star.addEventListener('focus', (ev) => {
@@ -295,8 +311,17 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
     });
 
     star.addEventListener('keydown', (ev) => {
-      if (ev.code !== 'Enter') return;
-      selectRating(ev.target.value, true);
+      if (!['ArrowLeft', 'ArrowRight', 'Enter'].includes(ev.code)) return;
+      ev.preventDefault();
+      if (ev.code === 'ArrowLeft' && ev.target.value > 1) {
+        stars[ev.target.value - 2].focus();
+      }
+      if (ev.code === 'ArrowRight' && ev.target.value < 5) {
+        stars[ev.target.value].focus();
+      }
+      if (ev.code === 'Enter') {
+        ev.target.click();
+      }
     });
   });
 
@@ -311,7 +336,6 @@ function initCommentsFieldset(fieldset) {
     cols: 40,
     maxLength: metadata.commentsMaxLength,
     placeholder: window.mph['rnr-comments-placeholder'],
-    readonly: 'readonly',
   });
   if (!metadata.interactive) textarea.setAttribute('disabled', 'disabled');
 
@@ -343,18 +367,6 @@ function initCommentsFieldset(fieldset) {
     else submitTag.setAttribute('disabled', 'disabled');
   });
 
-  /* This is needed because when the comments area is shown after a rating selection by
-   * keyboard (Enter) that 'Enter' keypress still counts as input for the newly focused
-   * textarea. To prevent this, the textarea is readonly by default, and 'readonly' is
-   * removed after the first keypress, or when the selection was done by mouse (see below)
-   */
-  function onTextareaKeyup(ev) {
-    if (ev.code !== 'Enter') return;
-    textarea.removeAttribute('readonly');
-    textarea.removeEventListener('keyup', onTextareaKeyup);
-  }
-  textarea.addEventListener('keyup', onTextareaKeyup);
-
   fieldset.append(textarea, footerContainer);
 }
 
@@ -365,7 +377,11 @@ function initSummary(container) {
   const voteLabels = (window.mph['rnr-rating-verb'] || ',').split(',').map((verb) => verb.trim());
   const votesLabel = votes === 1 ? voteLabels[0] : voteLabels[1];
 
-  const averageTag = createTag('span', { class: 'rnr-summary-average' }, String(average));
+  const averageTag = createTag(
+    'span',
+    { class: 'rnr-summary-average' },
+    average.toFixed(1).replace('.0', ''),
+  );
   const scoreSeparator = createTag('span', {}, '/');
   const outOfTag = createTag('span', { class: 'rnr-summary-outOf' }, outOf);
   const votesSeparator = createTag('span', {}, '-');
@@ -413,11 +429,10 @@ function initControls(element) {
   form.addEventListener('submit', submit);
 
   // Show comments
-  const showComments = (triggeredByKeyboard) => {
+  const showComments = () => {
     form.insertBefore(commentsFieldset, null);
     const textarea = commentsFieldset.querySelector('textarea');
     textarea.focus();
-    if (!triggeredByKeyboard) textarea.removeAttribute('readonly');
   };
 
   // Init rating

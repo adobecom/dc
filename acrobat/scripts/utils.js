@@ -36,6 +36,22 @@ export const [setLibs, getLibs] = (() => {
   ];
 })();
 
-const miloLibs = setLibs('/libs');
-const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-export { loadStyle };
+export function getEnv() {
+  const prodHosts = ['www.adobe.com', 'sign.ing', 'edit.ing'];
+  const stageHosts = [
+    'stage--dc--adobecom.hlx.page', 'main--dc--adobecom.hlx.page',
+    'stage--dc--adobecom.hlx.live', 'main--dc--adobecom.hlx.live',
+    'www.stage.adobe.com',
+  ];
+
+  if (prodHosts.includes(window.location.hostname)) return 'prod';
+  if (stageHosts.includes(window.location.hostname)) return 'stage';
+  return 'dev';
+}
+
+export function isOldBrowser() {
+  const { name, version } = window?.browser || {};
+  return (
+    name === 'Internet Explorer' || (name === 'Microsoft Edge' && (!version || version.split('.')[0] < 86)) || (name === 'Safari' && version.split('.')[0] < 14)
+  );
+}
