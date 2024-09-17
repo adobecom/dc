@@ -348,8 +348,9 @@ export default async function init(element) {
       dropZone.innerHTML = '<img src="/acrobat/img/icons/error.svg"><p>We apologize for the inconvenience. We are working hard to make the service available. Please check back shortly.</p>';
       document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
     }
-    const { message, name, type } = err.detail?.wrappedException || {};
-    const info = `DC Widget failed. type=${type} name=${name} message=${message}`;
+    const { cause, message, name, type } = err.detail?.wrappedException || {};
+    // eslint-disable-next-line prefer-template
+    const info = `DC Widget failed. type=${type} name=${name} message=${message}` + (cause ? ` cause.message=${cause.message}` : '');
     window.lana?.log(info, lanaOptions);
   });
 }
