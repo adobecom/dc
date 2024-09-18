@@ -1,4 +1,3 @@
-
 import LIMITS from './limits.js';
 import { setLibs, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
@@ -7,6 +6,10 @@ const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
+
+const setUser = () => {
+  localStorage.setItem('unity.user', 'true');
+};
 
 // const handleError = (err, errTxt, str, strTwo) => {
 //   err.classList.add('verb-error');
@@ -27,13 +30,13 @@ const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 // const sendToUnity = async (file, verb, err, errTxt) => {
 //   // Error Check: File Empty
 //   if (file.size < 1) {
-//     verbAnalytics('error:step01:empty-file', verb);
+//     verbAnalytics('error:empty_file', verb);
 //     handleError(err, errTxt, 'verb-widget-error-empty');
 //   }
 
 //   // Error Check: Supported File Type
 //   if (LIMITS[verb].acceptedFiles.indexOf(file.type) < 0) {
-//     verbAnalytics('error:step01:unsupported-file-type', verb);
+//     verbAnalytics('error:unsupported_type', verb);
 //     handleError(err, errTxt, 'verb-widget-error-unsupported');
 //     return;
 //   }
@@ -44,6 +47,8 @@ const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 //     handleError(err, errTxt, 'verb-widget-error-large', LIMITS[verb].maxFileSizeFriendly);
 //   }
 // };
+// Page: Upload Error	acrobat:verb-fillsign:error
+// Page: Upload Error	acrobat:verb-fillsign:error:max_page_count
 
 const setDraggingClass = (widget, shouldToggle) => {
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
@@ -108,6 +113,10 @@ export default async function init(element) {
 
   verbAnalytics('landing:shown', VERB);
 
+  widgetMobileButton.addEventListener('click', () => {
+    verbAnalytics('goto-app:clicked', VERB);
+  });
+
   button.addEventListener('click', () => {
     verbAnalytics('dropzone:choose-file-clicked', VERB);
   });
@@ -115,6 +124,9 @@ export default async function init(element) {
   button.addEventListener('cancel', () => {
     verbAnalytics('choose-file:close', VERB);
   });
+
+  // Page : File upload events  acrobat:verb-fillsign:job:uploaded
+  // Page : File upload events  acrobat:verb-fillsign:job:uploading
 
   widget.addEventListener('dragover', (e) => {
     e.preventDefault();
@@ -131,12 +143,14 @@ export default async function init(element) {
   });
 
   window.addEventListener('unity:track-analytics', (e) => {
-    if (e.detail.event === 'change') {
+    if (e.detail?.event === 'change') {
       verbAnalytics('choose-file:open', VERB);
+      setUser();
     }
-    if (e.detail.event === 'drop') {
+    if (e.detail?.event === 'drop') {
       verbAnalytics('files-dropped', VERB);
       setDraggingClass(widget, false);
+      setUser();
     }
   });
 }
