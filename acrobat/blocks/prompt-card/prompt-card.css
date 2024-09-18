@@ -15,8 +15,7 @@
   position: fixed;
   top: 110px;
   transform: translate(-50%, -50%);
-  z-index: 1;
-  z-index: 11
+  z-index: 9999
 }
 
 .prompt-toast--show {
@@ -61,6 +60,7 @@
   padding: 20px 20px 24px;
   transition-delay: 3s;
   transition-property: border;
+  max-width: 276px;
 }
 
 .prompt-blade:hover {
@@ -73,7 +73,7 @@
 }
 
 .prompt-icon {
-  margin-right: 5px;
+  margin-inline-end: 5px;
   position: relative;
   top: 5px
 }
@@ -153,5 +153,6 @@
   min-width: 18px;
   position: relative;
   top: 5px;
-  width: 18px
+  width: 18px;
+  margin-inline-start: 8px
 }

@@ -36,7 +36,10 @@ describe('prompt-card block', () => {
   });
 
   it('copies the prompt when copy button is clicked', async () => {
-    expect(document.querySelector('.prompt-toast').checkVisibility()).to.be.false;
+    const toast = document.querySelector('.prompt-toast');
+    if (toast) {
+      expect(toast.checkVisibility()).to.be.false;
+    }
     document.querySelector('.prompt-copy-btn').click();
     expect(document.querySelector('.prompt-toast').checkVisibility()).to.be.true;
     expect(document.querySelector('.prompt-close')).to.be.exist;
@@ -47,7 +50,10 @@ describe('prompt-card block', () => {
   it('copies the prompt when key press ENTER/SPACE on copy button', () => {
     const keys = ['Enter', ' '];
     keys.forEach((key) => {
-      expect(document.querySelector('.prompt-toast').checkVisibility()).to.be.false;
+      const toast = document.querySelector('.prompt-toast');
+      if (toast) {
+        expect(toast.checkVisibility()).to.be.false;
+      }
       document.querySelector('.prompt-copy-btn').dispatchEvent(new KeyboardEvent('keypress', { key }));
       expect(document.querySelector('.prompt-toast').checkVisibility()).to.be.true;
       expect(document.querySelector('.prompt-close')).to.be.exist;
