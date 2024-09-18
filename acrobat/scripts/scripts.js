@@ -319,7 +319,7 @@ if (IMS_GUEST) {
 
   CONFIG.adobeid = {
     client_id: CLIENT_ID,
-    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read',
+    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read,DCAPI',
 
     enableGuestAccounts: true,
     enableGuestTokenForceRefresh: true,
