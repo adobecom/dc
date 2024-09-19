@@ -80,9 +80,12 @@ export default async function init(element) {
   const widgetButton = createTag('label', { for: 'file-upload', class: 'verb-cta' }, window.mph['verb-widget-cta']);
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
-  const widgetImage = createTag('img', { class: 'verb-image', src: children[1].querySelector('img')?.src });
+  const widgetImage = createTag('img', { class: 'verb-image', src: `/acrobat/img/verb-widget/${VERB}.png` });
   // Since we're using placeholders we need a solution for the hyperlinks
-  const legal = createTag('p', { class: 'verb-legal' }, window.mph['verb-widget-legal']);
+  const legal = createTag('p', { class: 'verb-legal' }, `${window.mph['verb-widget-legal']} `);
+  const terms = createTag('a', { class: 'verb-legal-url', target: '_blank', href: 'https://www.adobe.com/legal/terms.html' }, window.mph.tou);
+  const and = createTag('span', { class: 'verb-legal-url' }, ` ${window.mph.and} `);
+  const privacy = createTag('a', { class: 'verb-legal-url', target: '_blank', href: 'https://www.adobe.com/privacy/policy.html' }, `${window.mph.pp}.`);
   const iconSecurity = createTag('div', { class: 'security-icon' });
   const footer = createTag('div', { class: 'verb-footer' });
 
@@ -102,6 +105,9 @@ export default async function init(element) {
   } else {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
   }
+
+  legal.append(terms, and, privacy);
+
   footer.append(iconSecurity, legal);
 
   element.append(widget, footer);
