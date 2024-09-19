@@ -1,4 +1,3 @@
-
 import LIMITS from './limits.js';
 import { setLibs, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
@@ -8,44 +7,23 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 
-// const handleError = (err, errTxt, str, strTwo) => {
-//   err.classList.add('verb-error');
-//   err.classList.remove('hide');
-//   errTxt.textContent = `${window.mph[str]} ${strTwo || ''}`;
+const setUser = () => {
+  localStorage.setItem('unity.user', 'true');
+};
 
-//   setTimeout(() => {
-//     err.classList.remove('verb-error');
-//     err.classList.add('hide');
-//   }, 5000);
+const handleError = (err, errTxt, str, strTwo) => {
+  err.classList.add('verb-error');
+  err.classList.remove('hide');
+  errTxt.textContent = `${window.mph[str]} ${strTwo || ''}`;
 
-//   // Add LANA Logs and AA
-// };
-
-// This function is no longer needed, I'll remove after we get error event from Unity team.
-// handleError() is will need to be uncommented out too.
-
-// const sendToUnity = async (file, verb, err, errTxt) => {
-//   // Error Check: File Empty
-//   if (file.size < 1) {
-//     verbAnalytics('error:step01:empty-file', verb);
-//     handleError(err, errTxt, 'verb-widget-error-empty');
-//   }
-
-//   // Error Check: Supported File Type
-//   if (LIMITS[verb].acceptedFiles.indexOf(file.type) < 0) {
-//     verbAnalytics('error:step01:unsupported-file-type', verb);
-//     handleError(err, errTxt, 'verb-widget-error-unsupported');
-//     return;
-//   }
-
-//   // Error Check: File Too Large
-//   if (file.size > LIMITS[verb].maxFileSize) {
-//     verbAnalytics('error:step01:file-too-large', verb);
-//     handleError(err, errTxt, 'verb-widget-error-large', LIMITS[verb].maxFileSizeFriendly);
-//   }
-// };
+  setTimeout(() => {
+    err.classList.remove('verb-error');
+    err.classList.add('hide');
+  }, 5000);
+};
 
 const setDraggingClass = (widget, shouldToggle) => {
+  // eslint-disable-next-line chai-friendly/no-unused-expressions
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
 };
 
@@ -112,10 +90,15 @@ export default async function init(element) {
 
   element.append(widget, footer);
 
+  // Analytics
   verbAnalytics('landing:shown', VERB);
 
+  widgetMobileButton.addEventListener('click', () => {
+    verbAnalytics('goto-app:clicked', VERB);
+  });
+
   button.addEventListener('click', () => {
-    verbAnalytics('dropzone:choose-file-clicked', VERB);
+    verbAnalytics('filepicker:shown', VERB);
   });
 
   button.addEventListener('cancel', () => {
@@ -137,12 +120,68 @@ export default async function init(element) {
   });
 
   window.addEventListener('unity:track-analytics', (e) => {
-    if (e.detail.event === 'change') {
+    if (e.detail?.event === 'change') {
       verbAnalytics('choose-file:open', VERB);
+      setUser();
     }
-    if (e.detail.event === 'drop') {
-      verbAnalytics('files-dropped', VERB);
+    // maybe new event name files-dropped?
+    if (e.detail?.event === 'drop') {
+      verbAnalytics('files-dropped', VERB, e.detail?.data);
       setDraggingClass(widget, false);
+      setUser();
+    }
+    if (e.detail?.event === 'choose-file-clicked') {
+      verbAnalytics('dropzone:choose-file-clicked', VERB, e.detail?.data);
+      setUser();
+    }
+
+    if (e.detail?.event === 'uploading') {
+      verbAnalytics('job:uploading', VERB, e.detail?.data);
+      setUser();
+    }
+
+    if (e.detail?.event === 'uploaded') {
+      verbAnalytics('job:uploaded', VERB, e.detail?.data);
+      setUser();
     }
   });
+
+  // Errors, Analytics & Logging
+  window.addEventListener('unity:show-error-toast', (e) => {
+    console.log(`⛔️ Error Code - ${e.detail?.code}`);
+
+    if (e.detail?.code === 'only_accept_one_file') {
+      handleError(errorState, errorStateText, 'verb-widget-error-multi');
+      verbAnalytics('error', VERB);
+    }
+
+    if (e.detail?.code === 'unsupported_type') {
+      handleError(errorState, errorStateText, 'verb-widget-error-unsupported');
+      verbAnalytics('error:unsupported_type', VERB);
+    }
+
+    if (e.detail?.code === 'empty_file') {
+      handleError(errorState, errorStateText, 'verb-widget-error-empty');
+      verbAnalytics('error:empty_file', VERB);
+    }
+
+    // Code may be wrong. should be 'file_too_large'
+    if (e.detail?.code === 'file_too_largempty_file') {
+      handleError(errorState, errorStateText, 'verb-widget-error-large', LIMITS[VERB].maxFileSizeFriendly);
+      verbAnalytics('error', VERB);
+    }
+
+    if (e.detail?.code === 'max_page_count') {
+      handleError(errorState, errorStateText, 'verb-widget-error-max', LIMITS[VERB].maxNumFiles);
+      verbAnalytics('error:max_page_count', VERB);
+    }
+
+    // acrobat:verb-fillsign:error:page_count_missing_from_metadata_api
+    // acrobat:verb-fillsign:error:403
+    // acrobat:verb-fillsign:error
+    // LANA for 403
+  });
 }
+
+// const ce = (new CustomEvent('unity:show-error-toast', { detail: { code: 'only_accept_one_file', message: 'Error message' } }));
+// dispatchEvent(ce)
