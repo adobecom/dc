@@ -24,6 +24,7 @@ if (params.dropzone2) {
 }
 
 export default function init(eventName, verb) {
+  console.log(`📡 Event Name - acrobat:verb-${verb}:${eventName}`);
   const event = {
     documentUnloading: true,
     data: {
@@ -39,6 +40,12 @@ export default function init(eventName, verb) {
         digitalData: {
           dcweb: {
             event: { pagename: `acrobat:verb-${verb}:${eventName}` },
+            content: {
+              type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+              size: '2-5MB',
+              count: 1,
+              extension: 'docx',
+            },
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,
@@ -58,6 +65,12 @@ export default function init(eventName, verb) {
           },
           dcweb2: {
             event: { pagename: `acrobat:verb-${verb}:${eventName}` },
+            content: {
+              type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+              size: '2-5MB',
+              count: 1,
+              extension: 'docx',
+            },
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,

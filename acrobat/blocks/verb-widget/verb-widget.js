@@ -23,6 +23,7 @@ const handleError = (err, errTxt, str, strTwo) => {
 };
 
 const setDraggingClass = (widget, shouldToggle) => {
+  // eslint-disable-next-line chai-friendly/no-unused-expressions
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
 };
 
@@ -141,6 +142,8 @@ export default async function init(element) {
 
   // Errors, Analytics & Logging
   window.addEventListener('unity:show-error-toast', (e) => {
+    console.log(`⛔️ Error Code - ${e.detail?.code}`);
+
     if (e.detail?.code === 'only_accept_one_file') {
       handleError(errorState, errorStateText, 'verb-widget-error-multi');
       verbAnalytics('error', VERB);
