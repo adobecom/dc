@@ -236,6 +236,13 @@
   margin-left: 15px;
 }
 
+.verb-mobile-cta:hover, 
+.verb-mobile-cta:active {
+  background-color: #0054b6;
+  color: #fff;
+  text-decoration: none;
+}
+
 @media screen and (min-width: 768px) {
   .verb-container {
     align-items: center;
@@ -246,11 +253,10 @@
   }
 
   .verb-mobile-cta {
-    /* display: none; */
     background: #1473e6;
     border-radius: 8px;
     padding: 11px 27px;
-    color: white;
+    color: #fff;
     white-space: nowrap;
     font-weight: 700;
     display: flex;
