@@ -1,6 +1,5 @@
-
 import LIMITS from './limits.js';
-import { setLibs, isOldBrowser } from '../../scripts/utils.js';
+import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 
 const miloLibs = setLibs('/libs');
@@ -48,6 +47,26 @@ const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 const setDraggingClass = (widget, shouldToggle) => {
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
 };
+
+function prefetchNextPage(verb) {
+  const ENV = getEnv();
+  const isProd = ENV === 'prod';
+  const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
+  const nextPageUrl = `https://${nextPageHost}/us/en/discover/${verb}`;
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = nextPageUrl;
+  link.crossOrigin = 'anonymous';
+  link.as = 'document';
+  document.head.appendChild(link);
+}
+
+function initiatePrefetch(verb) {
+  if (!window.prefetchInitiated) {
+    prefetchNextPage(verb);
+    window.prefetchInitiated = true;
+  }
+}
 
 export default async function init(element) {
   if (isOldBrowser()) {
@@ -108,8 +127,11 @@ export default async function init(element) {
 
   verbAnalytics('landing:shown', VERB);
 
+  window.prefetchInitiated = false;
+
   button.addEventListener('click', () => {
     verbAnalytics('dropzone:choose-file-clicked', VERB);
+    initiatePrefetch(VERB);
   });
 
   button.addEventListener('cancel', () => {
@@ -119,10 +141,16 @@ export default async function init(element) {
   widget.addEventListener('dragover', (e) => {
     e.preventDefault();
     setDraggingClass(widget, true);
+    initiatePrefetch(VERB);
   });
 
   widget.addEventListener('dragleave', () => {
     setDraggingClass(widget, false);
+  });
+
+  widget.addEventListener('drop', (e) => {
+    e.preventDefault();
+    initiatePrefetch(VERB);
   });
 
   errorCloseBtn.addEventListener('click', () => {
