@@ -45,7 +45,7 @@ const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 // };
 
 const setDraggingClass = (widget, shouldToggle) => {
-  shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
+  widget.classList.toggle('dragging', shouldToggle);
 };
 
 function prefetchNextPage(verb) {
