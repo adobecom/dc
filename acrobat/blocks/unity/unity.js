@@ -100,6 +100,7 @@ function getUnityLibs(prodLibs = '/unitylibs') {
     && !hostname.includes('localhost')) {
     return prodLibs;
   }
+  // eslint-disable-next-line compat/compat
   const branch = new URLSearchParams(window.location.search).get('unitylibs') || 'main';
   if (branch.indexOf('--') > -1) return `https://${branch}.hlx.live/unitylibs`;
   return `https://${branch}--unity--adobecom.hlx.live/unitylibs`;
