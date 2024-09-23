@@ -10,7 +10,7 @@ describe('prompt-cards using the template and group features', () => {
     await waitForElement('.prompt-blade');
   });
 
-  it('creates a prompt-card block', async () => {
+  it('creates prompt cards', async () => {
     const blades = document.querySelectorAll('.prompt-blade');
     expect([...blades].length).to.equal(6);
   });

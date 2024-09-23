@@ -68,20 +68,39 @@ async function createBlock(element, cfg) {
   });
 }
 
-async function processGroup(element, startIndex, templateCfg) {
-  const blockArray = [];
-  const keys = [...element.children[startIndex].children].map((x) => x.textContent.toLowerCase());
-  [...element.children].slice(startIndex + 1).forEach((x) => {
-    const values = [...x.children].map((y) => y.textContent);
-    const block = keys.reduce((obj, key, index) => ({ ...obj, [key]: values[index] }), {});
-    blockArray.push(block);
-  });
+async function createBlocks(element, blockArray, templateCfg) {
+  const { parentNode } = element;
   for (const cfg of blockArray) {
     const blockEl = createTag('div', { class: 'prompt-card' });
     await createBlock(blockEl, { ...templateCfg, ...cfg });
-    element.parentNode.insertBefore(blockEl, element.previousSibling);
+    parentNode.insertBefore(blockEl, element.previousSibling);
   }
   element.remove();
+}
+
+async function processGroup(element, cfg, startIndex) {
+  let blockArray;
+  if (startIndex > -1) {
+    blockArray = [];
+    const keys = [...element.children[startIndex].children].map((x) => x.textContent.toLowerCase());
+    [...element.children].slice(startIndex + 1).forEach((x) => {
+      const values = [...x.children].map((y) => y.textContent);
+      const block = keys.reduce((obj, key, index) => ({ ...obj, [key]: values[index] }), {});
+      blockArray.push(block);
+    });
+  } else {
+    const resp = await fetch(cfg.json);
+    if (!resp.ok) {
+      element.remove();
+      return;
+    }
+    const json = await resp.json();
+    const keys = Object.keys(cfg).filter((k) => !['json'].includes(k));
+    blockArray = json.data.filter(
+      (x) => keys.reduce((a, k) => a && cfg[k] === x[k], true),
+    );
+  }
+  await createBlocks(element, blockArray, cfg);
 }
 
 function readKeyValueSet(element) {
@@ -96,12 +115,12 @@ function readKeyValueSet(element) {
 export default async function init(element) {
   if (element.classList.contains('template') && element.classList.contains('group')) {
     const cfg = readKeyValueSet(element);
-    await processGroup(element, Object.keys(cfg).length + 1, cfg);
+    await processGroup(element, cfg, Object.keys(cfg).length + 1);
     return;
   }
 
   if (element.classList.contains('group')) {
-    await processGroup(element, 0, window.promptCardTemplate);
+    await processGroup(element, window.promptCardTemplate, 0);
     return;
   }
 
@@ -110,6 +129,11 @@ export default async function init(element) {
   if (element.classList.contains('template')) {
     window.promptCardTemplate = cfg;
     element.remove();
+    return;
+  }
+
+  if (element.classList.contains('json')) {
+    await processGroup(element, cfg, -1);
     return;
   }
 
