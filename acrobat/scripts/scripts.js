@@ -467,7 +467,7 @@ const { ietf } = getLocale(locales);
   window.addEventListener('IMS:Ready', async () => {
     const susiSignUpElems = document.querySelectorAll('a[href*="susi-sign-up"]');
     const susiSignInElems = document.querySelectorAll('a[href*="susi-sign-in"]');
-    if(susiSignUpElems.length > 0 || susiSignInElems.length > 0) {
+    if (susiSignUpElems.length > 0 || susiSignInElems.length > 0) {
       const { default: handleImsSusi } = await import('./susiAuthHandler.js');
       handleImsSusi(susiSignUpElems, susiSignInElems);
     }
