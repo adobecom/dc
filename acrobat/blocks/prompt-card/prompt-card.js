@@ -1,3 +1,4 @@
+/* eslint-disable compat/compat */
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
@@ -70,12 +71,41 @@ async function createBlock(element, cfg) {
 
 async function createBlocks(element, blockArray, templateCfg) {
   const { parentNode } = element;
-  for (const cfg of blockArray) {
+  for (const [i, cfg] of blockArray.entries()) {
     const blockEl = createTag('div', { class: 'prompt-card' });
+    if (templateCfg.rows && i > 0) blockEl.classList.add('hidden');
     await createBlock(blockEl, { ...templateCfg, ...cfg });
     parentNode.insertBefore(blockEl, element.previousSibling);
   }
   element.remove();
+
+  if (templateCfg.rows && parentNode.classList.contains('section')) {
+    const resizeObserver = new ResizeObserver(() => {
+      const computedStyle = window.getComputedStyle(parentNode);
+      if (/^(\d+(\.\d+)?(px|fr|em|rem|%))( (\d+(\.\d+)?(px|fr|em|rem|%)))*$/.test(computedStyle.gridTemplateColumns)) {
+        const visibleCnt = computedStyle.gridTemplateColumns.split(' ').length * templateCfg.rows;
+        const promptcards = [...parentNode.querySelectorAll('.prompt-card')];
+        if (promptcards.length <= visibleCnt) {
+          parentNode.querySelector('.view-all')?.remove();
+          resizeObserver.disconnect();
+        }
+        promptcards.forEach(
+          (x, i) => (i < visibleCnt ? x.classList.remove('hidden') : x.classList.add('hidden')),
+        );
+      }
+    });
+    resizeObserver.observe(parentNode);
+
+    const viewMore = createTag('div', { class: 'view-all' });
+    const moreBtn = createTag('div', { class: 'con-button outline' }, getPlaceHolder('View all'));
+    moreBtn.addEventListener('click', (e) => {
+      resizeObserver.disconnect();
+      [...parentNode.querySelectorAll('.prompt-card')].forEach((x) => x.classList.remove('hidden'));
+      e.target.parentNode.remove();
+    });
+    viewMore.appendChild(moreBtn);
+    parentNode.appendChild(viewMore);
+  }
 }
 
 async function processGroup(element, cfg, startIndex) {
@@ -95,7 +125,7 @@ async function processGroup(element, cfg, startIndex) {
       return;
     }
     const json = await resp.json();
-    const keys = Object.keys(cfg).filter((k) => !['json'].includes(k));
+    const keys = Object.keys(cfg).filter((k) => !['json', 'rows'].includes(k));
     blockArray = json.data.filter(
       (x) => keys.reduce((a, k) => a && cfg[k] === x[k], true),
     );
