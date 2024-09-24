@@ -878,3 +878,8 @@ main {
     display: none;
   }
 }
+
+a[href*="susi"] {
+  pointer-events: none;
+  cursor: default;
+}

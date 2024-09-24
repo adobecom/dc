@@ -18,10 +18,6 @@ document.querySelectorAll('a').forEach((p, idx) => {
   }
 });
 
-document.querySelectorAll('a[href*="susi-"]').forEach((el) => {
-  el.style.display = 'none';
-});
-
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -465,11 +461,10 @@ const { ietf } = getLocale(locales);
   setConfig({ ...CONFIG, miloLibs });
 
   window.addEventListener('IMS:Ready', async () => {
-    const susiSignUpElems = document.querySelectorAll('a[href*="susi-sign-up"]');
-    const susiSignInElems = document.querySelectorAll('a[href*="susi-sign-in"]');
-    if (susiSignUpElems.length > 0 || susiSignInElems.length > 0) {
+    const susiElems = document.querySelectorAll('a[href*="susi"]');
+    if (susiElems.length > 0) {
       const { default: handleImsSusi } = await import('./susiAuthHandler.js');
-      handleImsSusi(susiSignUpElems, susiSignInElems);
+      handleImsSusi(susiElems);
     }
   });
 
