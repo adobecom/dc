@@ -1,5 +1,5 @@
 import LIMITS from './limits.js';
-import { setLibs, isOldBrowser } from '../../scripts/utils.js';
+import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 
 const miloLibs = setLibs('/libs');
@@ -26,6 +26,26 @@ const setDraggingClass = (widget, shouldToggle) => {
   // eslint-disable-next-line chai-friendly/no-unused-expressions
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
 };
+
+function prefetchNextPage(verb) {
+  const ENV = getEnv();
+  const isProd = ENV === 'prod';
+  const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
+  const nextPageUrl = `https://${nextPageHost}/us/en/discover/${verb}`;
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = nextPageUrl;
+  link.crossOrigin = 'anonymous';
+  link.as = 'document';
+  document.head.appendChild(link);
+}
+
+function initiatePrefetch(verb) {
+  if (!window.prefetchInitiated) {
+    prefetchNextPage(verb);
+    window.prefetchInitiated = true;
+  }
+}
 
 export default async function init(element) {
   if (isOldBrowser()) {
@@ -93,12 +113,15 @@ export default async function init(element) {
   // Analytics
   verbAnalytics('landing:shown', VERB);
 
+  window.prefetchInitiated = false;
+
   widgetMobileButton.addEventListener('click', () => {
     verbAnalytics('goto-app:clicked', VERB);
   });
 
   button.addEventListener('click', () => {
     verbAnalytics('filepicker:shown', VERB);
+    initiatePrefetch(VERB);
   });
 
   button.addEventListener('cancel', () => {
@@ -108,10 +131,16 @@ export default async function init(element) {
   widget.addEventListener('dragover', (e) => {
     e.preventDefault();
     setDraggingClass(widget, true);
+    initiatePrefetch(VERB);
   });
 
   widget.addEventListener('dragleave', () => {
     setDraggingClass(widget, false);
+  });
+
+  widget.addEventListener('drop', (e) => {
+    e.preventDefault();
+    initiatePrefetch(VERB);
   });
 
   errorCloseBtn.addEventListener('click', () => {
@@ -148,6 +177,7 @@ export default async function init(element) {
 
   // Errors, Analytics & Logging
   window.addEventListener('unity:show-error-toast', (e) => {
+    // eslint-disable-next-line no-console
     console.log(`⛔️ Error Code - ${e.detail?.code}`);
 
     if (e.detail?.code === 'only_accept_one_file') {
@@ -183,5 +213,10 @@ export default async function init(element) {
   });
 }
 
-// const ce = (new CustomEvent('unity:show-error-toast', { detail: { code: 'only_accept_one_file', message: 'Error message' } }));
+// const ce = (
+//   new CustomEvent(
+//     'unity:show-error-toast',
+//     { detail: { code: 'only_accept_one_file', message: 'Error message' } },
+//   )
+// );
 // dispatchEvent(ce)
