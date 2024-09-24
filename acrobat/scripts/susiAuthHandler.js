@@ -1,4 +1,4 @@
-import susiAnalytics from '../scripts/alloy/susi-auth-handler.js';
+import susiAnalytics from './alloy/susi-auth-handler.js';
 
 export default function handleImsSusi(susiElems) {
   susiElems.forEach((link) => {

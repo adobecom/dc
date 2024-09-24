@@ -1,5 +1,4 @@
 export default function init(ctaName, action, device) {
-
   const event = {
     // always trigger the event using navigator.sendBeacon
     documentUnloading: true,
