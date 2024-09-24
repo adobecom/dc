@@ -177,6 +177,7 @@ export default async function init(element) {
 
   // Errors, Analytics & Logging
   window.addEventListener('unity:show-error-toast', (e) => {
+    // eslint-disable-next-line no-console
     console.log(`⛔️ Error Code - ${e.detail?.code}`);
 
     if (e.detail?.code === 'only_accept_one_file') {
