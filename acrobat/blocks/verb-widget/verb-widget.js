@@ -55,10 +55,10 @@ export default async function init(element) {
   const widgetIcon = createTag('div', { class: 'verb-icon' });
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Acrobat');
   const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
-  const widgetButton = createTag('label', { for: 'file-upload', class: 'verb-cta' }, window.mph['verb-widget-cta']);
+  const widgetButton = createTag('label', { for: 'file-upload', class: 'verb-cta', tabindex: 0 }, window.mph['verb-widget-cta']);
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
-  const widgetImage = createTag('img', { class: 'verb-image', src: `/acrobat/img/verb-widget/${VERB}.png` });
+  const widgetImage = createTag('img', { class: 'verb-image', src: `/acrobat/img/verb-widget/${VERB}.png`, alt: '' });
   // Since we're using placeholders we need a solution for the hyperlinks
   const legal = createTag('p', { class: 'verb-legal' }, `${window.mph['verb-widget-legal']} `);
   const terms = createTag('a', { class: 'verb-legal-url', target: '_blank', href: 'https://www.adobe.com/legal/terms.html' }, window.mph.tou);
@@ -89,6 +89,12 @@ export default async function init(element) {
   footer.append(iconSecurity, legal);
 
   element.append(widget, footer);
+
+  widgetButton.addEventListener('keydown', (e) => {
+    if (e?.key === 'Enter' || e?.keyCode === 13) {
+      widgetButton.click();
+    }
+  });
 
   // Analytics
   verbAnalytics('landing:shown', VERB);
@@ -148,6 +154,7 @@ export default async function init(element) {
 
   // Errors, Analytics & Logging
   window.addEventListener('unity:show-error-toast', (e) => {
+    // eslint-disable-next-line no-console
     console.log(`⛔️ Error Code - ${e.detail?.code}`);
 
     if (e.detail?.code === 'only_accept_one_file') {
@@ -183,5 +190,10 @@ export default async function init(element) {
   });
 }
 
-// const ce = (new CustomEvent('unity:show-error-toast', { detail: { code: 'only_accept_one_file', message: 'Error message' } }));
+// const ce = (
+//   new CustomEvent(
+//     'unity:show-error-toast',
+//     { detail: { code: 'only_accept_one_file', message: 'Error message' } },
+//   )
+// );
 // dispatchEvent(ce)
