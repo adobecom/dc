@@ -211,23 +211,25 @@ export default function nonprofitSelect(props) {
     if (!loading && storeOptions.length === 0) {
       const noOptionsTag = createTag(
         'div',
-        { class: 'np-select-list-tag np-select-no-options' },
+        { class: 'np-select-list-tag np-select-no-options', tabindex: -1 },
         noOptionsText,
       );
+      noOptionsTag.addEventListener('focusout', focusOut);
       listTag.append(noOptionsTag);
     }
 
     if (loading) {
       const loadingTag = createTag(
         'div',
-        { class: 'np-select-list-tag np-select-loader' },
-        loadingText,
+        { class: 'np-select-list-tag np-select-loader', tabindex: -1 },
+        `${loadingText}...`,
       );
+      loadingTag.addEventListener('focusout', focusOut);
       listTag.append(loadingTag);
     }
 
     if (keyboardFocusedId) {
-      const itemToFocus = listTag.querySelector(`li[data-value=${keyboardFocusedId}]`);
+      const itemToFocus = listTag.querySelector(`li[data-value='${keyboardFocusedId}']`);
       if (itemToFocus) itemToFocus.focus();
     }
 

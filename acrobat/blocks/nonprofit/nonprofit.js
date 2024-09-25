@@ -21,6 +21,7 @@ const removeOptionElements = (element) => {
 // #region Constants
 
 const PERCENT_API_URL = 'https://sandbox-api.poweredbypercent.com/v1';
+const PERCENT_VALIDATION_API_URL = 'https://sandbox-validate.poweredbypercent.com/adobe-acrobat';
 const PERCENT_PUBLISHABLE_KEY = 'sandbox_pk_8b320cc4-5950-4263-a3ac-828c64f6e19b';
 const SCENARIOS = Object.freeze({
   FOUND_IN_SEARCH: 'FOUND_IN_SEARCH',
@@ -46,6 +47,10 @@ const selectedOrganizationStore = new ReactiveStore();
 // #endregion
 
 // #region Percent API integration
+
+function getPercentErrorString(result) {
+  return `${result.error.title}: ${result.error.message}${result.error.reasons ? ` (${result.error.reasons.join(', ')})` : ''}`;
+}
 
 let nextPageUrl;
 
@@ -97,11 +102,41 @@ function fetchRegistries(countryCode, abortController) {
     });
 }
 
-const validationInviteId = 'sandbox_validationinvite_89ff0a56-07d4-4d9b-81ba-53e1ff1bfa13';
 async function sendOrganizationData() {
-  console.log(nonprofitFormData);
   try {
+    const inviteResponse = await fetch(PERCENT_VALIDATION_API_URL, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${PERCENT_PUBLISHABLE_KEY}` },
+    });
+
+    const inviteResult = await inviteResponse.json();
+
+    if (!inviteResponse.ok) {
+      throw new Error(getPercentErrorString(inviteResult));
+    }
+
+    const { validationInviteId } = inviteResult.data;
+
     const foundInSearch = stepperStore.data.scenario === SCENARIOS.FOUND_IN_SEARCH;
+
+    if (!foundInSearch) {
+      const evidenceUploadData = new FormData();
+      evidenceUploadData.append('file', nonprofitFormData.evidenceNonProfitStatus);
+      evidenceUploadData.append('validationInviteId', validationInviteId);
+
+      const uploadResponse = await fetch(`${PERCENT_API_URL}/validation-submission-documents`, {
+        method: 'POST',
+        headers: { Authorization: PERCENT_PUBLISHABLE_KEY },
+        body: evidenceUploadData,
+      });
+
+      const uploadResult = await uploadResponse.json();
+
+      if (!uploadResponse.ok) {
+        throw new Error(getPercentErrorString(uploadResult));
+      }
+    }
+
     let body;
     if (foundInSearch) {
       body = JSON.stringify({
@@ -131,26 +166,26 @@ async function sendOrganizationData() {
         language: 'en-US',
       });
     }
-    console.log(body);
+
     const response = await fetch(`${PERCENT_API_URL}/validation-submissions`, {
       method: 'POST',
       body,
-      headers: { Authorization: PERCENT_PUBLISHABLE_KEY },
+      headers: {
+        Authorization: PERCENT_PUBLISHABLE_KEY,
+        'Content-Type': 'application/json; charset=utf-8',
+      },
     });
 
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(result.error.message);
+      throw new Error(getPercentErrorString(result));
     }
 
-    console.log(result, 'SUCCESS');
-
-    if (!foundInSearch) {
-      // todo upload document
-    }
+    return true;
   } catch (error) {
     window.lana?.log(`Could not send organization data: ${error}`);
+    return false;
   }
 }
 
@@ -292,13 +327,27 @@ function getNonprofitInput(params) {
 
   // File validation
   if (type === 'file') {
+    inputTag.removeAttribute('placeholder');
+    inputTag.setAttribute('data-placeholder', placeholder);
     inputTag.addEventListener('change', () => {
       if (!inputTag.files || inputTag.files.length === 0) {
         window.lana?.log('Evidence of nonprofit status file missing.');
         return;
       }
+
+      const file = inputTag.files[0];
+
+      // Percent only accepts jpg, png and pdf files
+      const extensionRegex = /(\.jpg|\.jpeg|\.png|\.pdf)$/i;
+      if (!extensionRegex.exec(file.name)) {
+        inputTag.value = '';
+        inputTag.dispatchEvent(new Event('input'));
+        alert(window.mph['nonprofit-invalid-file-type']);
+        return;
+      }
+
       // Percent acceps files up to 5 mb
-      const size = inputTag.files[0].size / 1024 ** 2;
+      const size = file.size / 1024 ** 2;
       if (size > 5) {
         inputTag.value = '';
         inputTag.dispatchEvent(new Event('input'));
@@ -316,9 +365,27 @@ function getSelectedOrganizationTag() {
   const headerTag = createTag('div', { class: 'np-selected-organization-header' });
 
   const avatarTag = createTag('div', { class: 'np-selected-organization-avatar' });
-  // Get initials
+
   const initialsTag = createTag('span', { class: 'np-selected-organization-initials' });
+  const showInitials = () => {
+    avatarTag.classList.add('fallback');
+    const initialWords = selectedOrganizationStore.data.name
+      .split(' ')
+      .filter((word) => Boolean(word))
+      .slice(0, 2);
+    const initials = initialWords.map((word) => word.substring(0, 1).toUpperCase()).join('');
+    initialsTag.textContent = initials;
+  };
+
   const logoTag = createTag('img', { class: 'np-selected-organization-logo' });
+  logoTag.addEventListener('error', () => {
+    avatarTag.classList.remove('loading');
+    showInitials();
+  });
+  logoTag.addEventListener('load', () => {
+    avatarTag.classList.remove('loading');
+  });
+
   avatarTag.append(initialsTag, logoTag);
 
   const nameTag = createTag('span', { class: 'np-selected-organization-detail' });
@@ -347,22 +414,22 @@ function getSelectedOrganizationTag() {
       containerTag.style.display = 'none';
       return;
     }
-    const initialWords = organization.name
-      .split(' ')
-      .filter((word) => Boolean(word))
-      .slice(0, 2);
-    const initials = initialWords.map((word) => word.substring(0, 1).toUpperCase()).join('');
-    initialsTag.textContent = initials;
 
     // Load avatar
     if (organization.logo) {
-      // todo
+      avatarTag.classList.add('loading');
+      avatarTag.classList.remove('fallback');
+      logoTag.src = organization.logo;
+    } else {
+      showInitials();
     }
 
     nameTag.textContent = organization.name;
 
-    addressTag.textContent = organization.address;
+    addressTag.textContent = organization.address || '-';
+    addressTag.setAttribute('title', organization.address);
     idTag.textContent = organization.id;
+    idTag.setAttribute('title', organization.id);
 
     containerTag.style.display = 'flex';
   }, false);
@@ -436,8 +503,16 @@ function renderSelectNonprofit(containerTag) {
     labelKey: 'name',
     valueKey: 'id',
     renderOption: (option, itemTag) => {
-      const nameTag = createTag('span', { class: 'np-organization-select-name' }, option.name);
-      const idTag = createTag('span', { class: 'np-organization-select-id' }, option.id);
+      const nameTag = createTag(
+        'span',
+        { class: 'np-organization-select-name', title: option.name },
+        option.name,
+      );
+      const idTag = createTag(
+        'span',
+        { class: 'np-organization-select-id', title: option.id },
+        option.id,
+      );
 
       itemTag.append(nameTag, idTag);
     },
@@ -752,9 +827,20 @@ function renderPersonalData(containerTag) {
     nonprofitFormData.lastName = formData.get('lastName');
     nonprofitFormData.email = formData.get('email');
 
-    await sendOrganizationData();
+    const inputs = formTag.querySelectorAll('input');
+    inputs.forEach((input) => {
+      input.setAttribute('disabled', 'disabled');
+    });
 
-    stepperStore.update((prev) => ({ ...prev, step: prev.step + 1 }));
+    const ok = await sendOrganizationData();
+
+    if (!ok) {
+      inputs.forEach((input) => {
+        input.removeAttribute('disabled');
+      });
+    } else {
+      stepperStore.update((prev) => ({ ...prev, step: prev.step + 1 }));
+    }
   });
 
   containerTag.replaceChildren(descriptionTag, formTag);
@@ -808,64 +894,64 @@ function renderStepContent(containerTag) {
 
 // #endregion
 
-function initStepperController(tag) {
-  const containerTag = createTag('div', { class: 'np-controller-container' });
+// function initStepperController(tag) {
+//   const containerTag = createTag('div', { class: 'np-controller-container' });
 
-  const titleTag = createTag(
-    'span',
-    { class: 'np-controller-title' },
-    'Stepper controller (for testing)',
-  );
+//   const titleTag = createTag(
+//     'span',
+//     { class: 'np-controller-title' },
+//     'Stepper controller (for testing)',
+//   );
 
-  const scenariosTag = createTag('div', { class: 'np-controller-section' });
-  const stepsTag = createTag('div', { class: 'np-controller-section' });
+//   const scenariosTag = createTag('div', { class: 'np-controller-section' });
+//   const stepsTag = createTag('div', { class: 'np-controller-section' });
 
-  stepperStore.subscribe(() => {
-    const { step, scenario } = stepperStore.data;
+//   stepperStore.subscribe(() => {
+//     const { step, scenario } = stepperStore.data;
 
-    const foundInSearchTag = createTag(
-      'button',
-      { class: `np-controller-button${scenario === SCENARIOS.FOUND_IN_SEARCH ? ' selected' : ''}` },
-      'Found in search',
-    );
-    foundInSearchTag.addEventListener('click', () => {
-      const newStep = step > 3 ? 1 : step;
-      stepperStore.update((prev) => ({
-        ...prev,
-        step: newStep,
-        scenario: SCENARIOS.FOUND_IN_SEARCH,
-      }));
-    });
-    const notFoundInSearchTag = createTag(
-      'button',
-      { class: `np-controller-button${scenario === SCENARIOS.NOT_FOUND_IN_SEARCH ? ' selected' : ''}` },
-      'Not found in search',
-    );
-    notFoundInSearchTag.addEventListener('click', () => stepperStore.update((prev) => ({ ...prev, scenario: SCENARIOS.NOT_FOUND_IN_SEARCH })));
+//     const foundInSearchTag = createTag(
+//       'button',
+//       { class: `np-controller-button${scenario === SCENARIOS.FOUND_IN_SEARCH ? ' selected' : ''}` },
+//       'Found in search',
+//     );
+//     foundInSearchTag.addEventListener('click', () => {
+//       const newStep = step > 3 ? 1 : step;
+//       stepperStore.update((prev) => ({
+//         ...prev,
+//         step: newStep,
+//         scenario: SCENARIOS.FOUND_IN_SEARCH,
+//       }));
+//     });
+//     const notFoundInSearchTag = createTag(
+//       'button',
+//       { class: `np-controller-button${scenario === SCENARIOS.NOT_FOUND_IN_SEARCH ? ' selected' : ''}` },
+//       'Not found in search',
+//     );
+//     notFoundInSearchTag.addEventListener('click', () => stepperStore.update((prev) => ({ ...prev, scenario: SCENARIOS.NOT_FOUND_IN_SEARCH })));
 
-    const maxSteps = scenario === SCENARIOS.FOUND_IN_SEARCH ? 3 : 5;
+//     const maxSteps = scenario === SCENARIOS.FOUND_IN_SEARCH ? 3 : 5;
 
-    stepsTag.replaceChildren();
-    Array.from({ length: maxSteps })
-      .map((_, index) => index + 1)
-      .forEach((value) => {
-        const stepTag = createTag(
-          'button',
-          { class: `np-controller-button is-step ${step === value ? ' selected' : ''}` },
-          value,
-        );
-        stepTag.addEventListener('click', () => stepperStore.update((prev) => ({ ...prev, step: value })));
-        stepsTag.append(stepTag);
-      });
+//     stepsTag.replaceChildren();
+//     Array.from({ length: maxSteps })
+//       .map((_, index) => index + 1)
+//       .forEach((value) => {
+//         const stepTag = createTag(
+//           'button',
+//           { class: `np-controller-button is-step ${step === value ? ' selected' : ''}` },
+//           value,
+//         );
+//         stepTag.addEventListener('click', () => stepperStore.update((prev) => ({ ...prev, step: value })));
+//         stepsTag.append(stepTag);
+//       });
 
-    scenariosTag.replaceChildren(foundInSearchTag, notFoundInSearchTag);
-  });
+//     scenariosTag.replaceChildren(foundInSearchTag, notFoundInSearchTag);
+//   });
 
-  containerTag.append(titleTag, scenariosTag, stepsTag);
+//   containerTag.append(titleTag, scenariosTag, stepsTag);
 
-  const bufferTag = createTag('div', { class: 'np-controller-buffer ' });
-  tag.append(bufferTag, containerTag);
-}
+//   const bufferTag = createTag('div', { class: 'np-controller-buffer ' });
+//   tag.append(bufferTag, containerTag);
+// }
 
 function initNonprofit(element) {
   const containerTag = createTag('div', { class: 'np-container' });
@@ -874,7 +960,7 @@ function initNonprofit(element) {
   renderStepContent(containerTag);
 
   element.append(containerTag);
-  
+
   // initStepperController(element);
 }
 
