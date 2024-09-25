@@ -1,3 +1,7 @@
+:root {
+  --common-font: "Adobe Clean", adobe-clean, "Trebuchet MS", sans-serif;
+}
+
 #prompt {
   display: none
 }
@@ -13,7 +17,7 @@
 }
 
 .prompt-toast {
-  font-family: "Adobe Clean", adobe-clean, "Trebuchet MS", sans-serif;
+  font-family: var(--common-font);
   align-items: flex-start;
   background: #05834e;
   border-radius: 10px;
@@ -49,14 +53,12 @@
   background-size: contain;
   content: "";
   height: 12px;
-  margin-left: 10px;
+  margin-inline-start: 10px;
   margin-top: 7px;
-  min-width: 12px;
   width: 12px
 }
 
 .prompt-blade {
-  align-items: center;
   align-items: flex-start;
   align-self: stretch;
   background-color: #fff;
@@ -85,14 +87,15 @@
 .prompt-icon {
   margin-inline-end: 5px;
   position: relative;
-  top: 5px
 }
 
 .prompt-prefix {
   color: #6d6d6d;
   font-size: 12px;
   padding: 0 0 16px;
-  text-transform: uppercase
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;  
 }
 
 .prompt-prefix,
@@ -100,7 +103,7 @@
   font-family: "Adobe Clean", adobe-clean, "Trebuchet MS", sans-serif;
   font-style: normal;
   font-weight: 700;
-  line-height: 125%
+  line-height: 1.25
 }
 
 .prompt-title {
@@ -145,7 +148,7 @@
 .prompt-copy-btn {
   color: #686868;
   cursor: pointer;
-  font-family: "Adobe Clean", adobe-clean, "Trebuchet MS", sans-serif;
+  font-family: var(--common-font);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
