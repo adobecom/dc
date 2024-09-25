@@ -13,5 +13,6 @@ export default function init(ctaName, action, device) {
       },
     },
   };
+  // eslint-disable-next-line no-underscore-dangle
   window?._satellite?.track('event', event);
 }
