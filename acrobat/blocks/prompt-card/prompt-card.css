@@ -69,14 +69,14 @@
   flex: 1 0 0;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px 20px 24px;
+  padding: 16px 16px 24px;
   transition-delay: 3s;
   transition-property: border;
   max-width: 276px;
 }
 
 .prompt-blade:hover {
-  box-shadow: 3px 6px 6px 0 rgba(0, 0, 0, .16)
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 16%)
 }
 
 .prompt-blade:active {
@@ -153,7 +153,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
-  padding: 2px 8px
+  padding: 2px 16px
 }
 
 .prompt-copy-btn:after {
