@@ -11,17 +11,6 @@ const setUser = () => {
   localStorage.setItem('unity.user', 'true');
 };
 
-const handleError = (err, errTxt, str, strTwo) => {
-  err.classList.add('verb-error');
-  err.classList.remove('hide');
-  errTxt.textContent = `${window.mph[str]} ${strTwo || ''}`;
-
-  setTimeout(() => {
-    err.classList.remove('verb-error');
-    err.classList.add('hide');
-  }, 5000);
-};
-
 const setDraggingClass = (widget, shouldToggle) => {
   // eslint-disable-next-line chai-friendly/no-unused-expressions
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
@@ -176,39 +165,56 @@ export default async function init(element) {
   });
 
   // Errors, Analytics & Logging
+  const handleError = (str) => {
+    errorState.classList.add('verb-error');
+    errorState.classList.remove('hide');
+    errorStateText.textContent = str;
+
+    setTimeout(() => {
+      errorState.classList.remove('verb-error');
+      errorState.classList.add('hide');
+    }, 5000);
+  };
+
   window.addEventListener('unity:show-error-toast', (e) => {
     // eslint-disable-next-line no-console
     console.log(`⛔️ Error Code - ${e.detail?.code}`);
 
-    if (e.detail?.code === 'only_accept_one_file') {
-      handleError(errorState, errorStateText, 'verb-widget-error-multi');
+    if (e.detail?.code.includes('error_only_accept_one_file')) {
+      handleError(e.detail?.message);
       verbAnalytics('error', VERB);
     }
 
-    if (e.detail?.code === 'unsupported_type') {
-      handleError(errorState, errorStateText, 'verb-widget-error-unsupported');
+    if (e.detail?.code.includes('error_unsupported_type')) {
+      handleError(e.detail?.message);
       verbAnalytics('error:unsupported_type', VERB);
     }
 
-    if (e.detail?.code === 'empty_file') {
-      handleError(errorState, errorStateText, 'verb-widget-error-empty');
+    if (e.detail?.code.includes('error_empty_file')) {
+      handleError(e.detail?.message);
       verbAnalytics('error:empty_file', VERB);
     }
 
-    // Code may be wrong. should be 'file_too_large'
-    if (e.detail?.code === 'file_too_largempty_file') {
-      handleError(errorState, errorStateText, 'verb-widget-error-large', LIMITS[VERB].maxFileSizeFriendly);
+    if (e.detail?.code.includes('error_file_too_large')) {
+      handleError(e.detail?.message);
       verbAnalytics('error', VERB);
     }
 
-    if (e.detail?.code === 'max_page_count') {
-      handleError(errorState, errorStateText, 'verb-widget-error-max', LIMITS[VERB].maxNumFiles);
+    if (e.detail?.code.includes('error_max_page_count')) {
+      handleError(e.detail?.message);
       verbAnalytics('error:max_page_count', VERB);
+    }
+
+    if (e.detail?.code.includes('error_generic')
+      || e.detail?.code.includes('error_max_quota_exceeded')
+      || e.detail?.code.includes('error_no_storage_provision')
+      || e.detail?.code.includes('error_duplicate_asset')) {
+      handleError(e.detail?.message);
+      verbAnalytics('error', VERB);
     }
 
     // acrobat:verb-fillsign:error:page_count_missing_from_metadata_api
     // acrobat:verb-fillsign:error:403
-    // acrobat:verb-fillsign:error
     // LANA for 403
   });
 }
