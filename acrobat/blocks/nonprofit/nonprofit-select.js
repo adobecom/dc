@@ -2,10 +2,7 @@
 /* eslint-disable max-len */
 import ReactiveStore from '../../scripts/reactiveStore.js';
 
-const chevronDownSvg = `<svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M6.64477 6.53455L11.3367 1.84314C11.6931 1.48767 11.6931 0.910519 11.3367 0.554079C10.9807 0.198119 10.4036 0.198119 10.0476 0.554079L6.00025 4.60102L1.95289 0.554079C1.59693 0.198119 1.01978 0.198119 0.663827 0.554079C0.485607 0.732299 0.396736 0.965209 0.396736 1.19861C0.396736 1.43201 0.486097 1.66541 0.663827 1.84314L5.35572 6.53455C5.5337 6.71277 5.76697 6.80164 6.00025 6.80152C6.23353 6.80164 6.46679 6.71277 6.64477 6.53455Z" fill="#222222"/>
-</svg>
-`;
+const chevronDownSvg = '<svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.64477 6.53455L11.3367 1.84314C11.6931 1.48767 11.6931 0.910519 11.3367 0.554079C10.9807 0.198119 10.4036 0.198119 10.0476 0.554079L6.00025 4.60102L1.95289 0.554079C1.59693 0.198119 1.01978 0.198119 0.663827 0.554079C0.485607 0.732299 0.396736 0.965209 0.396736 1.19861C0.396736 1.43201 0.486097 1.66541 0.663827 1.84314L5.35572 6.53455C5.5337 6.71277 5.76697 6.80164 6.00025 6.80152C6.23353 6.80164 6.46679 6.71277 6.64477 6.53455Z" fill="#222222"/></svg>';
 
 export default function nonprofitSelect(props) {
   const {
@@ -13,11 +10,11 @@ export default function nonprofitSelect(props) {
     name,
     label,
     placeholder,
-    noOptionsText,
-    loadingText = 'Loading...',
+    noOptionsText = window.mph['nonprofit-no-search-result-found'],
+    loadingText = window.mph['nonprofit-loading'],
     required = true,
     disabled = false,
-    withDropdownIcon = true,
+    hideIcon = false,
     options = [],
     store,
     debounce,
@@ -31,6 +28,7 @@ export default function nonprofitSelect(props) {
   let onSelect;
 
   const optionsStore = store || new ReactiveStore(options);
+  let localOptions = [...options];
   let localSelection = null;
 
   const controlTag = createTag('div', { class: 'np-control' });
@@ -41,7 +39,7 @@ export default function nonprofitSelect(props) {
     placeholder,
   });
   const valueTag = createTag('input', {
-    class: 'np-select-value',
+    class: `np-select-value${required ? ' np-required-field' : ''}`,
     name,
     type: 'hidden',
   });
@@ -66,7 +64,6 @@ export default function nonprofitSelect(props) {
   };
 
   const hideList = () => {
-    if (listContainerTag.style.display === 'none') return;
     abortController?.abort();
     listTag.scrollTop = 0;
     listContainerTag.style.display = 'none';
@@ -75,7 +72,7 @@ export default function nonprofitSelect(props) {
     if (!localSelection) {
       searchTag.value = '';
       if (!store) {
-        optionsStore.update(options);
+        optionsStore.update(localOptions);
       }
     } else {
       searchTag.value = localSelection[labelKey];
@@ -96,7 +93,7 @@ export default function nonprofitSelect(props) {
     searchTimeout = setTimeout(() => {
       onInput && onInput(searchTag.value, abortController);
       if (!store) {
-        const filteredOptions = options.filter((option) => option[labelKey].toLowerCase().includes(searchTag.value.toLowerCase()));
+        const filteredOptions = localOptions.filter((option) => option[labelKey].toLowerCase().includes(searchTag.value.toLowerCase()));
         optionsStore.update(filteredOptions);
       }
       showList();
@@ -120,21 +117,27 @@ export default function nonprofitSelect(props) {
     }
   });
 
+  let rerendering = false;
   const focusOut = (ev) => {
+    if (rerendering) return;
     if (!ev.relatedTarget) {
       hideList();
       return;
     }
     const selectTag = ev.relatedTarget.closest('.np-select-list-tag');
     // If the newly focused item is part of the select, don't hide list
-    if (selectTag) return;
+    if (selectTag || ev.relatedTarget === searchTag) return;
     hideList();
   };
 
   searchTag.addEventListener('focusout', focusOut);
 
+  let keyboardFocusedId;
+
   // Render select elements
   optionsStore.subscribe((storeOptions, loading) => {
+    rerendering = true;
+
     // Empty the list
     listTag.replaceChildren();
 
@@ -142,6 +145,7 @@ export default function nonprofitSelect(props) {
       const itemTag = createTag('li', {
         class: 'np-select-list-tag np-select-item',
         tabindex: -1,
+        'data-value': option[valueKey],
       });
 
       if (renderOption) {
@@ -150,14 +154,33 @@ export default function nonprofitSelect(props) {
         itemTag.textContent = option[labelKey];
       }
 
-      // Keypress handing
+      // Keyboard navigation and selection handing
+
+      const selectItem = () => {
+        onSelect && onSelect(option);
+        searchTag.value = option[labelKey];
+        valueTag.value = option[valueKey];
+        valueTag.dispatchEvent(new Event('input'));
+        localSelection = option;
+        hasNewInput = false;
+        hideList();
+      };
+
       itemTag.addEventListener('keydown', (ev) => {
-        if (ev.code !== 'ArrowUp' && ev.code !== 'ArrowDown') {
+        if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(ev.code)) {
           focusedFromList = true;
           searchTag.focus();
           return;
         }
         ev.preventDefault();
+
+        // Select on Enter
+        if (ev.code === 'Enter') {
+          selectItem();
+          return;
+        }
+
+        // Navigate on ArrowDown/Up
         let sibling;
         if (ev.code === 'ArrowDown') {
           sibling = ev.target.nextElementSibling;
@@ -170,19 +193,16 @@ export default function nonprofitSelect(props) {
         }
       });
 
-      // Selection handling
-      const selectItem = () => {
-        onSelect && onSelect(option);
-        searchTag.value = option[labelKey];
-        valueTag.value = option[valueKey];
-        localSelection = option;
-        hasNewInput = false;
-        hideList();
-      };
       itemTag.addEventListener('click', selectItem);
-      itemTag.addEventListener('keydown', (ev) => {
-        if (ev.code !== 'Enter') return;
-        selectItem();
+
+      itemTag.addEventListener('focus', (ev) => {
+        keyboardFocusedId = ev.target.getAttribute('data-value');
+      });
+
+      itemTag.addEventListener('focusout', (ev) => {
+        if (rerendering) return;
+        keyboardFocusedId = null;
+        focusOut(ev);
       });
 
       listTag.append(itemTag);
@@ -191,33 +211,40 @@ export default function nonprofitSelect(props) {
     if (!loading && storeOptions.length === 0) {
       const noOptionsTag = createTag(
         'div',
-        { class: 'np-select-list-tag np-select-no-options' },
+        { class: 'np-select-list-tag np-select-no-options', tabindex: -1 },
         noOptionsText,
       );
+      noOptionsTag.addEventListener('focusout', focusOut);
       listTag.append(noOptionsTag);
     }
 
     if (loading) {
       const loadingTag = createTag(
         'div',
-        { class: 'np-select-list-tag np-select-loader' },
-        loadingText,
+        { class: 'np-select-list-tag np-select-loader', tabindex: -1 },
+        `${loadingText}...`,
       );
+      loadingTag.addEventListener('focusout', focusOut);
       listTag.append(loadingTag);
     }
+
+    if (keyboardFocusedId) {
+      const itemToFocus = listTag.querySelector(`li[data-value='${keyboardFocusedId}']`);
+      if (itemToFocus) itemToFocus.focus();
+    }
+
+    rerendering = false;
   });
 
   listContainerTag.append(listTag);
-  if (footerTag) listContainerTag.append(footerTag);
-
-  // Focus handling
-  const selectListTags = listContainerTag.querySelectorAll('.np-select-list-tag');
-  selectListTags.forEach((selectListTag) => {
-    selectListTag.addEventListener('focusout', focusOut);
-  });
+  if (footerTag) {
+    listContainerTag.append(footerTag);
+    footerTag.addEventListener('focusout', focusOut);
+  }
 
   controlTag.append(labelTag, searchTag, valueTag, listContainerTag);
-  if (withDropdownIcon) {
+
+  if (!hideIcon) {
     const arrowIconTag = createTag('div', { class: 'np-select-icon' }, chevronDownSvg);
     arrowIconTag.addEventListener('click', () => {
       searchTag.focus();
@@ -241,13 +268,20 @@ export default function nonprofitSelect(props) {
 
   controlTag.clear = (withFocus = true) => {
     searchTag.value = '';
-    valueTag.value = undefined;
+    valueTag.value = '';
+    valueTag.dispatchEvent(new Event('input'));
+    localSelection = null;
     if (!store) {
-      optionsStore.update(options);
+      optionsStore.update(localOptions);
     }
     if (withFocus) {
       searchTag.focus();
     }
+  };
+
+  controlTag.updateOptions = (newOptions) => {
+    optionsStore.update(newOptions);
+    localOptions = newOptions;
   };
 
   controlTag.getValue = () => valueTag.value;
