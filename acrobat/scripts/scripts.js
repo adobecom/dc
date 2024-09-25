@@ -294,11 +294,9 @@ const CONFIG = {
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'business.adobe.com', 'helpx.adobe.com'],
   stageDomainsMap: {
-    'business.adobe.com': 'business.stage.adobe.com',
-    'helpx.adobe.com': 'helpx.stage.adobe.com',
-    'blog.adobe.com': 'blog.stage.adobe.com',
-    'developer.adobe.com': 'developer-stage.adobe.com',
-    'news.adobe.com': 'news.stage.adobe.com',
+    'www.stage.adobe.com': { 'www.adobe.com': 'origin' },
+    '--dc--adobecom.hlx.live': { 'www.adobe.com': 'origin' },
+    '--dc--adobecom.hlx.page': { 'www.adobe.com': 'origin' },
   },
   jarvis: {
     id: 'DocumentCloudWeb1',
@@ -319,7 +317,7 @@ if (IMS_GUEST) {
 
   CONFIG.adobeid = {
     client_id: CLIENT_ID,
-    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read',
+    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read,DCAPI',
 
     enableGuestAccounts: true,
     enableGuestTokenForceRefresh: true,

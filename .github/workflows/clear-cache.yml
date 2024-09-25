@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
     inputs:
       cpCode:
-        description: 'CP Code'
+        description: 'CP Code, 1551836 (prod) / 1551833 (stage)'
         type: string
         required: true
         default: '1551836'
@@ -27,6 +27,14 @@ on:
         options:
           - 'staging'          
           - 'production'
+      command:
+        description: 'Command'
+        type: choice
+        required: true
+        default: 'invalidate'
+        options:
+          - 'invalidate'          
+          - 'delete'
 
 jobs:
   clear-cache:     
@@ -38,7 +46,7 @@ jobs:
         env:
           EDGERC: ${{ secrets.EDGERC }}
         with:
-          command: 'invalidate' 
+          command: ${{ inputs.command }}
           type: 'cpcode'
-          ref: ${{ inputs.cpCode }} 
+          ref: ${{ inputs.cpCode }}
           network: ${{ inputs.network }}

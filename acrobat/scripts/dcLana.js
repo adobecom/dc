@@ -2,7 +2,7 @@ export default function lanaLogging() {
   const fricPage = document.querySelector('meta[name="dc-widget-version"]');
   const lanaOptions = { sampleRate: 1 };
 
-  const lanaCspOptions = { sampleRate: 0.1 };
+  const lanaCspOptions = { sampleRate: 0.001 };
 
   // DC Converter Logging
   window.addEventListener('DC_Hosted:Ready', () => {
