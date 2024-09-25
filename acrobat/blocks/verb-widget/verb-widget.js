@@ -150,35 +150,41 @@ export default async function init(element) {
   window.addEventListener('unity:show-error-toast', (e) => {
     console.log(`⛔️ Error Code - ${e.detail?.code}`);
 
-    if (e.detail?.code === 'only_accept_one_file') {
+    if (e.detail?.code.includes('error_only_accept_one_file')) {
       handleError(e.detail?.message);
       verbAnalytics('error', VERB);
     }
 
-    if (e.detail?.code === 'unsupported_type') {
+    if (e.detail?.code.includes('error_unsupported_type')) {
       handleError(e.detail?.message);
       verbAnalytics('error:unsupported_type', VERB);
     }
 
-    if (e.detail?.code === 'empty_file') {
+    if (e.detail?.code.includes('error_empty_file')) {
       handleError(e.detail?.message);
       verbAnalytics('error:empty_file', VERB);
     }
 
-    // Code may be wrong. should be 'file_too_large'
-    if (e.detail?.code === 'file_too_largempty_file') {
+    if (e.detail?.code.includes('error_file_too_large')) {
       handleError(e.detail?.message);
       verbAnalytics('error', VERB);
     }
 
-    if (e.detail?.code === 'max_page_count') {
+    if (e.detail?.code.includes('error_max_page_count')) {
       handleError(e.detail?.message);
       verbAnalytics('error:max_page_count', VERB);
     }
 
+    if (e.detail?.code.includes('error_generic')
+      || e.detail?.code.includes('error_max_quota_exceeded')
+      || e.detail?.code.includes('error_no_storage_provision')
+      || e.detail?.code.includes('error_duplicate_asset')) {
+      handleError(e.detail?.message);
+      verbAnalytics('error', VERB);
+    }
+
     // acrobat:verb-fillsign:error:page_count_missing_from_metadata_api
     // acrobat:verb-fillsign:error:403
-    // acrobat:verb-fillsign:error
     // LANA for 403
   });
 }
