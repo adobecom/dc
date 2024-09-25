@@ -2,6 +2,8 @@
   --np-content-width: 378px;
   --np-organization-item-height: 72px;
   --np-organization-cannot-find-height: 51px;
+  --np-button-disabled-background: #e6e6e6;
+  --np-button-disabled-color: #b1b1b1;
 }
 
 .np-container {
@@ -9,6 +11,9 @@
   flex-direction: column;
   align-items: center;
   padding-block: 86px;
+  position: relative;
+  min-height: 925px;
+  box-sizing: border-box;
 }
 
 .np-stepper-container {
@@ -21,6 +26,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .np-step-container span {
@@ -66,6 +72,26 @@
   height: 12px;
   background: url(../../img/icons/ui/chevron-right.svg) no-repeat;
   background-position: top 2px left 3px;
+}
+
+.np-stepper-back {
+  position: absolute;
+  top: 440px;
+  left: 10%;
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-gray-200);
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: left 200ms;
+}
+
+.np-stepper-back:hover {
+  background-color: var(--color-gray-300);
 }
 
 .np-content-container {
@@ -309,6 +335,12 @@
   cursor: pointer;
 }
 
+.np-button:disabled {
+  background-color: var(--np-button-disabled-background);
+  color: var(--np-button-disabled-color);
+  cursor: default;
+}
+
 .np-application-review-container {
   display: flex;
   flex-direction: column;
@@ -323,9 +355,14 @@
   font-weight: 400;
 }
 
+@media screen and (max-width: 900px) {
+  .np-stepper-back {
+    left: 4%;
+  }
+}
+
 /* Temporary stuff */
 .nonprofit {
-  height: 1125px;
   display: flex;
   flex-direction: column;
 }
