@@ -136,13 +136,20 @@ export default async function init(element) {
 
   element.append(widget, footer);
 
-  window.addEventListener('IMS:Ready', async () => {
-    console.log('IMS:Ready 😎')
-    if (window.adobeIMS?.isSignedInUser()
-      && window.adobeIMS?.getAccountType() !== 'type1') {
+  // Redirect after IMS:Ready
+  window.addEventListener('IMS:Ready', () => {
+    console.log('IMS:Ready 😎');
+    if (window.adobeIMS.isSignedInUser()
+      && window.adobeIMS.getAccountType() !== 'type1') {
       redDir(VERB);
     }
   });
+  // Race Condition
+  if (window.adobeIMS?.isSignedInUser()
+    && window.adobeIMS?.getAccountType() !== 'type1') {
+    console.log('Race Con ⏩');
+    redDir(VERB);
+  }
 
   // Analytics
   verbAnalytics('landing:shown', VERB);
