@@ -5,7 +5,31 @@ import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
+const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
+
+const verbRedirMap = {
+  createpdf: 'createpdf',
+  'crop-pages': 'crop',
+  'delete-pages': 'deletepages',
+  'extract-pages': 'extract',
+  'combine-pdf': 'combine',
+  'protect-pdf': 'protect',
+  'add-comment': 'addcomment',
+  'pdf-to-image': 'pdftoimage',
+  'reorder-pages': 'reorderpages',
+  sendforsignature: 'sendforsignature',
+  'rotate-pages': 'rotatepages',
+  fillsign: 'fillsign',
+  'split-pdf': 'split',
+  'insert-pdf': 'insert',
+  'compress-pdf': 'compress',
+  'png-to-pdf': 'jpgtopdf',
+  'number-pages': 'number',
+  'ocr-pdf': 'ocr',
+  'chat-pdf': 'chat',
+  'chat-pdf-student': 'study',
+};
 
 const setUser = () => {
   localStorage.setItem('unity.user', 'true');
@@ -34,6 +58,19 @@ function initiatePrefetch(verb) {
     prefetchNextPage(verb);
     window.prefetchInitiated = true;
   }
+}
+
+function redDir(verb) {
+  const hostname = window?.location?.hostname;
+  const ENV = getEnv();
+  const VERB = verb;
+  let newLocation;
+  if (hostname !== 'www.adobe.com' && hostname !== 'sign.ing' && hostname !== 'edit.ing') {
+    newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`;
+  } else {
+    newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
+  }
+  window.location.href = newLocation;
 }
 
 export default async function init(element) {
@@ -98,6 +135,13 @@ export default async function init(element) {
   footer.append(iconSecurity, legal);
 
   element.append(widget, footer);
+
+  window.addEventListener('IMS:Ready', async () => {
+    if (window.adobeIMS?.isSignedInUser()
+      && window.adobeIMS?.getAccountType() !== 'type1') {
+      redDir(VERB);
+    }
+  });
 
   // Analytics
   verbAnalytics('landing:shown', VERB);
