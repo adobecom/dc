@@ -73,7 +73,7 @@ async function createBlocks(element, blockArray, templateCfg) {
   const { parentNode } = element;
   for (const [i, cfg] of blockArray.entries()) {
     const blockEl = createTag('div', { class: 'prompt-card' });
-    if (templateCfg.rows && i > 0) blockEl.classList.add('hidden');
+    if (templateCfg?.rows && i > 0) blockEl.classList.add('hidden');
     await createBlock(blockEl, { ...templateCfg, ...cfg });
     parentNode.insertBefore(blockEl, element.previousSibling);
   }
