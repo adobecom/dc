@@ -162,6 +162,7 @@ export default async function init(element) {
 
   button.addEventListener('click', () => {
     verbAnalytics('filepicker:shown', VERB);
+    verbAnalytics('dropzone:choose-file-clicked', VERB);
     initiatePrefetch(VERB);
   });
 
@@ -191,17 +192,13 @@ export default async function init(element) {
 
   window.addEventListener('unity:track-analytics', (e) => {
     if (e.detail?.event === 'change') {
-      verbAnalytics('choose-file:open', VERB);
+      verbAnalytics('choose-file:open', VERB, e.detail?.data);
       setUser();
     }
     // maybe new event name files-dropped?
     if (e.detail?.event === 'drop') {
       verbAnalytics('files-dropped', VERB, e.detail?.data);
       setDraggingClass(widget, false);
-      setUser();
-    }
-    if (e.detail?.event === 'choose-file-clicked') {
-      verbAnalytics('dropzone:choose-file-clicked', VERB, e.detail?.data);
       setUser();
     }
 
