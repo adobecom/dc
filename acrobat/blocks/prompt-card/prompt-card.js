@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /* eslint-disable compat/compat */
 import { setLibs } from '../../scripts/utils.js';
 
@@ -38,7 +39,7 @@ async function createBlock(element, cfg) {
     'data-toast': cfg.toast,
     'daa-im': true,
     'daa-lh': 'Featured prompts | Executive summary',
-    'daa-ll': `promptcard-${processTrackingLabels(cfg.title)}`,
+    'daa-ll': 'promptcard-' + processTrackingLabels(cfg.prefix) + '-' + processTrackingLabels(cfg.title),
   });
   const prefix = createTag('div', { class: 'prompt-prefix' });
   const icon = createTag('img', {
