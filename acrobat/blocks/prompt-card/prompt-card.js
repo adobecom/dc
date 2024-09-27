@@ -79,7 +79,7 @@ async function createBlocks(element, blockArray, templateCfg) {
   }
   element.remove();
 
-  if (templateCfg.rows && parentNode.classList.contains('section')) {
+  if (templateCfg?.rows && parentNode.classList.contains('section')) {
     const resizeObserver = new ResizeObserver(() => {
       const computedStyle = window.getComputedStyle(parentNode);
       if (/^(\d+(\.\d+)?(px|fr|em|rem|%))( (\d+(\.\d+)?(px|fr|em|rem|%)))*$/.test(computedStyle.gridTemplateColumns)) {
