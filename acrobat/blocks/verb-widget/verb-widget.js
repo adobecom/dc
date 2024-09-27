@@ -5,21 +5,34 @@ import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
+const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
+
+const verbRedirMap = {
+  createpdf: 'createpdf',
+  'crop-pages': 'crop',
+  'delete-pages': 'deletepages',
+  'extract-pages': 'extract',
+  'combine-pdf': 'combine',
+  'protect-pdf': 'protect',
+  'add-comment': 'addcomment',
+  'pdf-to-image': 'pdftoimage',
+  'reorder-pages': 'reorderpages',
+  sendforsignature: 'sendforsignature',
+  'rotate-pages': 'rotatepages',
+  fillsign: 'fillsign',
+  'split-pdf': 'split',
+  'insert-pdf': 'insert',
+  'compress-pdf': 'compress',
+  'png-to-pdf': 'jpgtopdf',
+  'number-pages': 'number',
+  'ocr-pdf': 'ocr',
+  'chat-pdf': 'chat',
+  'chat-pdf-student': 'study',
+};
 
 const setUser = () => {
   localStorage.setItem('unity.user', 'true');
-};
-
-const handleError = (err, errTxt, str, strTwo) => {
-  err.classList.add('verb-error');
-  err.classList.remove('hide');
-  errTxt.textContent = `${window.mph[str]} ${strTwo || ''}`;
-
-  setTimeout(() => {
-    err.classList.remove('verb-error');
-    err.classList.add('hide');
-  }, 5000);
 };
 
 const setDraggingClass = (widget, shouldToggle) => {
@@ -45,6 +58,19 @@ function initiatePrefetch(verb) {
     prefetchNextPage(verb);
     window.prefetchInitiated = true;
   }
+}
+
+function redDir(verb) {
+  const hostname = window?.location?.hostname;
+  const ENV = getEnv();
+  const VERB = verb;
+  let newLocation;
+  if (hostname !== 'www.adobe.com' && hostname !== 'sign.ing' && hostname !== 'edit.ing') {
+    newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`;
+  } else {
+    newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
+  }
+  window.location.href = newLocation;
 }
 
 export default async function init(element) {
@@ -110,6 +136,21 @@ export default async function init(element) {
 
   element.append(widget, footer);
 
+  // Redirect after IMS:Ready
+  window.addEventListener('IMS:Ready', () => {
+    console.log('IMS:Ready 😎');
+    if (window.adobeIMS.isSignedInUser()
+      && window.adobeIMS.getAccountType() !== 'type1') {
+      redDir(VERB);
+    }
+  });
+  // Race Condition
+  if (window.adobeIMS?.isSignedInUser()
+    && window.adobeIMS?.getAccountType() !== 'type1') {
+    console.log('Race Con ⏩');
+    redDir(VERB);
+  }
+
   // Analytics
   verbAnalytics('landing:shown', VERB);
 
@@ -121,6 +162,7 @@ export default async function init(element) {
 
   button.addEventListener('click', () => {
     verbAnalytics('filepicker:shown', VERB);
+    verbAnalytics('dropzone:choose-file-clicked', VERB);
     initiatePrefetch(VERB);
   });
 
@@ -150,17 +192,13 @@ export default async function init(element) {
 
   window.addEventListener('unity:track-analytics', (e) => {
     if (e.detail?.event === 'change') {
-      verbAnalytics('choose-file:open', VERB);
+      verbAnalytics('choose-file:open', VERB, e.detail?.data);
       setUser();
     }
     // maybe new event name files-dropped?
     if (e.detail?.event === 'drop') {
       verbAnalytics('files-dropped', VERB, e.detail?.data);
       setDraggingClass(widget, false);
-      setUser();
-    }
-    if (e.detail?.event === 'choose-file-clicked') {
-      verbAnalytics('dropzone:choose-file-clicked', VERB, e.detail?.data);
       setUser();
     }
 
@@ -176,39 +214,56 @@ export default async function init(element) {
   });
 
   // Errors, Analytics & Logging
+  const handleError = (str) => {
+    errorState.classList.add('verb-error');
+    errorState.classList.remove('hide');
+    errorStateText.textContent = str;
+
+    setTimeout(() => {
+      errorState.classList.remove('verb-error');
+      errorState.classList.add('hide');
+    }, 5000);
+  };
+
   window.addEventListener('unity:show-error-toast', (e) => {
     // eslint-disable-next-line no-console
     console.log(`⛔️ Error Code - ${e.detail?.code}`);
 
-    if (e.detail?.code === 'only_accept_one_file') {
-      handleError(errorState, errorStateText, 'verb-widget-error-multi');
+    if (e.detail?.code.includes('error_only_accept_one_file')) {
+      handleError(e.detail?.message);
       verbAnalytics('error', VERB);
     }
 
-    if (e.detail?.code === 'unsupported_type') {
-      handleError(errorState, errorStateText, 'verb-widget-error-unsupported');
+    if (e.detail?.code.includes('error_unsupported_type')) {
+      handleError(e.detail?.message);
       verbAnalytics('error:unsupported_type', VERB);
     }
 
-    if (e.detail?.code === 'empty_file') {
-      handleError(errorState, errorStateText, 'verb-widget-error-empty');
+    if (e.detail?.code.includes('error_empty_file')) {
+      handleError(e.detail?.message);
       verbAnalytics('error:empty_file', VERB);
     }
 
-    // Code may be wrong. should be 'file_too_large'
-    if (e.detail?.code === 'file_too_largempty_file') {
-      handleError(errorState, errorStateText, 'verb-widget-error-large', LIMITS[VERB].maxFileSizeFriendly);
+    if (e.detail?.code.includes('error_file_too_large')) {
+      handleError(e.detail?.message);
       verbAnalytics('error', VERB);
     }
 
-    if (e.detail?.code === 'max_page_count') {
-      handleError(errorState, errorStateText, 'verb-widget-error-max', LIMITS[VERB].maxNumFiles);
+    if (e.detail?.code.includes('error_max_page_count')) {
+      handleError(e.detail?.message);
       verbAnalytics('error:max_page_count', VERB);
+    }
+
+    if (e.detail?.code.includes('error_generic')
+      || e.detail?.code.includes('error_max_quota_exceeded')
+      || e.detail?.code.includes('error_no_storage_provision')
+      || e.detail?.code.includes('error_duplicate_asset')) {
+      handleError(e.detail?.message);
+      verbAnalytics('error', VERB);
     }
 
     // acrobat:verb-fillsign:error:page_count_missing_from_metadata_api
     // acrobat:verb-fillsign:error:403
-    // acrobat:verb-fillsign:error
     // LANA for 403
   });
 }
