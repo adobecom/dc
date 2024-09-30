@@ -80,7 +80,7 @@
   height: 12px;
 }
 
-.np-step-separator.np-icon path {
+.np-step-separator path {
   fill: none;
 }
 
@@ -105,9 +105,9 @@
   background-color: var(--color-gray-300);
 }
 
-.np-stepper-back:hover .np-icon path,
-.np-stepper-back:focus .np-icon-path {
-  background-color: var(--color-gray-800);
+.np-stepper-back:hover path,
+.np-stepper-back:focus path {
+  fill: var(--color-gray-800);
 }
 
 .np-stepper-back.disabled {
@@ -146,6 +146,24 @@
   display: flex;
   flex-direction: column;
   gap: 25px;
+}
+
+.np-button {
+  background-color: var(--link-color);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.np-button:disabled {
+  background-color: var(--np-button-disabled-background);
+  color: var(--np-button-disabled-color);
+  cursor: default;
 }
 
 .np-form .np-button {
@@ -345,22 +363,22 @@
   background-color: var(--np-selected-organization-fallback-background);
 }
 
-.np-selected-organization-avatar.fallback .np-selected-organization-logo {
-  display: none;
-}
-
-.np-selected-organization-avatar:not(.fallback) .np-selected-organization-initials {
-  display: none;
-}
-
 .np-selected-organization-logo {
   object-fit: contain;
+}
+
+.np-selected-organization-avatar.fallback .np-selected-organization-logo {
+  display: none;
 }
 
 .np-selected-organization-initials {
   color: var(--color-white);
   font-size: 18px;
   font-weight: 700;
+}
+
+.np-selected-organization-avatar:not(.fallback) .np-selected-organization-initials {
+  display: none;
 }
 
 .np-selected-organization-separator {
@@ -386,24 +404,6 @@
   line-height: 18px;
   padding-bottom: 15px;
   color: var(--color-gray-600);
-}
-
-.np-button {
-  background-color: var(--link-color);
-  color: var(--color-white);
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.np-button:disabled {
-  background-color: var(--np-button-disabled-background);
-  color: var(--np-button-disabled-color);
-  cursor: default;
 }
 
 .np-application-review-container {
@@ -465,16 +465,7 @@
 .np-controller-title {
   font-weight: 700;
   font-size: 16px;
-  color: var(--feds-color-adobeBrand);
-}
-
-.np-controller-section {
-  display: flex;
-  width: 415px;
-
-  & .np-controller-button:last-child {
-    margin: 0;
-  }
+  color: var(--link-color);
 }
 
 .np-controller-button {
@@ -500,5 +491,14 @@
   &.selected {
     background-color: var(--link-color);
     color: var(--color-white);
+  }
+}
+
+.np-controller-section {
+  display: flex;
+  width: 415px;
+
+  & .np-controller-button:last-child {
+    margin: 0;
   }
 }
