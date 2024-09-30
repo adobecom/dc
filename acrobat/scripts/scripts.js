@@ -459,6 +459,14 @@ const { ietf } = getLocale(locales);
 
   setConfig({ ...CONFIG, miloLibs });
 
+  window.addEventListener('IMS:Ready', async () => {
+    const susiElems = document.querySelectorAll('a[href*="susi"]');
+    if (susiElems.length > 0) {
+      const { default: handleImsSusi } = await import('./susiAuthHandler.js');
+      handleImsSusi(susiElems);
+    }
+  });
+
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');
     window.dispatchEvent(imsIsReady);
