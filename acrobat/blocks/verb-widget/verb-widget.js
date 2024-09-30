@@ -190,7 +190,7 @@ export default async function init(element) {
     errorState.classList.add('hide');
   });
 
-  window.addEventListener('unity:track-analytics', (e) => {
+  element.addEventListener('unity:track-analytics', (e) => {
     if (e.detail?.event === 'change') {
       verbAnalytics('choose-file:open', VERB, e.detail?.data);
       setUser();
@@ -225,7 +225,7 @@ export default async function init(element) {
     }, 5000);
   };
 
-  window.addEventListener('unity:show-error-toast', (e) => {
+  element.addEventListener('unity:show-error-toast', (e) => {
     // eslint-disable-next-line no-console
     console.log(`⛔️ Error Code - ${e.detail?.code}`);
 
