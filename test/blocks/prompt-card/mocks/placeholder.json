@@ -1,0 +1,11 @@
+{
+  "total": 2,
+  "offset": 0,
+  "limit": 2,
+  "data": [
+    { "key": "Ask", "value": "聞く"},
+    { "key": "Copy", "value": "コピー" },
+    { "key": "Copied to clipboard", "value": "クリップボードにコピーされました" }
+  ],
+  ":type": "sheet"
+}
