@@ -41,10 +41,9 @@ export default function init(eventName, verb, metaData) {
           dcweb: {
             event: { pagename: `acrobat:verb-${verb}:${eventName}` },
             content: {
-              type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-              size: '2-5MB',
-              count: 1,
-              extension: 'docx',
+              type: metaData?.type,
+              size: metaData?.size,
+              count: metaData?.count,
             },
             source: {
               user_agent: navigator.userAgent,
@@ -68,7 +67,7 @@ export default function init(eventName, verb, metaData) {
             content: {
               type: metaData?.type,
               size: metaData?.size,
-              count: 1,
+              count: metaData?.count,
               // extension: 'docx', may not be needed
             },
             source: {
