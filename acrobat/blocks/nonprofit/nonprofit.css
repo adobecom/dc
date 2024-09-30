@@ -78,8 +78,10 @@
 .np-step-separator {
   width: 12px;
   height: 12px;
-  background: url(./icons/chevron-right.svg) no-repeat;
-  background-position: top 2px left 3px;
+}
+
+.np-step-separator.np-icon path {
+  fill: none;
 }
 
 .np-stepper-back {
@@ -98,8 +100,18 @@
   transition: left 200ms;
 }
 
-.np-stepper-back:hover {
+.np-stepper-back:hover,
+.np-stepper-back:focus {
   background-color: var(--color-gray-300);
+}
+
+.np-stepper-back:hover .np-icon path,
+.np-stepper-back:focus .np-icon-path {
+  background-color: var(--color-gray-800);
+}
+
+.np-stepper-back.disabled {
+  background-color: var(--color-gray-100);
 }
 
 .np-content-container {
@@ -172,33 +184,27 @@
   color: var(--np-input-placeholder-color);
 }
 
-.np-input[type='file'] {
-  color: transparent;
-  user-select: none;
-  position: relative;
-  background: url(./icons/upload.svg) no-repeat;
-  background-size: 20px;
-  background-position: right 10px bottom 10px;
-  cursor: pointer;
-}
-
-.np-input[type='file']:valid {
-  color: inherit;
-}
-
-.np-input[type='file']:valid::after {
-  display: none;
-}
-
-.np-input[type='file']::after {
-  content: attr(data-placeholder);
+.np-control .np-icon {
   position: absolute;
-  left: 15px;
-  color: var(--np-input-placeholder-color);
+  height: 12px;
+  right: 15px;
+  top: 39px;
+  display: flex;
+  cursor: pointer;
+  pointer-events: none;
 }
 
-.np-input[type='file']::file-selector-button {
-  display: none;
+.np-icon path {
+  fill: var(--color-gray-600);
+}
+
+.np-input:disabled ~ .np-icon path,
+.np-stepper-back.disabled .np-icon path {
+  fill: var(--color-gray-400);
+}
+
+.np-input[type='file'] ~ .np-input {
+  cursor: pointer;
 }
 
 .np-select-search {
@@ -206,19 +212,6 @@
   padding-right: 40px;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.np-select-icon {
-  position: absolute;
-  padding: 6px;
-  right: 6px;
-  top: 36px;
-  display: flex;
-  cursor: pointer;
-}
-
-.np-input:disabled ~ .np-select-icon path {
-  fill: var(--color-gray-400);
 }
 
 .np-select-list-container {
@@ -377,11 +370,15 @@
 
 .np-selected-organization-clear {
   position: absolute;
-  width: 12px;
-  height: 12px;
+  display: flex;
   top: 15px;
   right: 15px;
   cursor: pointer;
+}
+
+.np-selected-organization-clear:hover .np-icon path,
+.np-selected-organization-clear:focus .np-icon path {
+  fill: var(--color-gray-800);
 }
 
 .np-personal-data-disclaimer {
@@ -447,7 +444,7 @@
   }
 }
 
-/* Temporary stuff */
+/* Temporary stuff below (TODO - remove) */
 .nonprofit {
   display: flex;
   flex-direction: column;

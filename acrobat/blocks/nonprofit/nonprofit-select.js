@@ -1,8 +1,7 @@
 /* eslint-disable chai-friendly/no-unused-expressions */
 /* eslint-disable max-len */
 import ReactiveStore from '../../scripts/reactiveStore.js';
-
-const chevronDownSvg = '<svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.64477 6.53455L11.3367 1.84314C11.6931 1.48767 11.6931 0.910519 11.3367 0.554079C10.9807 0.198119 10.4036 0.198119 10.0476 0.554079L6.00025 4.60102L1.95289 0.554079C1.59693 0.198119 1.01978 0.198119 0.663827 0.554079C0.485607 0.732299 0.396736 0.965209 0.396736 1.19861C0.396736 1.43201 0.486097 1.66541 0.663827 1.84314L5.35572 6.53455C5.5337 6.71277 5.76697 6.80164 6.00025 6.80152C6.23353 6.80164 6.46679 6.71277 6.64477 6.53455Z" fill="#222222"/></svg>';
+import { getNonprofitIconTag, NONPRFIT_ICONS } from './icons.js';
 
 export default function nonprofitSelect(props) {
   const {
@@ -37,6 +36,7 @@ export default function nonprofitSelect(props) {
     class: 'np-input np-select-search',
     type: 'text',
     placeholder,
+    'data-for': name,
   });
   const valueTag = createTag('input', {
     class: `np-select-value${required ? ' np-required-field' : ''}`,
@@ -54,7 +54,7 @@ export default function nonprofitSelect(props) {
   }
 
   const listContainerTag = createTag('div', { class: 'np-select-list-container' });
-  const listTag = createTag('ul', { class: 'np-select-list' });
+  const listTag = createTag('ul', { class: 'np-select-list', 'data-for': name });
 
   let searchTimeout;
   let abortController;
@@ -208,12 +208,18 @@ export default function nonprofitSelect(props) {
       listTag.append(itemTag);
     });
 
+    const infoTagKeydown = () => {
+      focusedFromList = true;
+      searchTag.focus();
+    };
+
     if (!loading && storeOptions.length === 0) {
       const noOptionsTag = createTag(
         'div',
         { class: 'np-select-list-tag np-select-no-options', tabindex: -1 },
         noOptionsText,
       );
+      noOptionsTag.addEventListener('keydown', infoTagKeydown);
       noOptionsTag.addEventListener('focusout', focusOut);
       listTag.append(noOptionsTag);
     }
@@ -224,6 +230,7 @@ export default function nonprofitSelect(props) {
         { class: 'np-select-list-tag np-select-loader', tabindex: -1 },
         `${loadingText}...`,
       );
+      loadingTag.addEventListener('keydown', infoTagKeydown);
       loadingTag.addEventListener('focusout', focusOut);
       listTag.append(loadingTag);
     }
@@ -245,10 +252,7 @@ export default function nonprofitSelect(props) {
   controlTag.append(labelTag, searchTag, valueTag, listContainerTag);
 
   if (!hideIcon) {
-    const arrowIconTag = createTag('div', { class: 'np-select-icon' }, chevronDownSvg);
-    arrowIconTag.addEventListener('click', () => {
-      searchTag.focus();
-    });
+    const arrowIconTag = getNonprofitIconTag(NONPRFIT_ICONS.CHEVRON_DOWN);
     controlTag.append(arrowIconTag);
   }
 
