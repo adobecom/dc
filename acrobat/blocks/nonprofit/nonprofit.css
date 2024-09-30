@@ -23,6 +23,10 @@
   box-sizing: border-box;
 }
 
+.np-icon path {
+  fill: var(--color-gray-600);
+}
+
 .np-stepper-container {
   display: flex;
   align-items: center;
@@ -80,7 +84,7 @@
   height: 12px;
 }
 
-.np-step-separator path {
+.np-step-separator.np-icon path {
   fill: none;
 }
 
@@ -105,8 +109,8 @@
   background-color: var(--color-gray-300);
 }
 
-.np-stepper-back:hover path,
-.np-stepper-back:focus path {
+.np-stepper-back:hover .np-icon path,
+.np-stepper-back:focus .np-icon path {
   fill: var(--color-gray-800);
 }
 
@@ -210,10 +214,6 @@
   display: flex;
   cursor: pointer;
   pointer-events: none;
-}
-
-.np-icon path {
-  fill: var(--color-gray-600);
 }
 
 .np-input:disabled ~ .np-icon path,
