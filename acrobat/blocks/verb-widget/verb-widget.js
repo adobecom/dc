@@ -78,6 +78,10 @@ export default async function init(element) {
     window.location.href = EOLBrowserPage;
     return;
   }
+
+  const ppURL = 'https://www.adobe.com/privacy/policy.html';
+  const touURL = 'https://www.adobe.com/legal/terms.html';
+
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
@@ -107,9 +111,6 @@ export default async function init(element) {
   const widgetImage = createTag('img', { class: 'verb-image', src: `/acrobat/img/verb-widget/${VERB}.png`, alt: '' });
   // Since we're using placeholders we need a solution for the hyperlinks
   const legal = createTag('p', { class: 'verb-legal' }, `${window.mph['verb-widget-legal']} `);
-  const terms = createTag('a', { class: 'verb-legal-url', target: '_blank', href: 'https://www.adobe.com/legal/terms.html' }, window.mph.tou);
-  const and = createTag('span', { class: 'verb-legal-url' }, ` ${window.mph.and} `);
-  const privacy = createTag('a', { class: 'verb-legal-url', target: '_blank', href: 'https://www.adobe.com/privacy/policy.html' }, `${window.mph.pp}.`);
   const iconSecurity = createTag('div', { class: 'security-icon' });
   const footer = createTag('div', { class: 'verb-footer' });
 
@@ -130,7 +131,9 @@ export default async function init(element) {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
   }
 
-  legal.append(terms, and, privacy);
+  // Make ticket to localize links
+  legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
+  legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
 
   footer.append(iconSecurity, legal);
 
