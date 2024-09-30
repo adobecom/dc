@@ -228,7 +228,6 @@ export default async function init(element) {
   element.addEventListener('unity:show-error-toast', (e) => {
     // eslint-disable-next-line no-console
     console.log(`⛔️ Error Code - ${e.detail?.code}`);
-
     if (e.detail?.code.includes('error_only_accept_one_file')) {
       handleError(e.detail?.message);
       verbAnalytics('error', VERB);
@@ -267,11 +266,3 @@ export default async function init(element) {
     // LANA for 403
   });
 }
-
-// const ce = (
-//   new CustomEvent(
-//     'unity:show-error-toast',
-//     { detail: { code: 'only_accept_one_file', message: 'Error message' } },
-//   )
-// );
-// dispatchEvent(ce)
