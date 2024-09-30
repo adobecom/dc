@@ -1,8 +1,10 @@
+/* eslint-disable prefer-template */
 /* eslint-disable compat/compat */
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+const { processTrackingLabels } = await import(`${miloLibs}/martech/attributes.js`);
 
 const classToastShow = 'prompt-toast--show';
 const getPlaceHolder = (x) => (window.mph?.[x] || x);
@@ -37,6 +39,7 @@ async function createBlock(element, cfg) {
     'data-toast': cfg.toast,
     'daa-im': true,
     'daa-lh': 'Featured prompts | Executive summary',
+    'daa-ll': 'promptcard-' + processTrackingLabels(cfg.prefix) + '-' + processTrackingLabels(cfg.title),
   });
   const prefix = createTag('div', { class: 'prompt-prefix' });
   const icon = createTag('img', {
