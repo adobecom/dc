@@ -55,6 +55,9 @@
   text-align: center;
 }
 
+.verb-footer a {
+  text-decoration: underline;
+}
 
 #CIDTWO {
   /* display: none; */
@@ -168,7 +171,7 @@
   transform: translate(-50%, -50%);
   left: 50%;
   font-size: 14px;
-  font-weight: 400; 
+  font-weight: 400;
 }
 
 .verb-errorText {
@@ -236,7 +239,7 @@
   margin-left: 15px;
 }
 
-.verb-mobile-cta:hover, 
+.verb-mobile-cta:hover,
 .verb-mobile-cta:active {
   background-color: #0054b6;
   color: #fff;
