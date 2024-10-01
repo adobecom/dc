@@ -28,8 +28,7 @@ const setLibs = (prodLibs, location) => {
   if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.stage.adobe.com/libs';
   if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
   if (branch === 'local') return 'http://localhost:6456/libs';
-  const tld = hostname.includes('live') ? 'live' : 'page';
-  return branch.includes('--') ? `https://${branch}.hlx.${tld}/libs` : `https://${branch}--milo--adobecom.hlx.${tld}/libs`;
+  return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
 };
 
 const getLocale = (locales, pathname = window.location.pathname) => {
@@ -459,6 +458,14 @@ const { ietf } = getLocale(locales);
   }
 
   setConfig({ ...CONFIG, miloLibs });
+
+  window.addEventListener('IMS:Ready', async () => {
+    const susiElems = document.querySelectorAll('a[href*="susi"]');
+    if (susiElems.length > 0) {
+      const { default: handleImsSusi } = await import('./susiAuthHandler.js');
+      handleImsSusi(susiElems);
+    }
+  });
 
   loadIms().then(() => {
     const imsIsReady = new CustomEvent('IMS:Ready');

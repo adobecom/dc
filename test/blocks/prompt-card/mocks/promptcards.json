@@ -1,0 +1,14 @@
+{
+  "total": 2,
+  "offset": 0,
+  "limit": 2,
+  "data": [
+    { "page": "A", "prefix": "Ask", "title": "Sum it up", "prompt": "Summarize this document in 3 sentences."},
+    { "page": "A", "prefix": "Ask", "title": "Sum it up", "prompt": "Summarize this document in 3 sentences."},
+    { "page": "A", "prefix": "Ask", "title": "Sum it up", "prompt": "Summarize this document in 3 sentences."},
+    { "page": "B", "prefix": "Analyze", "title": "Sum it up", "prompt": "Summarize this document in 3 sentences."},
+    { "page": "B", "prefix": "Ask", "title": "Sum it up", "prompt": "Summarize this document in 3 sentences."},
+    { "page": "B", "prefix": "Analyze", "title": "Sum it up", "prompt": "Summarize this document in 3 sentences."}
+  ],
+  ":type": "sheet"
+}

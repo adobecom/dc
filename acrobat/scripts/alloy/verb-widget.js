@@ -23,8 +23,8 @@ if (params.dropzone2) {
   appTags.push('dropzone2');
 }
 
-export default function init(eventName, verb) {
-  console.log(`📡 Event Name - acrobat:verb-${verb}:${eventName}`);
+export default function init(eventName, verb, metaData) {
+  console.log(`📡 Event Name - acrobat:verb-${verb}:${eventName} - metaData: ${metaData?.type} / ${metaData?.size} `);
   const event = {
     documentUnloading: true,
     data: {
@@ -41,10 +41,9 @@ export default function init(eventName, verb) {
           dcweb: {
             event: { pagename: `acrobat:verb-${verb}:${eventName}` },
             content: {
-              type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-              size: '2-5MB',
-              count: 1,
-              extension: 'docx',
+              type: metaData?.type,
+              size: metaData?.size,
+              count: metaData?.count,
             },
             source: {
               user_agent: navigator.userAgent,
@@ -66,10 +65,10 @@ export default function init(eventName, verb) {
           dcweb2: {
             event: { pagename: `acrobat:verb-${verb}:${eventName}` },
             content: {
-              type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-              size: '2-5MB',
-              count: 1,
-              extension: 'docx',
+              type: metaData?.type,
+              size: metaData?.size,
+              count: metaData?.count,
+              // extension: 'docx', may not be needed
             },
             source: {
               user_agent: navigator.userAgent,
