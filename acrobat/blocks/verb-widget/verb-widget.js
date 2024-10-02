@@ -160,6 +160,12 @@ export default async function init(element) {
     verbAnalytics('goto-app:clicked', VERB);
   });
 
+  widgetButton.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      button.click();
+    }
+  });
+
   button.addEventListener('click', () => {
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
