@@ -1,23 +1,3 @@
-const imsReady = setInterval(() => {
-  // eslint-disable-next-line no-underscore-dangle
-  if (window.adobeIMS?.getAccessToken) {
-    clearInterval(imsReady);
-    const imsIsReady = new CustomEvent('IMS:Ready:Unity');
-    window.dispatchEvent(imsIsReady);
-  }
-}, 100);
-
-function getSessionID() {
-  const aToken = window.adobeIMS.getAccessToken();
-  const arrayToken = aToken?.token.split('.');
-  if (!arrayToken) return;
-  const tokenPayload = JSON.parse(atob(arrayToken[1]));
-  // eslint-disable-next-line consistent-return
-  return tokenPayload.sub;
-}
-
-const sID = getSessionID();
-
 const params = new Proxy(
   // eslint-disable-next-line compat/compat
   new URLSearchParams(window.location.search),
@@ -44,85 +24,79 @@ if (params.dropzone2) {
 }
 
 export default function init(eventName, verb, metaData) {
-  let event;
-  window.addEventListener('IMS:Ready:Unity', () => {
-    console.log(`📡 Event Name - acrobat:verb-${verb}:${eventName} - metaData: ${metaData?.type} / ${metaData?.size} `);
-    event = {
-      documentUnloading: true,
-      data: {
-        eventType: 'web.webinteraction.linkClicks',
-        web: {
-          webInteraction: {
-            linkClicks: { value: 1 },
-            type: 'other',
-            name: `acrobat:verb-${verb}:${eventName}`,
-          },
+  console.log(`📡 Event Name - acrobat:verb-${verb}:${eventName} - metaData: ${metaData?.type} / ${metaData?.size} `);
+  const event = {
+    documentUnloading: true,
+    data: {
+      eventType: 'web.webinteraction.linkClicks',
+      web: {
+        webInteraction: {
+          linkClicks: { value: 1 },
+          type: 'other',
+          name: `acrobat:verb-${verb}:${eventName}`,
         },
-        _adobe_corpnew: {
-          digitalData: {
-            dcweb: {
-              event: { pagename: `acrobat:verb-${verb}:${eventName}` },
-              content: {
-                type: metaData?.type,
-                size: metaData?.size,
-                count: metaData?.count,
-              },
-              source: {
-                user_agent: navigator.userAgent,
-                lang: document.documentElement.lang,
-                app_name: 'unity:adobe_com',
-                url: window.location.href,
-                app_referrer: appReferrer,
-                tracking_id: trackingId,
-              },
-              user: {
-                locale: document.documentElement.lang.toLocaleLowerCase(),
-                id: sID,
-                is_authenticated: `${window.adobeIMS?.isSignedInUser() ? 'true' : 'false'}`,
-                user_tags: [
-                  `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
-                ],
-              },
+      },
+      _adobe_corpnew: {
+        digitalData: {
+          dcweb: {
+            event: { pagename: `acrobat:verb-${verb}:${eventName}` },
+            content: {
+              type: metaData?.type,
+              size: metaData?.size,
+              count: metaData?.count,
             },
-            dcweb2: {
-              event: { pagename: `acrobat:verb-${verb}:${eventName}` },
-              content: {
-                type: metaData?.type,
-                size: metaData?.size,
-                count: metaData?.count,
-                // extension: 'docx', may not be needed
-              },
-              source: {
-                user_agent: navigator.userAgent,
-                lang: document.documentElement.lang,
-                app_name: 'unity:adobe_com',
-                url: window.location.href,
-                app_referrer: appReferrer,
-                tracking_id: trackingId,
-              },
-              user: {
-                locale: document.documentElement.lang.toLocaleLowerCase(),
-                id: sID,
-                is_authenticated: `${window.adobeIMS?.isSignedInUser() ? 'true' : 'false'}`,
-                user_tags: [
-                  `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
-                ],
-              },
+            source: {
+              user_agent: navigator.userAgent,
+              lang: document.documentElement.lang,
+              app_name: 'unity:adobe_com',
+              url: window.location.href,
+              app_referrer: appReferrer,
+              tracking_id: trackingId,
+            },
+            user: {
+              locale: document.documentElement.lang.toLocaleLowerCase(),
+              id: 'DO WE NEED THIS?',
+              is_authenticated: false,
+              user_tags: [
+                `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
+              ],
+            },
+          },
+          dcweb2: {
+            event: { pagename: `acrobat:verb-${verb}:${eventName}` },
+            content: {
+              type: metaData?.type,
+              size: metaData?.size,
+              count: metaData?.count,
+              // extension: 'docx', may not be needed
+            },
+            source: {
+              user_agent: navigator.userAgent,
+              lang: document.documentElement.lang,
+              app_name: 'unity:adobe_com',
+              url: window.location.href,
+              app_referrer: appReferrer,
+              tracking_id: trackingId,
+            },
+            user: {
+              locale: document.documentElement.lang.toLocaleLowerCase(),
+              id: 'DO WE NEED THIS?',
+              is_authenticated: false,
+              user_tags: [
+                `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
+              ],
             },
           },
         },
       },
-    };
-  });
-
+    },
+  };
   // Alloy Ready...
   const AlloyReady = setInterval(() => {
     // eslint-disable-next-line no-underscore-dangle
     if (window?._satellite?.track) {
       clearInterval(AlloyReady);
       // eslint-disable-next-line no-underscore-dangle
-      console.log(event);
-      
       window._satellite?.track('event', event);
     }
   }, 1000);
