@@ -78,6 +78,10 @@ export default async function init(element) {
     window.location.href = EOLBrowserPage;
     return;
   }
+
+  const ppURL = 'https://www.adobe.com/privacy/policy.html';
+  const touURL = 'https://www.adobe.com/legal/terms.html';
+
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
@@ -107,9 +111,6 @@ export default async function init(element) {
   const widgetImage = createTag('img', { class: 'verb-image', src: `/acrobat/img/verb-widget/${VERB}.png`, alt: '' });
   // Since we're using placeholders we need a solution for the hyperlinks
   const legal = createTag('p', { class: 'verb-legal' }, `${window.mph['verb-widget-legal']} `);
-  const terms = createTag('a', { class: 'verb-legal-url', target: '_blank', href: 'https://www.adobe.com/legal/terms.html' }, window.mph.tou);
-  const and = createTag('span', { class: 'verb-legal-url' }, ` ${window.mph.and} `);
-  const privacy = createTag('a', { class: 'verb-legal-url', target: '_blank', href: 'https://www.adobe.com/privacy/policy.html' }, `${window.mph.pp}.`);
   const iconSecurity = createTag('div', { class: 'security-icon' });
   const footer = createTag('div', { class: 'verb-footer' });
 
@@ -130,7 +131,9 @@ export default async function init(element) {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
   }
 
-  legal.append(terms, and, privacy);
+  // Make ticket to localize links
+  legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
+  legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
 
   footer.append(iconSecurity, legal);
 
@@ -196,7 +199,7 @@ export default async function init(element) {
     errorState.classList.add('hide');
   });
 
-  window.addEventListener('unity:track-analytics', (e) => {
+  element.addEventListener('unity:track-analytics', (e) => {
     if (e.detail?.event === 'change') {
       verbAnalytics('choose-file:open', VERB, e.detail?.data);
       setUser();
@@ -231,10 +234,9 @@ export default async function init(element) {
     }, 5000);
   };
 
-  window.addEventListener('unity:show-error-toast', (e) => {
+  element.addEventListener('unity:show-error-toast', (e) => {
     // eslint-disable-next-line no-console
     console.log(`⛔️ Error Code - ${e.detail?.code}`);
-
     if (e.detail?.code.includes('error_only_accept_one_file')) {
       handleError(e.detail?.message);
       verbAnalytics('error', VERB);
@@ -273,11 +275,3 @@ export default async function init(element) {
     // LANA for 403
   });
 }
-
-// const ce = (
-//   new CustomEvent(
-//     'unity:show-error-toast',
-//     { detail: { code: 'only_accept_one_file', message: 'Error message' } },
-//   )
-// );
-// dispatchEvent(ce)

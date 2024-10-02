@@ -14,10 +14,10 @@ const SHOW_COMMENTS_TRESHOLD = 5;
 const ASSET_TYPE = 'ADOBE_COM';
 const RNR_API_URL = (function () {
   if (
-    window.location.origin === 'main--dc--adobecom.hlx.page'
-    || window.location.origin === 'main--dc--adobecom.hlx.live'
-    || window.location.origin === 'www.adobe.com'
-  ) return 'https://rnr-prod.adobe.io/v1';
+    window.location.hostname === 'main--dc--adobecom.hlx.page'
+    || window.location.hostname === 'main--dc--adobecom.hlx.live'
+    || window.location.hostname === 'www.adobe.com'
+  ) return 'https://rnr.adobe.io/v1';
   return 'https://rnr-stage.adobe.io/v1';
 }());
 
