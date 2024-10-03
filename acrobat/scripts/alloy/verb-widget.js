@@ -30,7 +30,7 @@ export default function init(eventName, verb, metaData) {
     if (!arrayToken) return;
     const tokenPayload = JSON.parse(atob(arrayToken[1]));
     // eslint-disable-next-line consistent-return
-    return tokenPayload.sub;
+    return tokenPayload.sub || tokenPayload.user_id;
   }
   console.log(`📡 Event Name - acrobat:verb-${verb}:${eventName} - metaData: ${metaData?.type} / ${metaData?.size} `);
   const event = {
