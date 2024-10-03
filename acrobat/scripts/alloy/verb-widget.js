@@ -24,6 +24,14 @@ if (params.dropzone2) {
 }
 
 export default function init(eventName, verb, metaData) {
+  function getSessionID() {
+    const aToken = window.adobeIMS.getAccessToken();
+    const arrayToken = aToken?.token.split('.');
+    if (!arrayToken) return;
+    const tokenPayload = JSON.parse(atob(arrayToken[1]));
+    // eslint-disable-next-line consistent-return
+    return tokenPayload.sub;
+  }
   console.log(`📡 Event Name - acrobat:verb-${verb}:${eventName} - metaData: ${metaData?.type} / ${metaData?.size} `);
   const event = {
     documentUnloading: true,
@@ -55,8 +63,8 @@ export default function init(eventName, verb, metaData) {
             },
             user: {
               locale: document.documentElement.lang.toLocaleLowerCase(),
-              id: 'DO WE NEED THIS?',
-              is_authenticated: false,
+              id: getSessionID(),
+              is_authenticated: `${window.adobeIMS?.isSignedInUser() ? 'true' : 'false'}`,
               user_tags: [
                 `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
               ],
@@ -80,8 +88,8 @@ export default function init(eventName, verb, metaData) {
             },
             user: {
               locale: document.documentElement.lang.toLocaleLowerCase(),
-              id: 'DO WE NEED THIS?',
-              is_authenticated: false,
+              id: getSessionID(),
+              is_authenticated: `${window.adobeIMS?.isSignedInUser() ? 'true' : 'false'}`,
               user_tags: [
                 `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
               ],
@@ -91,6 +99,7 @@ export default function init(eventName, verb, metaData) {
       },
     },
   };
+
   // Alloy Ready...
   const AlloyReady = setInterval(() => {
     // eslint-disable-next-line no-underscore-dangle
