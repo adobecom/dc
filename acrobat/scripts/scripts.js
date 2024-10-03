@@ -275,7 +275,7 @@ const CONFIG = {
   },
   stage: {
     edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
-    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
+    marTechUrl: 'https://www.stage.adobe.com/marketingtech/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
     pdfViewerClientId: '5bfb3a784f2642f88ecf9d2ff4cd573e',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
