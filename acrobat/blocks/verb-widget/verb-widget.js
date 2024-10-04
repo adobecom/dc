@@ -127,17 +127,17 @@ export default async function init(element) {
   errorState.append(errorIcon, errorStateText, errorCloseBtn);
   if (mobileLink && LIMITS[VERB].mobileApp) {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetMobileButton);
+    element.append(widget);
   } else {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
+    // Make ticket to localize links
+    legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
+    legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
+
+    footer.append(iconSecurity, legal);
+
+    element.append(widget, footer);
   }
-
-  // Make ticket to localize links
-  legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
-  legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
-
-  footer.append(iconSecurity, legal);
-
-  element.append(widget, footer);
 
   // Redirect after IMS:Ready
   window.addEventListener('IMS:Ready', () => {
