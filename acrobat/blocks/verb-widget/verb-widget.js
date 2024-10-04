@@ -103,8 +103,9 @@ export default async function init(element) {
   const widgetRight = createTag('div', { class: 'verb-col right' });
   const widgetHeader = createTag('div', { class: 'verb-header' });
   const widgetIcon = createTag('div', { class: 'verb-icon' });
-  const widgetTitle = createTag('div', { class: 'verb-title' }, 'Acrobat');
+  const widgetTitle = createTag('div', { class: 'verb-title' }, 'Adobe Acrobat');
   const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
+  const widgetMobCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
   const widgetButton = createTag('label', { for: 'file-upload', class: 'verb-cta', tabindex: 0 }, window.mph['verb-widget-cta']);
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide' });
@@ -126,18 +127,18 @@ export default async function init(element) {
   widgetHeader.append(widgetIcon, widgetTitle);
   errorState.append(errorIcon, errorStateText, errorCloseBtn);
   if (mobileLink && LIMITS[VERB].mobileApp) {
-    widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetMobileButton);
+    widgetLeft.append(widgetHeader, widgetHeading, widgetMobCopy, errorState, widgetMobileButton);
+    element.append(widget);
   } else {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
+    // Make ticket to localize links
+    legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
+    legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
+
+    footer.append(iconSecurity, legal);
+
+    element.append(widget, footer);
   }
-
-  // Make ticket to localize links
-  legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
-  legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
-
-  footer.append(iconSecurity, legal);
-
-  element.append(widget, footer);
 
   // Redirect after IMS:Ready
   window.addEventListener('IMS:Ready', () => {
