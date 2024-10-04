@@ -105,7 +105,7 @@ export default async function init(element) {
   const widgetIcon = createTag('div', { class: 'verb-icon' });
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Acrobat');
   const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
-  const widgetButton = createTag('label', { for: 'file-upload', class: 'verb-cta', tabindex: 0, 'aria-role': 'button', 'aria-label': window.mph['verb-widget-cta'] }, window.mph['verb-widget-cta']);
+  const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0, 'aria-label': window.mph['verb-widget-cta'] }, window.mph['verb-widget-cta']);
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide', 'aria-hidden': true });
   const widgetImage = createTag('img', { class: 'verb-image', src: `/acrobat/img/verb-widget/${VERB}.png`, alt: '' });
@@ -163,10 +163,8 @@ export default async function init(element) {
     verbAnalytics('goto-app:clicked', VERB);
   });
 
-  widgetButton.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.keyCode === 13) {
-      button.click();
-    }
+  widgetButton.addEventListener('click', () => {
+    button.click();
   });
 
   button.addEventListener('click', () => {
