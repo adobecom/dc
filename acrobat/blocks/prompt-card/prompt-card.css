@@ -18,6 +18,9 @@
 
 .prompt-toast {
   font-family: var(--common-font);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   align-items: flex-start;
   background: #05834e;
   border-radius: 10px;
