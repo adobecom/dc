@@ -75,10 +75,6 @@
   transition: visibility 0s, opacity 0.5s linear;
 }
 
-
-
-/* new css */
-
 .verb-wrapper {
   width: 75%;
   max-width: 75%;
@@ -276,6 +272,7 @@
     width: unset;
     max-width: unset;
     padding: 20px;
+    min-height: calc(100vh - 150px);
   }
 
   .verb-row {
