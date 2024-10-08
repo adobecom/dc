@@ -106,7 +106,7 @@ export default async function init(element) {
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Adobe Acrobat');
   const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
   const widgetMobCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
-  const widgetButton = createTag('label', { for: 'file-upload', class: 'verb-cta', tabindex: 0 }, window.mph['verb-widget-cta']);
+  const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 }, window.mph['verb-widget-cta']);
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide', 'aria-hidden': true });
   const widgetImage = createTag('img', { class: 'verb-image', src: `/acrobat/img/verb-widget/${VERB}.png`, alt: '' });
