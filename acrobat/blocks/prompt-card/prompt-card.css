@@ -18,6 +18,9 @@
 
 .prompt-toast {
   font-family: var(--common-font);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   align-items: flex-start;
   background: #05834e;
   border-radius: 10px;
@@ -70,7 +73,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 16px 16px 24px;
-  transition-delay: 3s;
+  transition-delay: 1s;
   transition-property: border;
   max-width: 276px;
 }
