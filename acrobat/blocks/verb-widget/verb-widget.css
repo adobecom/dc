@@ -131,8 +131,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30%;
   min-width: 130px;
+  font-family: var(--font-family);
+  font-size: 18px;
+  border: none;
 }
 
 .verb-cta::before {
