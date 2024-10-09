@@ -108,7 +108,7 @@ export default async function init(element) {
   const widgetMobCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
   const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 }, window.mph['verb-widget-cta']);
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
-  const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide', 'aria-hidden': true });
+  const button = createTag('input', { type: 'file', accept: LIMITS[VERB].acceptedFiles, id: 'file-upload', class: 'hide', 'aria-hidden': true });
   const widgetImage = createTag('img', { class: 'verb-image', src: `/acrobat/img/verb-widget/${VERB}.png`, alt: '' });
   // Since we're using placeholders we need a solution for the hyperlinks
   const legal = createTag('p', { class: 'verb-legal' }, `${window.mph['verb-widget-legal']} `);
@@ -142,7 +142,6 @@ export default async function init(element) {
 
   // Redirect after IMS:Ready
   window.addEventListener('IMS:Ready', () => {
-    console.log('IMS:Ready 😎');
     if (window.adobeIMS.isSignedInUser()
       && window.adobeIMS.getAccountType() !== 'type1') {
       redDir(VERB);
@@ -151,7 +150,6 @@ export default async function init(element) {
   // Race Condition
   if (window.adobeIMS?.isSignedInUser()
     && window.adobeIMS?.getAccountType() !== 'type1') {
-    console.log('Race Con ⏩');
     redDir(VERB);
   }
 
@@ -235,7 +233,6 @@ export default async function init(element) {
 
   element.addEventListener('unity:show-error-toast', (e) => {
     // eslint-disable-next-line no-console
-    console.log(`⛔️ Error Code - ${e.detail?.code}`);
     if (e.detail?.code.includes('error_only_accept_one_file')) {
       handleError(e.detail?.message);
       verbAnalytics('error', VERB);

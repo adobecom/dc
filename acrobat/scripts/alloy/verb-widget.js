@@ -32,7 +32,6 @@ export default function init(eventName, verb, metaData) {
     // eslint-disable-next-line consistent-return
     return tokenPayload.sub || tokenPayload.user_id;
   }
-  console.log(`📡 Event Name - acrobat:verb-${verb}:${eventName} - metaData: ${metaData?.type} / ${metaData?.size} `);
   const event = {
     documentUnloading: true,
     data: {
