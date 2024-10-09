@@ -292,11 +292,6 @@ const CONFIG = {
   locales,
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'business.adobe.com', 'helpx.adobe.com'],
-  stageDomainsMap: {
-    'www.stage.adobe.com': { 'www.adobe.com': 'origin' },
-    '--dc--adobecom.hlx.live': { 'www.adobe.com': 'origin' },
-    '--dc--adobecom.hlx.page': { 'www.adobe.com': 'origin' },
-  },
   jarvis: {
     id: 'DocumentCloudWeb1',
     version: '1.0',
