@@ -23,7 +23,7 @@
 .verb-icon {
   height: 56px;
   min-width: 56px;
-  background-image: url('../../img/icons/widget-icon.png');
+  background-image: url('../../img/icons/widget-icon.svg');
   background-size: cover;
   display: inline-flex;
 }
