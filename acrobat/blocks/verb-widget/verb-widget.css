@@ -21,10 +21,9 @@
 }
 
 .verb-icon {
-  height: 56px;
-  min-width: 56px;
   background-size: cover;
   display: inline-flex;
+  width: 56px;
 }
 
 .verb-image {
@@ -34,6 +33,12 @@
   background-repeat: no-repeat;
   background-position: center;
   max-width: 345px;
+}
+
+.verb-image svg {
+  display: block;
+  width: 100%;
+
 }
 
 .verb-big-icon {
@@ -286,8 +291,8 @@
   }
 
   .verb-icon {
-    height: 40px;
-    min-width: 40px;
+    height: auto;
+    width: 40px;
   }
 
   .verb-title {
