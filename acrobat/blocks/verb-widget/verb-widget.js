@@ -1,6 +1,7 @@
 import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
+import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
@@ -103,16 +104,40 @@ export default async function init(element) {
   const widgetRight = createTag('div', { class: 'verb-col right' });
   const widgetHeader = createTag('div', { class: 'verb-header' });
   const widgetIcon = createTag('div', { class: 'verb-icon' });
+  const widgetIconSvg = createSvgElement('WIDGET_ICON');
+  if (widgetIconSvg) {
+    widgetIconSvg.classList.add('icon-verb');
+    widgetIcon.appendChild(widgetIconSvg);
+  }
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Adobe Acrobat');
   const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
   const widgetMobCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
-  const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 }, window.mph['verb-widget-cta']);
+  const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 });
+  const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, window.mph['verb-widget-cta']);
+  widgetButton.append(widgetButtonLabel);
+  const uploadIconSvg = createSvgElement('UPLOAD_ICON');
+  if (uploadIconSvg) {
+    uploadIconSvg.classList.add('upload-icon');
+    widgetButton.prepend(uploadIconSvg);
+  }
+
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
   const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide', 'aria-hidden': true });
-  const widgetImage = createTag('img', { class: 'verb-image', src: `/acrobat/img/verb-widget/${VERB}.png`, alt: '' });
+  const widgetImage = createTag('div', { class: 'verb-image' });
+  const verbIconName = `${VERB}`;
+  const verbImageSvg = createSvgElement(verbIconName);
+  if (verbImageSvg) {
+    verbImageSvg.classList.add('icon-verb-image');
+    widgetImage.appendChild(verbImageSvg);
+  }
+
   // Since we're using placeholders we need a solution for the hyperlinks
   const legal = createTag('p', { class: 'verb-legal' }, `${window.mph['verb-widget-legal']} `);
   const iconSecurity = createTag('div', { class: 'security-icon' });
+  const securityIconSvg = createSvgElement('SECURITY_ICON');
+  if (securityIconSvg) {
+    iconSecurity.appendChild(securityIconSvg);
+  }
   const footer = createTag('div', { class: 'verb-footer' });
 
   const errorState = createTag('div', { class: 'hide' });
