@@ -122,7 +122,7 @@ export default async function init(element) {
   }
 
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
-  const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide', 'aria-hidden': true });
+  const button = createTag('input', { type: 'file', accept: LIMITS[VERB].acceptedFiles, id: 'file-upload', class: 'hide', 'aria-hidden': true });
   const widgetImage = createTag('div', { class: 'verb-image' });
   const verbIconName = `${VERB}`;
   const verbImageSvg = createSvgElement(verbIconName);
@@ -167,7 +167,6 @@ export default async function init(element) {
 
   // Redirect after IMS:Ready
   window.addEventListener('IMS:Ready', () => {
-    console.log('IMS:Ready 😎');
     if (window.adobeIMS.isSignedInUser()
       && window.adobeIMS.getAccountType() !== 'type1') {
       redDir(VERB);
@@ -176,7 +175,6 @@ export default async function init(element) {
   // Race Condition
   if (window.adobeIMS?.isSignedInUser()
     && window.adobeIMS?.getAccountType() !== 'type1') {
-    console.log('Race Con ⏩');
     redDir(VERB);
   }
 
@@ -260,7 +258,6 @@ export default async function init(element) {
 
   element.addEventListener('unity:show-error-toast', (e) => {
     // eslint-disable-next-line no-console
-    console.log(`⛔️ Error Code - ${e.detail?.code}`);
     if (e.detail?.code.includes('error_only_accept_one_file')) {
       handleError(e.detail?.message);
       verbAnalytics('error', VERB);
