@@ -144,6 +144,11 @@ export default async function init(element) {
   const errorStateText = createTag('p', { class: 'verb-errorText' });
   const errorIcon = createTag('div', { class: 'verb-errorIcon' });
   const errorCloseBtn = createTag('div', { class: 'verb-errorBtn' });
+  const closeIconSvg = createSvgElement('CLOSE_ICON');
+  if (closeIconSvg) {
+    closeIconSvg.classList.add('close-icon');
+    errorCloseBtn.prepend(closeIconSvg);
+  }
 
   widget.append(widgetContainer);
   widgetContainer.append(widgetRow);
@@ -245,11 +250,15 @@ export default async function init(element) {
   });
 
   // Errors, Analytics & Logging
+  const lanaOptions = {
+    sampleRate: 1,
+    tags: 'DC_Milo,Project Unity (DC)',
+  };
+
   const handleError = (str) => {
     errorState.classList.add('verb-error');
     errorState.classList.remove('hide');
     errorStateText.textContent = str;
-
     setTimeout(() => {
       errorState.classList.remove('verb-error');
       errorState.classList.add('hide');
@@ -289,6 +298,7 @@ export default async function init(element) {
       || e.detail?.code.includes('error_duplicate_asset')) {
       handleError(e.detail?.message);
       verbAnalytics('error', VERB);
+      window.lana?.log(`Error Status: ${e.detail?.message}, Error Message: ${e.detail?.status}`, lanaOptions);
     }
 
     // acrobat:verb-fillsign:error:page_count_missing_from_metadata_api
