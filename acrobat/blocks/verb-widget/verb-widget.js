@@ -248,7 +248,7 @@ export default async function init(element) {
       setUser();
     }
 
-    if (e.detail?.event === 'TRANSITION??????') {
+    if (e.detail?.event === 'redirect to product') {
       verbAnalytics('transition', VERB);
       setUser();
     }
