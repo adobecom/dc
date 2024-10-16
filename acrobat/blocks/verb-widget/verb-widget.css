@@ -171,8 +171,8 @@
 
 .verb-error {
   background: #D31510;
-  min-width: 506px;
-  padding: 11px 27px;
+  max-width: 506px;
+  padding: 11px 37px 11px 20px;
   color: white;
   white-space: nowrap;
   display: flex;
@@ -319,4 +319,3 @@
     width: 30%;
   }
 }
-
