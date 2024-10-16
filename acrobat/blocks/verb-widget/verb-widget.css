@@ -10,14 +10,25 @@
   color: initial;
 }
 
+.verb-legal-wrapper {
+  align-items: flex-start;
+  display: flex;
+  flex-flow: column;
+}
+
 .verb-legal {
   margin-top: 30px;
+  margin-bottom: 0;
   font-size: 14px;
   line-height: 20px;
   max-width: 527px;
   text-align: left;
   display: inline-block;
   color: #2c2c2c;
+}
+
+.verb-legal-two {
+  margin-top: 0;
 }
 
 .verb-icon {
@@ -41,30 +52,24 @@
 
 }
 
-.verb-big-icon {
-  width: 500px;
-  height: 500px;
-  background-image: url('../../img/icons/chat-pdf.svg');
-  background-size: contain;
-  margin: auto;
-  background-repeat: no-repeat;
-  display: inline;
-  float: right;
-  position: absolute;
-  right: 0;
-  top: 40px;
-}
-
 .security-icon {
+  display: flex;
   width: 42px;
   height: 42px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  display: inline-block;
+  margin: 15px 3px 0 0;
+}
+
+.info-icon {
+  display: flex;
+  margin: 15px 0 0 20px;
 }
 
 .verb-footer {
   text-align: center;
+  align-items: center;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
 }
 
 .verb-footer a {
