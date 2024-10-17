@@ -32,9 +32,9 @@
 }
 
 .verb-icon {
-  background-size: cover;
   display: inline-flex;
   width: 56px;
+  height: 56px;
 }
 
 .verb-image {
@@ -252,6 +252,7 @@
     flex: 1 1 55%;
     flex-direction: row;
     padding: 48px 0 48px 48px;
+    cursor: pointer;
   }
 
   .verb-mobile-cta {
@@ -284,8 +285,8 @@
   }
 
   .verb-icon {
-    height: auto;
     width: 40px;
+    height: 40px;
   }
 
   .verb-title {
