@@ -222,11 +222,6 @@ export default async function init(element) {
     setDraggingClass(widget, false);
   });
 
-  widget.addEventListener('drop', (e) => {
-    e.preventDefault();
-    initiatePrefetch(VERB);
-  });
-
   errorCloseBtn.addEventListener('click', () => {
     errorState.classList.remove('verb-error');
     errorState.classList.add('hide');
@@ -239,6 +234,7 @@ export default async function init(element) {
     }
     // maybe new event name files-dropped?
     if (e.detail?.event === 'drop') {
+      initiatePrefetch(VERB);
       verbAnalytics('files-dropped', VERB, e.detail?.data);
       setDraggingClass(widget, false);
       setUser();
@@ -262,6 +258,7 @@ export default async function init(element) {
   };
 
   const handleError = (str) => {
+    setDraggingClass(widget, false);
     errorState.classList.add('verb-error');
     errorState.classList.remove('hide');
     errorStateText.textContent = str;
