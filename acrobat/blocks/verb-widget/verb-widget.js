@@ -253,6 +253,11 @@ export default async function init(element) {
       verbAnalytics('job:uploaded', VERB, e.detail?.data);
       setUser();
     }
+
+    if (e.detail?.event === 'redirect to product') {
+      verbAnalytics('transition', VERB);
+      setUser();
+    }
   });
 
   // Errors, Analytics & Logging

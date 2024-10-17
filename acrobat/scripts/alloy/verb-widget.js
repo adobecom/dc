@@ -45,6 +45,12 @@ export default function init(eventName, verb, metaData) {
       },
       _adobe_corpnew: {
         digitalData: {
+          primaryEvent: {
+            eventInfo: {
+              eventName: `acrobat:verb-${verb}:${eventName}`,
+              value: `${verb} - Frictionless to Acrobat Web`,
+            },
+          },
           dcweb: {
             event: { pagename: `acrobat:verb-${verb}:${eventName}` },
             content: {
