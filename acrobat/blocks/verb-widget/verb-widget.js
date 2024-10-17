@@ -199,6 +199,7 @@ export default async function init(element) {
   });
 
   widgetButton.addEventListener('click', () => {
+    button.click();
   });
 
   widgetContainer.addEventListener('click', () => {
