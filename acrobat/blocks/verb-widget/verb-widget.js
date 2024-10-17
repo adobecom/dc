@@ -236,7 +236,7 @@ export default async function init(element) {
     if (e.detail?.event === 'drop') {
       initiatePrefetch(VERB);
       verbAnalytics('files-dropped', VERB, e.detail?.data);
-      // setDraggingClass(widget, false);
+      setDraggingClass(widget, false);
       setUser();
     }
 
@@ -258,6 +258,7 @@ export default async function init(element) {
   };
 
   const handleError = (str) => {
+    setDraggingClass(widget, false);
     errorState.classList.add('verb-error');
     errorState.classList.remove('hide');
     errorStateText.textContent = str;
