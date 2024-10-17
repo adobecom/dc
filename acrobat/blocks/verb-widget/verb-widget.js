@@ -80,8 +80,8 @@ export default async function init(element) {
     return;
   }
 
-  const ppURL = 'https://www.adobe.com/privacy/policy.html';
-  const touURL = 'https://www.adobe.com/legal/terms.html';
+  const ppURL = window.mph['verb-widget-privacy-policy-url'] || 'https://www.adobe.com/privacy/policy.html';
+  const touURL = window.mph['verb-widget-terms-of-use-url'] || 'https://www.adobe.com/legal/terms.html';
 
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
@@ -167,8 +167,7 @@ export default async function init(element) {
   } else {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
     // Make ticket to localize links
-    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
-    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
+    legalTwo.innerHTML = legalTwo.innerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}">${window.mph['verb-widget-terms-of-use']}</a>`).replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}">${window.mph['verb-widget-privacy-policy']}</a>`);
 
     legalWrapper.append(legal, legalTwo);
     footer.append(iconSecurity, legalWrapper, infoIcon);
