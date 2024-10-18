@@ -197,8 +197,12 @@ export default async function init(element) {
     verbAnalytics('goto-app:clicked', VERB);
   });
 
-  widget.addEventListener('click', () => {
-    if (!mobileLink) { button.click(); }
+  // widget.addEventListener('click', () => {
+  //   if (!mobileLink) { button.click(); }
+  // });
+
+  widgetButton.addEventListener('click', () => {
+    button.click();
   });
 
   button.addEventListener('click', () => {

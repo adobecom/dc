@@ -253,7 +253,7 @@
     flex: 1 1 55%;
     flex-direction: row;
     padding: 48px 0 48px 48px;
-    cursor: pointer;
+    /* cursor: pointer; */
   }
 
   .verb-mobile-cta {
