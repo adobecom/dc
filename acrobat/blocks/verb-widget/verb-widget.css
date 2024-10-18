@@ -139,6 +139,7 @@
 }
 
 .verb-cta {
+  cursor: pointer;
   background: #1473e6;
   border-radius: 8px;
   padding: 11px 27px;
@@ -302,7 +303,7 @@
   }
 
   .verb-cta {
-    /* display: none; */
+    cursor: pointer;
   }
 
   .verb-mobile-cta {
