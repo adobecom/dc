@@ -166,7 +166,6 @@ export default async function init(element) {
     element.append(widget);
   } else {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
-    // Make ticket to localize links
     legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
     legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
 
@@ -198,12 +197,8 @@ export default async function init(element) {
     verbAnalytics('goto-app:clicked', VERB);
   });
 
-  widgetButton.addEventListener('click', () => {
-    button.click();
-  });
-
-  widgetContainer.addEventListener('click', () => {
-    button.click();
+  widget.addEventListener('click', () => {
+    if (!mobileLink) { button.click(); }
   });
 
   button.addEventListener('click', () => {
