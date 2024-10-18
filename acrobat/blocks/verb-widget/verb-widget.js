@@ -242,6 +242,8 @@ export default async function init(element) {
     if (e.detail?.event === 'uploading') {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
+      const ENV = getEnv();
+      document.cookie = ENV === 'prod' ? `UTS=${Date.now()};domain=.adobe.com` : `UTS=${Date.now()};domain=.stage.adobe.com`;
     }
 
     if (e.detail?.event === 'uploaded') {
