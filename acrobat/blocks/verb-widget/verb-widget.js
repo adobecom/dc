@@ -46,15 +46,15 @@ function prerenderTarget(verb, assetId) {
   const isSignedIn = window.adobeIMS.isSignedInUser();
   const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
   const nextPageUrl = isSignedIn ?
-    `https://${nextPageHost}/id/${encodeURIComponent(assetId)}?viewer!megaVerb=verb-fill-sign&x_api_client_id=unity` :
-    `https://${nextPageHost}/us/en/discover/${verb}#assets=${encodeURIComponent(assetId)}`;
+    `https://${nextPageHost}/id/${encodeURIComponent(assetId)}?viewer!megaVerb=verb-fill-sign&x_api_client_id=unity`
+    : `https://${nextPageHost}/us/en/discover/${verb}#assets=${encodeURIComponent(assetId)}`;
   const script = document.createElement('script');
   script.type = 'speculationrules';
   const rules = {
     prefetch: [
       {
         urls: [nextPageUrl],
-        eagerness: "immediate",
+        eagerness: 'immediate',
       },
     ],
   };
