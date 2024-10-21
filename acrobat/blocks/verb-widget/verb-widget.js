@@ -132,11 +132,16 @@ export default async function init(element) {
   }
 
   // Since we're using placeholders we need a solution for the hyperlinks
+  const legalWrapper = createTag('div', { class: 'verb-legal-wrapper' });
   const legal = createTag('p', { class: 'verb-legal' }, `${window.mph['verb-widget-legal']} `);
+  const legalTwo = createTag('p', { class: 'verb-legal verb-legal-two' }, `${window.mph['verb-widget-legal-2']} `);
   const iconSecurity = createTag('div', { class: 'security-icon' });
+  const infoIcon = createTag('div', { class: 'info-icon milo-tooltip right', 'data-tooltip': `${window.mph['verb-widget-tool-tip']}` });
   const securityIconSvg = createSvgElement('SECURITY_ICON');
+  const infoIconSvg = createSvgElement('INFO_ICON');
   if (securityIconSvg) {
     iconSecurity.appendChild(securityIconSvg);
+    infoIcon.appendChild(infoIconSvg);
   }
   const footer = createTag('div', { class: 'verb-footer' });
 
@@ -161,11 +166,11 @@ export default async function init(element) {
     element.append(widget);
   } else {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
-    // Make ticket to localize links
-    legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
-    legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
+    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
+    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
 
-    footer.append(iconSecurity, legal);
+    legalWrapper.append(legal, legalTwo);
+    footer.append(iconSecurity, legalWrapper, infoIcon);
 
     element.append(widget, footer);
   }
@@ -192,6 +197,10 @@ export default async function init(element) {
     verbAnalytics('goto-app:clicked', VERB);
   });
 
+  // widget.addEventListener('click', () => {
+  //   if (!mobileLink) { button.click(); }
+  // });
+
   widgetButton.addEventListener('click', () => {
     button.click();
   });
@@ -216,11 +225,6 @@ export default async function init(element) {
     setDraggingClass(widget, false);
   });
 
-  widget.addEventListener('drop', (e) => {
-    e.preventDefault();
-    initiatePrefetch(VERB);
-  });
-
   errorCloseBtn.addEventListener('click', () => {
     errorState.classList.remove('verb-error');
     errorState.classList.add('hide');
@@ -233,6 +237,7 @@ export default async function init(element) {
     }
     // maybe new event name files-dropped?
     if (e.detail?.event === 'drop') {
+      initiatePrefetch(VERB);
       verbAnalytics('files-dropped', VERB, e.detail?.data);
       setDraggingClass(widget, false);
       setUser();
@@ -256,6 +261,7 @@ export default async function init(element) {
   };
 
   const handleError = (str) => {
+    setDraggingClass(widget, false);
     errorState.classList.add('verb-error');
     errorState.classList.remove('hide');
     errorStateText.textContent = str;
