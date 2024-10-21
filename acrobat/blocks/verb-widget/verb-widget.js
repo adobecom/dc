@@ -4,7 +4,7 @@ import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -34,14 +34,6 @@ const verbRedirMap = {
 
 const setUser = () => {
   localStorage.setItem('unity.user', 'true');
-};
-
-const getLocale = () => {
-  const metaTag = document.querySelector('meta[property="og:locale"]');
-  const localeString = metaTag ? metaTag.getAttribute('content') : 'en-US';
-  const language = localeString.split('-')[0];
-  const langPath = localeString === 'en-US' ? '' : `${language}/`;
-  return langPath;
 };
 
 const setDraggingClass = (widget, shouldToggle) => {
@@ -87,9 +79,11 @@ export default async function init(element) {
     window.location.href = EOLBrowserPage;
     return;
   }
-  const langPath = getLocale();
-  const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com/${langPath}privacy/policy.html`;
-  const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com/${langPath}legal/terms.html`;
+
+  const { locale } = getConfig();
+
+  const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
+  const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
 
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
