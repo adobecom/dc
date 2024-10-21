@@ -25,11 +25,12 @@ export const [setLibs, getLibs] = (() => {
     (prodLibs, location) => {
       libs = (() => {
         const { hostname, search } = location || window.location;
+        // eslint-disable-next-line compat/compat
         const branch = new URLSearchParams(search).get('milolibs') || 'main';
-        if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.adobe.com/libs';
+        if (branch === 'main' && hostname === 'www.stage.adobe.com') return '/libs';
         if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
         if (branch === 'local') return 'http://localhost:6456/libs';
-        return branch.includes('--') ? `https://${branch}.hlx.page/libs` : `https://${branch}--milo--adobecom.hlx.page/libs`;
+        return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
       })();
       return libs;
     }, () => libs,
