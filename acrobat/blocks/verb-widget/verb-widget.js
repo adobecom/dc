@@ -80,8 +80,8 @@ export default async function init(element) {
     return;
   }
 
+  const ENV = getEnv();
   const { locale } = getConfig();
-
   const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
   const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
 
@@ -248,11 +248,19 @@ export default async function init(element) {
     if (e.detail?.event === 'uploading') {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
+      document.cookie = `UTS_Uploading=${Date.now()};domain=${ENV === 'prod' ? '' : '.stage'}.adobe.com`;
     }
 
     if (e.detail?.event === 'uploaded') {
       verbAnalytics('job:uploaded', VERB, e.detail?.data);
       setUser();
+      document.cookie = `UTS_Uploaded=${Date.now()};domain=${ENV === 'prod' ? '' : '.stage'}.adobe.com`;
+    }
+
+    if (e.detail?.event === 'redirect to product') {
+      verbAnalytics('transition', VERB);
+      setUser();
+      document.cookie = `UTS_Redirect=${Date.now()};domain=${ENV === 'prod' ? '' : '.stage'}.adobe.com`;
     }
   });
 
