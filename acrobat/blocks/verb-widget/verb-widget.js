@@ -4,7 +4,7 @@ import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -80,8 +80,10 @@ export default async function init(element) {
     return;
   }
 
-  const ppURL = 'https://www.adobe.com/privacy/policy.html';
-  const touURL = 'https://www.adobe.com/legal/terms.html';
+  const ENV = getEnv();
+  const { locale } = getConfig();
+  const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
+  const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
 
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
@@ -145,13 +147,13 @@ export default async function init(element) {
   }
   const footer = createTag('div', { class: 'verb-footer' });
 
-  const errorState = createTag('div', { class: 'hide' });
+  const errorState = createTag('div', { class: 'error hide' });
   const errorStateText = createTag('p', { class: 'verb-errorText' });
   const errorIcon = createTag('div', { class: 'verb-errorIcon' });
   const errorCloseBtn = createTag('div', { class: 'verb-errorBtn' });
   const closeIconSvg = createSvgElement('CLOSE_ICON');
   if (closeIconSvg) {
-    closeIconSvg.classList.add('close-icon');
+    closeIconSvg.classList.add('close-icon', 'error');
     errorCloseBtn.prepend(closeIconSvg);
   }
 
@@ -166,9 +168,8 @@ export default async function init(element) {
     element.append(widget);
   } else {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
-    // Make ticket to localize links
-    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
-    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
+    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
+    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
 
     legalWrapper.append(legal, legalTwo);
     footer.append(iconSecurity, legalWrapper, infoIcon);
@@ -198,8 +199,9 @@ export default async function init(element) {
     verbAnalytics('goto-app:clicked', VERB);
   });
 
-  widgetButton.addEventListener('click', () => {
-    button.click();
+  widget.addEventListener('click', (e) => {
+    if (e.srcElement.classList.value.includes('error')) { return; }
+    if (!mobileLink) { button.click(); }
   });
 
   button.addEventListener('click', () => {
@@ -222,23 +224,23 @@ export default async function init(element) {
     setDraggingClass(widget, false);
   });
 
-  widget.addEventListener('drop', (e) => {
-    e.preventDefault();
-    initiatePrefetch(VERB);
-  });
-
   errorCloseBtn.addEventListener('click', () => {
     errorState.classList.remove('verb-error');
     errorState.classList.add('hide');
   });
 
   element.addEventListener('unity:track-analytics', (e) => {
+    const date = new Date();
+    date.setTime(date.getTime() + 1 * 60 * 1000);
+    const cookieExp = `expires=${date.toUTCString()}`;
+
     if (e.detail?.event === 'change') {
       verbAnalytics('choose-file:open', VERB, e.detail?.data);
       setUser();
     }
     // maybe new event name files-dropped?
     if (e.detail?.event === 'drop') {
+      initiatePrefetch(VERB);
       verbAnalytics('files-dropped', VERB, e.detail?.data);
       setDraggingClass(widget, false);
       setUser();
@@ -247,11 +249,19 @@ export default async function init(element) {
     if (e.detail?.event === 'uploading') {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
+      document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
     }
 
     if (e.detail?.event === 'uploaded') {
       verbAnalytics('job:uploaded', VERB, e.detail?.data);
       setUser();
+      document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+    }
+
+    if (e.detail?.event === 'redirect to product') {
+      verbAnalytics('transition', VERB);
+      setUser();
+      document.cookie = `UTS_Redirect=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
     }
 
     if (e.detail?.event === 'redirect to product') {
@@ -267,6 +277,7 @@ export default async function init(element) {
   };
 
   const handleError = (str) => {
+    setDraggingClass(widget, false);
     errorState.classList.add('verb-error');
     errorState.classList.remove('hide');
     errorStateText.textContent = str;
