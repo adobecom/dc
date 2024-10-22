@@ -194,6 +194,23 @@ export default async function init(element) {
   verbAnalytics('landing:shown', VERB);
 
   window.prefetchInitiated = false;
+  window.uploadInProgress = false;
+
+  function uploadState(isUploading) {
+    window.uploadInProgress = isUploading;
+
+    if (isUploading) {
+      window.history.pushState({ uploading: true }, '', window.location.href);
+    } else {
+      window.history.replaceState({}, '', window.location.href);
+    }
+  }
+
+  window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.uploading) {
+      uploadState(false);
+    }
+  });
 
   widgetMobileButton.addEventListener('click', () => {
     verbAnalytics('goto-app:clicked', VERB);
@@ -208,6 +225,7 @@ export default async function init(element) {
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
     initiatePrefetch(VERB);
+    uploadState(true);
   });
 
   button.addEventListener('cancel', () => {
