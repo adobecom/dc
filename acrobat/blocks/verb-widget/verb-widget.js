@@ -263,6 +263,11 @@ export default async function init(element) {
       setUser();
       document.cookie = `UTS_Redirect=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
     }
+
+    if (e.detail?.event === 'redirect to product') {
+      verbAnalytics('transition', VERB);
+      setUser();
+    }
   });
 
   // Errors, Analytics & Logging
