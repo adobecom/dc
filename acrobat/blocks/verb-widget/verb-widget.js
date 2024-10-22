@@ -211,7 +211,7 @@ export default async function init(element) {
   window.addEventListener('popstate', (event) => {
     console.log('popstate', event.state);
     if (event.state && event.state.uploading) {
-      console.log('popstate Upload in progress');
+      console.log('popstate Upload in progress false');
       uploadState(false);
     }
   });
@@ -229,6 +229,7 @@ export default async function init(element) {
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
     initiatePrefetch(VERB);
+    console.log('popstate Upload in progress true');
     uploadState(true);
   });
 
