@@ -10,8 +10,15 @@
   color: initial;
 }
 
+.verb-legal-wrapper {
+  align-items: flex-start;
+  display: flex;
+  flex-flow: column;
+}
+
 .verb-legal {
   margin-top: 30px;
+  margin-bottom: 0;
   font-size: 14px;
   line-height: 20px;
   max-width: 527px;
@@ -20,39 +27,49 @@
   color: #2c2c2c;
 }
 
-.verb-icon {
-  height: 56px;
-  min-width: 56px;
-  background-image: url('../../img/icons/widget-icon.png');
-  background-size: cover;
-  display: inline-flex;
+.verb-legal-two {
+  margin-top: 0;
 }
 
-.verb-big-icon {
-  width: 500px;
-  height: 500px;
-  background-image: url('../../img/icons/chat-pdf.svg');
-  background-size: contain;
-  margin: auto;
+.verb-icon {
+  display: inline-flex;
+  width: 56px;
+  height: 56px;
+}
+
+.verb-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
   background-repeat: no-repeat;
-  display: inline;
-  float: right;
-  position: absolute;
-  right: 0;
-  top: 40px;
+  background-position: center;
+  max-width: 345px;
+}
+
+.verb-image svg {
+  display: block;
+  width: 100%;
+
 }
 
 .security-icon {
+  display: flex;
   width: 42px;
   height: 42px;
-  background-image: url('../../img/icons/widget-sec.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  display: inline-block;
+  margin: 15px 3px 0 0;
+}
+
+.info-icon {
+  display: flex;
+  margin: 15px 0 0 20px;
 }
 
 .verb-footer {
   text-align: center;
+  align-items: center;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
 }
 
 .verb-footer a {
@@ -122,6 +139,7 @@
 }
 
 .verb-cta {
+  cursor: pointer;
   background: #1473e6;
   border-radius: 8px;
   padding: 11px 27px;
@@ -137,11 +155,7 @@
   border: none;
 }
 
-.verb-cta::before {
-  content: '';
-  background-image: url('/acrobat/img/icons/upload-icon.svg');
-  background-repeat: no-repeat;
-  background-size: 32px 28px;
+.verb-cta .upload-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,8 +172,8 @@
 
 .verb-error {
   background: #D31510;
-  min-width: 506px;
-  padding: 11px 27px;
+  max-width: 506px;
+  padding: 11px 37px 11px 20px;
   color: white;
   white-space: nowrap;
   display: flex;
@@ -178,22 +192,10 @@
 }
 
 .verb-errorBtn {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-.verb-errorBtn::after {
-  content: '';
-  background-image: url('/acrobat/img/icons/ui/close.svg');
-  background-repeat: no-repeat;
-  background-size: 45px 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
   cursor: pointer;
+  position: absolute;
+  right: 10px;
+  bottom: 0;
 }
 
 .verb-errorIcon {
@@ -251,6 +253,7 @@
     flex: 1 1 55%;
     flex-direction: row;
     padding: 48px 0 48px 48px;
+    /* cursor: pointer; */
   }
 
   .verb-mobile-cta {
@@ -283,8 +286,8 @@
   }
 
   .verb-icon {
+    width: 40px;
     height: 40px;
-    min-width: 40px;
   }
 
   .verb-title {
@@ -300,7 +303,7 @@
   }
 
   .verb-cta {
-    /* display: none; */
+    cursor: pointer;
   }
 
   .verb-mobile-cta {
@@ -318,4 +321,3 @@
     width: 30%;
   }
 }
-
