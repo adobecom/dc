@@ -207,7 +207,9 @@ export default async function init(element) {
   }
 
   window.addEventListener('popstate', (event) => {
+    console.log('popstate', event.state);
     if (event.state && event.state.uploading) {
+      console.log('popstate Upload in progress');
       uploadState(false);
     }
   });
