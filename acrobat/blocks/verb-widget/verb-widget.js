@@ -230,6 +230,10 @@ export default async function init(element) {
   });
 
   element.addEventListener('unity:track-analytics', (e) => {
+    const date = new Date();
+    date.setTime(date.getTime() + 1 * 60 * 1000);
+    const cookieExp = `expires=${date.toUTCString()}`;
+
     if (e.detail?.event === 'change') {
       verbAnalytics('choose-file:open', VERB, e.detail?.data);
       setUser();
@@ -245,19 +249,19 @@ export default async function init(element) {
     if (e.detail?.event === 'uploading') {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
-      document.cookie = `UTS_Uploading=${Date.now()};domain=${ENV === 'prod' ? '' : '.stage'}.adobe.com`;
+      document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
     }
 
     if (e.detail?.event === 'uploaded') {
       verbAnalytics('job:uploaded', VERB, e.detail?.data);
       setUser();
-      document.cookie = `UTS_Uploaded=${Date.now()};domain=${ENV === 'prod' ? '' : '.stage'}.adobe.com`;
+      document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
     }
 
     if (e.detail?.event === 'redirect to product') {
       verbAnalytics('transition', VERB);
       setUser();
-      document.cookie = `UTS_Redirect=${Date.now()};domain=${ENV === 'prod' ? '' : '.stage'}.adobe.com`;
+      document.cookie = `UTS_Redirect=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
     }
   });
 
