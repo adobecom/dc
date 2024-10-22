@@ -41,6 +41,29 @@ const setDraggingClass = (widget, shouldToggle) => {
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
 };
 
+function prerenderTarget(verb, assetId) {
+  const ENV = getEnv();
+  const isProd = ENV === 'prod';
+  const isSignedIn = window.adobeIMS.isSignedInUser();
+  const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
+  const nextPageUrl = isSignedIn
+    ?
+      `https://${nextPageHost}/id/${encodeURIComponent(assetId)}?viewer!megaVerb=verb-fill-sign&x_api_client_id=unity`
+      : `https://${nextPageHost}/us/en/discover/${verb}#assets=${encodeURIComponent(assetId)}`;
+  const script = document.createElement('script');
+  script.type = 'speculationrules';
+  const rules = {
+    prefetch: [
+      {
+        urls: [nextPageUrl],
+        eagerness: 'immediate',
+      },
+    ],
+  };
+  script.textContent = JSON.stringify(rules);
+  document.head.appendChild(script);
+}
+
 function prefetchNextPage(verb) {
   const ENV = getEnv();
   const isProd = ENV === 'prod';
@@ -246,7 +269,9 @@ export default async function init(element) {
     }
 
     if (e.detail?.event === 'uploading') {
-      verbAnalytics('job:uploading', VERB, e.detail?.data);
+      const { data } = e.detail;
+      verbAnalytics('job:uploading', VERB, data);
+      prerenderTarget(VERB, data.id);
       setUser();
     }
 
