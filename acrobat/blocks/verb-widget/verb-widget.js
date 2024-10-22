@@ -80,6 +80,7 @@ export default async function init(element) {
     return;
   }
 
+  const ENV = getEnv();
   const { locale } = getConfig();
   const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
   const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
@@ -249,12 +250,6 @@ export default async function init(element) {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
       document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-
-      window.addEventListener('beforeunload', (w) => {
-        w.preventDefault();
-        // Included for legacy support, e.g. Chrome/Edge < 119
-        w.returnValue = true;
-      });
     }
 
     if (e.detail?.event === 'uploaded') {
