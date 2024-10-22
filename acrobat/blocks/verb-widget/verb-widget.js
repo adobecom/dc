@@ -80,6 +80,7 @@ export default async function init(element) {
     return;
   }
 
+  const ENV = getEnv();
   const ppURL = 'https://www.adobe.com/privacy/policy.html';
   const touURL = 'https://www.adobe.com/legal/terms.html';
 
@@ -242,13 +243,19 @@ export default async function init(element) {
     if (e.detail?.event === 'uploading') {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
-      const ENV = getEnv();
-      document.cookie = ENV === 'prod' ? `UTS=${Date.now()};domain=.adobe.com` : `UTS=${Date.now()};domain=.stage.adobe.com`;
+      document.cookie = `UTS_Uploading=${Date.now()};domain=${ENV === 'prod' ? '' : '.stage'}.adobe.com`;
     }
 
     if (e.detail?.event === 'uploaded') {
       verbAnalytics('job:uploaded', VERB, e.detail?.data);
       setUser();
+      document.cookie = `UTS_Uploaded=${Date.now()};domain=${ENV === 'prod' ? '' : '.stage'}.adobe.com`;
+    }
+
+    if (e.detail?.event === 'redirect to product') {
+      verbAnalytics('transition', VERB);
+      setUser();
+      document.cookie = `UTS_Redirect=${Date.now()};domain=${ENV === 'prod' ? '' : '.stage'}.adobe.com`;
     }
   });
 
