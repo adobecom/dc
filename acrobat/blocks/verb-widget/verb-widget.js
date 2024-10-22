@@ -147,13 +147,13 @@ export default async function init(element) {
   }
   const footer = createTag('div', { class: 'verb-footer' });
 
-  const errorState = createTag('div', { class: 'hide' });
+  const errorState = createTag('div', { class: 'error hide' });
   const errorStateText = createTag('p', { class: 'verb-errorText' });
   const errorIcon = createTag('div', { class: 'verb-errorIcon' });
   const errorCloseBtn = createTag('div', { class: 'verb-errorBtn' });
   const closeIconSvg = createSvgElement('CLOSE_ICON');
   if (closeIconSvg) {
-    closeIconSvg.classList.add('close-icon');
+    closeIconSvg.classList.add('close-icon', 'error');
     errorCloseBtn.prepend(closeIconSvg);
   }
 
@@ -199,12 +199,9 @@ export default async function init(element) {
     verbAnalytics('goto-app:clicked', VERB);
   });
 
-  // widget.addEventListener('click', () => {
-  //   if (!mobileLink) { button.click(); }
-  // });
-
-  widgetButton.addEventListener('click', () => {
-    button.click();
+  widget.addEventListener('click', (e) => {
+    if (e.srcElement.classList.value.includes('error')) { return; }
+    if (!mobileLink) { button.click(); }
   });
 
   button.addEventListener('click', () => {
