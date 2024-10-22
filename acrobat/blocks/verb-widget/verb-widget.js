@@ -200,8 +200,10 @@ export default async function init(element) {
     window.uploadInProgress = isUploading;
 
     if (isUploading) {
+      console.log('adding hisory state');
       window.history.pushState({ uploading: true }, '', window.location.href);
     } else {
+      console.log('removing');
       window.history.replaceState({}, '', window.location.href);
     }
   }
