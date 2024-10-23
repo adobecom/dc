@@ -263,16 +263,10 @@ export default async function init(element) {
     }
 
     if (e.detail?.event === 'uploaded') {
+      exitFlag = true;
       verbAnalytics('job:uploaded', VERB, e.detail?.data);
       setUser();
       document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-    }
-
-    if (e.detail?.event === 'redirect to product') {
-      exitFlag = true;
-      verbAnalytics('transition', VERB);
-      setUser();
-      document.cookie = `UTS_Redirect=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
     }
   });
 
