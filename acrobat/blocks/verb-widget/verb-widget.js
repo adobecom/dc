@@ -74,6 +74,13 @@ function redDir(verb) {
   window.location.href = newLocation;
 }
 
+let exitFlag;
+function handleExit(event) {
+  if (exitFlag) { return; }
+  event.preventDefault();
+  event.returnValue = true;
+}
+
 export default async function init(element) {
   if (isOldBrowser()) {
     window.location.href = EOLBrowserPage;
@@ -251,9 +258,7 @@ export default async function init(element) {
       document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
 
       window.addEventListener('beforeunload', (w) => {
-        w.preventDefault();
-        // Included for legacy support, e.g. Chrome/Edge < 119
-        w.returnValue = true;
+        handleExit(w);
       });
     }
 
@@ -264,14 +269,10 @@ export default async function init(element) {
     }
 
     if (e.detail?.event === 'redirect to product') {
+      exitFlag = true;
       verbAnalytics('transition', VERB);
       setUser();
       document.cookie = `UTS_Redirect=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-    }
-
-    if (e.detail?.event === 'redirect to product') {
-      verbAnalytics('transition', VERB);
-      setUser();
     }
   });
 
