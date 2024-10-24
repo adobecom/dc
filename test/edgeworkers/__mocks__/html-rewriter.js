@@ -5,7 +5,9 @@ export const mockOnElement = jest.fn().mockImplementation((elem, fn) => {
     append: jest.fn(),
     replaceWith: jest.fn(),
   };
-  fn(el);
+  if (elem !== '.unity.workflow-acrobat') {
+    fn(el);
+  }  
   return {
     selector: String,
     handler: Element()
