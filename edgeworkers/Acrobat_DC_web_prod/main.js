@@ -79,7 +79,7 @@ export async function responseProvider(request) {
       delete responseHeaders[prop];
     }
 
-    return [responseStream, responseHeaders, version, widgetVersion, mobileWidget];
+    return [responseStream, responseHeaders, version, widgetVersion, mobileWidget, unityWorkflow];
   };
 
   const fetchResource = async path => {
