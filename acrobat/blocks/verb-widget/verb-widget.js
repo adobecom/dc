@@ -277,6 +277,20 @@ export default async function init(element) {
       document.cookie = `UTS_Redirect=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
       // adobe.com:acrobat:online:sign-pdf:transition
       verbAnalytics('acom-redirect', VERB);
+      const event = {
+        documentUnloading: true,
+        data: {
+          eventType: 'web.webinteraction.linkClicks',
+          web: {
+            webInteraction: {
+              linkClicks: { value: 1 },
+              type: 'other',
+              name: `acrobat:verb-${VERB}:acom-redirect`,
+            },
+          },
+        },
+      };
+      window?._satellite?.track('event', event);
     }
   });
 
