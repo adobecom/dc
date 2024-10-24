@@ -47,7 +47,7 @@ export async function responseProvider(request) {
     firstPassRewriter.onElement('meta[name="mobile-widget"]', el => {
       mobileWidget = el.getAttribute('content');
     });
-    firstPassRewriter.onElement('div[class="unity workflow-acrobat"]', el => {
+    firstPassRewriter.onElement('.unity.workflow-acrobat', el => {
       unityWorkflow = true;
     });    
     const nullWriter = new WritableStream({
