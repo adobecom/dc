@@ -74,14 +74,21 @@ function redDir(verb) {
   window.location.href = newLocation;
 }
 
+let exitFlag;
+function handleExit(event) {
+  if (exitFlag) { return; }
+  event.preventDefault();
+  event.returnValue = true;
+}
+
 export default async function init(element) {
   if (isOldBrowser()) {
     window.location.href = EOLBrowserPage;
     return;
   }
 
+  const ENV = getEnv();
   const { locale } = getConfig();
-
   const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
   const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
 
@@ -147,13 +154,13 @@ export default async function init(element) {
   }
   const footer = createTag('div', { class: 'verb-footer' });
 
-  const errorState = createTag('div', { class: 'hide' });
+  const errorState = createTag('div', { class: 'error hide' });
   const errorStateText = createTag('p', { class: 'verb-errorText' });
   const errorIcon = createTag('div', { class: 'verb-errorIcon' });
   const errorCloseBtn = createTag('div', { class: 'verb-errorBtn' });
   const closeIconSvg = createSvgElement('CLOSE_ICON');
   if (closeIconSvg) {
-    closeIconSvg.classList.add('close-icon');
+    closeIconSvg.classList.add('close-icon', 'error');
     errorCloseBtn.prepend(closeIconSvg);
   }
 
@@ -199,12 +206,9 @@ export default async function init(element) {
     verbAnalytics('goto-app:clicked', VERB);
   });
 
-  // widget.addEventListener('click', () => {
-  //   if (!mobileLink) { button.click(); }
-  // });
-
-  widgetButton.addEventListener('click', () => {
-    button.click();
+  widget.addEventListener('click', (e) => {
+    if (e.srcElement.classList.value.includes('error')) { return; }
+    if (!mobileLink) { button.click(); }
   });
 
   button.addEventListener('click', () => {
@@ -233,6 +237,10 @@ export default async function init(element) {
   });
 
   element.addEventListener('unity:track-analytics', (e) => {
+    const date = new Date();
+    date.setTime(date.getTime() + 1 * 60 * 1000);
+    const cookieExp = `expires=${date.toUTCString()}`;
+
     if (e.detail?.event === 'change') {
       verbAnalytics('choose-file:open', VERB, e.detail?.data);
       setUser();
@@ -248,11 +256,17 @@ export default async function init(element) {
     if (e.detail?.event === 'uploading') {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
+      document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+      window.addEventListener('beforeunload', (w) => {
+        handleExit(w);
+      });
     }
 
     if (e.detail?.event === 'uploaded') {
+      exitFlag = true;
       verbAnalytics('job:uploaded', VERB, e.detail?.data);
       setUser();
+      document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
     }
   });
 
