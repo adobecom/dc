@@ -74,6 +74,13 @@ function redDir(verb) {
   window.location.href = newLocation;
 }
 
+let exitFlag;
+function handleExit(event) {
+  if (exitFlag) { return; }
+  event.preventDefault();
+  event.returnValue = true;
+}
+
 export default async function init(element) {
   if (isOldBrowser()) {
     window.location.href = EOLBrowserPage;
@@ -250,23 +257,16 @@ export default async function init(element) {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
       document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+      window.addEventListener('beforeunload', (w) => {
+        handleExit(w);
+      });
     }
 
     if (e.detail?.event === 'uploaded') {
+      exitFlag = true;
       verbAnalytics('job:uploaded', VERB, e.detail?.data);
       setUser();
       document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-    }
-
-    if (e.detail?.event === 'redirect to product') {
-      verbAnalytics('transition', VERB);
-      setUser();
-      document.cookie = `UTS_Redirect=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-    }
-
-    if (e.detail?.event === 'redirect to product') {
-      verbAnalytics('transition', VERB);
-      setUser();
     }
   });
 
