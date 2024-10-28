@@ -309,6 +309,39 @@ const CONFIG = {
   imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
 };
 
+const stageDomainsMap = {
+  'www.stage.adobe.com': {
+    'www.adobe.com': 'origin',
+    'business.adobe.com': 'business.stage.adobe.com',
+    'blog.adobe.com': 'blog.stage.adobe.com',
+    'developer.adobe.com': 'developer-stage.adobe.com',
+    'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+    'helpx.adobe.com': 'helpx.stage.adobe.com',
+    'milo.stage.adobe.com': 'milo-stage.corp.adobe.com',
+    'news.adobe.com': 'news.stage.adobe.com',
+  },
+  '--dc--adobecom.hlx.live': {
+    'business.adobe.com': 'business.stage.adobe.com',
+    'blog.adobe.com': 'blog.stage.adobe.com',
+    'developer.adobe.com': 'developer-stage.adobe.com',
+    'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+    'helpx.adobe.com': 'helpx.stage.adobe.com',
+    'milo.stage.adobe.com': 'milo-stage.corp.adobe.com',
+    'news.adobe.com': 'news.stage.adobe.com',
+  },
+  '--dc--adobecom.hlx.page': {
+    'business.adobe.com': 'business.stage.adobe.com',
+    'blog.adobe.com': 'blog.stage.adobe.com',
+    'developer.adobe.com': 'developer-stage.adobe.com',
+    'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+    'helpx.adobe.com': 'helpx.stage.adobe.com',
+    'milo.stage.adobe.com': 'milo-stage.corp.adobe.com',
+    'news.adobe.com': 'news.stage.adobe.com',
+  },
+};
+
+CONFIG.stageDomainsMap = stageDomainsMap;
+
 const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
 
 if (IMS_GUEST) {
