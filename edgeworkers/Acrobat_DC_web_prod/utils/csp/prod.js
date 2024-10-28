@@ -25,7 +25,7 @@ const connectSrc = [
   'adobeioruntime.net',
   'adobesearch.adobe.io',
   'analytics.tiktok.com',
-  'api.company-target.com/api/v2/',
+  'api.company-target.com/',
   'api.iperceptions.com',
   'bat.bing.com/',
   'c.go-mpulse.net',
@@ -46,6 +46,18 @@ const connectSrc = [
   'trial-eum-clienttons-s.akamaihd.net/',
   '*.akstat.io/',
   'rum.hlx.page',
+  'rum.hlx.page',
+  'facebook.com',
+  'px.ads.linkedin.com',
+  'tr6.snapchat.com',
+  'ad.doubleclick.net',
+  'rum.hlx.page',
+  'facebook.com',
+  'px.ads.linkedin.com',
+  'tr6.snapchat.com',
+  'ad.doubleclick.net',
+  'main--unity--adobecom.hlx.live',
+  'main--unity--adobecom.hlx.page',
   ';',
 ];
 
@@ -237,6 +249,7 @@ const scriptSrc = [
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
   'rum.hlx.page',
+  'api.demandbase.com/api/v3',
   ';',
 ];
 
