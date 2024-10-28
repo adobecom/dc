@@ -25,7 +25,7 @@ const connectSrc = [
   'adobeioruntime.net',
   'adobesearch.adobe.io',
   'analytics.tiktok.com',
-  'api.company-target.com/api/v2/',
+  'api.company-target.com/',
   'api.iperceptions.com',
   'bat.bing.com/',
   'c.go-mpulse.net',
@@ -245,6 +245,7 @@ const scriptSrc = [
   'yjtag.yahoo.co.jp',
   'rum.hlx.page',
   'tr.snapchat.com',
+  'api.demandbase.com/api/v3',
   ';',
 ];
 
