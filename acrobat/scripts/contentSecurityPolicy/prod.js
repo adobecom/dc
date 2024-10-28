@@ -50,6 +50,8 @@ const connectSrc = [
   'px.ads.linkedin.com',
   'tr6.snapchat.com',
   'ad.doubleclick.net',
+  'main--unity--adobecom.hlx.live',
+  'main--unity--adobecom.hlx.page',
   ';',
 ];
 
