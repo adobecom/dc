@@ -330,6 +330,7 @@ const stageDomainsMap = {
     'news.adobe.com': 'news.stage.adobe.com',
   },
   '--dc--adobecom.hlx.page': {
+    'www.adobe.com': 'www.stage.adobe.com',
     'business.adobe.com': 'business.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
     'developer.adobe.com': 'developer-stage.adobe.com',
