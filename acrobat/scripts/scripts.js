@@ -310,6 +310,16 @@ const CONFIG = {
 };
 
 const stageDomainsMap = {
+  '--dc--adobecom.hlx.live': {
+    'www.adobe.com': 'www.adobe.com',
+    'business.adobe.com': 'business.adobe.com',
+    'blog.adobe.com': 'blog.adobe.com',
+    'developer.adobe.com': 'developer.adobe.com',
+    'firefly.adobe.com': 'firefly.adobe.com',
+    'helpx.adobe.com': 'helpx.adobe.com',
+    'milo.adobe.com': 'milo.adobe.com',
+    'news.adobe.com': 'news.adobe.com',
+  },
   '--dc--adobecom.hlx.page': {
     'www.adobe.com': 'www.stage.adobe.com',
     'business.adobe.com': 'business.adobe.com',
