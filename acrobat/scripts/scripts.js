@@ -321,7 +321,6 @@ const stageDomainsMap = {
     'news.adobe.com': 'news.adobe.com',
   },
   '--dc--adobecom.hlx.live': {
-    'www.adobe.com': 'www.adobe.com',
     'business.adobe.com': 'business.adobe.com',
     'blog.adobe.com': 'blog.adobe.com',
     'developer.adobe.com': 'developer.adobe.com',
