@@ -36,7 +36,7 @@ export async function responseProvider(request) {
 
     // Make preliminary pass through the content to capture version metadata
     const firstPassRewriter = new HtmlRewritingStream();
-    let version, widgetVersion, mobileWidget;
+    let version, widgetVersion, mobileWidget, unityWorkflow;
     const prefix = isProd ? '' : 'stg-';
     firstPassRewriter.onElement(`meta[name="${prefix}dc-widget-version"]`, el => {
       widgetVersion = el.getAttribute('content');
@@ -44,9 +44,12 @@ export async function responseProvider(request) {
     firstPassRewriter.onElement(`meta[name="${prefix}dc-generate-cache-version"]`, el => {
       version = el.getAttribute('content');
     });
-    firstPassRewriter.onElement(`meta[name="mobile-widget"]`, el => {
+    firstPassRewriter.onElement('meta[name="mobile-widget"]', el => {
       mobileWidget = el.getAttribute('content');
     });
+    firstPassRewriter.onElement('.unity.workflow-acrobat', el => {
+      unityWorkflow = true;
+    });    
     const nullWriter = new WritableStream({
       write() {},
       close() {},
@@ -76,7 +79,7 @@ export async function responseProvider(request) {
       delete responseHeaders[prop];
     }
 
-    return [responseStream, responseHeaders, version, widgetVersion, mobileWidget];
+    return [responseStream, responseHeaders, version, widgetVersion, mobileWidget, unityWorkflow];
   };
 
   const fetchResource = async path => {
@@ -88,13 +91,13 @@ export async function responseProvider(request) {
   };
 
   const fetchFrictionlessPageAndInlineSnippet = async () => {
-    const [responseStream, responseHeaders, version, widgetVersion, mobileWidget] = await fetchFrictionlessPage();
+    const [responseStream, responseHeaders, version, widgetVersion, mobileWidget, unityWorkflow] = await fetchFrictionlessPage();
 
     if (!verb || !locale || !version || !widgetVersion) {
       throw new Error('Missing metadata');
     }
 
-    if (!(mobileWidget && request.device.isMobile)) {
+    if (!(mobileWidget && request.device.isMobile) && !unityWorkflow) {
       const snippet =
         await fetchResource(`/dc/dc-generate-cache/dc-hosted-${version}/${verb}-${locale}.html`);
       const snippetHead = snippet.substring(snippet.indexOf('<head>')+6, snippet.indexOf('</head>'));
@@ -109,19 +112,19 @@ export async function responseProvider(request) {
     }
     const dcCoreVersion = widgetVersion.split("_")[0];
 
-    return [responseStream, responseHeaders, dcCoreVersion, mobileWidget];
+    return [responseStream, responseHeaders, dcCoreVersion, mobileWidget, unityWorkflow];
   };
 
   const scriptHashes = [];
 
-  const inlineScripts = async (mobileWidget, scripts, dcConverter) => {
+  const inlineScripts = async (unityWorkflow, mobileWidget, scripts, dcConverter) => {
     // Inline dc-converter-widget.js and scripts.js. Remove modular definition and import.
     // Change relative paths to absolute. Remove JS-driven CSP in favor of HTTP header.
     let inlineScript = scripts
       .replace('await import(\'./contentSecurityPolicy/csp.js\')', '{default:()=>{}}')
       .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')');
 
-    if (!(mobileWidget && request.device.isMobile)) {
+    if (!(mobileWidget && request.device.isMobile) && !unityWorkflow) {
       inlineScript = dcConverter
         .replace('export default', 'const dcConverter = ')
         .replace('import(\'../../scripts/frictionless.js\')', 'import(\'/acrobat/scripts/frictionless.js\')')
@@ -154,7 +157,7 @@ export async function responseProvider(request) {
 
   try {
     const [
-      [responseStream, responseHeaders, dcCoreVersion, mobileWidget],
+      [responseStream, responseHeaders, dcCoreVersion, mobileWidget, unityWorkflow],
       scripts,
       dcConverter,
       dcStyles,
@@ -167,7 +170,7 @@ export async function responseProvider(request) {
       fetchResource('/libs/styles/styles.css'),
     ]);
 
-    await inlineScripts(mobileWidget, scripts, dcConverter);
+    await inlineScripts(unityWorkflow, mobileWidget, scripts, dcConverter);
     inlineStyles(dcStyles, miloStyles);
 
     const csp = contentSecurityPolicy(isProd, scriptHashes);
@@ -181,7 +184,7 @@ export async function responseProvider(request) {
         '<https://use.typekit.net>;rel="preconnect"',
         `</libs/deps/imslib.min.js>;rel="preload";as="script"`,
     ];
-    if (!(mobileWidget && request.device.isMobile)) {
+    if (!(mobileWidget && request.device.isMobile) && !unityWorkflow) {
       headerLink = [...headerLink,
         `<${acrobat}>;rel="preconnect"`,
         `<${pdfnow}>;rel="preconnect"`,
