@@ -354,11 +354,12 @@ replaceDotMedia(document);
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
-  const marquee = document.querySelector('.marquee'); // first marquee only
+  const blocks = '.marquee,.hero-marquee';
+  const marquee = document.querySelector(blocks); // first marquee only
   if (marquee) {
     const index = window.browser.isMobile ? 1 : 3;
-    const selectorBG = `.marquee > div:nth-child(1) > div:nth-of-type(${index}) img`;
-    const selectorFG = '.marquee > div:nth-child(2) img';
+    const selectorBG = `${blocks} > div:nth-child(1) > div:nth-of-type(${index}) img`;
+    const selectorFG = `${blocks} > div:nth-child(2) img`;
     marquee.querySelector(selectorBG)?.setAttribute('loading', 'eager');
     marquee.querySelector(selectorFG)?.setAttribute('loading', 'eager');
   }
