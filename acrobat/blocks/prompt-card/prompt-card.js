@@ -3,8 +3,8 @@
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-const { processTrackingLabels } = await import(`${miloLibs}/martech/attributes.js`);
+let createTag;
+let processTrackingLabels;
 
 const classToastShow = 'prompt-toast--show';
 const getPlaceHolder = (x) => (window.mph?.[x] || x);
@@ -29,7 +29,8 @@ function copyPrompt(cfg) {
   setTimeout(() => toast.classList.remove(classToastShow), 5000);
 }
 
-async function createBlock(element, cfg) {
+function createBlock(el, cfg) {
+  const element = el || createTag('div', { class: 'prompt-card' });
   cfg.icon = cfg.icon || '/acrobat/img/icons/aichat.svg';
   cfg.button = cfg.button || getPlaceHolder('Copy');
   cfg.toast = cfg.toast || getPlaceHolder('Copied to clipboard');
@@ -70,14 +71,15 @@ async function createBlock(element, cfg) {
       copyPrompt(cfg);
     }
   });
+
+  return element;
 }
 
-async function createBlocks(element, blockArray, templateCfg) {
+function createBlocks(element, blockArray, templateCfg) {
   const { parentNode } = element;
-  for (const [i, cfg] of blockArray.entries()) {
-    const blockEl = createTag('div', { class: 'prompt-card' });
-    if (templateCfg?.rows && i > 0) blockEl.classList.add('hidden');
-    await createBlock(blockEl, { ...templateCfg, ...cfg });
+  for (const [idx, cfg] of blockArray.entries()) {
+    const blockEl = createBlock(null, { ...templateCfg, ...cfg });
+    if (templateCfg?.rows && idx > 0) blockEl.classList.add('hidden');
     parentNode.insertBefore(blockEl, element.previousSibling);
   }
   element.remove();
@@ -133,7 +135,7 @@ async function processGroup(element, cfg, startIndex) {
       (x) => keys.reduce((a, k) => a && cfg[k] === x[k], true),
     );
   }
-  await createBlocks(element, blockArray, cfg);
+  createBlocks(element, blockArray, cfg);
 }
 
 function readKeyValueSet(element) {
@@ -146,6 +148,11 @@ function readKeyValueSet(element) {
 }
 
 export default async function init(element) {
+  const { createTag: createTagfn } = await import(`${miloLibs}/utils/utils.js`);
+  const { processTrackingLabels: processTrackingLabelsfn } = await import(`${miloLibs}/martech/attributes.js`);
+  createTag = createTagfn;
+  processTrackingLabels = processTrackingLabelsfn;
+
   if (element.classList.contains('template') && element.classList.contains('group')) {
     const cfg = readKeyValueSet(element);
     await processGroup(element, cfg, Object.keys(cfg).length + 1);
@@ -172,5 +179,5 @@ export default async function init(element) {
 
   cfg = { ...window.promptCardTemplate, ...cfg };
 
-  await createBlock(element, cfg);
+  createBlock(element, cfg);
 }

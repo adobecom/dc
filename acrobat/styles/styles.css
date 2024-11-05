@@ -136,12 +136,6 @@ div [class *= PdfnowLifecycle__dropzone2___] {
   padding: 0;
 }
 
-.feds-topnav .feds-brand-image img {
-  aspect-ratio: 1/1;
-  width: 100%;
-  object-fit: contain;
-}
-
 .how-to .how-to-image img {
   aspect-ratio: 5/3;
   width: 100%;
