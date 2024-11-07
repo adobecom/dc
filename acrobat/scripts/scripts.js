@@ -330,6 +330,17 @@ const stageDomainsMap = {
     'milo.adobe.com': 'milo.adobe.com',
     'news.adobe.com': 'news.adobe.com',
   },
+  'www.stage.adobe.com': {
+    'www.adobe.com': 'origin',
+    'business.adobe.com': 'business.stage.adobe.com',
+    'blog.adobe.com': 'blog.stage.adobe.com',
+    'developer.adobe.com': 'developer-stage.adobe.com',
+    'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+    'helpx.adobe.com': 'helpx.stage.adobe.com',
+    'milo.stage.adobe.com': 'milo-stage.corp.adobe.com',
+    'news.adobe.com': 'news.stage.adobe.com',
+  },
+
 };
 
 CONFIG.stageDomainsMap = stageDomainsMap;
