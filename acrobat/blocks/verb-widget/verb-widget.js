@@ -268,7 +268,8 @@ export default async function init(element) {
     }
 
     if (e.detail?.event === 'uploading') {
-      verbAnalytics('job:uploading', VERB, e.detail?.data);
+      const { data } = e.detail;
+      verbAnalytics('job:uploading', VERB, data);
       prefetchTarget(VERB, data.id);
       setUser();
       document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
