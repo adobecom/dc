@@ -66,6 +66,14 @@ function prefetchTarget(verb, assetId) {
   const xhr = new XMLHttpRequest();
   xhr.open("GET", nextPageUrl, true);
   xhr.responseType = "document";
+  xhr.onload = function() {
+      if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+          const doc = document.implementation.createHTMLDocument();
+          const srcNode = xhr.responseXML.documentElement;
+          const newNode = doc.importNode(srcNode, true);
+          doc.replaceChild(newNode, doc.documentElement);
+      }
+  };
   xhr.send(null);
 }
 
