@@ -1,10 +1,9 @@
 import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
-import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -41,6 +40,21 @@ const setDraggingClass = (widget, shouldToggle) => {
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
 };
 
+function prefetchTarget(verb, assetId) {
+  const ENV = getEnv();
+  const isProd = ENV === 'prod';
+  const isSignedIn = window.adobeIMS.isSignedInUser();
+  const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
+  const nextPageUrl = isSignedIn
+    ?
+      `https://${nextPageHost}/id/${encodeURIComponent(assetId)}?viewer!megaVerb=verb-fill-sign&x_api_client_id=unity`
+      : `https://${nextPageHost}/us/en/discover/${verb}#assets=${encodeURIComponent(assetId)}`;
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", nextPageUrl, true);
+  xhr.responseType = "document";
+  xhr.send(null);
+}
+
 function prefetchNextPage(verb) {
   const ENV = getEnv();
   const isProd = ENV === 'prod';
@@ -74,22 +88,14 @@ function redDir(verb) {
   window.location.href = newLocation;
 }
 
-let exitFlag;
-function handleExit(event) {
-  if (exitFlag) { return; }
-  event.preventDefault();
-  event.returnValue = true;
-}
-
 export default async function init(element) {
   if (isOldBrowser()) {
     window.location.href = EOLBrowserPage;
     return;
   }
 
-  const { locale } = getConfig();
-  const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
-  const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
+  const ppURL = 'https://www.adobe.com/privacy/policy.html';
+  const touURL = 'https://www.adobe.com/legal/terms.html';
 
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
@@ -112,56 +118,22 @@ export default async function init(element) {
   const widgetRight = createTag('div', { class: 'verb-col right' });
   const widgetHeader = createTag('div', { class: 'verb-header' });
   const widgetIcon = createTag('div', { class: 'verb-icon' });
-  const widgetIconSvg = createSvgElement('WIDGET_ICON');
-  if (widgetIconSvg) {
-    widgetIconSvg.classList.add('icon-verb');
-    widgetIcon.appendChild(widgetIconSvg);
-  }
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Adobe Acrobat');
   const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
   const widgetMobCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
-  const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 });
-  const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, window.mph['verb-widget-cta']);
-  widgetButton.append(widgetButtonLabel);
-  const uploadIconSvg = createSvgElement('UPLOAD_ICON');
-  if (uploadIconSvg) {
-    uploadIconSvg.classList.add('upload-icon');
-    widgetButton.prepend(uploadIconSvg);
-  }
-
+  const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 }, window.mph['verb-widget-cta']);
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
-  const button = createTag('input', { type: 'file', accept: LIMITS[VERB].acceptedFiles, id: 'file-upload', class: 'hide', 'aria-hidden': true });
-  const widgetImage = createTag('div', { class: 'verb-image' });
-  const verbIconName = `${VERB}`;
-  const verbImageSvg = createSvgElement(verbIconName);
-  if (verbImageSvg) {
-    verbImageSvg.classList.add('icon-verb-image');
-    widgetImage.appendChild(verbImageSvg);
-  }
-
+  const button = createTag('input', { type: 'file', id: 'file-upload', class: 'hide', 'aria-hidden': true });
+  const widgetImage = createTag('img', { class: 'verb-image', src: `/acrobat/img/verb-widget/${VERB}.png`, alt: '' });
   // Since we're using placeholders we need a solution for the hyperlinks
-  const legalWrapper = createTag('div', { class: 'verb-legal-wrapper' });
   const legal = createTag('p', { class: 'verb-legal' }, `${window.mph['verb-widget-legal']} `);
-  const legalTwo = createTag('p', { class: 'verb-legal verb-legal-two' }, `${window.mph['verb-widget-legal-2']} `);
   const iconSecurity = createTag('div', { class: 'security-icon' });
-  const infoIcon = createTag('div', { class: 'info-icon milo-tooltip right', 'data-tooltip': `${window.mph['verb-widget-tool-tip']}` });
-  const securityIconSvg = createSvgElement('SECURITY_ICON');
-  const infoIconSvg = createSvgElement('INFO_ICON');
-  if (securityIconSvg) {
-    iconSecurity.appendChild(securityIconSvg);
-    infoIcon.appendChild(infoIconSvg);
-  }
   const footer = createTag('div', { class: 'verb-footer' });
 
-  const errorState = createTag('div', { class: 'error hide' });
+  const errorState = createTag('div', { class: 'hide' });
   const errorStateText = createTag('p', { class: 'verb-errorText' });
   const errorIcon = createTag('div', { class: 'verb-errorIcon' });
   const errorCloseBtn = createTag('div', { class: 'verb-errorBtn' });
-  const closeIconSvg = createSvgElement('CLOSE_ICON');
-  if (closeIconSvg) {
-    closeIconSvg.classList.add('close-icon', 'error');
-    errorCloseBtn.prepend(closeIconSvg);
-  }
 
   widget.append(widgetContainer);
   widgetContainer.append(widgetRow);
@@ -174,17 +146,18 @@ export default async function init(element) {
     element.append(widget);
   } else {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
-    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
-    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
+    // Make ticket to localize links
+    legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
+    legal.innerHTML = legal.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
 
-    legalWrapper.append(legal, legalTwo);
-    footer.append(iconSecurity, legalWrapper, infoIcon);
+    footer.append(iconSecurity, legal);
 
     element.append(widget, footer);
   }
 
   // Redirect after IMS:Ready
   window.addEventListener('IMS:Ready', () => {
+    console.log('IMS:Ready 😎');
     if (window.adobeIMS.isSignedInUser()
       && window.adobeIMS.getAccountType() !== 'type1') {
       redDir(VERB);
@@ -193,6 +166,7 @@ export default async function init(element) {
   // Race Condition
   if (window.adobeIMS?.isSignedInUser()
     && window.adobeIMS?.getAccountType() !== 'type1') {
+    console.log('Race Con ⏩');
     redDir(VERB);
   }
 
@@ -205,9 +179,8 @@ export default async function init(element) {
     verbAnalytics('goto-app:clicked', VERB);
   });
 
-  widget.addEventListener('click', (e) => {
-    if (e.srcElement.classList.value.includes('error')) { return; }
-    if (!mobileLink) { button.click(); }
+  widgetButton.addEventListener('click', () => {
+    button.click();
   });
 
   button.addEventListener('click', () => {
@@ -230,64 +203,47 @@ export default async function init(element) {
     setDraggingClass(widget, false);
   });
 
+  widget.addEventListener('drop', (e) => {
+    e.preventDefault();
+    initiatePrefetch(VERB);
+  });
+
   errorCloseBtn.addEventListener('click', () => {
     errorState.classList.remove('verb-error');
     errorState.classList.add('hide');
   });
 
   element.addEventListener('unity:track-analytics', (e) => {
-    const date = new Date();
-    date.setTime(date.getTime() + 1 * 60 * 1000);
-    const cookieExp = `expires=${date.toUTCString()}`;
-
     if (e.detail?.event === 'change') {
       verbAnalytics('choose-file:open', VERB, e.detail?.data);
       setUser();
     }
     // maybe new event name files-dropped?
     if (e.detail?.event === 'drop') {
-      initiatePrefetch(VERB);
       verbAnalytics('files-dropped', VERB, e.detail?.data);
       setDraggingClass(widget, false);
       setUser();
     }
 
     if (e.detail?.event === 'uploading') {
-      verbAnalytics('job:uploading', VERB, e.detail?.data);
+      const { data } = e.detail;
+      verbAnalytics('job:uploading', VERB, data);
+      prefetchTarget(VERB, data.id);
       setUser();
-      document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-      window.addEventListener('beforeunload', (w) => {
-        handleExit(w);
-      });
     }
 
     if (e.detail?.event === 'uploaded') {
-      exitFlag = true;
+      verbAnalytics('job:uploaded', VERB, e.detail?.data);
       setUser();
-      document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-    }
-  });
-
-  window.addEventListener('beforeunload', () => {
-    const date = new Date();
-    date.setTime(date.getTime() + 1 * 60 * 1000);
-    const cookieExp = `expires=${date.toUTCString()}`;
-    if (exitFlag) {
-      document.cookie = `UTS_Redirect=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
     }
   });
 
   // Errors, Analytics & Logging
-  const lanaOptions = {
-    sampleRate: 1,
-    tags: 'DC_Milo,Project Unity (DC)',
-  };
-
   const handleError = (str) => {
-    setDraggingClass(widget, false);
     errorState.classList.add('verb-error');
     errorState.classList.remove('hide');
     errorStateText.textContent = str;
+
     setTimeout(() => {
       errorState.classList.remove('verb-error');
       errorState.classList.add('hide');
@@ -296,6 +252,7 @@ export default async function init(element) {
 
   element.addEventListener('unity:show-error-toast', (e) => {
     // eslint-disable-next-line no-console
+    console.log(`⛔️ Error Code - ${e.detail?.code}`);
     if (e.detail?.code.includes('error_only_accept_one_file')) {
       handleError(e.detail?.message);
       verbAnalytics('error', VERB);
@@ -327,7 +284,6 @@ export default async function init(element) {
       || e.detail?.code.includes('error_duplicate_asset')) {
       handleError(e.detail?.message);
       verbAnalytics('error', VERB);
-      window.lana?.log(`Error Status: ${e.detail?.message}, Error Message: ${e.detail?.status}`, lanaOptions);
     }
 
     // acrobat:verb-fillsign:error:page_count_missing_from_metadata_api
