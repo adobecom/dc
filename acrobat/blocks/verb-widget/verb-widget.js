@@ -63,18 +63,10 @@ function prefetchTarget(verb, assetId) {
     ?
       `https://${nextPageHost}/id/${encodeURIComponent(assetId)}?viewer!megaVerb=verb-fill-sign&x_api_client_id=unity`
       : `https://${nextPageHost}/us/en/discover/${verb}#assets=${encodeURIComponent(assetId)}`;
-  const xhr = new XMLHttpRequest();
-  xhr.open("GET", nextPageUrl, true);
-  xhr.responseType = "document";
-  xhr.onload = function() {
-      if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-          const doc = document.implementation.createHTMLDocument();
-          const srcNode = xhr.responseXML.documentElement;
-          const newNode = doc.importNode(srcNode, true);
-          doc.replaceChild(newNode, doc.documentElement);
-      }
-  };
-  xhr.send(null);
+  const iframe = document.createElement('iframe');
+  iframe.src = nextPageUrl;
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
 }
 
 function initiatePrefetch(verb) {
@@ -278,7 +270,7 @@ export default async function init(element) {
     if (e.detail?.event === 'uploading') {
       const { data } = e.detail;
       verbAnalytics('job:uploading', VERB, data);
-      prefetchTarget(VERB, data.id);
+      prefetchTarget(VERB, data?.id);
       setUser();
       document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
       window.addEventListener('beforeunload', (w) => {
