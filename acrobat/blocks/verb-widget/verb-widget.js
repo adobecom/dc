@@ -279,7 +279,7 @@ export default async function init(element) {
 
   // Errors, Analytics & Logging
   const lanaOptions = {
-    sampleRate: 1,
+    sampleRate: 100,
     tags: 'DC_Milo,Project Unity (DC)',
   };
 
