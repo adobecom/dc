@@ -280,9 +280,36 @@ const CONFIG = {
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'business.adobe.com', 'helpx.adobe.com'],
   stageDomainsMap: {
-    'www.stage.adobe.com': { 'www.adobe.com': 'origin' },
-    '--dc--adobecom.hlx.live': { 'www.adobe.com': 'origin' },
-    '--dc--adobecom.hlx.page': { 'www.adobe.com': 'origin' },
+    '--dc--adobecom.hlx.page': {
+      'www.adobe.com': 'www.stage.adobe.com',
+      'business.adobe.com': 'business.adobe.com',
+      'blog.adobe.com': 'blog.adobe.com',
+      'developer.adobe.com': 'developer.adobe.com',
+      'firefly.adobe.com': 'firefly.adobe.com',
+      'helpx.adobe.com': 'helpx.adobe.com',
+      'milo.adobe.com': 'milo.adobe.com',
+      'news.adobe.com': 'news.adobe.com',
+    },
+    '--dc--adobecom.hlx.live': {
+      'www.adobe.com': 'www.adobe.com',
+      'business.adobe.com': 'business.adobe.com',
+      'blog.adobe.com': 'blog.adobe.com',
+      'developer.adobe.com': 'developer.adobe.com',
+      'firefly.adobe.com': 'firefly.adobe.com',
+      'helpx.adobe.com': 'helpx.adobe.com',
+      'milo.adobe.com': 'milo.adobe.com',
+      'news.adobe.com': 'news.adobe.com',
+    },
+    'www.stage.adobe.com': {
+      'www.adobe.com': 'origin',
+      'business.adobe.com': 'business.stage.adobe.com',
+      'blog.adobe.com': 'blog.stage.adobe.com',
+      'developer.adobe.com': 'developer-stage.adobe.com',
+      'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+      'helpx.adobe.com': 'helpx.stage.adobe.com',
+      'milo.adobe.com': 'milo-stage.corp.adobe.com',
+      'news.adobe.com': 'news.stage.adobe.com',
+    },
   },
   jarvis: {
     id: 'DocumentCloudWeb1',
@@ -341,11 +368,12 @@ replaceDotMedia(document);
 
 // Default to loading the first image as eager.
 (async function loadLCPImage() {
-  const marquee = document.querySelector('.marquee'); // first marquee only
+  const blocks = '.marquee,.hero-marquee';
+  const marquee = document.querySelector(blocks); // first marquee only
   if (marquee) {
     const index = window.browser.isMobile ? 1 : 3;
-    const selectorBG = `.marquee > div:nth-child(1) > div:nth-of-type(${index}) img`;
-    const selectorFG = '.marquee > div:nth-child(2) img';
+    const selectorBG = `${blocks} > div:nth-child(1) > div:nth-of-type(${index}) img`;
+    const selectorFG = `${blocks} > div:nth-child(2) img`;
     marquee.querySelector(selectorBG)?.setAttribute('loading', 'eager');
     marquee.querySelector(selectorFG)?.setAttribute('loading', 'eager');
   }

@@ -279,15 +279,25 @@ export default async function init(element) {
 
   // Errors, Analytics & Logging
   const lanaOptions = {
-    sampleRate: 1,
+    sampleRate: 100,
     tags: 'DC_Milo,Project Unity (DC)',
   };
 
-  const handleError = (str) => {
+  const handleError = (detail, logToLana = false, logOptions = {}) => {
+    const { code, message, status, info = 'No additional info provided', accountType = 'Unknown account type' } = detail;
+
     setDraggingClass(widget, false);
     errorState.classList.add('verb-error');
     errorState.classList.remove('hide');
-    errorStateText.textContent = str;
+    errorStateText.textContent = message;
+
+    if (logToLana) {
+      window.lana?.log(
+        `Error Code: ${code}, Status: ${status}, Message: ${message}, Info: ${info}, Account Type: ${accountType}`,
+        logOptions,
+      );
+    }
+
     setTimeout(() => {
       errorState.classList.remove('verb-error');
       errorState.classList.add('hide');
@@ -295,29 +305,28 @@ export default async function init(element) {
   };
 
   element.addEventListener('unity:show-error-toast', (e) => {
-    // eslint-disable-next-line no-console
     if (e.detail?.code.includes('error_only_accept_one_file')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error', VERB);
     }
 
     if (e.detail?.code.includes('error_unsupported_type')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error:unsupported_type', VERB);
     }
 
     if (e.detail?.code.includes('error_empty_file')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error:empty_file', VERB);
     }
 
     if (e.detail?.code.includes('error_file_too_large')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error', VERB);
     }
 
     if (e.detail?.code.includes('error_max_page_count')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error:max_page_count', VERB);
     }
 
@@ -325,9 +334,8 @@ export default async function init(element) {
       || e.detail?.code.includes('error_max_quota_exceeded')
       || e.detail?.code.includes('error_no_storage_provision')
       || e.detail?.code.includes('error_duplicate_asset')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error', VERB);
-      window.lana?.log(`Error Status: ${e.detail?.message}, Error Message: ${e.detail?.status}`, lanaOptions);
     }
 
     // acrobat:verb-fillsign:error:page_count_missing_from_metadata_api
