@@ -20,9 +20,9 @@ function getOsi(el) {
   }
 }
 function getPrice(el) {
-  const major = parseInt(el.querySelector('.price-integer')?.textContent, 10);
-  const minor = parseInt(el.querySelector('.price-decimals')?.textContent, 10);
-  const price = parseFloat(`${major}.${minor}`).toFixed(2);
+  const major = el.querySelector('.price-integer')?.textContent;
+  const minor = el.querySelector('.price-decimals')?.textContent;
+  const price = parseFloat(`${major}.${minor}`);
   const priceEl = el.querySelector('.price');
   return { major, minor, price, priceEl };
 }
@@ -60,7 +60,7 @@ function parseMetadata(metadata) {
   return parsedData;
 }
 function updatePrice(el, price1, price2) {
-  const newPrice = (price1 + price2).toString();
+  const newPrice = (price1.price + price2.price).toFixed(2);
   const major = newPrice.split('.')[0];
   const minor = newPrice.split('.')[1];
   el.querySelector('.price-integer').textContent = major;
@@ -68,7 +68,7 @@ function updatePrice(el, price1, price2) {
 }
 function getProduct(el, metadata) {
   const closestTabContainer = el.closest('[role="tabpanel"]');
-  const parentTabContainer = closestTabContainer.closest('[role="tabpanel"]');
+  const parentTabContainer = closestTabContainer?.parentNode?.closest('[role="tabpanel"]');
   const closestId = closestTabContainer?.id?.split('-')[3] || '1';
   const parentTabId = parentTabContainer?.id?.split('-')[3] || '1';
   const offerType = el.classList.contains('con-button') && !el.classList.contains('blue')
@@ -88,8 +88,8 @@ function addCheckbox(card, metadata, price, id) {
   const callout = card.querySelector('[slot="callout-content"]');
   const description = metadata.checkbox.description.replace('[price]', price.priceEl.outerHTML);
   const checkboxHtml = `
-    <input type="checkbox" id="ai-checkbox_${id}">
-    <label for="ai-checkbox_${id}">
+    <input type="checkbox" id="ai-checkbox-${id}">
+    <label for="ai-checkbox-${id}">
       <span><strong>${metadata.checkbox.headline}</strong></span>
       <span class="ai-checkbox-subtitle">${description}</span>
     </label>`;
@@ -110,7 +110,8 @@ function addPrices(card, metadata, aiPrice) {
     // TODO: exit if in callout or checkbox
     const originalPrice = getPrice(el);
     // TODO: clone el, add classes
-    // TODO: price node is string and should be number. Can use updatePrice once that's fixed?
+    // TODO: updatePrice on clone
+    // updatePrice(priceClone, aiPrice, originalPrice);
     console.log('prices', aiPrice, originalPrice);
   });
 }
@@ -130,7 +131,7 @@ export default async function init(el) {
   const parsedMetadata = parseMetadata(metadata);
   cards.forEach((card, index) => {
     const { osi, price, id } = getProduct(card, parsedMetadata);
-    addCheckbox(card, parsedMetadata, price, `${id}-${index}`);
+    addCheckbox(card, parsedMetadata, price, `${id}-${index + 1}`);
     addPrices(card, parsedMetadata, price);
     addButtons(card, parsedMetadata, osi);
   });
