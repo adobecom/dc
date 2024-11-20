@@ -183,18 +183,20 @@ export default async function init(element) {
     element.append(widget, footer);
   }
 
-  // Redirect after IMS:Ready
-  window.addEventListener('IMS:Ready', () => {
-    if (window.adobeIMS.isSignedInUser()
-      && window.adobeIMS.getAccountType() !== 'type1') {
-      redDir(VERB);
+  function checkSignedInUser() {
+    if (window.adobeIMS?.isSignedInUser?.()) {
+      element.classList.add('signed-in');
+      if (window.adobeIMS.getAccountType() !== 'type1') {
+        redDir(VERB);
+      }
     }
-  });
-  // Race Condition
-  if (window.adobeIMS?.isSignedInUser()
-    && window.adobeIMS?.getAccountType() !== 'type1') {
-    redDir(VERB);
   }
+
+  // Race the condition
+  checkSignedInUser();
+
+  // Redirect after IMS:Ready
+  window.addEventListener('IMS:Ready', checkSignedInUser);
 
   // Analytics
   verbAnalytics('landing:shown', VERB);
