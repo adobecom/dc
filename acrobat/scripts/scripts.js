@@ -18,6 +18,19 @@ document.querySelectorAll('a').forEach((p, idx) => {
   }
 });
 
+/**
+ * The decision engine for where to get Milo's libs from.
+ */
+const setLibs = (prodLibs, location) => {
+  const { hostname, search } = location || window.location;
+  // eslint-disable-next-line compat/compat
+  const branch = new URLSearchParams(search).get('milolibs') || 'main';
+  if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.stage.adobe.com/libs';
+  if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
+  if (branch === 'local') return 'http://localhost:6456/libs';
+  return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
+};
+
 const getLocale = (locales, pathname = window.location.pathname) => {
   if (!locales) {
     return { ietf: 'en-US', tk: 'hah7vzn.css', prefix: '' };
