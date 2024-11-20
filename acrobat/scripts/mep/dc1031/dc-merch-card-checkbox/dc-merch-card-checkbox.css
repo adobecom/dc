@@ -1,0 +1,7 @@
+.dc-merch-card-checkbox,
+.dc-merch-card-checkbox[data-ai-chosen="true"] .solo-product,
+.dc-merch-card-checkbox[data-ai-chosen="false"] .ai-bundled {
+  display: none;
+}
+
+/* TODO: Add CSS for checkbox, and to hide gray until updated if needed */
