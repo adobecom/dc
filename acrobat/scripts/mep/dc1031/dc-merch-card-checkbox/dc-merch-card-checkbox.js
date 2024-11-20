@@ -60,12 +60,19 @@ function parseMetadata(metadata) {
   }
   return parsedData;
 }
-function updatePrice(el, price1, price2) {
-  const newPrice = (price1.price + price2.price).toFixed(2);
+function updatePrice(aiPrice, price) {
+  const priceClone = { 
+    ...price,
+    priceEl: price.priceEl.cloneNode(true),
+  };
+  const newPrice = (priceClone.price + aiPrice.price).toFixed(2);
   const major = newPrice.split('.')[0];
   const minor = newPrice.split('.')[1];
-  el.querySelector('.price-integer').textContent = major;
-  el.querySelector('.price-decimals').textContent = minor;
+  price.priceEl.classList.add(NO_AI_CLASS);
+  priceClone.priceEl.classList.add(AI_CLASS);
+  priceClone.priceEl.querySelector('.price-integer').textContent = major;
+  priceClone.priceEl.querySelector('.price-decimals').textContent = minor;
+  price.priceEl.parentNode.appendChild(priceClone.priceEl);
 }
 function getProduct(el, metadata) {
   const closestTabContainer = el.closest('[role="tabpanel"]');
@@ -87,7 +94,7 @@ function getProduct(el, metadata) {
 function addCheckbox(card, metadata, price, id) {
   card.dataset.aiAdded = false;
   const callout = card.querySelector('[slot="callout-content"]');
-  const description = metadata.checkbox.description.replace('[price]', price.priceEl.outerHTML);
+  const description = metadata.checkbox.description.replace('[price]', `<strong>${price.priceEl.outerHTML}</strong>`);
   const checkboxHtml = `
     <input type="checkbox" id="ai-checkbox-${id}">
     <label for="ai-checkbox-${id}">
@@ -107,14 +114,15 @@ function addCheckbox(card, metadata, price, id) {
   });
 }
 function addPrices(card, metadata, aiPrice) {
-  card.querySelectorAll('[data-wcs-osi][data-template="price"]').forEach((el) => {
-    // TODO: exit if in callout or checkbox
-    const originalPrice = getPrice(el);
-    // TODO: clone el, add classes
-    // TODO: updatePrice on clone
-    // updatePrice(priceClone, aiPrice, originalPrice);
-    console.log('prices', aiPrice, originalPrice);
-  });
+    const container = card.querySelector('p[id*="price---"]');
+    let priceEl = container?.querySelector('span[data-wcs-osi][data-template="price"]')
+    let strikePriceEl = container?.querySelector('span[data-wcs-osi][data-template="strikethrough"]')
+
+    const price = priceEl ? getPrice(priceEl) : null;
+    const strikePrice = strikePriceEl ? getPrice(strikePriceEl) : null;
+
+    price && updatePrice(aiPrice, price);
+    strikePrice && updatePrice(aiPrice, strikePrice);
 }
 function addButtons(card, metadata, aiOsi, id) {
   card.querySelectorAll('.con-button').forEach((button, buttonIdx) => {
