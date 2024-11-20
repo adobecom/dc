@@ -2,6 +2,7 @@ import { setLibs } from '../../../utils.js';
 
 const miloLibs = setLibs('/libs');
 const { getMetadata } = await import(`${miloLibs}/blocks/section-metadata/section-metadata.js`);
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 const NO_AI_CLASS = 'solo-product';
 const AI_CLASS = 'ai-bundled';
@@ -22,7 +23,8 @@ function getPrice(el) {
   const major = parseInt(el.querySelector('.price-integer')?.textContent, 10);
   const minor = parseInt(el.querySelector('.price-decimals')?.textContent, 10);
   const price = parseFloat(`${major}.${minor}`).toFixed(2);
-  return { major, minor, price };
+  const priceEl = el.querySelector('.price');
+  return { major, minor, price, priceEl };
 }
 function parseMetadata(metadata) {
   const parsedData = {
@@ -67,7 +69,7 @@ function updatePrice(el, price1, price2) {
 function getProduct(el, metadata) {
   const closestTabContainer = el.closest('[role="tabpanel"]');
   const parentTabContainer = closestTabContainer.closest('[role="tabpanel"]');
-  const closestId = closestTabContainer?.id?.split('-')[3] || '0';
+  const closestId = closestTabContainer?.id?.split('-')[3] || '1';
   const parentTabId = parentTabContainer?.id?.split('-')[3] || '1';
   const offerType = el.classList.contains('con-button') && !el.classList.contains('blue')
     ? 'secondary' : 'primary';
@@ -79,15 +81,31 @@ function getProduct(el, metadata) {
   const osiEl = content?.tagName === 'A' || content.dataset.wcsOsi
     ? content : content?.querySelector('a, [data-wcs-osi]');
   const osi = getOsi(osiEl);
-  return { content, osi, price: product.price };
+  return { content, osi, price: product.price, id: `${parentTabId}-${closestId}` };
 }
-function addCheckbox(card, metadata) {
+function addCheckbox(card, metadata, price, id) {
   card.dataset.aiAdded = false;
-  // TODO: find callout box and add checkbox, update price
-  // TODO: event listener: if checked add class, if not remove
+  const callout = card.querySelector('[slot="callout-content"]');
+  const description = metadata.checkbox.description.replace('[price]', price.priceEl.outerHTML);
+  const checkboxHtml = `
+    <input type="checkbox" id="ai-checkbox_${id}">
+    <label for="ai-checkbox_${id}">
+      <span><strong>${metadata.checkbox.headline}</strong></span>
+      <span class="ai-checkbox-subtitle">${description}</span>
+    </label>`;
+  const checkboxContainer = createTag(
+    'div',
+    { slot: 'callout-content', class: 'ai-checkbox-container' },
+    checkboxHtml,
+  );
+  callout.replaceWith(checkboxContainer);
+  const checkbox = checkboxContainer.querySelector('input');
+  checkbox.addEventListener('change', (e) => {
+    const merchCard = e.target.closest('merch-card');
+    merchCard.dataset.aiAdded = e.target.checked;
+  });
 }
-function addPrices(card, metadata) {
-  const { price: aiPrice } = getProduct(card, metadata);
+function addPrices(card, metadata, aiPrice) {
   card.querySelectorAll('[data-wcs-osi][data-template="price"]').forEach((el) => {
     // TODO: exit if in callout or checkbox
     const originalPrice = getPrice(el);
@@ -96,8 +114,7 @@ function addPrices(card, metadata) {
     console.log('prices', aiPrice, originalPrice);
   });
 }
-function addButtons(card, metadata) {
-  const { osi: aiOsi } = getProduct(card, metadata);
+function addButtons(card, metadata, aiOsi) {
   card.querySelectorAll('.con-button').forEach((el) => {
     // TODO: handle button not being a cart link (reader, business pricing, modal)
     const originalOsi = getOsi(el);
@@ -111,9 +128,10 @@ export default async function init(el) {
   if (!cards.length) return;
   const metadata = getMetadata(el);
   const parsedMetadata = parseMetadata(metadata);
-  cards.forEach((card) => {
-    addCheckbox(card);
-    addPrices(card, parsedMetadata);
-    addButtons(card, parsedMetadata);
+  cards.forEach((card, index) => {
+    const { osi, price, id } = getProduct(card, parsedMetadata);
+    addCheckbox(card, parsedMetadata, price, `${id}-${index}`);
+    addPrices(card, parsedMetadata, price);
+    addButtons(card, parsedMetadata, osi);
   });
 }
