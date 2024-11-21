@@ -27,37 +27,22 @@ function getPrice(el) {
   return { major, minor, price, priceEl };
 }
 function parseMetadata(metadata) {
-  const parsedData = {
-    checkbox: {
-      headline: metadata['checkbox-headline'].content.textContent,
-      description: metadata['checkbox-description'].content.textContent,
-    },
-    products: {
-      primary: {},
-      secondary: {},
-    },
-  };
-  // eslint-disable-next-line no-restricted-syntax
-  for (const key in metadata) {
-    if (key.startsWith('primary') || key.startsWith('secondary')) {
-      const product = key.split('-');
-      const [offerType, tabIndex, additionalTabIndex] = product;
-      parsedData.products[offerType][tabIndex] ??= {};
-      const content = metadata[key].content.querySelector(':scope > *');
-      const results = {
-        content,
-        priceText: content.textContent,
-        price: getPrice(content),
-        osi: getOsi(content),
-      };
-      if (additionalTabIndex) {
-        parsedData.products[offerType][tabIndex][additionalTabIndex] = results;
+  const results = {};
+  for (const [key, val] of Object.entries(metadata)) {
+    const [l1, l2, l3] = key.split('-');
+    const value = val.content.textContent;
+    if (!l2) {
+      results[l1] = value;
+    } else {
+      results[l1] ??= {};
+      if (!l3) {
+        results[l1][l2] = value;
       } else {
-        parsedData.products[offerType][tabIndex].other = results;
+        results[l1][l2][l3] = value;
       }
     }
   }
-  return parsedData;
+  return results;
 }
 function updatePrice(el, price1, price2) {
   const newPrice = (price1.price + price2.price).toFixed(2);
@@ -66,22 +51,39 @@ function updatePrice(el, price1, price2) {
   el.querySelector('.price-integer').textContent = major;
   el.querySelector('.price-decimals').textContent = minor;
 }
-function getProduct(el, metadata) {
-  const closestTabContainer = el.closest('[role="tabpanel"]');
-  const parentTabContainer = closestTabContainer?.parentNode?.closest('[role="tabpanel"]');
-  const closestId = closestTabContainer?.id?.split('-')[3] || '1';
-  const parentTabId = parentTabContainer?.id?.split('-')[3] || '1';
-  const offerType = el.classList.contains('con-button') && !el.classList.contains('blue')
-    ? 'secondary' : 'primary';
-  const productObj = metadata.products[offerType]?.[closestId];
-  if (!productObj) return { content: false, osi: false };
-  const additionalTabIndex = productObj[parentTabId] ? parentTabId : 'other';
-  const product = productObj[additionalTabIndex];
-  const content = product?.content;
-  const osiEl = content?.tagName === 'A' || content.dataset.wcsOsi
-    ? content : content?.querySelector('a, [data-wcs-osi]');
-  const osi = getOsi(osiEl);
-  return { content, osi, price: product.price, id: `${parentTabId}-${closestId}` };
+function getAiOsiCodes(el, metadata) {
+  const closestFragment = el.closest('.fragment[data-path]');
+  if (!closestFragment) return { content: false, osi: false };
+  const fragmentPath = closestFragment.dataset.path;
+  let firstTabId = 'individual';
+  for (const [key] of Object.entries(metadata)) {
+    if (fragmentPath.includes(key)) {
+      firstTabId = key;
+      break;
+    }
+  }
+  let secondTabId = 'abm';
+  for (const [key] of Object.entries(metadata[firstTabId])) {
+    if (fragmentPath.includes(key)) {
+      secondTabId = key;
+      break;
+    }
+  }
+  return metadata[firstTabId][secondTabId];
+  // const parentTabContainer = closestTabContainer?.parentNode?.closest('[role="tabpanel"]');
+  // const closestId = closestTabContainer?.id?.split('-')[3] || '1';
+  // const parentTabId = parentTabContainer?.id?.split('-')[3] || '1';
+  // const offerType = el.classList.contains('con-button') && !el.classList.contains('blue')
+  //   ? 'secondary' : 'primary';
+  // const productObj = metadata.products[offerType]?.[closestId];
+  // if (!productObj) return { content: false, osi: false };
+  // const additionalTabIndex = productObj[parentTabId] ? parentTabId : 'other';
+  // const product = productObj[additionalTabIndex];
+  // const content = product?.content;
+  // const osiEl = content?.tagName === 'A' || content.dataset.wcsOsi
+  //   ? content : content?.querySelector('a, [data-wcs-osi]');
+  // const osi = getOsi(osiEl);
+  // return { content, osi, price: product.price, id: `${parentTabId}-${closestId}` };
 }
 function addCheckbox(card, metadata, price, id) {
   card.dataset.aiAdded = false;
@@ -127,12 +129,11 @@ export default async function init(el) {
   const container = el.closest('div:has(.merch-card, merch-card)');
   const cards = container.querySelectorAll('.merch-card, merch-card');
   if (!cards.length) return;
-  const metadata = getMetadata(el);
-  const parsedMetadata = parseMetadata(metadata);
+  const md = parseMetadata(getMetadata(el));
   cards.forEach((card, index) => {
-    const { osi, price, id } = getProduct(card, parsedMetadata);
-    addCheckbox(card, parsedMetadata, price, `${id}-${index + 1}`);
-    addPrices(card, parsedMetadata, price);
-    addButtons(card, parsedMetadata, osi);
+    const aiOsiCodes = getAiOsiCodes(card, md);
+    const aiPrice = addCheckbox(card, md, price, `${id}-${index + 1}`);
+    addPrices(card, md, aiPrice);
+    addButtons(card, md, aiOsiCodes);
   });
 }
