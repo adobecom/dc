@@ -74,6 +74,7 @@ function updatePrice(aiPrice, price) {
   priceClone.priceEl.querySelector('.price-decimals').textContent = minor;
   price.priceEl.parentNode.appendChild(priceClone.priceEl);
 }
+
 function getProduct(el, metadata) {
   const closestTabContainer = el.closest('[role="tabpanel"]');
   const parentTabContainer = closestTabContainer?.parentNode?.closest('[role="tabpanel"]');
@@ -94,7 +95,7 @@ function getProduct(el, metadata) {
 function addCheckbox(card, metadata, price, id) {
   card.dataset.aiAdded = false;
   const callout = card.querySelector('[slot="callout-content"]');
-  const description = metadata.checkbox.description.replace('[price]', `<strong>${price.priceEl.outerHTML}</strong>`);
+  const description = metadata.checkbox.description.replace('[price]', `<strong>${price.priceEl?.outerHTML}</strong>`);
   const checkboxHtml = `
     <input type="checkbox" id="ai-checkbox-${id}">
     <label for="ai-checkbox-${id}">
