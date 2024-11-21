@@ -38,102 +38,135 @@ function parseMetadata(metadata) {
       if (!l3) {
         results[l1][l2] = value;
       } else {
+        results[l1][l2] ??= {};
         results[l1][l2][l3] = value;
       }
     }
   }
   return results;
 }
-function updatePrice(el, price1, price2) {
-  const newPrice = (price1.price + price2.price).toFixed(2);
+function updatePrice(aiPrice, price) {
+  const priceClone = {
+    ...price,
+    priceEl: price.priceEl.cloneNode(true),
+  };
+  const newPrice = (priceClone.price + aiPrice.price).toFixed(2);
   const major = newPrice.split('.')[0];
   const minor = newPrice.split('.')[1];
-  el.querySelector('.price-integer').textContent = major;
-  el.querySelector('.price-decimals').textContent = minor;
+  price.priceEl.classList.add(NO_AI_CLASS);
+  priceClone.priceEl.classList.add(AI_CLASS);
+  priceClone.priceEl.querySelector('.price-integer').textContent = major;
+  priceClone.priceEl.querySelector('.price-decimals').textContent = minor;
+  price.priceEl.parentNode.appendChild(priceClone.priceEl);
 }
-function getAiOsiCodes(el, metadata) {
-  const closestFragment = el.closest('.fragment[data-path]');
-  if (!closestFragment) return { content: false, osi: false };
-  const fragmentPath = closestFragment.dataset.path;
-  let firstTabId = 'individual';
-  for (const [key] of Object.entries(metadata)) {
-    if (fragmentPath.includes(key)) {
-      firstTabId = key;
-      break;
-    }
+function getKey(fragmentPath, defaultKey, obj) {
+  for (const [key] of Object.entries(obj)) {
+    if (fragmentPath.includes(key)) return key;
   }
-  let secondTabId = 'abm';
-  for (const [key] of Object.entries(metadata[firstTabId])) {
-    if (fragmentPath.includes(key)) {
-      secondTabId = key;
-      break;
-    }
-  }
-  return metadata[firstTabId][secondTabId];
-  // const parentTabContainer = closestTabContainer?.parentNode?.closest('[role="tabpanel"]');
-  // const closestId = closestTabContainer?.id?.split('-')[3] || '1';
-  // const parentTabId = parentTabContainer?.id?.split('-')[3] || '1';
-  // const offerType = el.classList.contains('con-button') && !el.classList.contains('blue')
-  //   ? 'secondary' : 'primary';
-  // const productObj = metadata.products[offerType]?.[closestId];
-  // if (!productObj) return { content: false, osi: false };
-  // const additionalTabIndex = productObj[parentTabId] ? parentTabId : 'other';
-  // const product = productObj[additionalTabIndex];
-  // const content = product?.content;
-  // const osiEl = content?.tagName === 'A' || content.dataset.wcsOsi
-  //   ? content : content?.querySelector('a, [data-wcs-osi]');
-  // const osi = getOsi(osiEl);
-  // return { content, osi, price: product.price, id: `${parentTabId}-${closestId}` };
+  return defaultKey;
 }
-function addCheckbox(card, metadata, price, id) {
+
+function addCheckbox(card, cardId, md) {
   card.dataset.aiAdded = false;
   const callout = card.querySelector('[slot="callout-content"]');
-  const description = metadata.checkbox.description.replace('[price]', price.priceEl.outerHTML);
-  const checkboxHtml = `
-    <input type="checkbox" id="ai-checkbox-${id}">
-    <label for="ai-checkbox-${id}">
-      <span><strong>${metadata.checkbox.headline}</strong></span>
-      <span class="ai-checkbox-subtitle">${description}</span>
-    </label>`;
+  if (!callout) return false;
+  const description = md.checkbox.description.replace('[AIP]', '<span class="price-placeholder"></span>');
   const checkboxContainer = createTag(
     'div',
     { slot: 'callout-content', class: 'ai-checkbox-container' },
-    checkboxHtml,
+    `<input type="checkbox" id="ai-checkbox-${cardId}">
+    <label for="ai-checkbox-${cardId}">
+      <span><strong>${md.checkbox.headline}</strong></span>
+      <span class="ai-checkbox-subtitle">${description}</span>
+    </label>`,
   );
-  callout.replaceWith(checkboxContainer);
+  const priceEl = callout?.querySelector('[data-template="price"]');
+  const pricePlaceholder = checkboxContainer.querySelector('.price-placeholder');
+  pricePlaceholder.replaceWith(priceEl);
   const checkbox = checkboxContainer.querySelector('input');
   checkbox.addEventListener('change', (e) => {
     const merchCard = e.target.closest('merch-card');
     merchCard.dataset.aiAdded = e.target.checked;
   });
+  callout.replaceWith(checkboxContainer);
+  return getPrice(priceEl);
 }
 function addPrices(card, metadata, aiPrice) {
-  card.querySelectorAll('[data-wcs-osi][data-template="price"]').forEach((el) => {
-    // TODO: exit if in callout or checkbox
-    const originalPrice = getPrice(el);
-    // TODO: clone el, add classes
-    // TODO: updatePrice on clone
-    // updatePrice(priceClone, aiPrice, originalPrice);
-    console.log('prices', aiPrice, originalPrice);
-  });
+  const prices = card.querySelectorAll('[data-wcs-osi][data-template]')  
+  prices.forEach((el) => {
+    const price = getPrice(el);
+    /**
+     * NOTE: since `addPrices()` is called after `addCheckbox()`, we know that 
+     * the "gray box" AI price element is not going to be part of the list of prices
+     * since it replaced by the checkbox. And the checkbox label's AI Assistant price
+     * is missing attributes `data-wcs-osi` and `data-template`
+     */
+    updatePrice(aiPrice, price); 
+  })
+  // handle free product (Acrobat Reader)
+  if(!prices?.length) {
+    const freeProductPriceEl = card?.querySelector('p[slot="heading-m-price"]')
+    if(freeProductPriceEl) {
+       freeProductPriceEl.innerHTML = `
+        <span class="${NO_AI_CLASS}">${freeProductPriceEl.innerHTML}</span>
+        <span class="${AI_CLASS}">${aiPrice.priceEl.innerHTML}</span>
+      `
+      const commitmentTypeLabel = 'Annual, paid monthly'; // TODO: get from metadata
+      const commitmentTypeLabelEl = createTag('p', { class:  `card-heading ${AI_CLASS}`, slot: 'body-xxs' });
+      commitmentTypeLabelEl.innerHTML = `<em>${commitmentTypeLabel}</em>`;
+      freeProductPriceEl.parentNode.insertBefore(commitmentTypeLabelEl, freeProductPriceEl)
+    }
+  }
 }
-function addButtons(card, metadata, aiOsi) {
-  card.querySelectorAll('.con-button').forEach((el) => {
+function addButtons(card, metadata, aiOsi, id) {
+  card.querySelectorAll('.con-button').forEach((button, buttonIdx) => {
     // TODO: handle button not being a cart link (reader, business pricing, modal)
-    const originalOsi = getOsi(el);
+    // cartlinks
+    if (button?.href.includes('commerce.')) {
+      const originalOsi = getOsi(button);
+      button.dataset.buttonId = `${id}-${buttonIdx + 1}`;
+      const clonedButton = button.cloneNode(true);
+      clonedButton.classList.add(AI_CLASS);
+      clonedButton.dataset.wcsOsi = `${originalOsi},${aiOsi}`;
+      clonedButton.dataset.checkoutWorkflowStep = 'email';
+      clonedButton.setAttribute('style', 'border: 3px solid red');
+      button.classList.add(NO_AI_CLASS);
+      button.parentNode.appendChild(clonedButton);
+      // quantity change
+      if (button.dataset?.quantity === '1') return;
+      clonedButton.dataset.quantity = `${button.dataset.quantity},${button.dataset.quantity}`;
+      const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'data-quantity') {
+            const buddy = mutation.target.parentNode.querySelector(`.${AI_CLASS}[data-button-id="${mutation.target.dataset.buttonId}"]`);
+            const quantity = mutation.target.getAttribute('data-quantity');
+            buddy.dataset.quantity = `${quantity},${quantity}`;
+            // console.log(`Quantity updated to ${quantity},${quantity} for`, buddy);
+          }
+        }
+      });
+      observer.observe(button, { childList: true, attributes: true, attributeFilter: ['data-quantity'] });
+    }
     // TODO: clone el, add classes, add osi, fix quantity add event listener for quantity updates
-    console.log('osi codes', aiOsi, originalOsi);
+    // console.log('osi codes', aiOsi, originalOsi);
+    // ISSUES REMINDER:
+    // 1. async/race condition?
+    // 2. offerId's can't be trusted absed off the aiosi in the gray container
   });
 }
 export default async function init(el) {
-  const container = el.closest('div:has(.merch-card, merch-card)');
-  const cards = container.querySelectorAll('.merch-card, merch-card');
-  if (!cards.length) return;
+  const fragContainer = el.closest('div.fragment[data-path]:has(.merch-card, merch-card)');
+  if (!fragContainer) return;
+  const fragPath = fragContainer.dataset.path;
   const md = parseMetadata(getMetadata(el));
-  cards.forEach((card, index) => {
-    const aiOsiCodes = getAiOsiCodes(card, md);
-    const aiPrice = addCheckbox(card, md, price, `${id}-${index + 1}`);
+  const fragAudience = getKey(fragPath, 'individuals', md);
+  fragContainer.querySelectorAll('.merch-card, merch-card').forEach((card, cardIdx) => {
+    const cardPlanType = getKey(fragPath, 'abm', md[fragAudience]);
+    const aiOsiCodes = md[fragAudience][cardPlanType];
+    const cardId = `${fragAudience}-${cardPlanType}-${cardIdx + 1}`;
+    const aiPrice = addCheckbox(card, cardId, md);
+    if (!aiPrice) return;
     addPrices(card, md, aiPrice);
-    addButtons(card, md, aiOsiCodes);
+    addButtons(card, md, aiOsiCodes, cardId);
   });
 }
