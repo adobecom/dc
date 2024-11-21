@@ -77,8 +77,8 @@ function updatePrice(aiPrice, price) {
 function getProduct(el, metadata) {
   const closestTabContainer = el.closest('[role="tabpanel"]');
   const parentTabContainer = closestTabContainer?.parentNode?.closest('[role="tabpanel"]');
-  const closestId = closestTabContainer?.id?.split('-')[3] || '1';
-  const parentTabId = parentTabContainer?.id?.split('-')[3] || '1';
+  const closestId = closestTabContainer?.id?.split('-')[closestTabContainer?.id?.split('-').length - 1] || '1';
+  const parentTabId = parentTabContainer?.id?.split('-')[parentTabContainer?.id?.split('-').length - 1] || '1';
   const offerType = el.classList.contains('con-button') && !el.classList.contains('blue')
     ? 'secondary' : 'primary';
   const productObj = metadata.products[offerType]?.[closestId];
@@ -106,7 +106,7 @@ function addCheckbox(card, metadata, price, id) {
     { slot: 'callout-content', class: 'ai-checkbox-container' },
     checkboxHtml,
   );
-  callout.replaceWith(checkboxContainer);
+  callout?.replaceWith(checkboxContainer);
   const checkbox = checkboxContainer.querySelector('input');
   checkbox.addEventListener('change', (e) => {
     const merchCard = e.target.closest('merch-card');
@@ -114,15 +114,23 @@ function addCheckbox(card, metadata, price, id) {
   });
 }
 function addPrices(card, metadata, aiPrice) {
+  console.log('addPrices', card, metadata, aiPrice);
     const container = card.querySelector('p[id*="price---"]');
-    let priceEl = container?.querySelector('span[data-wcs-osi][data-template="price"]')
-    let strikePriceEl = container?.querySelector('span[data-wcs-osi][data-template="strikethrough"]')
-
+    const priceEl = container?.querySelector('span.placeholder-resolved[data-wcs-osi][data-template="price"]')
+    const strikePriceEl = container?.querySelector('span[data-wcs-osi][data-template="strikethrough"]')
+    const acrobatReaderPriceEl = !container && card?.querySelector('p[slot="heading-m-price"]')
+        
     const price = priceEl ? getPrice(priceEl) : null;
     const strikePrice = strikePriceEl ? getPrice(strikePriceEl) : null;
-
-    price && updatePrice(aiPrice, price);
-    strikePrice && updatePrice(aiPrice, strikePrice);
+    if(acrobatReaderPriceEl) {
+      acrobatReaderPriceEl.innerHTML = `
+        <span class="${NO_AI_CLASS}">${acrobatReaderPriceEl.innerHTML}</span>
+        <span class="${AI_CLASS}">${aiPrice.priceEl.innerHTML}</span>
+      `
+    } else {
+      price && updatePrice(aiPrice, price);
+      strikePrice && updatePrice(aiPrice, strikePrice);
+    }
 }
 function addButtons(card, metadata, aiOsi, id) {
   card.querySelectorAll('.con-button').forEach((button, buttonIdx) => {
