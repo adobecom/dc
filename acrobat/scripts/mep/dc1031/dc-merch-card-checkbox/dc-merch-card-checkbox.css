@@ -29,3 +29,8 @@ merch-card .ai-checkbox-container input[type="checkbox"] {
   margin: 14px 12px 0 8px;
   cursor: pointer;
 }
+
+merch-card[variant="mini-compare-chart"] [slot='callout-content'].ai-checkbox-container {
+  padding: 0;
+  margin: var(--consonant-merch-spacing-xs) var(--consonant-merch-spacing-s) 0px;
+}

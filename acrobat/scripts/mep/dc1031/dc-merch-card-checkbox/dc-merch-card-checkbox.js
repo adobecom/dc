@@ -114,7 +114,6 @@ function addCheckbox(card, metadata, price, id) {
   });
 }
 function addPrices(card, metadata, aiPrice) {
-  console.log('addPrices', card, metadata, aiPrice);
     const container = card.querySelector('p[id*="price---"]');
     const priceEl = container?.querySelector('span.placeholder-resolved[data-wcs-osi][data-template="price"]')
     const strikePriceEl = container?.querySelector('span[data-wcs-osi][data-template="strikethrough"]')
