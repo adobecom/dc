@@ -115,22 +115,26 @@ function addCheckbox(card, metadata, price, id) {
   });
 }
 function addPrices(card, metadata, aiPrice) {
-    const container = card.querySelector('p[id*="price---"]');
-    const priceEl = container?.querySelector('span.placeholder-resolved[data-wcs-osi][data-template="price"]')
-    const strikePriceEl = container?.querySelector('span[data-wcs-osi][data-template="strikethrough"]')
-    const acrobatReaderPriceEl = !container && card?.querySelector('p[slot="heading-m-price"]')
-        
-    const price = priceEl ? getPrice(priceEl) : null;
-    const strikePrice = strikePriceEl ? getPrice(strikePriceEl) : null;
+  const prices = card.querySelectorAll('[data-wcs-osi][data-template]')
+  prices.forEach((el) => {
+    const price = getPrice(el);
+    // handle all prices except actual AI Assistant price
+    price.price !== aiPrice.price && updatePrice(aiPrice, price);
+  })
+  // handle free product
+  if(!prices?.length) {
+    const acrobatReaderPriceEl = card?.querySelector('p[slot="heading-m-price"]')
     if(acrobatReaderPriceEl) {
-      acrobatReaderPriceEl.innerHTML = `
+       acrobatReaderPriceEl.innerHTML = `
         <span class="${NO_AI_CLASS}">${acrobatReaderPriceEl.innerHTML}</span>
         <span class="${AI_CLASS}">${aiPrice.priceEl.innerHTML}</span>
       `
-    } else {
-      price && updatePrice(aiPrice, price);
-      strikePrice && updatePrice(aiPrice, strikePrice);
+      const commitmentTypeLabel = 'Annual, paid monthly'; // TODO: get from metadata
+      const commitmentTypeLabelEl = createTag('p', { class:  `card-heading ${AI_CLASS}`, slot: 'body-xxs' });
+      commitmentTypeLabelEl.innerHTML = `<em>${commitmentTypeLabel}</em>`;
+      acrobatReaderPriceEl.parentNode.insertBefore(commitmentTypeLabelEl, acrobatReaderPriceEl)
     }
+  }
 }
 function addButtons(card, metadata, aiOsi, id) {
   card.querySelectorAll('.con-button').forEach((button, buttonIdx) => {
