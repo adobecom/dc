@@ -7,6 +7,7 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 const NO_AI_CLASS = 'solo-product';
 const AI_CLASS = 'ai-bundled';
 
+
 function getOsi(el) {
   if (!el) return false;
   if (el.dataset.wcsOsi) return el.dataset.wcsOsi;
@@ -115,12 +116,40 @@ function addPrices(card, metadata, aiPrice) {
     console.log('prices', aiPrice, originalPrice);
   });
 }
-function addButtons(card, metadata, aiOsi) {
-  card.querySelectorAll('.con-button').forEach((el) => {
+function addButtons(card, metadata, aiOsi, id) {
+  card.querySelectorAll('.con-button').forEach((button, buttonIdx) => {
     // TODO: handle button not being a cart link (reader, business pricing, modal)
-    const originalOsi = getOsi(el);
+    // cartlinks
+    if (button?.href.includes('commerce.')) {
+      const originalOsi = getOsi(button);
+      button.dataset.buttonId = `${id}-${buttonIdx + 1}`;
+      const clonedButton = button.cloneNode(true);
+      clonedButton.classList.add(AI_CLASS);
+      clonedButton.dataset.wcsOsi = `${originalOsi},${aiOsi}`;
+      clonedButton.dataset.checkoutWorkflowStep = 'email';
+      clonedButton.setAttribute('style', 'border: 3px solid red');
+      button.classList.add(NO_AI_CLASS);
+      button.parentNode.appendChild(clonedButton);
+      // quantity change
+      if (button.dataset?.quantity === '1') return;
+      clonedButton.dataset.quantity = `${button.dataset.quantity},${button.dataset.quantity}`;
+      const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'data-quantity') {
+            const buddy = mutation.target.parentNode.querySelector(`.${AI_CLASS}[data-button-id="${mutation.target.dataset.buttonId}"]`);
+            const quantity = mutation.target.getAttribute('data-quantity');
+            buddy.dataset.quantity = `${quantity},${quantity}`;
+            // console.log(`Quantity updated to ${quantity},${quantity} for`, buddy);
+          }
+        }
+      });
+      observer.observe(button, { childList: true, attributes: true, attributeFilter: ['data-quantity'] });
+    }
     // TODO: clone el, add classes, add osi, fix quantity add event listener for quantity updates
-    console.log('osi codes', aiOsi, originalOsi);
+    // console.log('osi codes', aiOsi, originalOsi);
+    // ISSUES REMINDER:
+    // 1. async/race condition?
+    // 2. offerId's can't be trusted absed off the aiosi in the gray container
   });
 }
 export default async function init(el) {
@@ -133,6 +162,6 @@ export default async function init(el) {
     const { osi, price, id } = getProduct(card, parsedMetadata);
     addCheckbox(card, parsedMetadata, price, `${id}-${index + 1}`);
     addPrices(card, parsedMetadata, price);
-    addButtons(card, parsedMetadata, osi);
+    addButtons(card, parsedMetadata, osi, `${id}-${index + 1}`);
   });
 }
