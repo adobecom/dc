@@ -115,24 +115,29 @@ function addCheckbox(card, metadata, price, id) {
   });
 }
 function addPrices(card, metadata, aiPrice) {
-  const prices = card.querySelectorAll('[data-wcs-osi][data-template]')
+  const prices = card.querySelectorAll('[data-wcs-osi][data-template]')  
   prices.forEach((el) => {
     const price = getPrice(el);
-    // handle all prices except actual AI Assistant price
-    price.price !== aiPrice.price && updatePrice(aiPrice, price);
+    /**
+     * NOTE: since `addPrices()` is called after `addCheckbox()`, we know that 
+     * the "gray box" AI price element is not going to be part of the list of prices
+     * since it replaced by the checkbox. And the checkbox label's AI Assistant price
+     * is missing attributes `data-wcs-osi` and `data-template`
+     */
+    updatePrice(aiPrice, price); 
   })
-  // handle free product
+  // handle free product (Acrobat Reader)
   if(!prices?.length) {
-    const acrobatReaderPriceEl = card?.querySelector('p[slot="heading-m-price"]')
-    if(acrobatReaderPriceEl) {
-       acrobatReaderPriceEl.innerHTML = `
-        <span class="${NO_AI_CLASS}">${acrobatReaderPriceEl.innerHTML}</span>
+    const freeProductPriceEl = card?.querySelector('p[slot="heading-m-price"]')
+    if(freeProductPriceEl) {
+       freeProductPriceEl.innerHTML = `
+        <span class="${NO_AI_CLASS}">${freeProductPriceEl.innerHTML}</span>
         <span class="${AI_CLASS}">${aiPrice.priceEl.innerHTML}</span>
       `
       const commitmentTypeLabel = 'Annual, paid monthly'; // TODO: get from metadata
       const commitmentTypeLabelEl = createTag('p', { class:  `card-heading ${AI_CLASS}`, slot: 'body-xxs' });
       commitmentTypeLabelEl.innerHTML = `<em>${commitmentTypeLabel}</em>`;
-      acrobatReaderPriceEl.parentNode.insertBefore(commitmentTypeLabelEl, acrobatReaderPriceEl)
+      freeProductPriceEl.parentNode.insertBefore(commitmentTypeLabelEl, freeProductPriceEl)
     }
   }
 }
