@@ -96,6 +96,24 @@ function getKey(fragmentPath, defaultKey, obj) {
 function getAIPriceEl(card) {
   return card.querySelector(`${CALLOUT_SELECTOR} [is="inline-price"]`);
 }
+function sendCheckboxAnalytics(fragAudience, cardPlanType, checked) {
+  const msg = `${fragAudience}-${cardPlanType}-checkbox-${checked ? 'checked' : 'unchecked'}`;
+  // eslint-disable-next-line no-underscore-dangle
+  window._satellite?.track?.('event', {
+    documentUnloading: true,
+    xdm: {
+      eventType: 'web.webinteraction.linkClicks',
+      web: {
+        webInteraction: {
+          linkClicks: { value: 1 },
+          type: 'other',
+          name: msg,
+        },
+      },
+    },
+    data: { _adobe_corpnew: { digitalData: { primaryEvent: { eventInfo: { eventName: msg } } } } },
+  });
+}
 async function addCheckbox({ card, md, fragAudience, cardPlanType }) {
   const cardTitle = card.querySelector('h3')?.textContent.toLowerCase().split(' ').join('-');
   const cardId = `${fragAudience}-${cardPlanType}-${cardTitle}`;
@@ -118,6 +136,7 @@ async function addCheckbox({ card, md, fragAudience, cardPlanType }) {
   checkbox.addEventListener('change', (e) => {
     const merchCard = e.target.closest('merch-card');
     merchCard.dataset.aiAdded = e.target.checked;
+    sendCheckboxAnalytics(fragAudience, cardPlanType, e.target.checked);
   });
   callout?.replaceWith(checkboxContainer);
 }
