@@ -20,12 +20,33 @@ function getOsi(el) {
     return false;
   }
 }
-function getPrice(el) {
+
+function waitForPlaceholderResolved(el) {
+  // eslint-disable-next-line compat/compat
+  return new Promise((resolve) => {
+    if (el.classList.contains('placeholder-resolved')) {
+      resolve();
+    } else {
+      const elObserver = new MutationObserver((mutationsList, observer) => {
+        for (const mutation of mutationsList) {
+          if (mutation.type === 'attributes'
+            && mutation.attributeName === 'class'
+            && el.classList.contains('placeholder-resolved')) {
+            observer.disconnect();
+            resolve();
+          }
+        }
+      });
+      elObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
+    }
+  });
+}
+async function getPrice(el) {
+  await waitForPlaceholderResolved(el);
   const major = el.querySelector('.price-integer')?.textContent;
   const minor = el.querySelector('.price-decimals')?.textContent;
   const price = parseFloat(`${major}.${minor}`);
-  const priceEl = el.querySelector('.price');
-  return { major, minor, price, priceEl };
+  return price;
 }
 function parseMetadata(metadata) {
   const results = {};
@@ -46,19 +67,19 @@ function parseMetadata(metadata) {
   }
   return results;
 }
-function cloneAndUpdatePrice(aiPrice, price) {
-  const priceClone = {
-    ...price,
-    priceEl: price.priceEl?.cloneNode(true),
-  };
-  const newPrice = (priceClone.price + aiPrice.price).toFixed(2);
-  const major = newPrice.split('.')[0];
-  const minor = newPrice.split('.')[1];
-  price.priceEl.classList.add(NO_AI_CLASS);
-  priceClone.priceEl.classList.add(AI_CLASS);
-  priceClone.priceEl.querySelector('.price-integer').textContent = major;
-  priceClone.priceEl.querySelector('.price-decimals').textContent = minor;
-  price.priceEl.parentNode.appendChild(priceClone.priceEl);
+
+async function cloneAndUpdatePrice(aiPriceEl, acrobatPriceEl) {
+  const bundledPrice = acrobatPriceEl.cloneNode(true);
+  bundledPrice.classList.add(AI_CLASS);
+  acrobatPriceEl.classList.add(NO_AI_CLASS);
+  acrobatPriceEl.parentNode.insertBefore(bundledPrice, acrobatPriceEl);
+  const aiPrice = await getPrice(aiPriceEl);
+  const acrobatPrice = await getPrice(acrobatPriceEl);
+  const bundlePrice = (acrobatPrice + aiPrice).toFixed(2);
+  const major = bundlePrice.split('.')[0];
+  const minor = bundlePrice.split('.')[1];
+  bundledPrice.querySelector('.price-integer').textContent = major;
+  bundledPrice.querySelector('.price-decimals').textContent = minor;
 }
 function getKey(fragmentPath, defaultKey, obj) {
   const reservedKeys = ['reader', 'checkbox'];
@@ -67,11 +88,14 @@ function getKey(fragmentPath, defaultKey, obj) {
   }
   return defaultKey;
 }
-
-function addCheckbox(card, cardId, md) {
+function getAIPriceEl(card) {
+  return card.querySelector(`${CALLOUT_SELECTOR} [is="inline-price"]`);
+}
+async function addCheckbox({ card, md, fragAudience, cardPlanType }) {
+  const cardTitle = card.querySelector('h3')?.textContent.toLowerCase().split(' ').join('-');
+  const cardId = `${fragAudience}-${cardPlanType}-${cardTitle}`;
   card.dataset.aiAdded = false;
   const callout = card.querySelector(CALLOUT_SELECTOR);
-  if (!callout) return false;
   const description = md.checkbox.description.replace('[AIP]', '<span class="price-placeholder"></span>');
   const checkboxContainer = createTag(
     'div',
@@ -82,7 +106,7 @@ function addCheckbox(card, cardId, md) {
       <span class="ai-checkbox-subtitle">${description}</span>
     </label>`,
   );
-  const priceEl = callout?.querySelector('[data-template="price"]');
+  const priceEl = getAIPriceEl(card);
   const pricePlaceholder = checkboxContainer.querySelector('.price-placeholder');
   pricePlaceholder.replaceWith(priceEl);
   const checkbox = checkboxContainer.querySelector('input');
@@ -90,29 +114,30 @@ function addCheckbox(card, cardId, md) {
     const merchCard = e.target.closest('merch-card');
     merchCard.dataset.aiAdded = e.target.checked;
   });
-  callout.replaceWith(checkboxContainer);
-  return getPrice(priceEl);
+  callout?.replaceWith(checkboxContainer);
 }
-function addReaderPrice(md, aiPrice, freeProductPriceEl) {
-  freeProductPriceEl.innerHTML = `
-    <span class="${NO_AI_CLASS}">${freeProductPriceEl.innerHTML}</span>
-    <span class="${AI_CLASS}">${aiPrice.priceEl.innerHTML}</span>
-  `;
-  const commitmentTypeLabel = md.reader.pricing.terms;
-  const commitmentTypeLabelEl = createTag('p', { class: `card-heading ${AI_CLASS}`, slot: 'body-xxs' });
-  commitmentTypeLabelEl.innerHTML = `<em>${commitmentTypeLabel}</em>`;
-  freeProductPriceEl.parentNode.insertBefore(commitmentTypeLabelEl, freeProductPriceEl);
+function addReaderPrice(md, priceEl, readerPriceEl) {
+  const aiPriceEl = priceEl.cloneNode(true);
+  aiPriceEl.classList.add(AI_CLASS);
+  readerPriceEl.classList.add(NO_AI_CLASS);
+  readerPriceEl.parentNode.insertBefore(aiPriceEl, readerPriceEl);
+  const commitmentTypeLabelEl = createTag(
+    'p',
+    { class: `card-heading ${AI_CLASS}`, slot: 'body-xxs' },
+    `<em>${md.reader.pricing.terms}</em>`,
+  );
+  readerPriceEl.parentNode.insertBefore(commitmentTypeLabelEl, readerPriceEl);
 }
-function addPrices(card, md, aiPrice) {
-  const prices = card.querySelectorAll('[data-wcs-osi][data-template]');
-  const priceArray = Array.from(prices).filter((el) => !el.closest(CALLOUT_SELECTOR));
+async function addPrices({ card, md }) {
+  const priceEl = getAIPriceEl(card);
+  const prices = card.querySelectorAll('[is="inline-price"]');
+  const priceArray = Array.from(prices).filter((el) => el !== priceEl);
 
   priceArray.forEach((el) => {
-    const price = getPrice(el);
-    cloneAndUpdatePrice(aiPrice, price);
+    cloneAndUpdatePrice(priceEl, el);
   });
   const freeProductPriceEl = card?.querySelector('p[slot="heading-m-price"]');
-  if (!priceArray?.length && freeProductPriceEl) addReaderPrice(md, aiPrice, freeProductPriceEl);
+  if (!priceArray?.length && freeProductPriceEl) addReaderPrice(md, priceEl, freeProductPriceEl);
 }
 function attachQtyUpdateObserver(button, clonedButton) {
   clonedButton.dataset.quantity = `${button.dataset.quantity},${button.dataset.quantity}`;
@@ -134,13 +159,14 @@ function addReaderButton(button, md, aiOsiCodes) {
   buyButton.dataset.wcsOsi = aiOsiCodes.primary;
   button.parentNode.appendChild(buyButton);
 }
-function addButtons(card, md, aiOsiCodes) {
+async function addButtons({ card, md, fragAudience, cardPlanType }) {
+  const aiOsiCodes = md[fragAudience][cardPlanType];
   const readerButton = card.querySelector('.con-button[href*="/reader/"]');
   if (readerButton) {
     addReaderButton(readerButton, md, aiOsiCodes);
     return;
   }
-  card.querySelectorAll('.con-button[href*="commerce."]').forEach((button) => {
+  card.querySelectorAll('.con-button[is="checkout-link"]').forEach((button) => {
     const originalOsi = getOsi(button);
     const buttonType = button.classList.contains('blue') ? 'primary' : 'secondary';
     const clonedButton = button.cloneNode(true);
@@ -148,50 +174,32 @@ function addButtons(card, md, aiOsiCodes) {
     clonedButton.dataset.wcsOsi = `${originalOsi},${aiOsiCodes[buttonType]}`;
     clonedButton.dataset.checkoutWorkflowStep = 'email';
     button.classList.add(NO_AI_CLASS);
-    button.parentNode.appendChild(clonedButton);
+    button.parentNode.insertBefore(clonedButton, button);
     if (button.dataset?.quantity !== '1') attachQtyUpdateObserver(button, clonedButton);
   });
 }
-function processCard(card, cardIdx, fragPath, md, fragAudience) {
+function processCard(card, md) {
+  const fragContainer = card.closest('div.fragment[data-path]');
+  if (!fragContainer) return;
+  const fragPath = fragContainer.dataset.path;
+  const fragAudience = getKey(fragPath, 'individuals', md);
   const cardPlanType = getKey(fragPath, 'abm', md[fragAudience]);
-  const aiOsiCodes = md[fragAudience][cardPlanType];
-  const cardId = `${fragAudience}-${cardPlanType}-card${cardIdx + 1}`;
-  const aiPrice = addCheckbox(card, cardId, md);
-  if (!aiPrice.priceEl) return;
-  addPrices(card, md, aiPrice);
-  addButtons(card, md, aiOsiCodes);
+  addCheckbox({ card, md, fragAudience, cardPlanType });
+  addPrices({ card, md });
+  addButtons({ card, md, fragAudience, cardPlanType });
 }
-function allReqsFound(card) {
-  const reqs = card.querySelectorAll(`${CALLOUT_SELECTOR} [data-template="price"] .price,
-    a.con-button[href*="commerce."],
-    a.con-button[href*="/reader/"]`);
-  return (reqs.length > 1);
-}
-function waitToProcessCardIfNeeded({ card, cardIdx, fragPath, md, fragAudience }) {
-  const cardObserver = new MutationObserver((mutationsList, observer) => {
+export default async function init(el) {
+  const md = parseMetadata(getMetadata(el));
+  const mainObserver = new MutationObserver((mutationsList) => {
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-        if (allReqsFound(card)) {
-          observer.disconnect();
-          processCard(card, cardIdx, fragPath, md, fragAudience);
-        }
+        mutation.addedNodes.forEach((node) => {
+          if (node.matches && node.nodeName === 'MERCH-CARD') {
+            processCard(node, md);
+          }
+        });
       }
     }
   });
-
-  if (allReqsFound(card)) {
-    processCard(card, cardIdx, fragPath, md, fragAudience);
-  } else {
-    cardObserver.observe(card, { childList: true, subtree: true });
-  }
-}
-export default async function init(el) {
-  const fragContainer = el.closest('div.fragment[data-path]:has(.merch-card, merch-card)');
-  if (!fragContainer) return;
-  const fragPath = fragContainer.dataset.path;
-  const md = parseMetadata(getMetadata(el));
-  const fragAudience = getKey(fragPath, 'individuals', md);
-  fragContainer.querySelectorAll('.merch-card, merch-card').forEach((card, cardIdx) => {
-    waitToProcessCardIfNeeded({ card, cardIdx, fragPath, md, fragAudience });
-  });
+  mainObserver.observe(document.querySelector('main'), { childList: true, subtree: true });
 }
