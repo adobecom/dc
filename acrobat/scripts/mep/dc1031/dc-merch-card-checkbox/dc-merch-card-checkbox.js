@@ -73,8 +73,9 @@ async function cloneAndUpdatePrice(aiPriceEl, acrobatPriceEl) {
   bundledPrice.classList.add(AI_CLASS);
   acrobatPriceEl.classList.add(NO_AI_CLASS);
   acrobatPriceEl.parentNode.insertBefore(bundledPrice, acrobatPriceEl);
-  const aiPrice = await getPrice(aiPriceEl);
+  let aiPrice = await getPrice(aiPriceEl);
   const acrobatPrice = await getPrice(acrobatPriceEl);
+  if (acrobatPriceEl.dataset.template === 'optical') aiPrice /= 12;
   const bundlePrice = (acrobatPrice + aiPrice).toFixed(2);
   const major = bundlePrice.split('.')[0];
   const minor = bundlePrice.split('.')[1];
@@ -117,10 +118,12 @@ async function addCheckbox({ card, md, fragAudience, cardPlanType }) {
   callout?.replaceWith(checkboxContainer);
 }
 function addReaderPrice(md, priceEl, readerPriceEl) {
+  readerPriceEl.innerHTML = `
+    <span class="${NO_AI_CLASS}">${readerPriceEl.innerHTML}</span>
+    <span class="${AI_CLASS}"></span>
+  `;
   const aiPriceEl = priceEl.cloneNode(true);
-  aiPriceEl.classList.add(AI_CLASS);
-  readerPriceEl.classList.add(NO_AI_CLASS);
-  readerPriceEl.parentNode.insertBefore(aiPriceEl, readerPriceEl);
+  readerPriceEl.querySelector(`.${AI_CLASS}`).appendChild(aiPriceEl);
   const commitmentTypeLabelEl = createTag(
     'p',
     { class: `card-heading ${AI_CLASS}`, slot: 'body-xxs' },
@@ -129,8 +132,9 @@ function addReaderPrice(md, priceEl, readerPriceEl) {
   readerPriceEl.parentNode.insertBefore(commitmentTypeLabelEl, readerPriceEl);
 }
 async function addPrices({ card, md }) {
-  const priceEl = getAIPriceEl(card);
   const prices = card.querySelectorAll('[is="inline-price"]');
+  if (!prices.length) return;
+  const priceEl = getAIPriceEl(card);
   const priceArray = Array.from(prices).filter((el) => el !== priceEl);
 
   priceArray.forEach((el) => {
@@ -153,7 +157,8 @@ function attachQtyUpdateObserver(button, clonedButton) {
 }
 function addReaderButton(button, md, aiOsiCodes) {
   button.classList.add(NO_AI_CLASS);
-  const buyButton = md.reader.buy.button.querySelector('a');
+  const clonedAiContent = md.reader.buy.button.cloneNode(true);
+  const buyButton = clonedAiContent.querySelector('a');
   buyButton.classList.add(AI_CLASS);
   buyButton.classList.add('button-l');
   buyButton.dataset.wcsOsi = aiOsiCodes.primary;
