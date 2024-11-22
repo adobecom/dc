@@ -27,17 +27,16 @@ function waitForPlaceholderResolved(el) {
     if (el.classList.contains('placeholder-resolved')) {
       resolve();
     } else {
-      const elObserver = new MutationObserver((mutationsList, observer) => {
+      const observer = new MutationObserver((mutationsList) => {
         for (const mutation of mutationsList) {
-          if (mutation.type === 'attributes'
-            && mutation.attributeName === 'class'
-            && el.classList.contains('placeholder-resolved')) {
-            observer.disconnect();
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
             resolve();
+            observer.disconnect();
+            break;
           }
         }
       });
-      elObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
+      observer.observe(el, { childList: true });
     }
   });
 }
@@ -69,18 +68,20 @@ function parseMetadata(metadata) {
 }
 
 async function cloneAndUpdatePrice(aiPriceEl, acrobatPriceEl) {
-  const bundledPrice = acrobatPriceEl.cloneNode(true);
-  bundledPrice.classList.add(AI_CLASS);
+  const bundlePriceEl = acrobatPriceEl.cloneNode(true);
+  bundlePriceEl.classList.add(AI_CLASS);
   acrobatPriceEl.classList.add(NO_AI_CLASS);
-  acrobatPriceEl.parentNode.insertBefore(bundledPrice, acrobatPriceEl);
+  acrobatPriceEl.parentNode.insertBefore(bundlePriceEl, acrobatPriceEl);
   let aiPrice = await getPrice(aiPriceEl);
   const acrobatPrice = await getPrice(acrobatPriceEl);
   if (acrobatPriceEl.dataset.template === 'optical') aiPrice /= 12;
   const bundlePrice = (acrobatPrice + aiPrice).toFixed(2);
   const major = bundlePrice.split('.')[0];
   const minor = bundlePrice.split('.')[1];
-  bundledPrice.querySelector('.price-integer').textContent = major;
-  bundledPrice.querySelector('.price-decimals').textContent = minor;
+  setTimeout(() => {
+    bundlePriceEl.querySelector('.price-integer').textContent = major;
+    bundlePriceEl.querySelector('.price-decimals').textContent = minor;
+  }, 100);
 }
 function getKey(fragmentPath, defaultKey, obj) {
   const reservedKeys = ['reader', 'checkbox'];
