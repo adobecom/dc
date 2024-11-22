@@ -1,7 +1,7 @@
 .dc-merch-card-checkbox,
 merch-card[data-ai-added="true"] .solo-product,
 merch-card[data-ai-added="false"] .ai-bundled {
-  display: none;
+  display: none !important;
 }
 
 merch-card [slot='callout-content'].ai-checkbox-container {
