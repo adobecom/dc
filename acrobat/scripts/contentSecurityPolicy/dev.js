@@ -219,7 +219,7 @@ const scriptSrc = [
   '*.hlx.page',
   '*.hlx.live',
   'tr.snapchat.com',
-  'sha256-XZLMiKjK7kZsMSJR/aV6U3pMxjqlvU6v3tJSIimxjHs=',
+  '\'sha256-XZLMiKjK7kZsMSJR/aV6U3pMxjqlvU6v3tJSIimxjHs=\'',
   ';',
 ];
 
