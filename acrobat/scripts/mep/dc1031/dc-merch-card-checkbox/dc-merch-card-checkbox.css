@@ -4,7 +4,7 @@ merch-card[data-ai-added="false"] .ai-bundled {
   display: none;
 }
 
-merch-card .ai-checkbox-container {
+merch-card [slot='callout-content'].ai-checkbox-container {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
