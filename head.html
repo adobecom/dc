@@ -1,6 +1,66 @@
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="preconnect" href="https://acrobat.adobe.com" crossorigin>
 <script src="/acrobat/scripts/scripts.js" type="module"></script>
 <style>body { display: none; }</style>
 <link rel="icon" href="data:,">
 <script nomodule src="/acrobat/scripts/fallback.js"></script>
+<script>
+  window.setLibs = (prodLibs, location = window.location) => {
+    const { hostname, search } = location;
+    const branch = new URLSearchParams(search).get('milolibs') || 'main';
+    if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.stage.adobe.com/libs';
+    if (!/(\.hlx\.|local|stage)/.test(hostname)) return prodLibs;
+    if (branch === 'local') return 'http://localhost:6456/libs';
+    return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
+  };
+  
+  window.getUnityLibs = (prodLibs = '/unitylibs') => {
+    const { hostname, search } = window.location;
+    if (!hostname.includes('hlx.page') && !hostname.includes('hlx.live') && !hostname.includes('localhost')) {
+      return prodLibs;
+    }
+    const branch = new URLSearchParams(search).get('unitylibs') || 'main';
+    return branch.includes('--') ? `https://${branch}.hlx.live/unitylibs` : `https://${branch}--unity--adobecom.hlx.live/unitylibs`;
+  }
+
+  window.loadLink = (href, options = {}) => {
+    const { as, callback, crossorigin, rel, fetchpriority } = options;
+    let link = document.head.querySelector(`link[href="${href}"]`);
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', rel);
+      if (as) link.setAttribute('as', as);
+      if (crossorigin) link.setAttribute('crossorigin', crossorigin);
+      if (fetchpriority) link.setAttribute('fetchpriority', fetchpriority);
+      link.setAttribute('href', href);
+      if (callback) {
+        link.onload = (e) => callback(e.type);
+        link.onerror = (e) => callback(e.type);
+      }
+      document.head.appendChild(link);
+    } else if (callback) {
+      callback('noop');
+    }
+    return link;
+  }
+
+  window.loadStyle = (href, callback) => {
+    return loadLink(href, { rel: 'stylesheet', callback });
+  }
+
+  const miloLibs = setLibs('/libs');
+  const unityLibs = getUnityLibs();
+
+  const preloads = document.querySelector('meta[name="preloads"]')?.content?.split(',').map(x => x.trim().replace('$MILOLIBS', miloLibs).replace('$UNITYLIBS', unityLibs)) || [];
+  preloads.forEach((link) => {
+    if (link.endsWith('.js')) {
+      loadLink(link, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
+    } else if (link.endsWith('.css')) {
+      loadStyle(link);
+    } else if (link.endsWith('.json') || link.endsWith('.html')) {
+      loadLink(link, { as: 'fetch', rel: 'preload', crossorigin: 'anonymous' });
+    } else if (/\.(png|jpg|jpeg|gif|webp|svg)$/.test(link)) {
+      loadLink(link, { as: 'image', rel: 'preload', fetchpriority: 'high' });
+    }
+  });
+</script>
