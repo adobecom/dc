@@ -187,7 +187,7 @@ async function addButtons({ card, md, fragAudience, cardPlanType }) {
     clonedButton.setAttribute('daa-ll', `ai-${daaLl}`);
     button.classList.add(NO_AI_CLASS);
     button.parentNode.insertBefore(clonedButton, button);
-    if (button.dataset?.quantity !== '1') attachQtyUpdateObserver(button, clonedButton);
+    attachQtyUpdateObserver(button, clonedButton);
   });
 }
 function processCard(card, md) {
