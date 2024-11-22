@@ -2,7 +2,8 @@ import { setLibs } from '../../../utils.js';
 
 const miloLibs = setLibs('/libs');
 const { getMetadata } = await import(`${miloLibs}/blocks/section-metadata/section-metadata.js`);
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
+const { decorateDefaultLinkAnalytics } = await import(`${miloLibs}/martech/attributes.js`);
 
 const NO_AI_CLASS = 'solo-product';
 const AI_CLASS = 'ai-bundled';
@@ -51,7 +52,9 @@ function parseMetadata(metadata) {
   const results = {};
   for (const [key, val] of Object.entries(metadata)) {
     const [l1, l2, l3] = key.split('-');
-    const value = key.includes('button') || key.includes('price') ? val.content : val.content.textContent;
+    let value = val.content.textContent;
+    if (key.includes('button')) value = val.content;
+    else if (key.includes('description')) value = val.content.innerHTML;
     if (!l2) {
       results[l1] = value;
     } else {
@@ -166,6 +169,7 @@ function addReaderButton(button, md, aiOsiCodes) {
   button.parentNode.appendChild(buyButton);
 }
 async function addButtons({ card, md, fragAudience, cardPlanType }) {
+  decorateDefaultLinkAnalytics(card, getConfig());
   const aiOsiCodes = md[fragAudience][cardPlanType];
   const readerButton = card.querySelector('.con-button[href*="/reader/"]');
   if (readerButton) {
@@ -179,6 +183,8 @@ async function addButtons({ card, md, fragAudience, cardPlanType }) {
     clonedButton.classList.add(AI_CLASS);
     clonedButton.dataset.wcsOsi = `${originalOsi},${aiOsiCodes[buttonType]}`;
     clonedButton.dataset.checkoutWorkflowStep = 'email';
+    const daaLl = clonedButton.getAttribute('daa-ll');
+    clonedButton.setAttribute('daa-ll', `ai-${daaLl}`);
     button.classList.add(NO_AI_CLASS);
     button.parentNode.insertBefore(clonedButton, button);
     if (button.dataset?.quantity !== '1') attachQtyUpdateObserver(button, clonedButton);
