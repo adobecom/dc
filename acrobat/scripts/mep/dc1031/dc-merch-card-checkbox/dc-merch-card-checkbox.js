@@ -118,11 +118,17 @@ function addPrices(card, metadata, aiPrice) {
     }
   }
 }
-function addButtons(card, metadata, aiOsi, id) {
+function addButtons(card, md, aiOsi, id) {
   card.querySelectorAll('.con-button').forEach((button, buttonIdx) => {
     // TODO: handle button not being a cart link (reader, business pricing, modal)
     // cartlinks
-    if (button?.href.includes('commerce.')) {
+    if (button?.href.includes('/reader/')) {
+      button.classList.add(NO_AI_CLASS);
+      const buyButton = md['reader-buybutton'].content.querySelector('a');
+      buyButton.classList.add(AI_CLASS);
+      buyButton.classList.add('button-l');
+      button.parentNode.appendChild(buyButton);
+    } else if (button?.href.includes('commerce.')) {
       const originalOsi = getOsi(button);
       button.dataset.buttonId = `${id}-${buttonIdx + 1}`;
       const clonedButton = button.cloneNode(true);
@@ -154,19 +160,48 @@ function addButtons(card, metadata, aiOsi, id) {
     // 2. offerId's can't be trusted absed off the aiosi in the gray container
   });
 }
+function processCard(card, cardIdx, fragPath, md, fragAudience, rawMetadata) {
+  const cardPlanType = getKey(fragPath, 'abm', md[fragAudience]);
+  const aiOsiCodes = md[fragAudience][cardPlanType];
+  const cardId = `${fragAudience}-${cardPlanType}-${cardIdx + 1}`;
+  const aiPrice = addCheckbox(card, cardId, md);
+  if (!aiPrice) return;
+  addPrices(card, md, aiPrice);
+  addButtons(card, rawMetadata, aiOsiCodes, cardId);
+}
+
 export default async function init(el) {
   const fragContainer = el.closest('div.fragment[data-path]:has(.merch-card, merch-card)');
   if (!fragContainer) return;
   const fragPath = fragContainer.dataset.path;
-  const md = parseMetadata(getMetadata(el));
+  const rawMetadata = getMetadata(el);
+  const md = parseMetadata(rawMetadata);
   const fragAudience = getKey(fragPath, 'individuals', md);
   fragContainer.querySelectorAll('.merch-card, merch-card').forEach((card, cardIdx) => {
-    const cardPlanType = getKey(fragPath, 'abm', md[fragAudience]);
-    const aiOsiCodes = md[fragAudience][cardPlanType];
-    const cardId = `${fragAudience}-${cardPlanType}-${cardIdx + 1}`;
-    const aiPrice = addCheckbox(card, cardId, md);
-    if (!aiPrice) return;
-    addPrices(card, md, aiPrice);
-    addButtons(card, md, aiOsiCodes, cardId);
+    const cardObserver = new MutationObserver((mutationsList, observer) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          const callout = card.querySelector('[slot="callout-content"] [data-template="price"]');
+          if (callout) {
+            observer.disconnect();
+            processCard(card, cardIdx, fragPath, md, fragAudience, rawMetadata);
+          }
+        }
+      }
+    });
+
+    const callout = card.querySelector('[slot="callout-content"] [data-template="price"]');
+    if (callout) {
+      processCard(card, cardIdx, fragPath, md, fragAudience, rawMetadata);
+    } else {
+      cardObserver.observe(card, { childList: true, subtree: true });
+    }
+    // const cardPlanType = getKey(fragPath, 'abm', md[fragAudience]);
+    // const aiOsiCodes = md[fragAudience][cardPlanType];
+    // const cardId = `${fragAudience}-${cardPlanType}-${cardIdx + 1}`;
+    // const aiPrice = addCheckbox(card, cardId, md);
+    // if (!aiPrice) return;
+    // addPrices(card, md, aiPrice);
+    // addButtons(card, md, aiOsiCodes, cardId);
   });
 }
