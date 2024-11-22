@@ -252,6 +252,11 @@ export default async function init(element) {
       setUser();
     }
 
+    if (e.detail?.event === 'cancel') {
+      verbAnalytics('job:cancel', VERB, e.detail?.data);
+      setUser();
+    }
+
     if (e.detail?.event === 'uploading') {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
