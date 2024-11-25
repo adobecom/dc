@@ -260,6 +260,7 @@ const scriptSrc = [
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
   'tr.snapchat.com',
+  '\'sha256-XZLMiKjK7kZsMSJR/aV6U3pMxjqlvU6v3tJSIimxjHs=\'',
   ';',
 ];
 
