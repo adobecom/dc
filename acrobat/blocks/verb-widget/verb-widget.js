@@ -45,7 +45,7 @@ function prefetchNextPage(verb) {
   const ENV = getEnv();
   const isProd = ENV === 'prod';
   const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
-  const nextPageUrl = `https://${nextPageHost}/us/en/discover/${verb}`;
+  const nextPageUrl = `https://${nextPageHost}/us/en/${verb}`;
   const link = document.createElement('link');
   link.rel = 'prefetch';
   link.href = nextPageUrl;
