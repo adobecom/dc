@@ -292,12 +292,12 @@ export default async function init(element) {
 
   const handleError = (detail, logToLana = false, logOptions = {}) => {
     const { code, message, status, info = 'No additional info provided', accountType = 'Unknown account type' } = detail;
-
-    setDraggingClass(widget, false);
-    errorState.classList.add('verb-error');
-    errorState.classList.remove('hide');
-    errorStateText.textContent = message;
-
+    if (message) {
+      setDraggingClass(widget, false);
+      errorState.classList.add('verb-error');
+      errorState.classList.remove('hide');
+      errorStateText.textContent = message;
+    }
     if (logToLana) {
       window.lana?.log(
         `Error Code: ${code}, Status: ${status}, Message: ${message}, Info: ${info}, Account Type: ${accountType}`,
@@ -335,6 +335,10 @@ export default async function init(element) {
     if (e.detail?.code.includes('error_max_page_count')) {
       handleError(e.detail, true, lanaOptions);
       verbAnalytics('error:max_page_count', VERB);
+    }
+
+    if (e.detail?.code.includes('cookie_not_set')) {
+      handleError(e.detail, true, lanaOptions);
     }
 
     if (e.detail?.code.includes('error_generic')
