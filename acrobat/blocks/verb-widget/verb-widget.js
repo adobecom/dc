@@ -337,7 +337,7 @@ export default async function init(element) {
       verbAnalytics('error:max_page_count', VERB);
     }
 
-    if (e.detail?.code.includes('cookie_not_set') {
+    if (e.detail?.code.includes('cookie_not_set')) {
       handleError(e.detail, true, lanaOptions);
     }
 
