@@ -1,7 +1,7 @@
 .verb-widget {
   color: transparent;
   background-color: #fff;
-  background-image: linear-gradient(180deg, #EB1000 0%, #F79B94 58%, #FFFFFF 100%);
+  background-image: linear-gradient(180deg, #EB1000 0%, #F79B94 58%, #FFF 100%);
   min-height: 623px;
   padding: 19px;
 }
