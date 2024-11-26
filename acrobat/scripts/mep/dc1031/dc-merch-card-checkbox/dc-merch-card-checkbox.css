@@ -23,6 +23,10 @@ merch-card .ai-checkbox-container label {
   width: 100%;
 }
 
+merch-card .ai-checkbox-container label span[is="inline-price"] {
+  pointer-events: none;
+}
+
 merch-card .ai-checkbox-container input[type="checkbox"] {
   height: 18px;
   width: 18px;
