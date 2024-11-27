@@ -6,6 +6,10 @@
   padding: 19px;
 }
 
+.verb-widget.signed-in {
+  min-height: 560px;
+}
+
 .verb-widget.ready {
   color: initial;
 }
@@ -70,6 +74,10 @@
   display: flex;
   flex-flow: row;
   justify-content: center;
+}
+
+.verb-widget.signed-in .verb-footer {
+  display: none;
 }
 
 .verb-footer a {

@@ -45,7 +45,7 @@ function prefetchNextPage(verb) {
   const ENV = getEnv();
   const isProd = ENV === 'prod';
   const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
-  const nextPageUrl = `https://${nextPageHost}/us/en/discover/${verb}`;
+  const nextPageUrl = `https://${nextPageHost}/us/en/${verb}`;
   const link = document.createElement('link');
   link.rel = 'prefetch';
   link.href = nextPageUrl;
@@ -183,18 +183,20 @@ export default async function init(element) {
     element.append(widget, footer);
   }
 
-  // Redirect after IMS:Ready
-  window.addEventListener('IMS:Ready', () => {
-    if (window.adobeIMS.isSignedInUser()
-      && window.adobeIMS.getAccountType() !== 'type1') {
-      redDir(VERB);
+  function checkSignedInUser() {
+    if (window.adobeIMS?.isSignedInUser?.()) {
+      element.classList.add('signed-in');
+      if (window.adobeIMS.getAccountType() !== 'type1') {
+        redDir(VERB);
+      }
     }
-  });
-  // Race Condition
-  if (window.adobeIMS?.isSignedInUser()
-    && window.adobeIMS?.getAccountType() !== 'type1') {
-    redDir(VERB);
   }
+
+  // Race the condition
+  checkSignedInUser();
+
+  // Redirect after IMS:Ready
+  window.addEventListener('IMS:Ready', checkSignedInUser);
 
   // Analytics
   verbAnalytics('landing:shown', VERB);
@@ -252,6 +254,11 @@ export default async function init(element) {
       setUser();
     }
 
+    if (e.detail?.event === 'cancel') {
+      verbAnalytics('job:cancel', VERB, e.detail?.data);
+      setUser();
+    }
+
     if (e.detail?.event === 'uploading') {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
@@ -285,12 +292,12 @@ export default async function init(element) {
 
   const handleError = (detail, logToLana = false, logOptions = {}) => {
     const { code, message, status, info = 'No additional info provided', accountType = 'Unknown account type' } = detail;
-
-    setDraggingClass(widget, false);
-    errorState.classList.add('verb-error');
-    errorState.classList.remove('hide');
-    errorStateText.textContent = message;
-
+    if (message) {
+      setDraggingClass(widget, false);
+      errorState.classList.add('verb-error');
+      errorState.classList.remove('hide');
+      errorStateText.textContent = message;
+    }
     if (logToLana) {
       window.lana?.log(
         `Error Code: ${code}, Status: ${status}, Message: ${message}, Info: ${info}, Account Type: ${accountType}`,
@@ -328,6 +335,10 @@ export default async function init(element) {
     if (e.detail?.code.includes('error_max_page_count')) {
       handleError(e.detail, true, lanaOptions);
       verbAnalytics('error:max_page_count', VERB);
+    }
+
+    if (e.detail?.code.includes('cookie_not_set')) {
+      handleError(e.detail, true, lanaOptions);
     }
 
     if (e.detail?.code.includes('error_generic')
