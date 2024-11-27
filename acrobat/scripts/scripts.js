@@ -463,19 +463,6 @@ const { ietf } = getLocale(locales);
     paths.forEach((css) => loadStyle(css));
   }
 
-  // Configurable preloads
-  const preloads = document.querySelector('meta[name="preloads"]')?.content;
-  if (preloads) {
-    preloads.split(',').forEach((x) => {
-      const link = x.trim().replace('$MILOLIBS', miloLibs);
-      if (link.endsWith('.js')) {
-        loadLink(link, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
-      } else if (link.endsWith('.css')) {
-        loadStyle(link);
-      }
-    });
-  }
-
   // Import base milo features and run them
   const { loadArea, setConfig, loadLana, getMetadata, loadIms } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);

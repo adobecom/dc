@@ -1,9 +1,13 @@
 .verb-widget {
   color: transparent;
   background-color: #fff;
-  background-image: radial-gradient(at 1% 0,#ff715b 0,transparent 50%),radial-gradient(at 48% 89%,#fff 0,transparent 50%),radial-gradient(at 100% 88%,#fff 0,transparent 50%),radial-gradient(at 1% 85%,#fff 0,transparent 50%),radial-gradient(at 93% 33%,#6d51f9 0,transparent 50%),radial-gradient(at 44% 55%,#c8e1fd 0,transparent 50%),radial-gradient(at 11% 22%,#fe4b38 0,transparent 50%),radial-gradient(at 88% 4%,#ea0f00 0,transparent 50%),radial-gradient(at 45% 0,#fe4b38 0,transparent 50%);
+  background-image: linear-gradient(180deg, #EB1000 0%, #F79B94 58%, #FFF 100%);
   min-height: 623px;
   padding: 19px;
+}
+
+.verb-widget.signed-in {
+  min-height: 560px;
 }
 
 .verb-widget.ready {
@@ -70,6 +74,10 @@
   display: flex;
   flex-flow: row;
   justify-content: center;
+}
+
+.verb-widget.signed-in .verb-footer {
+  display: none;
 }
 
 .verb-footer a {
