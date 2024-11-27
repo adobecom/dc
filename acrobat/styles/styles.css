@@ -120,6 +120,17 @@ div [class *= PdfnowLifecycle__dropzone2___] {
   }
 }
 
+button.susi-cta {
+  font-family: var(--body-font-family);
+  cursor: pointer;
+  pointer-events: auto;
+  line-height: 0;
+}
+
+button.susi-cta.xl-button .con-button, button.susi-cta.con-button.button-xl {
+  padding: 10px 24px;
+}
+
 .accordion-container.verb-subfooter-moblie {
   background: #fbfbfb;
 }
