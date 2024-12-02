@@ -1,0 +1,40 @@
+.dc-merch-card-checkbox,
+merch-card[data-ai-added="true"] .solo-product,
+merch-card[data-ai-added="false"] .ai-bundled {
+  display: none !important;
+}
+
+merch-card [slot='callout-content'].ai-checkbox-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  background: linear-gradient(211deg, #F5F6FD 33.52%, #F8F1F8 67.33%, #F9E9ED 110.37%);
+  border-radius: .5rem;
+  font-size: var(--consonant-merch-card-body-xs-font-size);
+  line-height: var(--consonant-merch-card-body-xs-line-height);
+  color: var(--merch-color-grey-80);
+}
+
+merch-card .ai-checkbox-container label {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 4px 8px 0;
+  cursor: pointer;
+  width: 100%;
+}
+
+merch-card .ai-checkbox-container label span[is="inline-price"] {
+  pointer-events: none;
+}
+
+merch-card .ai-checkbox-container input[type="checkbox"] {
+  height: 18px;
+  width: 18px;
+  margin: 14px 12px 0 8px;
+  cursor: pointer;
+}
+
+merch-card[variant="mini-compare-chart"] [slot='callout-content'].ai-checkbox-container {
+  padding: 0;
+  margin: var(--consonant-merch-spacing-xs) var(--consonant-merch-spacing-s) .5rem;
+}
