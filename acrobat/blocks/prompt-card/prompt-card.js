@@ -50,7 +50,7 @@ function createBlock(el, cfg) {
     width: 18,
     height: 18,
   });
-  const title = createTag('div', { class: 'prompt-title' }, cfg.title);
+  const title = createTag('h3', { class: 'prompt-title' }, cfg.title);
   const copy = createTag('div', { class: 'prompt-copy' }, cfg.prompt);
   const prompt = createTag('input', { id: 'prompt', value: cfg.prompt });
   const wrapper = createTag('div', { class: 'prompt-copy-btn-wrapper' });

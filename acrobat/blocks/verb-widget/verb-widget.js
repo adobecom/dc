@@ -45,7 +45,7 @@ function prefetchNextPage(verb) {
   const ENV = getEnv();
   const isProd = ENV === 'prod';
   const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
-  const nextPageUrl = `https://${nextPageHost}/us/en/discover/${verb}`;
+  const nextPageUrl = `https://${nextPageHost}/us/en/${verb}`;
   const link = document.createElement('link');
   link.rel = 'prefetch';
   link.href = nextPageUrl;
@@ -183,18 +183,20 @@ export default async function init(element) {
     element.append(widget, footer);
   }
 
-  // Redirect after IMS:Ready
-  window.addEventListener('IMS:Ready', () => {
-    if (window.adobeIMS.isSignedInUser()
-      && window.adobeIMS.getAccountType() !== 'type1') {
-      redDir(VERB);
+  function checkSignedInUser() {
+    if (window.adobeIMS?.isSignedInUser?.()) {
+      element.classList.add('signed-in');
+      if (window.adobeIMS.getAccountType() !== 'type1') {
+        redDir(VERB);
+      }
     }
-  });
-  // Race Condition
-  if (window.adobeIMS?.isSignedInUser()
-    && window.adobeIMS?.getAccountType() !== 'type1') {
-    redDir(VERB);
   }
+
+  // Race the condition
+  checkSignedInUser();
+
+  // Redirect after IMS:Ready
+  window.addEventListener('IMS:Ready', checkSignedInUser);
 
   // Analytics
   verbAnalytics('landing:shown', VERB);
@@ -252,6 +254,11 @@ export default async function init(element) {
       setUser();
     }
 
+    if (e.detail?.event === 'cancel') {
+      verbAnalytics('job:cancel', VERB, e.detail?.data);
+      setUser();
+    }
+
     if (e.detail?.event === 'uploading') {
       verbAnalytics('job:uploading', VERB, e.detail?.data);
       setUser();
@@ -262,6 +269,7 @@ export default async function init(element) {
     }
 
     if (e.detail?.event === 'uploaded') {
+      verbAnalytics('job:test-uploaded', VERB, e.detail?.data);
       exitFlag = true;
       setUser();
       document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
@@ -279,15 +287,25 @@ export default async function init(element) {
 
   // Errors, Analytics & Logging
   const lanaOptions = {
-    sampleRate: 1,
+    sampleRate: 100,
     tags: 'DC_Milo,Project Unity (DC)',
   };
 
-  const handleError = (str) => {
-    setDraggingClass(widget, false);
-    errorState.classList.add('verb-error');
-    errorState.classList.remove('hide');
-    errorStateText.textContent = str;
+  const handleError = (detail, logToLana = false, logOptions = {}) => {
+    const { code, message, status, info = 'No additional info provided', accountType = 'Unknown account type' } = detail;
+    if (message) {
+      setDraggingClass(widget, false);
+      errorState.classList.add('verb-error');
+      errorState.classList.remove('hide');
+      errorStateText.textContent = message;
+    }
+    if (logToLana) {
+      window.lana?.log(
+        `Error Code: ${code}, Status: ${status}, Message: ${message}, Info: ${info}, Account Type: ${accountType}`,
+        logOptions,
+      );
+    }
+
     setTimeout(() => {
       errorState.classList.remove('verb-error');
       errorState.classList.add('hide');
@@ -295,39 +313,41 @@ export default async function init(element) {
   };
 
   element.addEventListener('unity:show-error-toast', (e) => {
-    // eslint-disable-next-line no-console
     if (e.detail?.code.includes('error_only_accept_one_file')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error', VERB);
     }
 
     if (e.detail?.code.includes('error_unsupported_type')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error:unsupported_type', VERB);
     }
 
     if (e.detail?.code.includes('error_empty_file')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error:empty_file', VERB);
     }
 
     if (e.detail?.code.includes('error_file_too_large')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error', VERB);
     }
 
     if (e.detail?.code.includes('error_max_page_count')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error:max_page_count', VERB);
+    }
+
+    if (e.detail?.code.includes('cookie_not_set')) {
+      handleError(e.detail, true, lanaOptions);
     }
 
     if (e.detail?.code.includes('error_generic')
       || e.detail?.code.includes('error_max_quota_exceeded')
       || e.detail?.code.includes('error_no_storage_provision')
       || e.detail?.code.includes('error_duplicate_asset')) {
-      handleError(e.detail?.message);
+      handleError(e.detail, true, lanaOptions);
       verbAnalytics('error', VERB);
-      window.lana?.log(`Error Status: ${e.detail?.message}, Error Message: ${e.detail?.status}`, lanaOptions);
     }
 
     // acrobat:verb-fillsign:error:page_count_missing_from_metadata_api
