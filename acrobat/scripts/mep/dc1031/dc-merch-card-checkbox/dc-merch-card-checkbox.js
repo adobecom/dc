@@ -119,8 +119,8 @@ async function addCheckbox({ card, md, fragAudience, cardPlanType }) {
   const cardId = `${fragAudience}-${cardPlanType}-${cardTitle}`;
   card.dataset.aiAdded = false;
   const callout = card.querySelector(CALLOUT_SELECTOR);
-   const isReader = card.querySelector('.con-button[href*="adobe.com/reader/"]');
-  let description = isReader 
+  const isReader = card.querySelector('.con-button[href*="adobe.com/reader/"]');
+  let description = isReader
     ? md.checkbox.reader.description
     : md.checkbox.description;
   description = description.replace('[AIP]', '<span class="price-placeholder"></span>');
