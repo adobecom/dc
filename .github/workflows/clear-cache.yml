@@ -11,6 +11,10 @@ on:
         description: 'Network'
         required: true
         type: string
+      command:
+        description: 'Command'
+        required: true
+        type: string
 
   workflow_dispatch:
     inputs:

@@ -13,6 +13,7 @@ jobs:
     with:
       cpCode: 1551833
       network: production
+      command: delete
     secrets: inherit
 
   clear-prod-cache:
@@ -21,4 +22,6 @@ jobs:
     with:
       cpCode: 1551836
       network: production
+      command: delete
+
     secrets: inherit
