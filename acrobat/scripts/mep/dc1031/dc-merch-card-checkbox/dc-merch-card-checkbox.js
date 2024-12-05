@@ -119,7 +119,11 @@ async function addCheckbox({ card, md, fragAudience, cardPlanType }) {
   const cardId = `${fragAudience}-${cardPlanType}-${cardTitle}`;
   card.dataset.aiAdded = false;
   const callout = card.querySelector(CALLOUT_SELECTOR);
-  const description = md.checkbox.description.replace('[AIP]', '<span class="price-placeholder"></span>');
+  const isReader = card.querySelector('.con-button[href*="adobe.com/reader/"]');
+  let description = isReader
+    ? md.checkbox.reader.description
+    : md.checkbox.description;
+  description = description.replace('[AIP]', '<span class="price-placeholder"></span>');
   const checkboxContainer = createTag(
     'div',
     { slot: 'callout-content', class: 'ai-checkbox-container' },
@@ -221,6 +225,9 @@ function processCard(card, md) {
 }
 export default async function init(el) {
   const md = parseMetadata(getMetadata(el));
+  document.querySelectorAll('merch-card').forEach((card) => {
+    processCard(card, md);
+  });
   const mainObserver = new MutationObserver((mutationsList) => {
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
