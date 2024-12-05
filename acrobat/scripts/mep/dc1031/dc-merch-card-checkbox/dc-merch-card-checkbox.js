@@ -225,6 +225,9 @@ function processCard(card, md) {
 }
 export default async function init(el) {
   const md = parseMetadata(getMetadata(el));
+  document.querySelectorAll('merch-card').forEach((card) => {
+    processCard(card, md);
+  });
   const mainObserver = new MutationObserver((mutationsList) => {
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
