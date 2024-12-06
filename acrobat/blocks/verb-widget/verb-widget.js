@@ -349,10 +349,6 @@ export default async function init(element) {
       handleError(e.detail, true, lanaOptions);
       verbAnalytics('error', VERB);
     }
-
-    // acrobat:verb-fillsign:error:page_count_missing_from_metadata_api
-    // acrobat:verb-fillsign:error:403
-    // LANA for 403
   });
 
   window.addEventListener('pageshow', (event) => {
