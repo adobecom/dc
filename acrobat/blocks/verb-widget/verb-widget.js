@@ -238,9 +238,7 @@ export default async function init(element) {
   });
 
   element.addEventListener('unity:track-analytics', (e) => {
-    const date = new Date();
-    date.setTime(date.getTime() + 1 * 60 * 1000);
-    const cookieExp = `expires=${date.toUTCString()}`;
+    const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
 
     if (e.detail?.event === 'change') {
       verbAnalytics('choose-file:open', VERB, e.detail?.data);
@@ -277,9 +275,7 @@ export default async function init(element) {
   });
 
   window.addEventListener('beforeunload', () => {
-    const date = new Date();
-    date.setTime(date.getTime() + 1 * 60 * 1000);
-    const cookieExp = `expires=${date.toUTCString()}`;
+    const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
     if (exitFlag) {
       document.cookie = `UTS_Redirect=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
     }
