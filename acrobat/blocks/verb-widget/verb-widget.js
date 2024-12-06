@@ -345,9 +345,14 @@ export default async function init(element) {
       handleError(e.detail, true, lanaOptions);
       verbAnalytics('error', VERB);
     }
+  });
 
-    // acrobat:verb-fillsign:error:page_count_missing_from_metadata_api
-    // acrobat:verb-fillsign:error:403
-    // LANA for 403
+  window.addEventListener('pageshow', (event) => {
+    const historyTraversal = event.persisted
+      || (typeof window.performance !== 'undefined'
+        && window.performance.getEntriesByType('navigation')[0].type === 'back_forward');
+    if (historyTraversal) {
+      window.location.reload();
+    }
   });
 }
