@@ -26,9 +26,9 @@ const setLibs = (prodLibs, location) => {
   // eslint-disable-next-line compat/compat
   const branch = new URLSearchParams(search).get('milolibs') || 'main';
   if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.stage.adobe.com/libs';
-  if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
+  if (!(hostname.includes('.aem.') || hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
   if (branch === 'local') return 'http://localhost:6456/libs';
-  return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
+  return branch.includes('--') ? `https://${branch}.aem.live/libs` : `https://${branch}--milo--adobecom.aem.live/libs`;
 };
 
 const getLocale = (locales, pathname = window.location.pathname) => {
@@ -293,7 +293,7 @@ const CONFIG = {
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'business.adobe.com', 'helpx.adobe.com'],
   stageDomainsMap: {
-    '--dc--adobecom.hlx.page': {
+    '^--dc--adobecom.(hlx|aem).page': {
       'www.adobe.com': 'www.stage.adobe.com',
       'business.adobe.com': 'business.adobe.com',
       'blog.adobe.com': 'blog.adobe.com',
@@ -303,7 +303,7 @@ const CONFIG = {
       'milo.adobe.com': 'milo.adobe.com',
       'news.adobe.com': 'news.adobe.com',
     },
-    '--dc--adobecom.hlx.live': {
+    '^--dc--adobecom.(hlx|aem).live': {
       'www.adobe.com': 'www.adobe.com',
       'business.adobe.com': 'business.adobe.com',
       'blog.adobe.com': 'blog.adobe.com',

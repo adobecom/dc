@@ -12,13 +12,13 @@ export function rollupReplacePlugin() {
     if (miloLib === 'local') {
       miloLibFull = 'http://localhost:6456';
     } else if (miloLib.includes('--')) {
-      miloLibFull = `https://${miloLib}.hlx.page`;
+      miloLibFull = `https://${miloLib}.aem.page`;
     } else {
-      miloLibFull = `https://${miloLib}--milo--adobecom.hlx.page`;
+      miloLibFull = `https://${miloLib}--milo--adobecom.aem.page`;
     }
     pluginArgs = {
       "'main'": `'${miloLib}'`,
-      'https://main--milo--adobecom.hlx.page': `${miloLibFull}`,
+      'https://main--milo--adobecom.aem.page': `${miloLibFull}`,
       delimiters: ['', ''],
     };
     console.log(`Rollup replace:\n ${JSON.stringify(pluginArgs, null, 2)}`);

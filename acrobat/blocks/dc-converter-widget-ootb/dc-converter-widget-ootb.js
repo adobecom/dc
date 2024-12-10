@@ -154,10 +154,10 @@ export default function init(element) {
     ENV = 'prod';
   }
 
-  if (window.location.hostname === 'stage--dc--adobecom.hlx.page'
-    || window.location.hostname === 'main--dc--adobecom.hlx.page'
-    || window.location.hostname === 'stage--dc--adobecom.hlx.live'
-    || window.location.hostname === 'main--dc--adobecom.hlx.live'
+  if (window.location.hostname === 'stage--dc--adobecom.aem.page'
+    || window.location.hostname === 'main--dc--adobecom.aem.page'
+    || window.location.hostname === 'stage--dc--adobecom.aem.live'
+    || window.location.hostname === 'main--dc--adobecom.aem.live'
     || window.location.hostname === 'www.stage.adobe.com') {
     WIDGET_ENV = `https://stage.acrobat.adobe.com/dc-hosted/${STG_DC_WIDGET_VERSION}/dc-app-launcher.js`;
     DC_DOMAIN = 'https://stage.acrobat.adobe.com';
@@ -227,7 +227,7 @@ export default function init(element) {
   // Redirect
   const fallBack = 'https://www.adobe.com/go/acrobat-overview';
   const redDir = () => {
-    if (window.location.hostname != 'main--dc--adobecom.hlx.live'
+    if (window.location.hostname != 'main--dc--adobecom.aem.live'
       && window.location.hostname != 'www.adobe.com' ) {
       window.location = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`|| REDIRECT_URL;
     } else {

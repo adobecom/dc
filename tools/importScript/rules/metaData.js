@@ -21,8 +21,8 @@ const createMetadata = (main, document) => {
   meta['Gnav Source'] = '/dc-shared/gnav';
   meta['Footer Source'] = '/dc-shared/footer';
 
-  meta.Chromeext = 'https://main--dc--adobecom.hlx.live/dc-shared/fragments/shared-fragments/browser-extension/browser-extension-chrome';
-  meta.Edgeext = 'https://main--dc--adobecom.hlx.live/dc-shared/fragments/shared-fragments/browser-extension/browser-extension-edge'
+  meta.Chromeext = 'https://main--dc--adobecom.aem.live/dc-shared/fragments/shared-fragments/browser-extension/browser-extension-chrome';
+  meta.Edgeext = 'https://main--dc--adobecom.aem.live/dc-shared/fragments/shared-fragments/browser-extension/browser-extension-edge'
   meta.Header = 'gnav';
   meta['Product Name'] = 'Product Name ?';
   meta['Prodcut Description'] = 'Product Description ?';

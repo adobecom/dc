@@ -7,7 +7,7 @@ import {
   sendKeys,
   executeServerCommand,
 } from '@web/test-runner-commands';
-import { getConfig, setConfig, loadArea } from 'https://main--milo--adobecom.hlx.page/libs/utils/utils.js';
+import { getConfig, setConfig, loadArea } from 'https://main--milo--adobecom.aem.page/libs/utils/utils.js';
 import { waitForElement, waitFor, delay } from '../../helpers/waitfor.js';
 
 function getMiddleOfElement(element) {

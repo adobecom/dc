@@ -1,5 +1,5 @@
 
-const FRAGMENTLINK = 'https://main--dc--adobecom.hlx.page/dc-shared/fragments/shared-fragments/frictionless/verb-footer/verb-footer-shell'
+const FRAGMENTLINK = 'https://main--dc--adobecom.aem.page/dc-shared/fragments/shared-fragments/frictionless/verb-footer/verb-footer-shell'
 
 const createVerbFooter = (main, document) => {
   const fragments = main.querySelectorAll('.experiencefragment');

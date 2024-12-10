@@ -41,6 +41,9 @@ const connectSrc = [
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
   'main--dc--adobecom.hlx.live',
+  'main--dc--adobecom.aem.page',
+  'main--milo--adobecom.aem.page',
+  'main--dc--adobecom.aem.live',
   'cdn.linkedin.oribi.io',
   '*.typekit.net/',
   'trial-eum-clienttons-s.akamaihd.net/',
@@ -52,6 +55,8 @@ const connectSrc = [
   'ad.doubleclick.net',
   'main--unity--adobecom.hlx.live',
   'main--unity--adobecom.hlx.page',
+  'main--unity--adobecom.aem.live',
+  'main--unity--adobecom.aem.page',
   ';',
 ];
 
@@ -151,6 +156,8 @@ const imgSrc = [
   'www.linkedin.com',
   'main--dc--adobecom.hlx.page',
   'main--milo--adobecom.hlx.page',
+  'main--dc--adobecom.aem.page',
+  'main--milo--adobecom.aem.page',
   'a5.behance.net',
   'www.googletagmanager.com',
   'milo.adobe.com',
@@ -237,6 +244,7 @@ const scriptSrc = [
   'trc.taboola.com',
   'js.adsrvr.org',
   'main--milo--adobecom.hlx.page',
+  'main--milo--adobecom.aem.page',
   'tag.demandbase.com',
   '*.typekit.net',
   'zn3n5vyia1vy8b4ly-adobe.siteintercept.qualtrics.com/',
@@ -258,6 +266,7 @@ const styleSrc = [
   'prod.adobeccstatic.com',
   'use.typekit.net',
   'main--milo--adobecom.hlx.page',
+  'main--milo--adobecom.aem.page',
   'p.typekit.net',
   ';',
 ];

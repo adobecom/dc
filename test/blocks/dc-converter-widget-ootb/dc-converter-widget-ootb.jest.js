@@ -41,10 +41,10 @@ describe.skip('dc-converter-widget', () => {
 
   it.each`
     hostname
-    ${'stage--dc--adobecom.hlx.page'}
-    ${'main--dc--adobecom.hlx.page'}
-    ${'stage--dc--adobecom.hlx.live'}
-    ${'main--dc--adobecom.hlx.live'}
+    ${'stage--dc--adobecom.aem.page'}
+    ${'main--dc--adobecom.aem.page'}
+    ${'stage--dc--adobecom.aem.live'}
+    ${'main--dc--adobecom.aem.live'}
     ${'www.stage.adobe.com'}
   `('loads widget from stage env', async ({ hostname }) => {
     let fetchUrl = '';
@@ -82,9 +82,9 @@ describe.skip('dc-converter-widget', () => {
 
   it.each`
     hostname
-    ${'stage--dc--adobecom.hlx.page'}
-    ${'main--dc--adobecom.hlx.page'}
-    ${'stage--dc--adobecom.hlx.live'}
+    ${'stage--dc--adobecom.aem.page'}
+    ${'main--dc--adobecom.aem.page'}
+    ${'stage--dc--adobecom.aem.live'}
     ${'www.stage.adobe.com'}
   `('redirects when signed in on stage', async ({ hostname }) => {
     window.fetch = jest.fn((url) =>
@@ -109,7 +109,7 @@ describe.skip('dc-converter-widget', () => {
 
   it.each`
     hostname
-    ${'main--dc--adobecom.hlx.live'}
+    ${'main--dc--adobecom.aem.live'}
     ${'www.adobe.com'}
   `('redirects when signed in', async ({ hostname }) => {
     window.fetch = jest.fn((url) =>

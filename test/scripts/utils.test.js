@@ -5,6 +5,6 @@ import { expect } from '@esm-bundle/chai';
 describe('Test utils.js', async () => {
   it('tests setLibs', async () => {
     const libs = setLibs('/lib');
-    expect(libs).to.equal('https://main--milo--adobecom.hlx.live/libs');
+    expect(libs).to.equal('https://main--milo--adobecom.aem.live/libs');
   });
 });

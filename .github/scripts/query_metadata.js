@@ -54,7 +54,7 @@ async function main() {
   filename = filename.replace(/^\/+/, '');
 
   const queryIndexUrl =
-    `https://main--dc--adobecom.hlx.live/${filename}`;
+    `https://main--dc--adobecom.aem.live/${filename}`;
   const urls = await queryIndex(queryIndexUrl);
   
   fs.writeFileSync(outputJson, JSON.stringify(urls, null, 2));
