@@ -145,8 +145,8 @@ function getEnv(conf) {
   if (query) return { ...ENVS[query], consumer: conf[query] };
   if (host.includes('localhost')) return { ...ENVS.local, consumer: conf.local };
   /* c8 ignore start */
-  if (host.includes('hlx.page')
-    || host.includes('hlx.live')
+  if (host.includes('aem.page')
+    || host.includes('aem.live')
     || host.includes('stage.adobe')
     || host.includes('corp.adobe')) {
     return { ...ENVS.stage, consumer: conf.stage };
@@ -229,7 +229,7 @@ export const [setConfig, updateConfig, getConfig] = (() => {
         console.log('Invalid or missing locale:', e);
       }
       config.locale.contentRoot = `${origin}${config.locale.prefix}${config.contentRoot ?? ''}`;
-      config.useDotHtml = !PAGE_URL.origin.includes('.hlx.')
+      config.useDotHtml = !PAGE_URL.origin.includes('.aem.')
         && (conf.useDotHtml ?? PAGE_URL.pathname.endsWith('.html'));
       config.entitlements = handleEntitlements;
       config.consumerEntitlements = conf.entitlements || [];
@@ -488,7 +488,7 @@ export function decorateSVG(a) {
       ? new URL(`${window.location.origin}${a.href}`)
       : new URL(a.href);
 
-    const src = textUrl.hostname.includes('.hlx.') ? textUrl.pathname : textUrl;
+    const src = textUrl.hostname.includes('.aem.') ? textUrl.pathname : textUrl;
 
     const img = createTag('img', { loading: 'lazy', src });
     if (altText) img.alt = altText;
@@ -514,7 +514,7 @@ export function decorateImageLinks(el) {
     const [source, alt, icon] = img.alt.split('|');
     try {
       const url = new URL(source.trim());
-      const href = url.hostname.includes('.hlx.') ? `${url.pathname}${url.hash}` : url.href;
+      const href = url.hostname.includes('.aem.') ? `${url.pathname}${url.hash}` : url.href;
       if (alt?.trim().length) img.alt = alt.trim();
       const pic = img.closest('picture');
       const picParent = pic.parentElement;
@@ -1026,7 +1026,7 @@ function initSidekick() {
 
 function decorateMeta() {
   const { origin } = window.location;
-  const contents = document.head.querySelectorAll('[content*=".hlx."]');
+  const contents = document.head.querySelectorAll('[content*=".aem."]');
   contents.forEach((meta) => {
     if (meta.getAttribute('property') === 'hlx:proxyUrl') return;
     try {

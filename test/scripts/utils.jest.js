@@ -6,7 +6,7 @@
 describe.skip('Test utils.js', () => {
   it('tests setLibs', async () => {
     const libs = setLibs('/libs');
-    expect(libs).toBe('https://main--milo--adobecom.hlx.page/libs');
+    expect(libs).toBe('https://main--milo--adobecom.aem.page/libs');
   });
 
   it('tests setLibs for prod', async () => {
@@ -43,6 +43,6 @@ describe.skip('Test utils.js', () => {
       'https://www.stage.adobe.com?milolibs=main--milo--tsayadobe'
     );    
     const libs = setLibs('/libs');
-    expect(libs).toBe('https://main--milo--tsayadobe.hlx.page/libs');
+    expect(libs).toBe('https://main--milo--tsayadobe.aem.page/libs');
   });   
 });

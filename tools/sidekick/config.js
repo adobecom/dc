@@ -26,8 +26,8 @@ function hasSchema(host) {
       {
         text: 'Blocks',
         paths: [
-          'https://main--milo--adobecom.hlx.page/docs/library/blocks.json',
-          'https://main--college--adobecom.hlx.page/docs/library/blocks.json',
+          'https://main--milo--adobecom.aem.page/docs/library/blocks.json',
+          'https://main--college--adobecom.aem.page/docs/library/blocks.json',
         ],
       },
     ],
@@ -39,7 +39,7 @@ function hasSchema(host) {
         button: {
           text: 'Library',
           action: (_, s) => {
-            const domain = 'https://main--milo--adobecom.hlx.page';
+            const domain = 'https://main--milo--adobecom.aem.page';
             const { config } = s;
             const script = document.createElement('script');
             script.type = 'module';

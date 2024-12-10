@@ -11,7 +11,7 @@ const getEnv = () => {
 
   if (query) return ENVS[query];
   if (host.includes('stage.adobe') || host.includes('corp.adobe') || host.includes('stage')) return ENVS.stage;
-  if (host.includes('hlx.page') || host.includes('localhost') || host.includes('hlx.live')) return ENVS.dev;
+  if (host.includes('.page') || host.includes('localhost') || host.includes('.live')) return ENVS.dev;
   return ENVS.prod;
 };
 

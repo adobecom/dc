@@ -28,9 +28,9 @@ export const [setLibs, getLibs] = (() => {
         // eslint-disable-next-line compat/compat
         const branch = new URLSearchParams(search).get('milolibs') || 'main';
         if (branch === 'main' && hostname === 'www.stage.adobe.com') return '/libs';
-        if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
+        if (!(hostname.includes('.aem.') || hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
         if (branch === 'local') return 'http://localhost:6456/libs';
-        return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
+        return branch.includes('--') ? `https://${branch}.aem.live/libs` : `https://${branch}--milo--adobecom.aem.live/libs`;
       })();
       return libs;
     }, () => libs,
@@ -41,7 +41,9 @@ export function getEnv() {
   const prodHosts = ['www.adobe.com', 'sign.ing', 'edit.ing'];
   const stageHosts = [
     'stage--dc--adobecom.hlx.page', 'main--dc--adobecom.hlx.page',
+    'stage--dc--adobecom.aem.page', 'main--dc--adobecom.aem.page',
     'stage--dc--adobecom.hlx.live', 'main--dc--adobecom.hlx.live',
+    'stage--dc--adobecom.aem.live', 'main--dc--adobecom.aem.live',
     'www.stage.adobe.com',
   ];
 
