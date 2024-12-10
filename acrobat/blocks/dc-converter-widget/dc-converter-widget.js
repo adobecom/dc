@@ -234,7 +234,7 @@ export default async function init(element) {
   const preRenderDropZone = !isLimitExhausted && !isRedirection;
 
   const INLINE_SNIPPET = widget.querySelector(':scope > section#edge-snippet');
-  if (INLINE_SNIPPET) {
+  if (INLINE_SNIPPET && INLINE_SNIPPET.childNodes.length > 0) {
     if (!isLimitExhausted) {
       widgetContainer.dataset.rendered = 'true';
       widgetContainer.appendChild(...INLINE_SNIPPET.childNodes);
@@ -242,7 +242,9 @@ export default async function init(element) {
     }
     widget.removeChild(INLINE_SNIPPET);
   } else if (preRenderDropZone) {
-    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
+    const cacheHost = new URL(WIDGET_ENV);
+    cacheHost.pathname = '';
+    const response = await fetch(DC_GENERATE_CACHE_URL || `${cacheHost}dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
         const template = await response.text();
