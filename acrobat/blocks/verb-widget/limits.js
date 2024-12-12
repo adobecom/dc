@@ -18,8 +18,9 @@ const LIMITS = {
   },
   'compress-pdf': {
     maxFileSize: 100000000,
+    maxFileSizeFriendly: '100 MB', // 100 MB
     acceptedFiles: '.pdf',
-    maxNumFiles: 1,
+    maxNumFiles: 5,
   },
 };
 

@@ -130,7 +130,16 @@ export default async function init(element) {
   }
 
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
-  const button = createTag('input', { type: 'file', accept: LIMITS[VERB].acceptedFiles, id: 'file-upload', class: 'hide', 'aria-hidden': true });
+  const { maxNumFiles, maxFileSize } = LIMITS[VERB];
+  const button = createTag('input', {
+    type: 'file',
+    accept: LIMITS[VERB].acceptedFiles,
+    id: 'file-upload',
+    class: 'hide',
+    'aria-hidden': true,
+    ...(maxNumFiles > 1 ? { multiple: true } : {}),
+  });
+
   const widgetImage = createTag('div', { class: 'verb-image' });
   const verbIconName = `${VERB}`;
   const verbImageSvg = createSvgElement(verbIconName);
@@ -216,6 +225,32 @@ export default async function init(element) {
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
     initiatePrefetch(VERB);
+  });
+
+  button.addEventListener('change', (e) => {
+    const { files } = e.target;
+    let isFileSizeValid = true;
+    // Check file count
+    if (files.length > maxFileSize) {
+      errorState.classList.remove('hide');
+      errorStateText.textContent = `You can only upload up to ${maxFileSize} files. Please adjust your selection.`;
+      button.value = '';
+      return;
+    }
+    // Check file size
+    Array.from(files).forEach((file) => {
+      if (file.size > maxFileSize) {
+        isFileSizeValid = false;
+      }
+    });
+    if (!isFileSizeValid) {
+      errorState.classList.remove('hide');
+      errorStateText.textContent = `Each file must be smaller than ${LIMITS[VERB].maxFileSizeFriendly || 'the allowed size'}.`;
+      button.value = '';
+      return;
+    }
+    errorState.classList.add('hide');
+    errorStateText.textContent = '';
   });
 
   button.addEventListener('cancel', () => {
