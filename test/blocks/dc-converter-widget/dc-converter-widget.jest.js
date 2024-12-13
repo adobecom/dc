@@ -89,7 +89,7 @@ describe('dc-converter-widget', () => {
     await init(block);
     window.dispatchEvent(new CustomEvent('IMS:Ready'));
     window.dispatchEvent(new CustomEvent('DC_Hosted:Ready'));
-    expect(fetchUrl).toMatch(/^https:\/\/acrobat.adobe.com\//);
+    expect(fetchUrl).toMatch(/^https:\/\/www.adobe.com\/dc\//);
   });
 
   it('handles content inserted from edge', async () => {
@@ -124,7 +124,7 @@ describe('dc-converter-widget', () => {
     window.location = new URL(`https://${hostname}/acrobat/online/pdf-to-ppt.html`);
     const block = document.querySelector('.dc-converter-widget');
     await init(block);
-    expect(fetchUrl).toMatch(/^https:\/\/stage.acrobat.adobe.com\//);
+    expect(fetchUrl).toMatch(/^https:\/\/www.stage.adobe.com\/dc\//);
   });
 
   it('loads widget failed from prod env', async () => {
