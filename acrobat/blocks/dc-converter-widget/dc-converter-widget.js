@@ -254,6 +254,7 @@ export default async function init(element) {
             widgetContainer.appendChild(doc.body.firstElementChild);
             performance.mark('milo-insert-snippet');
           } catch (e) {
+            // eslint-disable-next-line no-console
             console.error(`Error: ${e.message}`);
           }
         }
