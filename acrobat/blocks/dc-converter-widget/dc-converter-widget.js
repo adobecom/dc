@@ -242,7 +242,7 @@ export default async function init(element) {
     }
     widget.removeChild(INLINE_SNIPPET);
   } else if (preRenderDropZone) {
-    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
+    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}/dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
         const template = await response.text();
