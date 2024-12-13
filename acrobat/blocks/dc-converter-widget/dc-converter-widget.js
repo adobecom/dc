@@ -242,18 +242,20 @@ export default async function init(element) {
     }
     widget.removeChild(INLINE_SNIPPET);
   } else if (preRenderDropZone) {
-    const cacheHost = new URL(WIDGET_ENV);
-    cacheHost.pathname = '';
-    const response = await fetch(DC_GENERATE_CACHE_URL || `${cacheHost}dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
+    const response = await fetch(DC_GENERATE_CACHE_URL || `${DC_DOMAIN}dc-generate-cache/dc-hosted-${DC_GENERATE_CACHE_VERSION}/${VERB}-${pageLang}.html`);
     switch (response.status) {
       case 200: {
         const template = await response.text();
         if (!('rendered' in widgetContainer.dataset)) {
-          widgetContainer.dataset.rendered = 'true';
-          const doc = new DOMParser().parseFromString(template, 'text/html');
-          document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
-          widgetContainer.appendChild(doc.body.firstElementChild);
-          performance.mark('milo-insert-snippet');
+          try {
+            widgetContainer.dataset.rendered = 'true';
+            const doc = new DOMParser().parseFromString(template, 'text/html');
+            document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
+            widgetContainer.appendChild(doc.body.firstElementChild);
+            performance.mark('milo-insert-snippet');
+          } catch (e) {
+            console.error(`Error: ${e.message}`);
+          }
         }
         break;
       }
