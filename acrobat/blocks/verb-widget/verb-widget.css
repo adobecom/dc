@@ -26,7 +26,6 @@
   font-size: 14px;
   line-height: 20px;
   max-width: 527px;
-  text-align: left;
   display: inline-block;
   color: #2c2c2c;
 }
@@ -143,7 +142,6 @@
 }
 
 .verb-copy {
-  text-align: left;
   font-size: 22px;
   font-weight: 400;
   line-height: 33px;
@@ -236,7 +234,6 @@
 
 .verb-heading {
   color: #2c2c2c;
-  text-align: left;
   font-weight: 600;
   font-size: 44px;
   margin: revert;
@@ -254,7 +251,7 @@
   font-size: 30px;
   font-weight: bold;
   color: black;
-  margin-left: 15px;
+  margin-inline-start: 15px;
 }
 
 .verb-mobile-cta {
@@ -285,7 +282,7 @@
     display: flex;
     flex: 1 1 55%;
     flex-direction: row;
-    padding: 48px 0 48px 48px;
+    padding: 48px;
 
     /* cursor: pointer; */
   }
