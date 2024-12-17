@@ -2,6 +2,7 @@ import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
+import { localeMap } from '../unity/unity.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
@@ -32,99 +33,6 @@ const verbRedirMap = {
   'chat-pdf-student': 'study',
 };
 
-const localeMap = {
-  '': 'us/en',
-  br: 'br/pt',
-  ca: 'ca/en',
-  ca_fr: 'ca/fr',
-  mx: 'mx/es',
-  la: 'la/es',
-  africa: 'africa/en',
-  za: 'za/en',
-  be_nl: 'be/nl',
-  be_fr: 'be/fr',
-  be_en: 'be/en',
-  cz: 'cz/cs',
-  cy_en: 'cy/en',
-  dk: 'dk/da',
-  de: 'de/de',
-  ee: 'ee/et',
-  es: 'es/es',
-  fr: 'fr/fr',
-  gr_en: 'gr/en',
-  gr_el: 'gr/el',
-  ie: 'ie/en',
-  il_en: 'il/en',
-  il_he: 'il/he',
-  it: 'it/it',
-  lv: 'lv/lv',
-  lt: 'lt/lt',
-  lu_de: 'lu/de',
-  lu_en: 'lu/en',
-  lu_fr: 'lu/fr',
-  hu: 'hu/hu',
-  mt: 'mt/en',
-  mena_en: 'mena/en',
-  mena_ar: 'mena/ar',
-  nl: 'nl/nl',
-  no: 'no/nb',
-  at: 'at/de',
-  pl: 'pl/pl',
-  pt: 'pt/pt',
-  ro: 'ro/ro',
-  ch_de: 'ch/de',
-  si: 'si/sl',
-  sk: 'sk/sk',
-  ch_fr: 'ch/fr',
-  fi: 'fi/fi',
-  se: 'se/sv',
-  ch_it: 'ch/it',
-  tr: 'tr/tr',
-  uk: 'gb/en',
-  bg: 'bg/bg',
-  ru: 'ru/ru',
-  ua: 'ua/uk',
-  au: 'au/en',
-  hk_en: 'hk/en',
-  in: 'in/en',
-  in_hi: 'in/hi',
-  nz: 'nz/en',
-  hk_zh: 'zh-hant-hk',
-  tw: 'zh-hant-tw',
-  jp: 'jp/ja',
-  kr: 'kr/ko',
-  ae_en: 'ae/en',
-  ae_ar: 'ae/ar',
-  sa_en: 'sa/en',
-  sa_ar: 'sa/ar',
-  th_en: 'th/en',
-  th_th: 'th/th',
-  sg: 'sg/en',
-  cl: 'cl/es',
-  co: 'co/es',
-  ar: 'ar/es',
-  cr: 'cr/es',
-  pr: 'pr/es',
-  ec: 'ec/es',
-  pe: 'pe/es',
-  eg_en: 'eg/en',
-  eg_ar: 'eg/ar',
-  gt: 'gt/es',
-  id_en: 'id/en',
-  id_id: 'id/id',
-  ph_en: 'ph/en',
-  ph_fil: 'ph/fil',
-  my_en: 'my/en',
-  my_ms: 'my/ms',
-  kw_en: 'kw/en',
-  kw_ar: 'kw/ar',
-  ng: 'ng/en',
-  qa_en: 'qa/en',
-  qa_ar: 'qa/ar',
-  vn_en: 'vn/en',
-  vn_vi: 'vn/vi',
-};
-
 const setUser = () => {
   localStorage.setItem('unity.user', 'true');
 };
@@ -135,16 +43,17 @@ const setDraggingClass = (widget, shouldToggle) => {
 };
 
 function prefetchNextPage(verb) {
-  const ENV = getEnv();
   const { locale } = getConfig();
-  const isProd = ENV === 'prod';
-  const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
-  const nextPageUrl = `https://${nextPageHost}/${localeMap[locale.prefix]}/${verb}`;
+  const localePath = localeMap[locale.prefix].split('-').reverse().join('/');
+  const nextPageHost = getEnv() === 'prod' ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
+  const nextPageUrl = `https://${nextPageHost}/${localePath}/${verb}`;
+
   const link = document.createElement('link');
   link.rel = 'prefetch';
   link.href = nextPageUrl;
   link.crossOrigin = 'anonymous';
   link.as = 'document';
+
   document.head.appendChild(link);
 }
 
