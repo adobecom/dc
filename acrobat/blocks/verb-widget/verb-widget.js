@@ -44,7 +44,7 @@ const setDraggingClass = (widget, shouldToggle) => {
 
 function prefetchNextPage(verb) {
   const { locale } = getConfig();
-  const localePath = localeMap[locale.prefix].split('-').reverse().join('/');
+  const localePath = localeMap[locale.prefix.replace('/', '')].split('-').reverse().join('/');
   const nextPageHost = getEnv() === 'prod' ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
   const nextPageUrl = `https://${nextPageHost}/${localePath}/${verb}`;
 
