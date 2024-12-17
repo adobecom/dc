@@ -20,6 +20,7 @@ const connectSrc = [
   'tag-logger.demandbase.com',
   'accounts.google.com/gsi/',
   'acom-reviews--adobe.hlx.live/reviews-api/',
+  'acom-reviews--adobe.aem.live/reviews-api/',
   'ade0164.d41.co/',
   'adobe.tt.omtrdc.net',
   'adobedc.demdex.net/',

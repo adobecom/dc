@@ -20,7 +20,7 @@ Use the following URL query to see all Personaliztion blocks on a page `showAll`
 
 | review              |                                                            |
 |---------------------|------------------------------------------------------------|
-| Review  url         | https:// main -- dc -- adobecom.hlx.page / jpg-to-pdf |
+| Review  url         | https:// main -- dc -- adobecom.aem.page / jpg-to-pdf |
 | Title               | Rate your Experience                                       |
 | Hide title          | false                                                      |
 | Rating verb         | Vote, Votes                                                |

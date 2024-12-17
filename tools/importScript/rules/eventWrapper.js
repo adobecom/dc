@@ -3,10 +3,10 @@
 
 const getFragmentPath = (page, type) => {
   if(type === 'create-an-account'){
-    return 'https://main--dc--adobecom.hlx.page/dc-shared/fragments/shared-fragments/frictionless/create-an-account/summary-frag-create-an-account'
+    return 'https://main--dc--adobecom.aem.page/dc-shared/fragments/shared-fragments/frictionless/create-an-account/summary-frag-create-an-account'
   }
 
-  return `https://main--dc--adobecom.hlx.page/dc-shared/fragments/personalization-summary-frags/${page}/summary-frag-${type}`
+  return `https://main--dc--adobecom.aem.page/dc-shared/fragments/personalization-summary-frags/${page}/summary-frag-${type}`
 }
 
 const createEventWrapperBlocks = (main, document, url) => {
