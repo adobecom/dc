@@ -255,7 +255,7 @@ const scriptSrc = [
   'rum.hlx.page',
   'tr.snapchat.com',
   'api.demandbase.com/api/v3',
-  '\'sha256-XZLMiKjK7kZsMSJR/aV6U3pMxjqlvU6v3tJSIimxjHs=\'',
+  '\'sha256-UBF9hsbK6qb+NNEJO+zmHKMfTA8v+kDf/iLxbSGXHdU=\'',
   ';',
 ];
 

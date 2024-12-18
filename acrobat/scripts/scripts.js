@@ -21,14 +21,15 @@ document.querySelectorAll('a').forEach((p, idx) => {
 /**
  * The decision engine for where to get Milo's libs from.
  */
-const setLibs = (prodLibs, location) => {
-  const { hostname, search } = location || window.location;
+const setLibs = (prodLibs, location = window.location) => {
+  const { hostname, search } = location;
+  if (!/\.hlx\.|\.aem\.|local|stage/.test(hostname)) return prodLibs;
   // eslint-disable-next-line compat/compat
   const branch = new URLSearchParams(search).get('milolibs') || 'main';
   if (branch === 'main' && hostname === 'www.stage.adobe.com') return '/libs';
-  if (!/(\.hlx\.|\.aem\.|local|stage)/.test(hostname)) return prodLibs;
   if (branch === 'local') return 'http://localhost:6456/libs';
-  return branch.includes('--') ? `https://${branch}.aem.live/libs` : `https://${branch}--milo--adobecom.aem.live/libs`;
+  const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
+  return `https://${branch}${branch.includes('--') ? '' : '--milo--adobecom'}.${env}.live/libs`;
 };
 
 const getLocale = (locales, pathname = window.location.pathname) => {
