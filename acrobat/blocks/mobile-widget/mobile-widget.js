@@ -150,15 +150,16 @@ const getPlaceHolders = async () => {
 };
 
 async function showModal(event = 'shown') {
+  const mph = window.mph || {};
   await getPlaceHolders();
   const { getModal } = await import(`${miloLibs}/blocks/modal/modal.js`);
   const acrobatIcon = createTag('img', { class: 'modal-icon', src: '/acrobat/img/icons/widget-icon.png' });
   const acrobatLabel = createTag('p', { class: 'modal-label' }, 'Adobe Acrobat');
   const acrobatLogo = createTag('div', { class: 'modal-logo' });
   acrobatLogo.append(acrobatIcon, acrobatLabel);
-  const modalTitle = createTag('h2', { class: 'modal-title' }, (window.mph && window.mph['acrobat-exit-modal-title']) || 'Before you go, get the free mobile app.');
-  const modalMessage = createTag('p', { class: 'modal-message' }, (window.mph && window.mph['acrobat-exit-modal-message']) || 'Quickly comment, sign, and share PDFs — all from your phone.');
-  const modalCta = createTag('a', { class: 'modal-cta', href: (window.mph && window.mph['acrobat-exit-modal-cta-url']) || '/acrobat/mobile-app.html' }, (window.mph && window.mph['acrobat-exit-modal-cta-label']) || 'Download app');
+  const modalTitle = createTag('h2', { class: 'modal-title' }, mph['acrobat-exit-modal-title'] || 'Before you go, get the free mobile app.');
+  const modalMessage = createTag('p', { class: 'modal-message' }, mph['acrobat-exit-modal-message'] || 'Quickly comment, sign, and share PDFs — all from your phone.');
+  const modalCta = createTag('a', { class: 'modal-cta', href: mph['acrobat-exit-modal-cta-url'] || '/acrobat/mobile-app.html' }, mph['acrobat-exit-modal-cta-label'] || 'Download app');
   modalCtaLink = modalCta.href;
   const modalContent = createTag('div', { class: 'modal-content' });
   modalContent.append(acrobatLogo, modalTitle, modalMessage, modalCta);
