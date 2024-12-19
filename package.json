@@ -39,7 +39,7 @@
   "homepage": "https://github.com/adobecom/dc#readme",
   "devDependencies": {
     "@amwp/platform-ui-automation": "^0.0.6",
-    "@amwp/platform-ui-lib-adobe": "^0.0.7",
+    "@amwp/platform-ui-lib-adobe": "^0.0.9",
     "@babel/core": "7.23.2",
     "@babel/eslint-parser": "7.22.15",
     "@babel/register": "7.22.15",
