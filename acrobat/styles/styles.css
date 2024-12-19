@@ -299,6 +299,56 @@ div.how-to ol li::before{
   margin-top: 10px;
 }
 
+.dialog-modal.acrobat-exit .modal-content {
+  padding: 40px 24px;
+}
+
+.dialog-modal.acrobat-exit .modal-content .modal-logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 40px;
+}
+
+.modal-logo  .modal-icon {
+  width: 40px;
+  height: auto;
+}
+
+.modal-logo .modal-label {
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  margin-left: 16px;
+}
+
+.modal-content .modal-title {
+  margin-block-start: 24px;
+  margin-block-end: 16px;
+}
+
+.modal-content .modal-message {
+  margin-block-start: 16px;
+}
+
+.modal-content .modal-cta {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 19px;
+  border: solid 2px #0265dc;
+  background-color: #0265dc;
+  border-radius: 24px;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  padding: 5px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .dialog-modal.extension-modal.backdrop-off {
   width: 30rem;
   max-height: 188px;
