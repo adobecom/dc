@@ -79,7 +79,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,
-              app_name: 'unity:adobe_com',
+              app_name: `unity:${verb}`,
               url: window.location.href,
               app_referrer: appReferrer,
               tracking_id: trackingId,
@@ -104,7 +104,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,
-              app_name: 'unity:adobe_com',
+              app_name: `unity:${verb}`,
               url: window.location.href,
               app_referrer: appReferrer,
               tracking_id: trackingId,
