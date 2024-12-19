@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const params = new Proxy(
   // eslint-disable-next-line compat/compat
   new URLSearchParams(window.location.search),
@@ -23,7 +24,7 @@ if (params.dropzone2) {
   appTags.push('dropzone2');
 }
 
-export default function init(eventName, verb, metaData) {
+export default function init(eventName, verb, metaData, documentUnloading = true) {
   function getSessionID() {
     const aToken = window.adobeIMS.getAccessToken();
     const arrayToken = aToken?.token.split('.');
@@ -33,7 +34,7 @@ export default function init(eventName, verb, metaData) {
     return tokenPayload.sub || tokenPayload.user_id;
   }
   const event = {
-    documentUnloading: true,
+    documentUnloading,
     data: {
       eventType: 'web.webinteraction.linkClicks',
       web: {
@@ -103,6 +104,11 @@ export default function init(eventName, verb, metaData) {
         },
       },
     },
+    ...(documentUnloading === false && {
+      done() {
+        console.info(`Event ${eventName} for ${verb} completed successfully.`);
+      },
+    }),
   };
 
   // Alloy Ready...
