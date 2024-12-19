@@ -1,6 +1,6 @@
 import LIMITS from '../verb-widget/limits.js';
 
-const localeMap = {
+export const localeMap = {
   '': 'en-us',
   br: 'pt-br',
   ca: 'en-ca',

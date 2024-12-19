@@ -2,6 +2,7 @@ import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
+import { localeMap } from '../unity/unity.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
@@ -42,15 +43,17 @@ const setDraggingClass = (widget, shouldToggle) => {
 };
 
 function prefetchNextPage(verb) {
-  const ENV = getEnv();
-  const isProd = ENV === 'prod';
-  const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
-  const nextPageUrl = `https://${nextPageHost}/us/en/${verb}`;
+  const { locale } = getConfig();
+  const localePath = localeMap[locale.prefix.replace('/', '')].split('-').reverse().join('/');
+  const nextPageHost = getEnv() === 'prod' ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
+  const nextPageUrl = `https://${nextPageHost}/${localePath}/${verb}`;
+
   const link = document.createElement('link');
   link.rel = 'prefetch';
   link.href = nextPageUrl;
   link.crossOrigin = 'anonymous';
   link.as = 'document';
+
   document.head.appendChild(link);
 }
 
