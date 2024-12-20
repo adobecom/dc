@@ -25,12 +25,13 @@ export const [setLibs, getLibs] = (() => {
     (prodLibs, location) => {
       libs = (() => {
         const { hostname, search } = location || window.location;
+        if (!/\.hlx\.|\.aem\.|local|stage/.test(hostname)) return prodLibs;
         // eslint-disable-next-line compat/compat
         const branch = new URLSearchParams(search).get('milolibs') || 'main';
         if (branch === 'main' && hostname === 'www.stage.adobe.com') return '/libs';
-        if (!(hostname.includes('.hlx.') || hostname.includes('local') || hostname.includes('stage'))) return prodLibs;
         if (branch === 'local') return 'http://localhost:6456/libs';
-        return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
+        const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
+        return `https://${branch}${branch.includes('--') ? '' : '--milo--adobecom'}.${env}.live/libs`;
       })();
       return libs;
     }, () => libs,
@@ -38,15 +39,15 @@ export const [setLibs, getLibs] = (() => {
 })();
 
 export function getEnv() {
-  const prodHosts = ['www.adobe.com', 'sign.ing', 'edit.ing'];
-  const stageHosts = [
+  const { hostname } = window.location;
+  if (['www.adobe.com', 'sign.ing', 'edit.ing'].includes(hostname)) return 'prod';
+  if ([
     'stage--dc--adobecom.hlx.page', 'main--dc--adobecom.hlx.page',
     'stage--dc--adobecom.hlx.live', 'main--dc--adobecom.hlx.live',
+    'stage--dc--adobecom.aem.page', 'main--dc--adobecom.aem.page',
+    'stage--dc--adobecom.aem.live', 'main--dc--adobecom.aem.live',
     'www.stage.adobe.com',
-  ];
-
-  if (prodHosts.includes(window.location.hostname)) return 'prod';
-  if (stageHosts.includes(window.location.hostname)) return 'stage';
+  ].includes(hostname)) return 'stage';
   return 'dev';
 }
 
