@@ -10,6 +10,9 @@ export class UnityPage extends classes(DcGnavPage, VerbWidgetSection, CaaSSectio
       arguments: [contentPath],
     });
     this.buildProps({
+      errorRainCloud: 'div.error',
+      completeHeading: 'h1[data-testid="complete-heading"]',
+      splash: 'div.splash-loader.show',
       howToDefault: 'div[data-path*="how-to/default"]',
       howTo2ndConversion: '[data-tag="2nd conversion"] div[data-path*="how-to/2nd-conversion"]',
       verbSubfooter: '.verb-subfooter',

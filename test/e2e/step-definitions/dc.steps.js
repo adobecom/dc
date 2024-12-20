@@ -657,10 +657,12 @@ Then(/^I choose the (?:PDF|file|files) "([^\"]*)" to upload$/, async function (f
     await this.page.native.waitForTimeout(2000);
     try {
       await this.page.chooseFiles(absPaths);
-      await this.page.native.waitForTimeout(2000);
-      await expect(this.page.selectButton).toHaveCount(0, { timeout: 15000 });
+      await this.page.native.waitForTimeout(1000);
+      await expect(this.page.splash).toHaveCount(1, { timeout: 3000 });
       retry = 0;
-    } catch {
+    } catch (e) {
+      console.log(e.message);
+      this.page.native.waitForTimeout(2000);
       retry--;
     }
   }
@@ -678,11 +680,30 @@ Then(/^I drag-and-drop the (?:PDF|file|files) "([^\"]*)" to upload$/, async func
     await this.page.native.waitForTimeout(2000);
     try {
       await this.page.dragndropFiles(absPaths);
-      await this.page.native.waitForTimeout(2000);
-      await expect(this.page.selectButton).toHaveCount(0, { timeout: 15000 });
+      await expect(this.page.splash).toHaveCount(1, { timeout: 3000 });
       retry = 0;
-    } catch {
+    } catch (e) {
+      console.log(e.message);
+      this.page.native.waitForTimeout(2000);
       retry--;
     }
+  }
+});
+
+Then(/^I should (|not )see an error raincloud$/, async function (neg) {
+  this.context(UnityPage);
+  if (neg) {
+    await expect(this.page.errorRainCloud).not.toBeVisible();
+  } else {
+    await expect(this.page.errorRainCloud).toBeVisible();
+  }
+});
+
+Then(/^I should (|not )see the complete heading$/, async function (neg) {
+  this.context(UnityPage);
+  if (neg) {
+    await expect(this.page.completeHeading).not.toBeVisible();
+  } else {
+    await expect(this.page.completeHeading).toBeVisible();
   }
 });
