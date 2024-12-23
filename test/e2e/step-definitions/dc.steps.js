@@ -23,6 +23,7 @@ import { MergePdfPage } from "../page-objects/mergepdf.page";
 import { CompressPdfPage } from "../page-objects/compresspdf.page";
 import { PasswordProtectPdfPage } from "../page-objects/passwordprotectpdf.page";
 import { FrictionlessPage } from "../page-objects/frictionless.page";
+import { UnityPage } from "../page-objects/unity.page";
 import { DCPage } from "../page-objects/dc.page";
 import { cardinal } from "../support/cardinal";
 import { expect } from "@playwright/test";
@@ -643,3 +644,45 @@ Then(/^I confirm phone number is different and has geo-ip value "([^"]*)"$/, asy
   expect(this.phoneNumber).not.toEqual(geoIpPhoneNumber);
   expect(geoIpPhoneNumber).toEqual(geoIpPhoneNumberValue);
 })
+
+Then(/^I choose the (?:PDF|file|files) "([^\"]*)" to upload$/, async function (filePath) {
+  this.context(UnityPage);
+  const filePaths = filePath.split(",");
+  const absPaths = filePaths.map((x) =>
+    path.resolve(global.config.profile.site, x)
+  );
+  let retry = 3;
+  while (retry > 0) {
+    await expect(this.page.selectButton).toHaveCount(1, { timeout: 15000 });
+    await this.page.native.waitForTimeout(2000);
+    try {
+      await this.page.chooseFiles(absPaths);
+      await this.page.native.waitForTimeout(2000);
+      await expect(this.page.selectButton).toHaveCount(0, { timeout: 15000 });
+      retry = 0;
+    } catch {
+      retry--;
+    }
+  }
+});
+
+Then(/^I drag-and-drop the (?:PDF|file|files) "([^\"]*)" to upload$/, async function (filePath) {
+  this.context(UnityPage);
+  const filePaths = filePath.split(",");
+  const absPaths = filePaths.map((x) =>
+    path.resolve(global.config.profile.site, x)
+  );
+  let retry = 3;
+  while (retry > 0) {
+    await expect(this.page.selectButton).toHaveCount(1, { timeout: 15000 });
+    await this.page.native.waitForTimeout(2000);
+    try {
+      await this.page.dragndropFiles(absPaths);
+      await this.page.native.waitForTimeout(2000);
+      await expect(this.page.selectButton).toHaveCount(0, { timeout: 15000 });
+      retry = 0;
+    } catch {
+      retry--;
+    }
+  }
+});

@@ -133,7 +133,14 @@ export default async function init(element) {
   }
 
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
-  const button = createTag('input', { type: 'file', accept: LIMITS[VERB].acceptedFiles, id: 'file-upload', class: 'hide', 'aria-hidden': true });
+  const button = createTag('input', {
+    type: 'file',
+    accept: LIMITS[VERB]?.acceptedFiles,
+    id: 'file-upload',
+    class: 'hide',
+    'aria-hidden': true,
+    ...(LIMITS[VERB]?.multipleFiles && { multiple: '' }),
+  });
   const widgetImage = createTag('div', { class: 'verb-image' });
   const verbIconName = `${VERB}`;
   const verbImageSvg = createSvgElement(verbIconName);
@@ -270,7 +277,7 @@ export default async function init(element) {
     }
 
     if (e.detail?.event === 'uploaded') {
-      verbAnalytics('job:test-uploaded', VERB, e.detail?.data);
+      verbAnalytics('job:test-uploaded', VERB, e.detail?.data, false);
       exitFlag = true;
       setUser();
       document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
