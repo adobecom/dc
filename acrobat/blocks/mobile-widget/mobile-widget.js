@@ -180,6 +180,8 @@ const internalDomains = [
 ];
 
 const internalPatterns = [
+  '**--dc--adobecom.aem.page',
+  '**--dc--adobecom.aem.live',
   '**--dc--adobecom.hlx.page',
   '**--dc--adobecom.hlx.live',
 ];

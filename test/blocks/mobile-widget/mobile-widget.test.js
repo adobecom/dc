@@ -3,6 +3,8 @@ import { expect } from '@esm-bundle/chai';
 
 const { default: init } = await import('../../../acrobat/blocks/mobile-widget/mobile-widget.js');
 
+sessionStorage.setItem('modalDismissed', 'true');
+
 describe('Mobile widget', () => {
   it('is complete', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
