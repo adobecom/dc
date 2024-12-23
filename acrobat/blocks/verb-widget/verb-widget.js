@@ -277,7 +277,7 @@ export default async function init(element) {
     }
 
     if (e.detail?.event === 'uploaded') {
-      verbAnalytics('job:test-uploaded', VERB, e.detail?.data);
+      verbAnalytics('job:test-uploaded', VERB, e.detail?.data, false);
       exitFlag = true;
       setUser();
       document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
