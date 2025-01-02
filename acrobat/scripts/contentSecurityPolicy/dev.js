@@ -210,7 +210,7 @@ const scriptSrc = [
   '*.aem.page',
   '*.aem.live',
   'tr.snapchat.com',
-  '\'sha256-XZLMiKjK7kZsMSJR/aV6U3pMxjqlvU6v3tJSIimxjHs=\'',
+  '\'sha256-nAigApwVAFaAG381OAPIUWINK3JzGgUcb2TZvwX6MK8=\'',
   ';',
 ];
 
