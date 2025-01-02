@@ -7,20 +7,20 @@
 <script>
   window.setLibs = (prodLibs, location = window.location) => {
     const { hostname, search } = location;
+    if (!/\.hlx\.|\.aem\.|local|stage/.test(hostname)) return prodLibs;
     const branch = new URLSearchParams(search).get('milolibs') || 'main';
-    if (branch === 'main' && hostname === 'www.stage.adobe.com') return 'https://www.stage.adobe.com/libs';
-    if (!/(\.hlx\.|local|stage)/.test(hostname)) return prodLibs;
+    if (branch === 'main' && hostname === 'www.stage.adobe.com') return '/libs';
     if (branch === 'local') return 'http://localhost:6456/libs';
-    return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
+    const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
+    return `https://${branch}${branch.includes('--') ? '' : '--milo--adobecom'}.${env}.live/libs`;
   };
-  
+
   window.getUnityLibs = (prodLibs = '/unitylibs') => {
     const { hostname, search } = window.location;
-    if (!hostname.includes('hlx.page') && !hostname.includes('hlx.live') && !hostname.includes('localhost')) {
-      return prodLibs;
-    }
+    if (!/\.hlx\.|\.aem\.|local|stage/.test(hostname)) return prodLibs;
     const branch = new URLSearchParams(search).get('unitylibs') || 'main';
-    return branch.includes('--') ? `https://${branch}.hlx.live/unitylibs` : `https://${branch}--unity--adobecom.hlx.live/unitylibs`;
+    const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
+    return `https://${branch}${branch.includes('--')? '' : '--unity--adobecom'}.${env}.live/unitylibs`;
   }
 
   window.loadLink = (href, options = {}) => {

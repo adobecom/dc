@@ -94,16 +94,12 @@ export const localeMap = {
 };
 
 function getUnityLibs(prodLibs = '/unitylibs') {
-  const { hostname } = window.location;
-  if (!hostname.includes('hlx.page')
-    && !hostname.includes('hlx.live')
-    && !hostname.includes('localhost')) {
-    return prodLibs;
-  }
+  const { hostname, search } = window.location;
+  if (!/\.hlx\.|\.aem\.|local|stage/.test(hostname)) return prodLibs;
   // eslint-disable-next-line compat/compat
-  const branch = new URLSearchParams(window.location.search).get('unitylibs') || 'main';
-  if (branch.indexOf('--') > -1) return `https://${branch}.hlx.live/unitylibs`;
-  return `https://${branch}--unity--adobecom.hlx.live/unitylibs`;
+  const branch = new URLSearchParams(search).get('unitylibs') || 'main';
+  const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
+  return `https://${branch}${branch.includes('--') ? '' : '--unity--adobecom'}.${env}.live/unitylibs`;
 }
 
 export default async function init(el) {
