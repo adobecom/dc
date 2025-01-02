@@ -44,7 +44,7 @@ export default function init(verb, type = 'goto-app:clicked') {
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,
-              app_name: 'dc-hosted:adobe_com',
+              app_name: 'unity:adobe_com',
               url: window.location.href,
               app_referrer: appReferrer,
               tracking_id: trackingId,
