@@ -651,18 +651,17 @@ Then(/^I choose the (?:PDF|file|files) "([^\"]*)" to upload$/, async function (f
   const absPaths = filePaths.map((x) =>
     path.resolve(global.config.profile.site, x)
   );
-  let retry = 3;
+  let retry = 2;
   while (retry > 0) {
     await expect(this.page.selectButton).toHaveCount(1, { timeout: 15000 });
     await this.page.native.waitForTimeout(2000);
     try {
       await this.page.chooseFiles(absPaths);
       await this.page.native.waitForTimeout(1000);
-      await expect(this.page.splash).toHaveCount(1, { timeout: 3000 });
+      await expect(this.page.splash).toHaveCount(1, { timeout: 2000 });
       retry = 0;
     } catch (e) {
       console.log(e.message);
-      this.page.native.waitForTimeout(2000);
       retry--;
     }
   }
@@ -706,4 +705,22 @@ Then(/^I should (|not )see the complete heading$/, async function (neg) {
   } else {
     await expect(this.page.completeHeading).toBeVisible();
   }
+});
+
+
+Then(/^I try to upload the (?:PDF|file|files) "([^\"]*)"$/, async function (filePath) {
+  this.context(UnityPage);
+  const filePaths = filePath.split(",");
+  const absPaths = filePaths.map((x) =>
+    path.resolve(global.config.profile.site, x)
+  );
+  await expect(this.page.selectButton).toHaveCount(1, { timeout: 15000 });
+  await this.page.native.waitForTimeout(2000);
+  await this.page.chooseFiles(absPaths);
+});
+
+Then(/^I should see the error "([^\"]*)"$/, async function (text) {
+  this.context(UnityPage);
+  await expect(this.page.errorText).toBeVisible();
+  await expect(this.page.errorText).toHaveText(text);
 });

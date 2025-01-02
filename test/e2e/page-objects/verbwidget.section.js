@@ -9,6 +9,7 @@ export class VerbWidgetSection extends Section {
       selectButton: '.verb-cta',
       fileUploadInput: '#file-upload',
       dropZone: '#drop-zone',
+      errorText: '.verb-errorText',
     })
   }
 
