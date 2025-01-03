@@ -94,7 +94,7 @@ const frameSrc = [
   '*.blob.core.windows.net',
   '*.snapchat.com/',
   '9212252.fls.doubleclick.net',
-  'accounts.google.com/gsi/',
+  'accounts.google.com',
   'adobe.demdex.net',
   'bid.g.doubleclick.net',
   'td.doubleclick.net',
