@@ -234,7 +234,7 @@ export default async function init(element) {
   const preRenderDropZone = !isLimitExhausted && !isRedirection;
 
   const INLINE_SNIPPET = widget.querySelector(':scope > section#edge-snippet');
-  if (INLINE_SNIPPET) {
+  if (INLINE_SNIPPET && INLINE_SNIPPET.childNodes.length > 0) {
     if (!isLimitExhausted) {
       widgetContainer.dataset.rendered = 'true';
       widgetContainer.appendChild(...INLINE_SNIPPET.childNodes);
@@ -247,11 +247,16 @@ export default async function init(element) {
       case 200: {
         const template = await response.text();
         if (!('rendered' in widgetContainer.dataset)) {
-          widgetContainer.dataset.rendered = 'true';
-          const doc = new DOMParser().parseFromString(template, 'text/html');
-          document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
-          widgetContainer.appendChild(doc.body.firstElementChild);
-          performance.mark('milo-insert-snippet');
+          try {
+            widgetContainer.dataset.rendered = 'true';
+            const doc = new DOMParser().parseFromString(template, 'text/html');
+            document.head.appendChild(doc.head.getElementsByTagName('Style')[0]);
+            widgetContainer.appendChild(doc.body.firstElementChild);
+            performance.mark('milo-insert-snippet');
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(`Error: ${e.message}`);
+          }
         }
         break;
       }

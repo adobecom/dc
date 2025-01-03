@@ -2,6 +2,7 @@ import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
+import { localeMap } from '../unity/unity.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
@@ -42,15 +43,17 @@ const setDraggingClass = (widget, shouldToggle) => {
 };
 
 function prefetchNextPage(verb) {
-  const ENV = getEnv();
-  const isProd = ENV === 'prod';
-  const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
-  const nextPageUrl = `https://${nextPageHost}/us/en/${verb}`;
+  const { locale } = getConfig();
+  const localePath = localeMap[locale.prefix.replace('/', '')].split('-').reverse().join('/');
+  const nextPageHost = getEnv() === 'prod' ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
+  const nextPageUrl = `https://${nextPageHost}/${localePath}/${verb}`;
+
   const link = document.createElement('link');
   link.rel = 'prefetch';
   link.href = nextPageUrl;
   link.crossOrigin = 'anonymous';
   link.as = 'document';
+
   document.head.appendChild(link);
 }
 
@@ -130,7 +133,14 @@ export default async function init(element) {
   }
 
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
-  const button = createTag('input', { type: 'file', accept: LIMITS[VERB].acceptedFiles, id: 'file-upload', class: 'hide', 'aria-hidden': true });
+  const button = createTag('input', {
+    type: 'file',
+    accept: LIMITS[VERB]?.acceptedFiles,
+    id: 'file-upload',
+    class: 'hide',
+    'aria-hidden': true,
+    ...(LIMITS[VERB]?.multipleFiles && { multiple: '' }),
+  });
   const widgetImage = createTag('div', { class: 'verb-image' });
   const verbIconName = `${VERB}`;
   const verbImageSvg = createSvgElement(verbIconName);
@@ -267,7 +277,7 @@ export default async function init(element) {
     }
 
     if (e.detail?.event === 'uploaded') {
-      verbAnalytics('job:test-uploaded', VERB, e.detail?.data);
+      verbAnalytics('job:test-uploaded', VERB, e.detail?.data, false);
       exitFlag = true;
       setUser();
       document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;

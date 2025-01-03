@@ -23,7 +23,7 @@ if (params.dropzone2) {
   appTags.push('dropzone2');
 }
 
-export default function init(eventName, verb, metaData) {
+export default function init(eventName, verb, metaData, documentUnloading = true) {
   function getSessionID() {
     const aToken = window.adobeIMS.getAccessToken();
     const arrayToken = aToken?.token.split('.');
@@ -33,7 +33,25 @@ export default function init(eventName, verb, metaData) {
     return tokenPayload.sub || tokenPayload.user_id;
   }
   const event = {
-    documentUnloading: true,
+    documentUnloading,
+    // eslint-disable-next-line
+    done: function (AJOPropositionResult, error) {
+      if (!documentUnloading) {
+        const accountType = window?.adobeIMS?.getAccountType();
+        const verbEvent = `acrobat:verb-${verb}:${eventName}`;
+        if (error) {
+          window.lana?.log(
+            `Error Code: ${error}, Status: 'Unknown', Message: An error occurred while sending ${verbEvent}, Account Type: ${accountType}`,
+            { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+          );
+        } else {
+          window.lana?.log(
+            `Message: Event ${verbEvent} has been sent successfully, Account Type: ${accountType}`,
+            { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+          );
+        }
+      }
+    },
     data: {
       eventType: 'web.webinteraction.linkClicks',
       web: {
@@ -61,7 +79,7 @@ export default function init(eventName, verb, metaData) {
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,
-              app_name: 'unity:adobe_com',
+              app_name: `unity:${verb}`,
               url: window.location.href,
               app_referrer: appReferrer,
               tracking_id: trackingId,
@@ -86,7 +104,7 @@ export default function init(eventName, verb, metaData) {
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,
-              app_name: 'unity:adobe_com',
+              app_name: `unity:${verb}`,
               url: window.location.href,
               app_referrer: appReferrer,
               tracking_id: trackingId,
@@ -104,15 +122,6 @@ export default function init(eventName, verb, metaData) {
       },
     },
   };
-
-  // Alloy Ready...
-  const AlloyReady = setInterval(() => {
-    // eslint-disable-next-line no-underscore-dangle
-    if (window?._satellite?.track) {
-      clearInterval(AlloyReady);
-      // eslint-disable-next-line no-underscore-dangle
-      window._satellite?.track('event', event);
-    }
-  }, 1000);
   // eslint-disable-next-line no-underscore-dangle
+  window._satellite?.track?.('event', event);
 }
