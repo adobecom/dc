@@ -7,7 +7,7 @@ const localeMap = {
   ca_fr: 'fr-ca',
   mx: 'es-mx',
   la: 'es-la',
-  africa: 'en-us',
+  africa: 'en-za',
   za: 'en-za',
   be_nl: 'nl-be',
   be_fr: 'fr-be',
