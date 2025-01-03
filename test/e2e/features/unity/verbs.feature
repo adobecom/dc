@@ -5,7 +5,7 @@ Feature: Frictionless Converter Block
 
   @smoke @unity @sign-pdf @choosefile
   Scenario: L1 Verb - Choose file and upload
-    Given I go to the sign-pdf  page
+    Given I go to the sign-pdf page
      Then I choose the file "test-files/test.pdf" to upload
      Then I wait for 5 seconds
      Then I should see the address bar contains "acrobat.adobe.com"
