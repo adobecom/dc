@@ -1,13 +1,13 @@
 import LIMITS from '../verb-widget/limits.js';
 
-const localeMap = {
+export const localeMap = {
   '': 'en-us',
   br: 'pt-br',
   ca: 'en-ca',
   ca_fr: 'fr-ca',
   mx: 'es-mx',
   la: 'es-la',
-  africa: 'en-africa',
+  africa: 'en-za',
   za: 'en-za',
   be_nl: 'nl-be',
   be_fr: 'fr-be',
@@ -32,8 +32,8 @@ const localeMap = {
   lu_fr: 'fr-lu',
   hu: 'hu-hu',
   mt: 'en-mt',
-  mena_en: 'en-mena',
-  mena_ar: 'ar-mena',
+  mena_en: 'en-ae',
+  mena_ar: 'ar-ae',
   nl: 'nl-nl',
   no: 'nb-no',
   at: 'de-at',
@@ -57,8 +57,8 @@ const localeMap = {
   in: 'en-in',
   in_hi: 'hi-in',
   nz: 'en-nz',
-  hk_zh: 'zh-hant-hk',
-  tw: 'zh-hant-tw',
+  hk_zh: 'zh-tw',
+  tw: 'zh-tw',
   jp: 'ja-jp',
   kr: 'ko-kr',
   ae_en: 'en-ae',
@@ -81,7 +81,7 @@ const localeMap = {
   id_en: 'en-id',
   id_id: 'id-id',
   ph_en: 'en-ph',
-  ph_fil: 'fil-ph',
+  ph_fil: 'en-ph',
   my_en: 'en-my',
   my_ms: 'ms-my',
   kw_en: 'en-kw',
@@ -94,16 +94,13 @@ const localeMap = {
 };
 
 function getUnityLibs(prodLibs = '/unitylibs') {
-  const { hostname } = window.location;
-  if (!hostname.includes('hlx.page')
-    && !hostname.includes('hlx.live')
-    && !hostname.includes('localhost')) {
-    return prodLibs;
-  }
+  const { hostname, search } = window.location;
+  if (!/\.hlx\.|\.aem\.|local|stage/.test(hostname)) return prodLibs;
   // eslint-disable-next-line compat/compat
-  const branch = new URLSearchParams(window.location.search).get('unitylibs') || 'main';
-  if (branch.indexOf('--') > -1) return `https://${branch}.hlx.live/unitylibs`;
-  return `https://${branch}--unity--adobecom.hlx.live/unitylibs`;
+  const branch = new URLSearchParams(search).get('unitylibs') || 'main';
+  if (branch === 'main' && hostname === 'www.stage.adobe.com') return prodLibs;
+  const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
+  return `https://${branch}${branch.includes('--') ? '' : '--unity--adobecom'}.${env}.live/unitylibs`;
 }
 
 export default async function init(el) {
