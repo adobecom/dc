@@ -23,8 +23,7 @@ if (params.dropzone2) {
   appTags.push('dropzone2');
 }
 
-export default function init(verb, type = 'goto-app:clicked') {
-  const eventName = `acrobat:verb-${verb}:${type}`;
+export default function init(verb) {
   const event = {
     documentUnloading: true,
     data: {
@@ -33,14 +32,14 @@ export default function init(verb, type = 'goto-app:clicked') {
         webInteraction: {
           linkClicks: { value: 1 },
           type: 'other',
-          name: eventName,
+          name: `acrobat:verb-${verb}:goto-app:clicked`,
         },
       },
       _adobe_corpnew: {
         digitalData: {
-          dcweb: { event: { pagename: eventName } },
+          dcweb: { event: { pagename: `acrobat:verb-${verb}:goto-app:clicked` } },
           dcweb2: {
-            event: { pagename: eventName },
+            event: { pagename: `acrobat:verb-${verb}:goto-app:clicked` },
             source: {
               user_agent: navigator.userAgent,
               lang: document.documentElement.lang,

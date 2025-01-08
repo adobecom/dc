@@ -30,7 +30,7 @@ export const [setLibs, getLibs] = (() => {
         const branch = new URLSearchParams(search).get('milolibs') || 'main';
         if (branch === 'main' && hostname === 'www.stage.adobe.com') return '/libs';
         if (branch === 'local') return 'http://localhost:6456/libs';
-        const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
+        const env = hostname.includes('.aem.') ? 'aem' : 'hlx';
         return `https://${branch}${branch.includes('--') ? '' : '--milo--adobecom'}.${env}.live/libs`;
       })();
       return libs;
