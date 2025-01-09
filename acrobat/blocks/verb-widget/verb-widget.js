@@ -79,7 +79,7 @@ function handleExit(event) {
 }
 
 async function showUpSell(verb, element) {
-  const headline = window.mph[`verb-widget-upsell-headline-${verb}`] || window.mph['verb-widget-upsell-headline']; 
+  const headline = window.mph[`verb-widget-upsell-headline-${verb}`] || window.mph['verb-widget-upsell-headline'];
   const headlineNopayment = window.mph['verb-widget-upsell-headline-nopayment'];
   const bulletsHeading = window.mph['verb-widget-upsell-bullets-heading'];
   const bullets = window.mph[`verb-widget-upsell-bullets-${verb}`] || window.mph['verb-widget-upsell-bullets'];
@@ -88,7 +88,7 @@ async function showUpSell(verb, element) {
   const headingNopaymentEl = createTag('h1', { class: 'verb-upsell-heading verb-upsell-heading-nopayment' }, headlineNopayment);
   const upsellBulletsHeading = createTag('p', { class: 'verb-upsell-bullets-heading' }, bulletsHeading);
   const upsellBullets = createTag('ul', { class: 'verb-upsell-bullets' });
-  bullets.split('\n').forEach((bullet) => { upsellBullets.append(createTag('li', {}, bullet))});
+  bullets.split('\n').forEach((bullet) => upsellBullets.append(createTag('li', {}, bullet)));
 
   const upsell = createTag('div', { class: 'verb-upsell' });
   const upsellColumn = createTag('div', { class: 'verb-upsell-column' });
@@ -305,7 +305,7 @@ export default async function init(element) {
           const stored = localStorage.getItem(key);
           const count = parseInt(stored, 10);
           localStorage.setItem(key, count + 1 || 1);
-        }        
+        }
         verbAnalytics('job:uploading', VERB, data);
         setUser();
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
