@@ -2,7 +2,6 @@ import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
-import { localeMap } from '../unity/unity.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
@@ -42,24 +41,19 @@ const setDraggingClass = (widget, shouldToggle) => {
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
 };
 
-function prefetchNextPage(verb) {
-  const { locale } = getConfig();
-  const localePath = localeMap[locale.prefix.replace('/', '')].split('-').reverse().join('/');
-  const nextPageHost = getEnv() === 'prod' ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
-  const nextPageUrl = `https://${nextPageHost}/${localePath}/${verb}`;
-
+function prefetchNextPage(url) {
   const link = document.createElement('link');
   link.rel = 'prefetch';
-  link.href = nextPageUrl;
+  link.href = url;
   link.crossOrigin = 'anonymous';
   link.as = 'document';
 
   document.head.appendChild(link);
 }
 
-function initiatePrefetch(verb) {
+function initiatePrefetch(url) {
   if (!window.prefetchInitiated) {
-    prefetchNextPage(verb);
+    prefetchNextPage(url);
     window.prefetchInitiated = true;
   }
 }
@@ -264,7 +258,6 @@ export default async function init(element) {
   button.addEventListener('click', () => {
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
-    initiatePrefetch(VERB);
   });
 
   button.addEventListener('cancel', () => {
@@ -274,7 +267,6 @@ export default async function init(element) {
   widget.addEventListener('dragover', (e) => {
     e.preventDefault();
     setDraggingClass(widget, true);
-    initiatePrefetch(VERB);
   });
 
   widget.addEventListener('dragleave', () => {
@@ -289,43 +281,49 @@ export default async function init(element) {
   element.addEventListener('unity:track-analytics', (e) => {
     const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
 
-    if (e.detail?.event === 'change') {
-      verbAnalytics('choose-file:open', VERB, e.detail?.data);
-      setUser();
-    }
-    // maybe new event name files-dropped?
-    if (e.detail?.event === 'drop') {
-      initiatePrefetch(VERB);
-      verbAnalytics('files-dropped', VERB, e.detail?.data);
-      setDraggingClass(widget, false);
-      setUser();
-    }
+    const { event, data } = e.detail || {};
 
-    if (e.detail?.event === 'cancel') {
-      verbAnalytics('job:cancel', VERB, e.detail?.data);
-      setUser();
-    }
+    if (!event) return;
 
-    if (e.detail?.event === 'uploading') {
-      if (LIMITS[VERB].trial) {
-        const key = `${VERB}_trial`;
-        const stored = localStorage.getItem(key);
-        const count = parseInt(stored, 10);
-        localStorage.setItem(key, count + 1 || 1);
-      }
-      verbAnalytics('job:uploading', VERB, e.detail?.data);
-      setUser();
-      document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-      window.addEventListener('beforeunload', (w) => {
-        handleExit(w);
-      });
-    }
+    const analyticsMap = {
+      change: () => {
+        verbAnalytics('choose-file:open', VERB, data);
+        setUser();
+      },
+      drop: () => {
+        verbAnalytics('files-dropped', VERB, data);
+        setDraggingClass(widget, false);
+        setUser();
+      },
+      cancel: () => {
+        verbAnalytics('job:cancel', VERB, data);
+        setUser();
+      },
+      uploading: () => {
+        if (LIMITS[VERB].trial) {
+          const key = `${VERB}_trial`;
+          const stored = localStorage.getItem(key);
+          const count = parseInt(stored, 10);
+          localStorage.setItem(key, count + 1 || 1);
+        }        
+        verbAnalytics('job:uploading', VERB, data);
+        setUser();
+        document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+        window.addEventListener('beforeunload', handleExit);
+      },
+      uploaded: () => {
+        verbAnalytics('job:test-uploaded', VERB, data, false);
+        exitFlag = true;
+        setUser();
+        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+      },
+      redirectUrl: () => {
+        if (data) initiatePrefetch(data);
+      },
+    };
 
-    if (e.detail?.event === 'uploaded') {
-      verbAnalytics('job:test-uploaded', VERB, e.detail?.data, false);
-      exitFlag = true;
-      setUser();
-      document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+    if (analyticsMap[event]) {
+      analyticsMap[event]();
     }
   });
 
