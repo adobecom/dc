@@ -292,11 +292,18 @@
 /* responsive design */
 
 @media screen and (max-width: 768px) {
+  .verb-widget {
+    background-image: linear-gradient(180deg, #EB1000 0%, #F79B94 50%, #FFF 70%);
+    padding: 16px;
+  }
+
   .verb-wrapper {
     width: unset;
     max-width: unset;
-    padding: 20px;
-    min-height: calc(100vh - 150px);
+    padding: 24px 29px;
+    border: 3px dashed #d5d5d5;
+    border-radius: 8px;
+    min-height: calc(100vh - (63px + 32px + 115px + 48px));
   }
 
   .verb-row {
@@ -305,8 +312,8 @@
   }
 
   .verb-icon {
-    width: 40px;
-    height: 40px;
+    width: 58px;
+    height: 56px;
   }
 
   .verb-title {
@@ -319,9 +326,44 @@
 
   .verb-copy {
     font-size: 18px;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    line-height: 27px;
   }
 
   .verb-cta {
     cursor: pointer;
+    font-size: 22px;
+    padding: 9px 25px;
+  }
+
+  .verb-cta .upload-icon {
+    margin-right: 12px;
+  }
+
+  .verb-image {
+    width: 135px;
+    height: 130px;
+    margin-top: 56px;
+    margin-bottom: 28px;
+  }
+
+  .verb-col.right {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .info-icon {
+    margin-left: 7px;
+    margin-right: 15px;
+  }
+
+  .verb-legal-wrapper {
+    margin-top: 23px;
+  }
+
+  .verb-legal {
+    margin-top: 0;
+    font-size: 12px;
   }
 }
