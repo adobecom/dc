@@ -112,6 +112,7 @@ const frameSrc = [
   's.company-target.com',
   'ui.messaging.adobe.com/',
   'acrobatservices.adobe.com',
+  'auth-light.identity.adobe.com',
   ';',
 ];
 
