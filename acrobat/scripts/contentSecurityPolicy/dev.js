@@ -12,6 +12,7 @@ const connectSrc = [
   '*.adobe.com',
   'stage.adobeccstatic.com',
   '*.adobe.io',
+  '*.identity-stage.adobe.com',
   '*.adobelogin.com',
   '*.amazonaws.com',
   '*.blob.core.windows.net',

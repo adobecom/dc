@@ -12,6 +12,7 @@ const connectSrc = [
   'prod.adobeccstatic.com',
   '*.clicktale.net/',
   '*.adobe.io',
+  '*.identity.adobe.com',
   '*.adobelogin.com',
   '*.amazonaws.com',
   '*.blob.core.windows.net',
