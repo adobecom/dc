@@ -32,6 +32,7 @@ const LIMITS = {
       'image/png',
     ],
     multipleFiles: true,
+    trial: 2,
   },
 };
 
