@@ -216,11 +216,22 @@ export default async function init(element) {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
     legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
     legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
-
     legalWrapper.append(legal, legalTwo);
     footer.append(iconSecurity, legalWrapper, infoIcon);
-
     element.append(widget, footer);
+    if (window.browser?.isMobile) {
+      widgetCopy.after(widgetMobCopy);
+      widgetCopy.remove();
+      const verbMobImageSvg = createSvgElement(`${VERB}-mobile`);
+      if (verbMobImageSvg) {
+        verbImageSvg.remove();
+        verbMobImageSvg.classList.add('icon-verb-image');
+        widgetImage.appendChild(verbMobImageSvg);
+      }
+      widgetImage.after(widgetImage);
+      iconSecurity.remove(iconSecurity);
+      footer.prepend(infoIcon);
+    }
   }
 
   function checkSignedInUser() {
@@ -261,6 +272,10 @@ export default async function init(element) {
   });
 
   button.addEventListener('click', () => {
+    if (VERB === 'compress-pdf') {
+      verbAnalytics('entry:clicked', VERB);
+      verbAnalytics('discover:clicked', VERB);
+    }
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
   });
@@ -297,6 +312,10 @@ export default async function init(element) {
       },
       drop: () => {
         verbAnalytics('files-dropped', VERB, data);
+        if (VERB === 'compress-pdf') {
+          verbAnalytics('entry:clicked', VERB, data);
+          verbAnalytics('discover:clicked', VERB, data);
+        }
         setDraggingClass(widget, false);
         setUser();
       },
@@ -312,6 +331,9 @@ export default async function init(element) {
           localStorage.setItem(key, count + 1 || 1);
         }
         verbAnalytics('job:uploading', VERB, data);
+        if (VERB === 'compress-pdf') {
+          verbAnalytics('job:multi-file-uploading', VERB, data);
+        }
         setUser();
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         window.addEventListener('beforeunload', handleExit);
