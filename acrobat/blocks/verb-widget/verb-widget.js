@@ -78,6 +78,37 @@ function handleExit(event) {
   event.returnValue = true;
 }
 
+async function showUpSell(verb, element) {
+  const headline = window.mph[`verb-widget-upsell-headline-${verb}`] || window.mph['verb-widget-upsell-headline'];
+  const headlineNopayment = window.mph['verb-widget-upsell-headline-nopayment'];
+  const bulletsHeading = window.mph['verb-widget-upsell-bullets-heading'];
+  const bullets = window.mph[`verb-widget-upsell-bullets-${verb}`] || window.mph['verb-widget-upsell-bullets'];
+
+  const headlineEl = createTag('h1', { class: 'verb-upsell-heading' }, headline);
+  const headingNopaymentEl = createTag('h1', { class: 'verb-upsell-heading verb-upsell-heading-nopayment' }, headlineNopayment);
+  const upsellBulletsHeading = createTag('p', { class: 'verb-upsell-bullets-heading' }, bulletsHeading);
+  const upsellBullets = createTag('ul', { class: 'verb-upsell-bullets' });
+  bullets.split('\n').forEach((bullet) => upsellBullets.append(createTag('li', {}, bullet)));
+
+  const upsell = createTag('div', { class: 'verb-upsell' });
+  const upsellColumn = createTag('div', { class: 'verb-upsell-column' });
+  const socialContainer = createTag('div', { class: 'verb-upsell-social-container' });
+
+  const upsellRow = createTag('div', { class: 'verb-row' });
+  upsellRow.append(upsellColumn, socialContainer);
+
+  upsell.append(upsellRow);
+
+  upsellColumn.append(headlineEl, headingNopaymentEl, upsellBulletsHeading, upsellBullets);
+
+  const widget = createTag('div', { class: 'verb-wrapper verb-upsell-active' });
+  const widgetContainer = createTag('div', { class: 'verb-container' });
+  widget.append(widgetContainer);
+  widgetContainer.append(upsell);
+
+  element.replaceChildren(widget);
+}
+
 export default async function init(element) {
   if (isOldBrowser()) {
     window.location.href = EOLBrowserPage;
@@ -216,6 +247,14 @@ export default async function init(element) {
   // Analytics
   verbAnalytics('landing:shown', VERB);
 
+  if (LIMITS[VERB].trial) {
+    const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
+    if (count >= LIMITS[VERB].trial) {
+      showUpSell(VERB, element);
+      return;
+    }
+  }
+
   window.prefetchInitiated = false;
 
   widgetMobileButton.addEventListener('click', () => {
@@ -256,6 +295,7 @@ export default async function init(element) {
 
   element.addEventListener('unity:track-analytics', (e) => {
     const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
+
     const { event, data } = e.detail || {};
 
     if (!event) return;
@@ -279,6 +319,12 @@ export default async function init(element) {
         setUser();
       },
       uploading: () => {
+        if (LIMITS[VERB].trial) {
+          const key = `${VERB}_trial`;
+          const stored = localStorage.getItem(key);
+          const count = parseInt(stored, 10);
+          localStorage.setItem(key, count + 1 || 1);
+        }
         verbAnalytics('job:uploading', VERB, data);
         if (VERB === 'compress-pdf') {
           verbAnalytics('job:multi-file-uploading', VERB, data);

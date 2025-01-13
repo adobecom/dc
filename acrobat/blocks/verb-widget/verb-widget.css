@@ -131,6 +131,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 100%;
 }
 
 .verb-col {
@@ -277,6 +278,66 @@
   text-decoration: none;
 }
 
+.verb-upsell {
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  width: 774.75px;
+  height: 532px;
+  position: static;
+  justify-content: normal;
+  align-items: normal;
+}
+
+.verb-upsell-heading {
+  display: inline;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  margin-bottom: 8px;
+}
+
+.verb-upsell-heading + .verb-upsell-heading {
+  margin-left: 5px;
+}
+
+.verb-upsell-heading-nopayment {
+  font-weight: 400 !important;
+}
+
+.verb-upsell-bullets-heading {
+  margin-bottom: -4px;
+  margin-top: 24px;
+  padding-left: 0;
+}
+
+.verb-upsell-bullets {
+  margin-top: 8px;
+  padding: 0 0 0 15px;
+}
+
+.verb-upsell-list {
+  font-size: 16px;
+  list-style-position: inside;
+  margin-bottom: 0;
+  margin-top: 8px;
+  max-width: 408px;
+  padding: 0 0 0 10px;
+}
+
+.verb-upsell-bullets li::before {
+  content: "•";
+  position: absolute;
+  left: -12px;
+}
+
+.verb-upsell-bullets li {
+  list-style: none;
+  position: relative;
+  padding-left: 0;
+  margin-bottom: 8px;
+}
+
 @media screen and (min-width: 768px) {
   .verb-container {
     align-items: center;
@@ -367,4 +428,64 @@
     margin-top: 0;
     font-size: 12px;
   }
+
+  .verb-upsell {
+    width: 100%;
+    height: auto;
+  }
+
+  .verb-upsell-heading {
+    display: inline;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
+  }
+
+  .verb-upsell-heading + .verb-upsell-heading {
+    margin-left: 5px;
+  }
+
+  .verb-upsell-bullets-heading {
+    margin-bottom: -4px;
+    margin-top: 16px;
+  }
+
+  .verb-upsell-bullets {
+    margin-top: 4px;
+  }
+
+  .verb-upsell-bullets li {
+    margin-bottom: 0;
+  }
+
+  .verb-upsell-bullets li:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.verb-wrapper.verb-upsell-active {
+  cursor: default;
+  border: 3px solid #d5d5d5;
+}
+
+.verb-wrapper.verb-upsell-active:hover {
+  border: 3px solid #d5d5d5;
+}
+
+.verb-wrapper.verb-upsell-active.dragging {
+  background-color: #fff;
+  border: 3px solid #d5d5d5;
+}
+
+.verb-upsell-column {
+  flex: 1;
+  padding-right: 24px;
+}
+
+.verb-upsell-social-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
