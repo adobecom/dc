@@ -12,6 +12,7 @@ const connectSrc = [
   '*.adobe.com',
   'stage.adobeccstatic.com',
   '*.adobe.io',
+  '*.identity-stage.adobe.com',
   '*.adobelogin.com',
   '*.amazonaws.com',
   '*.blob.core.windows.net',
@@ -108,6 +109,7 @@ const frameSrc = [
   's.company-target.com',
   'stage-ui.messaging.adobe.com/',
   'acrobatservices.adobe.com',
+  'auth-light.identity-stage.adobe.com',
   ';',
 ];
 

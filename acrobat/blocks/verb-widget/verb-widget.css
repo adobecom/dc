@@ -282,8 +282,8 @@
   color: #222;
   display: flex;
   flex-direction: column;
-  width: 774.75px;
-  height: 532px;
+  width: 100%;
+  height: 100%;
   position: static;
   justify-content: normal;
   align-items: normal;
@@ -350,7 +350,36 @@
   }
 }
 
-/* responsive design */
+.verb-wrapper.verb-upsell-active {
+  cursor: default;
+  border: 3px solid #d5d5d5;
+}
+
+.verb-wrapper.verb-upsell-active:hover {
+  border: 3px solid #d5d5d5;
+}
+
+.verb-wrapper.verb-upsell-active.dragging {
+  background-color: #fff;
+  border: 3px solid #d5d5d5;
+}
+
+.verb-upsell-column {
+  flex: 1;
+  padding: 0 12px;
+}
+
+.verb-upsell-social-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin: 0 20px;
+  background-color: #fdfdfd;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+}
 
 @media screen and (max-width: 768px) {
   .verb-widget {
@@ -369,7 +398,6 @@
   }
 
   .verb-row {
-    display: flex;
     flex-direction: column;
   }
 
@@ -462,30 +490,11 @@
   .verb-upsell-bullets li:last-child {
     margin-bottom: 0;
   }
-}
 
-.verb-wrapper.verb-upsell-active {
-  cursor: default;
-  border: 3px solid #d5d5d5;
-}
-
-.verb-wrapper.verb-upsell-active:hover {
-  border: 3px solid #d5d5d5;
-}
-
-.verb-wrapper.verb-upsell-active.dragging {
-  background-color: #fff;
-  border: 3px solid #d5d5d5;
-}
-
-.verb-upsell-column {
-  flex: 1;
-  padding-right: 24px;
-}
-
-.verb-upsell-social-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .verb-upsell-social-container {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+  }
 }

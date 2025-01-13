@@ -4,7 +4,7 @@ import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, getConfig, loadBlock } = await import(`${miloLibs}/utils/utils.js`);
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -92,9 +92,14 @@ async function showUpSell(verb, element) {
 
   const upsell = createTag('div', { class: 'verb-upsell' });
   const upsellColumn = createTag('div', { class: 'verb-upsell-column' });
+
   const socialContainer = createTag('div', { class: 'verb-upsell-social-container' });
+  const socialCta = createTag('div', { class: 'susi-light' });
+  socialContainer.append(socialCta);
+  await loadBlock(socialCta);
 
   const upsellRow = createTag('div', { class: 'verb-row' });
+
   upsellRow.append(upsellColumn, socialContainer);
 
   upsell.append(upsellRow);
