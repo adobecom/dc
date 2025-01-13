@@ -228,6 +228,10 @@ export default async function init(element) {
   });
 
   button.addEventListener('click', () => {
+    if (VERB === 'compress-pdf') {
+      verbAnalytics('entry:clicked', VERB);
+      verbAnalytics('discover:clicked', VERB);
+    }
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
   });
@@ -263,6 +267,10 @@ export default async function init(element) {
       },
       drop: () => {
         verbAnalytics('files-dropped', VERB, data);
+        if (VERB === 'compress-pdf') {
+          verbAnalytics('entry:clicked', VERB, data);
+          verbAnalytics('discover:clicked', VERB, data);
+        }
         setDraggingClass(widget, false);
         setUser();
       },
@@ -272,6 +280,9 @@ export default async function init(element) {
       },
       uploading: () => {
         verbAnalytics('job:uploading', VERB, data);
+        if (VERB === 'compress-pdf') {
+          verbAnalytics('job:multi-file-uploading', VERB, data);
+        }
         setUser();
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         window.addEventListener('beforeunload', handleExit);
