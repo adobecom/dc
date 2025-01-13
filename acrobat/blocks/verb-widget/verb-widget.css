@@ -279,7 +279,7 @@
 }
 
 .verb-upsell {
-  color: rgb(34, 34, 34);
+  color: #222;
   display: flex;
   flex-direction: column;
   width: 774.75px;
