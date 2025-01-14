@@ -326,10 +326,12 @@ export default async function init(element) {
       },
       uploading: () => {
         if (LIMITS[VERB].trial) {
-          const key = `${VERB}_trial`;
-          const stored = localStorage.getItem(key);
-          const count = parseInt(stored, 10);
-          localStorage.setItem(key, count + 1 || 1);
+          if (!window.adobeIMS?.isSignedInUser?.()) {
+            const key = `${VERB}_trial`;
+            const stored = localStorage.getItem(key);
+            const count = parseInt(stored, 10);
+            localStorage.setItem(key, count + 1 || 1);
+          }
         }
         verbAnalytics('job:uploading', VERB, data);
         if (VERB === 'compress-pdf') {
