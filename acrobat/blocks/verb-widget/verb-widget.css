@@ -80,6 +80,18 @@
   display: none;
 }
 
+.verb-widget.signed-in .verb-upsell-active {
+  display: none;
+}
+
+.verb-widget.upsell .verb-footer {
+  display: none;
+}
+
+.verb-widget.upsell #drop-zone {
+  display: none;
+}
+
 .verb-footer a {
   text-decoration: underline;
 }

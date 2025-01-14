@@ -111,7 +111,8 @@ async function showUpSell(verb, element) {
   widget.append(widgetContainer);
   widgetContainer.append(upsell);
 
-  element.replaceChildren(widget);
+  element.classList.add('upsell');
+  element.append(widget);
 }
 
 export default async function init(element) {
@@ -236,10 +237,18 @@ export default async function init(element) {
 
   function checkSignedInUser() {
     if (window.adobeIMS?.isSignedInUser?.()) {
+      element.classList.remove('upsell');
       element.classList.add('signed-in');
       if (window.adobeIMS.getAccountType() !== 'type1') {
         redDir(VERB);
       }
+    }
+  }
+
+  if (LIMITS[VERB].trial) {
+    const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
+    if (count >= LIMITS[VERB].trial) {
+      await showUpSell(VERB, element);
     }
   }
 
@@ -251,14 +260,6 @@ export default async function init(element) {
 
   // Analytics
   verbAnalytics('landing:shown', VERB);
-
-  if (LIMITS[VERB].trial) {
-    const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
-    if (count >= LIMITS[VERB].trial) {
-      showUpSell(VERB, element);
-      return;
-    }
-  }
 
   window.prefetchInitiated = false;
 
