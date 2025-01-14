@@ -272,10 +272,10 @@ export default async function init(element) {
     if (!mobileLink) { button.click(); }
   });
 
-  button.addEventListener('click', () => {
+  button.addEventListener('click', (data) => {
     if (VERB === 'compress-pdf') {
-      verbAnalytics('entry:clicked', VERB);
-      verbAnalytics('discover:clicked', VERB);
+      verbAnalytics('entry:clicked', VERB, data, false);
+      verbAnalytics('discover:clicked', VERB, data, false);
     }
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
@@ -312,10 +312,10 @@ export default async function init(element) {
         setUser();
       },
       drop: () => {
-        verbAnalytics('files-dropped', VERB, data);
+        verbAnalytics('files-dropped', VERB, data, false);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('entry:clicked', VERB, data);
-          verbAnalytics('discover:clicked', VERB, data);
+          verbAnalytics('entry:clicked', VERB, data, false);
+          verbAnalytics('discover:clicked', VERB, data, false);
         }
         setDraggingClass(widget, false);
         setUser();
@@ -333,9 +333,9 @@ export default async function init(element) {
             localStorage.setItem(key, count + 1 || 1);
           }
         }
-        verbAnalytics('job:uploading', VERB, data);
+        verbAnalytics('job:uploading', VERB, data, false);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('job:multi-file-uploading', VERB, data);
+          verbAnalytics('job:multi-file-uploading', VERB, data, false);
         }
         setUser();
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
