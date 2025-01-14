@@ -349,6 +349,12 @@ sitemaps:
         destination: /ua/dc-shared/assets/sitemap.xml
         hreflang: uk-UA
 
+      il_he:
+        source: /il_he/dc-shared/assets/query-index.json
+        alternate: /il_he/{path}.html
+        destination: /il_he/dc-shared/assets/sitemap.xml
+        hreflang: he
+
       ae_ar:
         source: /ae_ar/dc-shared/assets/query-index.json
         alternate: /ae_ar/{path}.html
