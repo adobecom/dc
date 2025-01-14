@@ -2,10 +2,9 @@ import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
-import { localeMap } from '../unity/unity.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, getConfig, loadBlock } = await import(`${miloLibs}/utils/utils.js`);
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -42,24 +41,19 @@ const setDraggingClass = (widget, shouldToggle) => {
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
 };
 
-function prefetchNextPage(verb) {
-  const { locale } = getConfig();
-  const localePath = localeMap[locale.prefix.replace('/', '')].split('-').reverse().join('/');
-  const nextPageHost = getEnv() === 'prod' ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
-  const nextPageUrl = `https://${nextPageHost}/${localePath}/${verb}`;
-
+function prefetchNextPage(url) {
   const link = document.createElement('link');
   link.rel = 'prefetch';
-  link.href = nextPageUrl;
+  link.href = url;
   link.crossOrigin = 'anonymous';
   link.as = 'document';
 
   document.head.appendChild(link);
 }
 
-function initiatePrefetch(verb) {
+function initiatePrefetch(url) {
   if (!window.prefetchInitiated) {
-    prefetchNextPage(verb);
+    prefetchNextPage(url);
     window.prefetchInitiated = true;
   }
 }
@@ -82,6 +76,43 @@ function handleExit(event) {
   if (exitFlag) { return; }
   event.preventDefault();
   event.returnValue = true;
+}
+
+async function showUpSell(verb, element) {
+  const headline = window.mph[`verb-widget-upsell-headline-${verb}`] || window.mph['verb-widget-upsell-headline'];
+  const headlineNopayment = window.mph['verb-widget-upsell-headline-nopayment'];
+  const bulletsHeading = window.mph['verb-widget-upsell-bullets-heading'];
+  const bullets = window.mph[`verb-widget-upsell-bullets-${verb}`] || window.mph['verb-widget-upsell-bullets'];
+
+  const headlineEl = createTag('h1', { class: 'verb-upsell-heading' }, headline);
+  const headingNopaymentEl = createTag('h1', { class: 'verb-upsell-heading verb-upsell-heading-nopayment' }, headlineNopayment);
+  const upsellBulletsHeading = createTag('p', { class: 'verb-upsell-bullets-heading' }, bulletsHeading);
+  const upsellBullets = createTag('ul', { class: 'verb-upsell-bullets' });
+  bullets.split('\n').forEach((bullet) => upsellBullets.append(createTag('li', {}, bullet)));
+
+  const upsell = createTag('div', { class: 'verb-upsell' });
+  const upsellColumn = createTag('div', { class: 'verb-upsell-column' });
+
+  const socialContainer = createTag('div', { class: 'verb-upsell-social-container' });
+  const socialCta = createTag('div', { class: 'susi-light' });
+  socialContainer.append(socialCta);
+  await loadBlock(socialCta);
+
+  const upsellRow = createTag('div', { class: 'verb-row' });
+
+  upsellRow.append(upsellColumn, socialContainer);
+
+  upsell.append(upsellRow);
+
+  upsellColumn.append(headlineEl, headingNopaymentEl, upsellBulletsHeading, upsellBullets);
+
+  const widget = createTag('div', { class: 'verb-wrapper verb-upsell-active' });
+  const widgetContainer = createTag('div', { class: 'verb-container' });
+  widget.append(widgetContainer);
+  widgetContainer.append(upsell);
+
+  element.classList.add('upsell');
+  element.append(widget);
 }
 
 export default async function init(element) {
@@ -186,19 +217,38 @@ export default async function init(element) {
     widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
     legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
     legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
-
     legalWrapper.append(legal, legalTwo);
     footer.append(iconSecurity, legalWrapper, infoIcon);
-
     element.append(widget, footer);
+    if (window.browser?.isMobile) {
+      widgetCopy.after(widgetMobCopy);
+      widgetCopy.remove();
+      const verbMobImageSvg = createSvgElement(`${VERB}-mobile`);
+      if (verbMobImageSvg) {
+        verbImageSvg.remove();
+        verbMobImageSvg.classList.add('icon-verb-image');
+        widgetImage.appendChild(verbMobImageSvg);
+      }
+      widgetImage.after(widgetImage);
+      iconSecurity.remove(iconSecurity);
+      footer.prepend(infoIcon);
+    }
   }
 
   function checkSignedInUser() {
     if (window.adobeIMS?.isSignedInUser?.()) {
+      element.classList.remove('upsell');
       element.classList.add('signed-in');
       if (window.adobeIMS.getAccountType() !== 'type1') {
         redDir(VERB);
       }
+    }
+  }
+
+  if (LIMITS[VERB].trial) {
+    const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
+    if (count >= LIMITS[VERB].trial) {
+      await showUpSell(VERB, element);
     }
   }
 
@@ -222,10 +272,13 @@ export default async function init(element) {
     if (!mobileLink) { button.click(); }
   });
 
-  button.addEventListener('click', () => {
+  button.addEventListener('click', (data) => {
+    if (VERB === 'compress-pdf') {
+      verbAnalytics('entry:clicked', VERB, data, false);
+      verbAnalytics('discover:clicked', VERB, data, false);
+    }
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
-    initiatePrefetch(VERB);
   });
 
   button.addEventListener('cancel', () => {
@@ -235,7 +288,6 @@ export default async function init(element) {
   widget.addEventListener('dragover', (e) => {
     e.preventDefault();
     setDraggingClass(widget, true);
-    initiatePrefetch(VERB);
   });
 
   widget.addEventListener('dragleave', () => {
@@ -250,37 +302,58 @@ export default async function init(element) {
   element.addEventListener('unity:track-analytics', (e) => {
     const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
 
-    if (e.detail?.event === 'change') {
-      verbAnalytics('choose-file:open', VERB, e.detail?.data);
-      setUser();
-    }
-    // maybe new event name files-dropped?
-    if (e.detail?.event === 'drop') {
-      initiatePrefetch(VERB);
-      verbAnalytics('files-dropped', VERB, e.detail?.data);
-      setDraggingClass(widget, false);
-      setUser();
-    }
+    const { event, data } = e.detail || {};
 
-    if (e.detail?.event === 'cancel') {
-      verbAnalytics('job:cancel', VERB, e.detail?.data);
-      setUser();
-    }
+    if (!event) return;
 
-    if (e.detail?.event === 'uploading') {
-      verbAnalytics('job:uploading', VERB, e.detail?.data);
-      setUser();
-      document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-      window.addEventListener('beforeunload', (w) => {
-        handleExit(w);
-      });
-    }
+    const analyticsMap = {
+      change: () => {
+        verbAnalytics('choose-file:open', VERB, data);
+        setUser();
+      },
+      drop: () => {
+        verbAnalytics('files-dropped', VERB, data, false);
+        if (VERB === 'compress-pdf') {
+          verbAnalytics('entry:clicked', VERB, data, false);
+          verbAnalytics('discover:clicked', VERB, data, false);
+        }
+        setDraggingClass(widget, false);
+        setUser();
+      },
+      cancel: () => {
+        verbAnalytics('job:cancel', VERB, data);
+        setUser();
+      },
+      uploading: () => {
+        if (LIMITS[VERB].trial) {
+          if (!window.adobeIMS?.isSignedInUser?.()) {
+            const key = `${VERB}_trial`;
+            const stored = localStorage.getItem(key);
+            const count = parseInt(stored, 10);
+            localStorage.setItem(key, count + 1 || 1);
+          }
+        }
+        verbAnalytics('job:uploading', VERB, data, false);
+        if (VERB === 'compress-pdf') {
+          verbAnalytics('job:multi-file-uploading', VERB, data, false);
+        }
+        setUser();
+        document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+        window.addEventListener('beforeunload', handleExit);
+      },
+      uploaded: () => {
+        verbAnalytics('job:test-uploaded', VERB, data, false);
+        exitFlag = true;
+        setUser();
+        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+      },
+      redirectUrl: () => {
+        if (data) initiatePrefetch(data);
+      },
+    };
 
-    if (e.detail?.event === 'uploaded') {
-      verbAnalytics('job:test-uploaded', VERB, e.detail?.data, false);
-      exitFlag = true;
-      setUser();
-      document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+    if (analyticsMap[event]) {
+      analyticsMap[event]();
     }
   });
 
