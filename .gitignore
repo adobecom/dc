@@ -11,3 +11,6 @@ CODEOWNERS
 
 #Environment
 .env
+
+#Auth
+.auth/*
