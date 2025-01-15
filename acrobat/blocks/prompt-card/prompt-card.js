@@ -9,7 +9,7 @@ let processTrackingLabels;
 const classToastShow = 'prompt-toast--show';
 const getPlaceHolder = (x) => (window.mph?.[x] || x);
 
-function copyPrompt(cfg) {
+function copyPrompt(cfg, a11yActionUpdate) {
   navigator.clipboard.writeText(cfg.prompt);
 
   let toast = document.querySelector('.prompt-toast');
@@ -25,11 +25,19 @@ function copyPrompt(cfg) {
   }
   toast.childNodes[0].textContent = cfg.toast;
   toast.classList.add(classToastShow);
+  if (a11yActionUpdate) {
+    if (a11yActionUpdate.textContent.trim() === cfg.toast) {
+      // Screen Reader will not read the same message again so it has to be changed
+      a11yActionUpdate.textContent = `${cfg.toast}.`;
+    } else {
+      a11yActionUpdate.textContent = cfg.toast;
+    }
+  }
 
   setTimeout(() => toast.classList.remove(classToastShow), 5000);
 }
 
-function createBlock(el, cfg) {
+function createBlock(el, cfg, a11yActionUpdate) {
   const element = el || createTag('div', { class: 'prompt-card' });
   cfg.icon = cfg.icon || '/acrobat/img/icons/aichat.svg';
   cfg.button = cfg.button || getPlaceHolder('Copy');
@@ -54,7 +62,7 @@ function createBlock(el, cfg) {
   const copy = createTag('div', { class: 'prompt-copy' }, cfg.prompt);
   const prompt = createTag('input', { id: 'prompt', value: cfg.prompt });
   const wrapper = createTag('div', { class: 'prompt-copy-btn-wrapper' });
-  const copyBtn = createTag('span', { class: 'prompt-copy-btn', role: 'button', tabindex: 0, 'aria-label': 'Copy button' }, cfg.button);
+  const copyBtn = createTag('span', { class: 'prompt-copy-btn', role: 'button', tabindex: 0, 'aria-label': `Copy ${cfg.prompt}` }, cfg.button);
   wrapper.append(copyBtn);
   prefix.appendChild(icon);
   prefix.appendChild(createTag('span', null, cfg.prefix));
@@ -62,13 +70,13 @@ function createBlock(el, cfg) {
   element.replaceChildren(blade);
 
   blade.addEventListener('click', () => {
-    copyPrompt(cfg);
+    copyPrompt(cfg, a11yActionUpdate);
   });
 
   copyBtn.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      copyPrompt(cfg);
+      copyPrompt(cfg, a11yActionUpdate);
     }
   });
 
@@ -77,8 +85,10 @@ function createBlock(el, cfg) {
 
 function createBlocks(element, blockArray, templateCfg) {
   const { parentNode } = element;
+  const a11yActionUpdate = createTag('div', { class: 'prompt-a11y-action', 'aria-live': 'polite' });
+  parentNode.append(a11yActionUpdate);
   for (const [idx, cfg] of blockArray.entries()) {
-    const blockEl = createBlock(null, { ...templateCfg, ...cfg });
+    const blockEl = createBlock(null, { ...templateCfg, ...cfg }, a11yActionUpdate);
     if (templateCfg?.rows && idx > 0) blockEl.classList.add('hidden');
     parentNode.insertBefore(blockEl, element.previousSibling);
   }
