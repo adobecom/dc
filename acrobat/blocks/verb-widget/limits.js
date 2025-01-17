@@ -20,17 +20,7 @@ const LIMITS = {
   'compress-pdf': {
     maxFileSize: 2147483648,
     maxFileSizeFriendly: '2 GB',
-    acceptedFiles: [
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'image/jpeg',
-      'image/png',
-    ],
+    acceptedFiles: ['application/pdf'],
     multipleFiles: true,
     trial: 2,
   },
