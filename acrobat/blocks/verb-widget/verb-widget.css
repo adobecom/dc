@@ -41,18 +41,13 @@
 }
 
 .verb-image {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
   max-width: 345px;
 }
 
 .verb-image svg {
   display: block;
   width: 100%;
-
+  height: 100%;
 }
 
 .security-icon {
@@ -445,9 +440,8 @@
   }
 
   .verb-image {
-    width: 135px;
-    height: 130px;
-    margin-top: 56px;
+    max-width: 129px;
+    margin-top: 55px;
     margin-bottom: 28px;
   }
 
