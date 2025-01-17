@@ -3,7 +3,6 @@ Feature: Compress PDF
   Background:
     Given I have a new browser context
       And I sign in as a type1 user
-      And I wait for 10 seconds
 
   @regression @unity @compress-pdf @signed-in-type1
   Scenario Outline: Signed in a type1 user

@@ -689,9 +689,9 @@ Then(/^I drag-and-drop the (?:PDF|file|files) "([^\"]*)" to upload$/, async func
   }
 });
 
-Then(/^I sign in as a type1 user$/, async function () {
+Then(/^I sign in as a (type1|type2) user$/, async function (type) {
   const accounts = JSON.parse(fs.readFileSync(".auth/accounts.json", "utf8"));
-  const account = accounts.type1;
+  const account = accounts[type];
   this.page = new DCPage("https://www.stage.adobe.com");
   await this.page.open();
   await this.page.native.locator(".profile-comp").click();
@@ -700,5 +700,8 @@ Then(/^I sign in as a type1 user$/, async function () {
   await this.page.native.locator(".spectrum-Button--cta").click();
   await this.page.native.locator("#PasswordPage-PasswordField").type(account.password + '\n');
   await this.page.native.waitForTimeout(2000);
-  await this.page.native.locator(".spectrum-Button--cta").click();
+  try {
+    await this.page.native.locator(".spectrum-Button--cta").click();
+  } catch {
+  }
 });
