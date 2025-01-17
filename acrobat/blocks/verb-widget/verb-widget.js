@@ -223,6 +223,9 @@ export default async function init(element) {
     if (window.browser?.isMobile) {
       widgetCopy.after(widgetMobCopy);
       widgetCopy.remove();
+      const infoMobIconSvg = createSvgElement('INFO_ICON_MOBILE');
+      infoIconSvg.remove();
+      infoIcon.append(infoMobIconSvg);
       const verbMobImageSvg = createSvgElement(`${VERB}-mobile`);
       if (verbMobImageSvg) {
         verbImageSvg.remove();

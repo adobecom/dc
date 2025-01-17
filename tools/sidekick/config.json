@@ -138,6 +138,15 @@
     },
     {
       "containerId": "tools",
+      "title": "Tag Selector",
+      "id": "tag-selector",
+      "environments": ["edit"],
+      "url": "https://milo.adobe.com/tools/tag-selector",
+      "isPalette": true,
+      "paletteRect": "top: 100px; left: 7%; height: 675px; width: 85vw;"
+    },
+    {
+      "containerId": "tools",
       "id": "caas-configurator",
       "title": "CaaS Configurator",
       "environments": [ "edit", "preview", "dev" ],
