@@ -58,7 +58,7 @@ function initiatePrefetch(url) {
   }
 }
 
-function redDir(verb) {
+function redDirLink(verb) {
   const hostname = window?.location?.hostname;
   const ENV = getEnv();
   const VERB = verb;
@@ -68,7 +68,11 @@ function redDir(verb) {
   } else {
     newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
   }
-  window.location.href = newLocation;
+  return newLocation;
+}
+
+function redDir(verb) {
+  window.location.href = redDirLink(verb);
 }
 
 let exitFlag;
@@ -95,6 +99,7 @@ async function showUpSell(verb, element) {
 
   const socialContainer = createTag('div', { class: 'verb-upsell-social-container' });
   const socialCta = createTag('div', { class: 'susi-light' });
+  socialCta.innerHTML = `<div><div>${redDirLink(verb)}</div></div>`;
   socialContainer.append(socialCta);
   await loadBlock(socialCta);
 
