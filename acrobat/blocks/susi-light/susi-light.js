@@ -52,7 +52,7 @@ export default async function init(el) {
     dt: false,
     locale: getConfig().locale.ietf.toLowerCase(),
     response_type: 'code',
-    client_id: 'AdobeExpressWeb',
+    client_id: 'acrobatmiloguest',
     redirect_uri: redirectUrl || redirect_uri,
     scope: 'AdobeID,openid',
   };
