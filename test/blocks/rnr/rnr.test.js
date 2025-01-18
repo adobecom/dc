@@ -17,6 +17,11 @@ describe('rnr - Ratings and reviews', () => {
     init(rnr);
   });
 
+  afterEach(() => {
+    if (window.fetch.restore) window.fetch.restore();
+    if (window.lana.log.restore) window.lana.log.restore();
+  });
+
   // #region General
 
   it('should display rnr', async () => {
@@ -34,7 +39,6 @@ describe('rnr - Ratings and reviews', () => {
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
     expect(window.lana.log.getCall(0).args[0]).to.equal('Verb not configured for the rnr widget');
-    window.lana.log.restore();
   });
 
   it('should submit form and display message', async () => {
@@ -72,8 +76,6 @@ describe('rnr - Ratings and reviews', () => {
     expect(window.lana.log.getCall(0).args[0]).to.equal(
       "Could not load review data: Received empty ratings data for asset 'word-to-pdf'.",
     );
-    window.fetch.restore();
-    window.lana.log.restore();
   });
 
   it('should handle aggregate data missing', async () => {
@@ -93,8 +95,6 @@ describe('rnr - Ratings and reviews', () => {
     expect(window.lana.log.getCall(0).args[0]).to.equal(
       "Could not load review data: Missing aggregated rating data in response for asset 'word-to-pdf'.",
     );
-    window.fetch.restore();
-    window.lana.log.restore();
   });
 
   it('should handle failed response', async () => {
@@ -109,8 +109,6 @@ describe('rnr - Ratings and reviews', () => {
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
     expect(window.lana.log.getCall(0).args[0]).to.equal('Could not load review data: Failed!');
-    window.fetch.restore();
-    window.lana.log.restore();
   });
 
   it('should handle uninteractive action', async () => {
@@ -329,7 +327,6 @@ describe('rnr - Ratings and reviews', () => {
     expect(outOfElement.textContent).to.equal('5');
     const votesElement = containerElement.querySelector('.rnr-summary-votes');
     expect(votesElement.textContent).to.equal('10');
-    window.fetch.restore();
   });
 
   it('should render round average', async () => {
@@ -350,7 +347,6 @@ describe('rnr - Ratings and reviews', () => {
     expect(containerElement).to.exist;
     const averageElement = containerElement.querySelector('.rnr-summary-average');
     expect(averageElement.textContent).to.equal('2.7');
-    window.fetch.restore();
   });
 
   it('should render should display integer averages without decimals', async () => {
@@ -371,7 +367,6 @@ describe('rnr - Ratings and reviews', () => {
     expect(containerElement).to.exist;
     const averageElement = containerElement.querySelector('.rnr-summary-average');
     expect(averageElement.textContent).to.equal('2');
-    window.fetch.restore();
   });
 
   // #endregion
