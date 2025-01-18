@@ -450,9 +450,14 @@
     align-items: center;
   }
 
+  .verb-footer {
+    align-items: start;
+  }
+
   .info-icon {
     margin-left: 7px;
     margin-right: 15px;
+    margin-top: 30px;
   }
 
   .verb-legal-wrapper {
