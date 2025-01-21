@@ -24,6 +24,14 @@ if (params.dropzone2) {
 }
 
 export default function init(eventName, verb, metaData, documentUnloading = true) {
+  function ensureSatelliteReady(callback) {
+    // eslint-disable-next-line no-underscore-dangle
+    if (window._satellite && typeof window._satellite.track === 'function') {
+      callback();
+    } else {
+      setTimeout(() => ensureSatelliteReady(callback), 200);
+    }
+  }
   function getSessionID() {
     const aToken = window.adobeIMS.getAccessToken();
     const arrayToken = aToken?.token.split('.');
@@ -122,6 +130,8 @@ export default function init(eventName, verb, metaData, documentUnloading = true
       },
     },
   };
-  // eslint-disable-next-line no-underscore-dangle
-  window._satellite?.track?.('event', event);
+  ensureSatelliteReady(() => {
+    // eslint-disable-next-line no-underscore-dangle
+    window._satellite.track('event', event);
+  });
 }

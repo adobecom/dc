@@ -281,12 +281,13 @@ export default async function init(element) {
   });
 
   button.addEventListener('click', (data) => {
-    if (VERB === 'compress-pdf') {
-      verbAnalytics('entry:clicked', VERB, data, false);
-      verbAnalytics('discover:clicked', VERB, data, false);
-    }
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
+    verbAnalytics('files-selected', VERB);
+    if (VERB === 'compress-pdf') {
+      verbAnalytics('entry:clicked', VERB, data);
+      verbAnalytics('discover:clicked', VERB, data);
+    }
   });
 
   button.addEventListener('cancel', () => {
@@ -320,10 +321,10 @@ export default async function init(element) {
         setUser();
       },
       drop: () => {
-        verbAnalytics('files-dropped', VERB, data, false);
+        verbAnalytics('files-dropped', VERB, data);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('entry:clicked', VERB, data, false);
-          verbAnalytics('discover:clicked', VERB, data, false);
+          verbAnalytics('entry:clicked', VERB, data);
+          verbAnalytics('discover:clicked', VERB, data);
         }
         setDraggingClass(widget, false);
         setUser();
