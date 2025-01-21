@@ -20,3 +20,16 @@ Feature: Compress PDF
      Then I should see "Compress a PDF with a free account" in the page content
      Then I should see "Continue with email" in the page content
    
+  @regression @unity @compress-pdf @susi-sign-in-type1
+  Scenario Outline: Sign in at 3rd attempt
+    Given I go to the compress-pdf page
+      And I have tried "compress-pdf" twice
+     When I sign in as a type1 user using SUSI Light
+     Then I should see "Compress PDF" in the dropzone
+
+  @regression @unity @compress-pdf @susi-sign-in-type2
+  Scenario Outline: Sign in at 3rd attempt
+    Given I go to the compress-pdf page
+      And I have tried "compress-pdf" twice
+     When I sign in as a type2 user using SUSI Light
+     Then I should see "Compress PDF" in the dropzone

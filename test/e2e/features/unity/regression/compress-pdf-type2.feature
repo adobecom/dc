@@ -8,6 +8,7 @@ Feature: Compress PDF
   Scenario Outline: Signed in a type2 user
     Given I go to the compress-pdf page
      Then I wait for 5 seconds
-     Then I should see the address bar contains "acrobat.adobe.com"     
+     Then I should see the address bar contains "acrobat.adobe.com"
+     Then I should see "Compress PDF" in the dropzone
 
    

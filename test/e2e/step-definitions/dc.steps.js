@@ -705,3 +705,29 @@ Then(/^I sign in as a (type1|type2) user$/, async function (type) {
   } catch {
   }
 });
+
+Then(/^I should see "([^"]*)" in the dropzone$/, async function (text) {
+  this.context(UnityPage);
+  await expect(this.page.native.locator('h1#lifecycle-drop-zone')).toHaveText(text);
+});
+
+Then(/^I have tried "compress-pdf" twice$/, async function () {
+  this.context(UnityPage);
+  const token = '2';
+  await this.page.native.evaluate(token => localStorage.setItem('compress-pdf_trial', token), token);
+  await this.page.native.reload({waitUntil: 'load'});
+});
+
+Then(/^I sign in as a (type1|type2) user using SUSI Light$/, async function (type) {
+  const accounts = JSON.parse(fs.readFileSync(".auth/accounts.json", "utf8"));
+  const account = accounts[type];
+  await this.page.native.locator('susi-sentry-light #sentry-email-field').click();
+  await this.page.native.locator('susi-sentry-light #sentry-email-field').type(account.email + '\n');
+  await this.page.native.waitForTimeout(2000);
+  await this.page.native.locator("#PasswordPage-PasswordField").type(account.password + '\n');
+  await this.page.native.waitForTimeout(2000);
+  try {
+    await this.page.native.locator(".spectrum-Button--cta").click();
+  } catch {
+  }
+});
