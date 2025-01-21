@@ -486,7 +486,15 @@ indices:
     exclude:
       - '/ua/dc-shared/*'
     target: /ua/dc-shared/assets/query-index.xlsx
- 
+
+  il_he:
+    <<: *def
+    include:
+      - '/il_he/acrobat/**'
+      - '/il_he/sign/**'
+    exclude:
+      - '/il_he/dc-shared/*'
+    target: /il_he/dc-shared/assets/query-index.xlsx
  
   ae_ar:
     <<: *def
