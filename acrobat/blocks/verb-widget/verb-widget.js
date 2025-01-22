@@ -257,6 +257,8 @@ export default async function init(element) {
     const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
     if (count >= LIMITS[VERB].trial) {
       await showUpSell(VERB, element);
+      verbAnalytics('upsell:shown', VERB);
+      verbAnalytics('upsell-wall:shown', VERB);
     }
   }
 
