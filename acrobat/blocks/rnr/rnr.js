@@ -70,7 +70,7 @@ const removeOptionElements = (el) => {
 
 function processNumberOption(value, minValue, maxValue, defaultValue) {
   const numberValue = parseInt(value, 10);
-  if (!numberValue) return defaultValue;
+  if (Number.isNaN(numberValue)) return defaultValue;
   if (numberValue < minValue) return minValue;
   if (numberValue > maxValue) return maxValue;
   return numberValue;
