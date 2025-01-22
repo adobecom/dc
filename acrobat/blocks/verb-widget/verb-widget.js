@@ -216,6 +216,7 @@ export default async function init(element) {
   widgetHeader.append(widgetIcon, widgetTitle);
   errorState.append(errorIcon, errorStateText, errorCloseBtn);
   if (mobileLink && LIMITS[VERB].mobileApp) {
+    widget.classList.add('mobile-app');
     widgetLeft.append(widgetHeader, widgetHeading, widgetMobCopy, errorState, widgetMobileButton);
     element.append(widget);
   } else {
