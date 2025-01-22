@@ -57,3 +57,24 @@ export function isOldBrowser() {
     name === 'Internet Explorer' || (name === 'Microsoft Edge' && (!version || version.split('.')[0] < 86)) || (name === 'Safari' && version.split('.')[0] < 14)
   );
 }
+
+export async function loadPlaceholders() {
+  const miloLibs = setLibs('/libs');
+  const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
+  const config = getConfig();
+
+  if (!Object.keys(window.mph || {}).length) {
+    const placeholdersPath = `${config.locale.contentRoot}/placeholders.json`;
+    try {
+      const response = await fetch(placeholdersPath);
+      if (response.ok) {
+        const placeholderData = await response.json();
+        placeholderData.data.forEach(({ key, value }) => {
+          window.mph[key] = value.replace(/\u00A0/g, ' ');
+        });
+      }
+    } catch (error) {
+      window.lana?.log(`Failed to load placeholders: ${error?.message}`);
+    }
+  }
+}

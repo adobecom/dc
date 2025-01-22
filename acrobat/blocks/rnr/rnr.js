@@ -2,7 +2,7 @@
 /* eslint-disable compat/compat */
 /* eslint-disable max-len */
 import localeMap from '../../scripts/maps/localeMap.js';
-import { setLibs } from '../../scripts/utils.js';
+import { loadPlaceholders, setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
@@ -10,6 +10,7 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 // #region Constants
 
 const COMMENTS_MAX_LENGTH = 500;
+const COMMENTS_MAX_LENGTH_ALLOWED = 10000;
 const SHOW_COMMENTS_TRESHOLD = 5;
 const ASSET_TYPE = 'ADOBE_COM';
 const RNR_API_URL = (function () {
@@ -67,11 +68,31 @@ const removeOptionElements = (el) => {
   });
 };
 
+function processNumberOption(value, minValue, maxValue, defaultValue) {
+  const numberValue = parseInt(value, 10);
+  if (Number.isNaN(numberValue)) return defaultValue;
+  if (numberValue < minValue) return minValue;
+  if (numberValue > maxValue) return maxValue;
+  return numberValue;
+}
+
 function extractMetadata(options) {
   metadata.hideTitleOnUninteractive = options.hidetitle ? options.hidetitle === 'true' : true;
-  metadata.initialValue = snapshot ? snapshot.rating : parseInt(options.initialvalue, 10) || 0;
-  metadata.commentsMaxLength = parseInt(options.commentsmaxlength, 10) || COMMENTS_MAX_LENGTH;
-  metadata.showCommentsThreshold = parseInt(options.commentsthreshold, 10) || SHOW_COMMENTS_TRESHOLD;
+  metadata.initialValue = snapshot
+    ? snapshot.rating
+    : processNumberOption(options.initialvalue, 0, 5, 0);
+  metadata.commentsMaxLength = processNumberOption(
+    options.commentsmaxlength,
+    1,
+    COMMENTS_MAX_LENGTH_ALLOWED,
+    COMMENTS_MAX_LENGTH,
+  );
+  metadata.showCommentsThreshold = processNumberOption(
+    options.commentsthreshold,
+    0,
+    5,
+    SHOW_COMMENTS_TRESHOLD,
+  );
   metadata.interactive = snapshot ? false : !options.interactive || options.interactive === 'true';
   metadata.verb = options.verb;
 }
@@ -197,7 +218,7 @@ async function postReview(data) {
 
 function initRatingFielset(fieldset, rnrForm, showComments) {
   // Create legend
-  const legend = createTag('legend', {}, window.mph['rnr-title']);
+  const legend = createTag('legend', {}, window.mph['rnr-title'] || '');
   fieldset.append(legend);
 
   // Create rating inputs
@@ -332,10 +353,10 @@ function initCommentsFieldset(fieldset) {
   const textarea = createTag('textarea', {
     class: 'rnr-comments',
     name: 'comments',
-    'aria-label': window.mph['rnr-comments-label'],
+    'aria-label': window.mph['rnr-comments-label'] || '',
     cols: 40,
     maxLength: metadata.commentsMaxLength,
-    placeholder: window.mph['rnr-comments-placeholder'],
+    placeholder: window.mph['rnr-comments-placeholder'] || '',
   });
   if (!metadata.interactive) textarea.setAttribute('disabled', 'disabled');
 
@@ -349,7 +370,7 @@ function initCommentsFieldset(fieldset) {
     class: 'rnr-comments-submit',
     type: 'submit',
     disabled: 'disabled',
-    value: window.mph['rnr-submit-label'],
+    value: window.mph['rnr-submit-label'] || '',
   });
 
   footerContainer.append(characterCounter, submitTag);
@@ -393,12 +414,16 @@ function initSummary(container) {
 
 function initControls(element) {
   const container = createTag('div', { class: 'rnr-container' });
-  const title = createTag('h3', { class: 'rnr-title' }, window.mph['rnr-title']);
+  const title = createTag('h3', { class: 'rnr-title' }, window.mph['rnr-title'] || '');
   const form = createTag('form', { class: 'rnr-form' });
   const ratingFieldset = createTag('fieldset', { class: 'rnr-rating-fieldset' });
   const commentsFieldset = createTag('fieldset', { class: 'rnr-comments-fieldset' });
   const summaryContainer = createTag('div', { class: 'rnr-summary-container ' });
-  const thankYou = createTag('div', { class: 'rnr-thank-you' }, window.mph['rnr-thank-you-label']);
+  const thankYou = createTag(
+    'div',
+    { class: 'rnr-thank-you' },
+    window.mph['rnr-thank-you-label'] || '',
+  );
 
   // Submit
   const submit = (ev) => {
@@ -454,7 +479,16 @@ function initControls(element) {
 
 // #endregion
 
-// initialization function
+// Preload icons
+function preloadIcons() {
+  const icons = ['/acrobat/img/icons/star-outline.svg', '/acrobat/img/icons/star-filled.svg'];
+  for (const iconPath of icons) {
+    const img = new Image();
+    img.src = iconPath;
+  }
+}
+
+// Initialization function
 export default async function init(element) {
   const options = getOptions(element);
   removeOptionElements(element);
@@ -463,6 +497,8 @@ export default async function init(element) {
   if (!metadata.verb) {
     window.lana?.log('Verb not configured for the rnr widget');
   }
+  preloadIcons();
+  await loadPlaceholders();
   await loadRnrData();
   initControls(element);
 }

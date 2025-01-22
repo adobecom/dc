@@ -58,7 +58,7 @@ function initiatePrefetch(url) {
   }
 }
 
-function redDir(verb) {
+function redDirLink(verb) {
   const hostname = window?.location?.hostname;
   const ENV = getEnv();
   const VERB = verb;
@@ -68,7 +68,11 @@ function redDir(verb) {
   } else {
     newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
   }
-  window.location.href = newLocation;
+  return newLocation;
+}
+
+function redDir(verb) {
+  window.location.href = redDirLink(verb);
 }
 
 let exitFlag;
@@ -95,6 +99,7 @@ async function showUpSell(verb, element) {
 
   const socialContainer = createTag('div', { class: 'verb-upsell-social-container' });
   const socialCta = createTag('div', { class: 'susi-light' });
+  socialCta.innerHTML = `<div><div>${redDirLink(verb)}</div></div>`;
   socialContainer.append(socialCta);
   await loadBlock(socialCta);
 
@@ -223,6 +228,9 @@ export default async function init(element) {
     if (window.browser?.isMobile) {
       widgetCopy.after(widgetMobCopy);
       widgetCopy.remove();
+      const infoMobIconSvg = createSvgElement('INFO_ICON_MOBILE');
+      infoIconSvg.remove();
+      infoIcon.append(infoMobIconSvg);
       const verbMobImageSvg = createSvgElement(`${VERB}-mobile`);
       if (verbMobImageSvg) {
         verbImageSvg.remove();
@@ -249,6 +257,8 @@ export default async function init(element) {
     const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
     if (count >= LIMITS[VERB].trial) {
       await showUpSell(VERB, element);
+      verbAnalytics('upsell:shown', VERB);
+      verbAnalytics('upsell-wall:shown', VERB);
     }
   }
 
@@ -273,12 +283,13 @@ export default async function init(element) {
   });
 
   button.addEventListener('click', (data) => {
-    if (VERB === 'compress-pdf') {
-      verbAnalytics('entry:clicked', VERB, data, false);
-      verbAnalytics('discover:clicked', VERB, data, false);
-    }
     verbAnalytics('filepicker:shown', VERB);
     verbAnalytics('dropzone:choose-file-clicked', VERB);
+    verbAnalytics('files-selected', VERB);
+    if (VERB === 'compress-pdf') {
+      verbAnalytics('entry:clicked', VERB, data);
+      verbAnalytics('discover:clicked', VERB, data);
+    }
   });
 
   button.addEventListener('cancel', () => {
@@ -312,10 +323,10 @@ export default async function init(element) {
         setUser();
       },
       drop: () => {
-        verbAnalytics('files-dropped', VERB, data, false);
+        verbAnalytics('files-dropped', VERB, data);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('entry:clicked', VERB, data, false);
-          verbAnalytics('discover:clicked', VERB, data, false);
+          verbAnalytics('entry:clicked', VERB, data);
+          verbAnalytics('discover:clicked', VERB, data);
         }
         setDraggingClass(widget, false);
         setUser();
@@ -343,6 +354,9 @@ export default async function init(element) {
       },
       uploaded: () => {
         verbAnalytics('job:test-uploaded', VERB, data, false);
+        if (VERB === 'compress-pdf') {
+          verbAnalytics('job:test-multi-file-uploaded', VERB, data, false);
+        }
         exitFlag = true;
         setUser();
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
