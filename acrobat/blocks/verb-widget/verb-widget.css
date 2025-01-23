@@ -401,12 +401,17 @@
     padding: 24px 29px;
     border: 3px dashed #d5d5d5;
     border-radius: 8px;
-    min-height: calc(100vh - (63px + 32px + 115px + 48px + 7px));
+    min-height: calc(100vh - (104px + 32px + 115px + 47px + 7px));
     justify-content: flex-start;
+  }
+
+  .verb-wrapper.mobile-app {
+    min-height: calc(100vh - (104px + 32px + 0px + 47px + 7px))
   }
 
   .verb-row {
     flex-direction: column;
+    align-items: start;
   }
 
   .verb-icon {
@@ -440,14 +445,19 @@
   }
 
   .verb-image {
-    max-width: 129px;
-    margin-top: 55px;
+    margin-top: 38px;
     margin-bottom: 28px;
+    width: 129px;
+  }
+
+  .mobile-app .verb-image {
+    width: 100%;
   }
 
   .verb-col.right {
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
 
   .verb-footer {

@@ -216,6 +216,7 @@ export default async function init(element) {
   widgetHeader.append(widgetIcon, widgetTitle);
   errorState.append(errorIcon, errorStateText, errorCloseBtn);
   if (mobileLink && LIMITS[VERB].mobileApp) {
+    widget.classList.add('mobile-app');
     widgetLeft.append(widgetHeader, widgetHeading, widgetMobCopy, errorState, widgetMobileButton);
     element.append(widget);
   } else {
@@ -257,6 +258,8 @@ export default async function init(element) {
     const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
     if (count >= LIMITS[VERB].trial) {
       await showUpSell(VERB, element);
+      verbAnalytics('upsell:shown', VERB);
+      verbAnalytics('upsell-wall:shown', VERB);
     }
   }
 
