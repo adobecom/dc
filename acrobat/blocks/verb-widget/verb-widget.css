@@ -445,9 +445,13 @@
   }
 
   .verb-image {
-    max-width: 129px;
-    margin-top: 55px;
+    margin-top: 38px;
     margin-bottom: 28px;
+    width: 129px;
+  }
+
+  .mobile-app .verb-image {
+    width: 100%;
   }
 
   .verb-col.right {
