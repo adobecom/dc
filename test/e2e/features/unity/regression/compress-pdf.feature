@@ -47,3 +47,11 @@ Feature: Compress PDF
      Then I should see the address bar contains "acrobat.adobe.com"
      Then I click the "Compress" button on the feedback
      Then I should see "The file appears to be corrupted." in the widget error toast
+
+  @regression @unity @compress-pdf @multi-files
+  Scenario Outline: Signed out upload of multiple files
+    Given I go to the compress-pdf page
+     When I choose the file "test-files/test.pdf,test-files/test2.pdf" to upload
+     Then I wait for 5 seconds
+     Then I should see the address bar contains "acrobat.adobe.com"
+     Then I should see "Compress multiple files with Acrobat Pro" in the widget upsell heading

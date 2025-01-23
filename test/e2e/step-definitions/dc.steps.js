@@ -756,3 +756,8 @@ Then(/^I should see "([^"]*)" in the widget error toast$/, async function (text)
   this.context(UnityPage);
   await expect(this.page.widgetToast).toHaveText(text);
 });
+
+Then(/^I should see "([^"]*)" in the widget upsell heading$/, async function (text) {
+  this.context(UnityPage);
+  await expect(this.page.widgetUpsellHeading).toHaveText(text);
+});
