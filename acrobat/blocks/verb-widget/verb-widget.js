@@ -304,7 +304,6 @@ export default async function init(element) {
       verbAnalytics('entry:clicked', VERB, data);
       verbAnalytics('discover:clicked', VERB, data);
     }
-
   });
 
   button.addEventListener('cancel', () => {
@@ -337,8 +336,8 @@ export default async function init(element) {
         totalFiles = button?.files.length;
         const updatedData = {
           ...(data || {}),
-          ...(totalFiles ? { noOfFiles: totalFiles } : {})
-      };
+          ...(totalFiles ? { noOfFiles: totalFiles } : {}),
+        };
         verbAnalytics('choose-file:open', VERB, updatedData);
         setUser();
       },
