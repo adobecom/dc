@@ -25,6 +25,10 @@ export class UnityPage extends classes(DcGnavPage, VerbWidgetSection, CaaSSectio
       closeExtensionModal: '#chromeext .dialog-close, #edgeext .dialog-close',
       eventwrapperOnload: '.eventwrapper.onload',
       previewDescription: 'div[class*="previewDescription"]',
+      verbErrorText: '.verb-errorText',
+      widgetCompressButton: '*[data-testid="ls-footer-primary-compress-button"]',
+      widgetToast: '*[class$="-Toast-content"]',
+      widgetUpsellHeading: 'h1[data-testid$="-upsell-heading"]',
     });
   }
 

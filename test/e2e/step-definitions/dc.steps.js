@@ -645,12 +645,19 @@ Then(/^I confirm phone number is different and has geo-ip value "([^"]*)"$/, asy
   expect(geoIpPhoneNumber).toEqual(geoIpPhoneNumberValue);
 })
 
-Then(/^I choose the (?:PDF|file|files) "([^\"]*)" to upload$/, async function (filePath) {
+Then(/^I (try to |)choose the (?:PDF|file|files) "([^\"]*)" to upload$/, async function (tryTo, filePath) {
   this.context(UnityPage);
   const filePaths = filePath.split(",");
-  const absPaths = filePaths.map((x) =>
-    path.resolve(global.config.profile.site, x)
-  );
+  const absPaths = filePaths.map((x) => {
+    const absPath = path.resolve(global.config.profile.site, x);
+    // git hack to make the file empty
+    if (/empty\.[a-zA-Z]*/.test(x)) {
+      fs.writeFileSync(absPath, ''); 
+    } else if (/bad\.[a-zA-Z]*/.test(x)) {
+      fs.writeFileSync(absPath, 'bad'); 
+    }
+    return absPath;
+  });
   let retry = 3;
   while (retry > 0) {
     try {
@@ -659,6 +666,9 @@ Then(/^I choose the (?:PDF|file|files) "([^\"]*)" to upload$/, async function (f
       }      
       await expect(this.page.selectButton).toHaveCount(1, { timeout: 15000 });
       await this.page.chooseFiles(absPaths);
+      if (tryTo !== '') {
+        break;
+      }
       await this.page.native.waitForTimeout(2000);
       await expect(this.page.selectButton).toHaveCount(0, { timeout: 5000 });
       retry = 0;
@@ -730,4 +740,24 @@ Then(/^I sign in as a (type1|type2) user using SUSI Light$/, async function (typ
     await this.page.native.locator(".spectrum-Button--cta").click();
   } catch {
   }
+});
+
+Then(/^I should see "([^"]*)" in the error message$/, async function (text) {
+  this.context(UnityPage);
+  await expect(this.page.verbErrorText).toHaveText(text);
+});
+
+Then(/^I click the "([^"]*)" button on the feedback$/, async function (button) {
+  this.context(UnityPage);
+  await this.page.widgetCompressButton.click();
+});
+
+Then(/^I should see "([^"]*)" in the widget error toast$/, async function (text) {
+  this.context(UnityPage);
+  await expect(this.page.widgetToast).toHaveText(text);
+});
+
+Then(/^I should see "([^"]*)" in the widget upsell heading$/, async function (text) {
+  this.context(UnityPage);
+  await expect(this.page.widgetUpsellHeading).toHaveText(text);
 });
