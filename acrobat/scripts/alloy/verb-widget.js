@@ -40,19 +40,6 @@ export default function init(eventName, verb, metaData, documentUnloading = true
     // eslint-disable-next-line consistent-return
     return tokenPayload.sub || tokenPayload.user_id;
   }
-
-  function getReturnUserType() {
-    const key = `${verb}_trial`;
-    const stored = localStorage.getItem(key);
-    const trialCount = stored ? parseInt(stored, 10) : null;
-    const trialMapping = {
-      1: '1st',
-      2: '2nd',
-    };
-    return trialCount ? trialMapping[trialCount] || '2+' : null;
-  }
-
-  const userTrial = getReturnUserType();
   const event = {
     documentUnloading,
     // eslint-disable-next-line
@@ -92,8 +79,6 @@ export default function init(eventName, verb, metaData, documentUnloading = true
           },
           dcweb: {
             event: { pagename: `acrobat:verb-${verb}:${eventName}` },
-            ...(metaData?.uploadedTime && { uploadTime: metaData.uploadedTime }),
-            ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
             content: {
               type: metaData?.type,
               size: metaData?.size,
@@ -111,7 +96,6 @@ export default function init(eventName, verb, metaData, documentUnloading = true
               locale: document.documentElement.lang.toLocaleLowerCase(),
               id: getSessionID(),
               is_authenticated: `${window.adobeIMS?.isSignedInUser() ? 'true' : 'false'}`,
-              return_user_type: userTrial,
               user_tags: [
                 `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
               ],

@@ -120,18 +120,6 @@ async function showUpSell(verb, element) {
   element.append(widget);
 }
 
-function getCookie(name) {
-  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-  return match ? decodeURIComponent(match[1]) : null;
-}
-
-function uploadedTime() {
-  const uploadingUTS = parseInt(getCookie('UTS_Uploading'), 10);
-  const uploadedUTS = parseInt(getCookie('UTS_Uploaded'), 10);
-  const totalUploadTime = uploadingUTS && uploadedUTS ? (uploadedUTS - uploadingUTS) / 1000 : null;
-  return totalUploadTime !== null ? totalUploadTime.toFixed(1) : 'N/A';
-}
-
 export default async function init(element) {
   if (isOldBrowser()) {
     window.location.href = EOLBrowserPage;
@@ -181,7 +169,6 @@ export default async function init(element) {
   }
 
   const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
-  let totalFiles = 0;
   const button = createTag('input', {
     type: 'file',
     accept: LIMITS[VERB]?.acceptedFiles,
@@ -333,12 +320,7 @@ export default async function init(element) {
 
     const analyticsMap = {
       change: () => {
-        totalFiles = button?.files.length;
-        const updatedData = {
-          ...(data || {}),
-          ...(totalFiles ? { noOfFiles: totalFiles } : {}),
-        };
-        verbAnalytics('choose-file:open', VERB, updatedData);
+        verbAnalytics('choose-file:open', VERB, data);
         setUser();
       },
       drop: () => {
@@ -372,14 +354,13 @@ export default async function init(element) {
         window.addEventListener('beforeunload', handleExit);
       },
       uploaded: () => {
-        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-        const calcUploadedTime = uploadedTime();
-        verbAnalytics('job:test-uploaded', VERB, { ...data, uploadedTime: calcUploadedTime }, false);
+        verbAnalytics('job:test-uploaded', VERB, data, false);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('job:test-multi-file-uploaded', VERB, { ...data, uploadedTime: calcUploadedTime }, false);
+          verbAnalytics('job:test-multi-file-uploaded', VERB, data, false);
         }
         exitFlag = true;
         setUser();
+        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
       },
       redirectUrl: () => {
         if (data) initiatePrefetch(data);
