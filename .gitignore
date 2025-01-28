@@ -14,7 +14,3 @@ CODEOWNERS
 
 #Auth
 .auth/*
-
-#Test files
-/**/test-files/empty.*
-/**/test-files/bad.*
