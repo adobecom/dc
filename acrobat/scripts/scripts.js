@@ -335,7 +335,7 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?learn(\/.*)?/,
   ],
-  imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations',
+  imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations,account_cluster.read',
 };
 
 const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
@@ -345,7 +345,7 @@ if (IMS_GUEST) {
 
   CONFIG.adobeid = {
     client_id: CLIENT_ID,
-    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read,DCAPI',
+    scope: 'AdobeID,openid,gnav,additional_info.roles,read_organizations,pps.read,account_cluster.read,DCAPI',
 
     enableGuestAccounts: true,
     enableGuestTokenForceRefresh: true,

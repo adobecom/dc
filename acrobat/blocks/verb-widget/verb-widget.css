@@ -194,18 +194,18 @@
 .verb-error {
   cursor: default;
   background: #D31510;
-  max-width: 506px;
-  padding: 11px 37px 11px 20px;
+  max-width: 435px;
   color: white;
-  white-space: nowrap;
-  display: flex;
   position: absolute;
   top: 90px;
-  justify-content: center;
   transform: translate(-50%, -50%);
   left: 50%;
   font-size: 14px;
   font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
 }
 
 .close-icon {
@@ -213,33 +213,42 @@
 }
 
 .verb-errorText {
-  margin: 0 25px;
-  width: 100%;
+  border-right: 1px solid rgb(255 255 255 / 20%);
+  padding: 0;
+  margin: 0;
+  margin-right: 8px;
+  padding-right: 16px;
+  max-width: 324px;
+  margin-left: 8px;
+  min-width: 100px;
 }
 
 .verb-errorBtn {
+  align-self: self-start;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
-  position: absolute;
-  right: 10px;
-  bottom: 0;
+  display: block;
 }
 
 .verb-errorIcon {
-  position: absolute;
-  left: 0;
-  top: 0;
+  align-self: self-start;
+  width: 18px;
+  height: 18px;
+  margin-left: 8px;
+  margin-right: 4px;
+  margin-top: 7px;
 }
 
 .verb-errorIcon::after {
   content: '';
-  background-image: url('/acrobat/img/icons/ui/alert.svg');
+  background-image: url(/acrobat/img/icons/ui/alert.svg);
   background-repeat: no-repeat;
-  background-size: 65px 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 18px;
+  height: 18px;
 }
 
 .verb-heading {
