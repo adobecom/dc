@@ -1,6 +1,6 @@
 import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
-import verbAnalytics from '../../scripts/alloy/verb-widget.js';
+import verbAnalytics, { reviewAnalytics } from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
@@ -271,6 +271,7 @@ export default async function init(element) {
 
   // Analytics
   verbAnalytics('landing:shown', VERB);
+  reviewAnalytics(VERB);
 
   window.prefetchInitiated = false;
 
