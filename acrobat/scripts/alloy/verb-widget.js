@@ -1,3 +1,5 @@
+import frictionless from '../frictionless.js';
+
 const params = new Proxy(
   // eslint-disable-next-line compat/compat
   new URLSearchParams(window.location.search),
@@ -23,15 +25,16 @@ if (params.dropzone2) {
   appTags.push('dropzone2');
 }
 
-export default function init(eventName, verb, metaData, documentUnloading = true) {
-  function ensureSatelliteReady(callback) {
-    // eslint-disable-next-line no-underscore-dangle
-    if (window._satellite && typeof window._satellite.track === 'function') {
-      callback();
-    } else {
-      setTimeout(() => ensureSatelliteReady(callback), 200);
-    }
+function ensureSatelliteReady(callback) {
+  // eslint-disable-next-line no-underscore-dangle
+  if (window._satellite?.track instanceof Function) {
+    callback();
+  } else {
+    setTimeout(() => ensureSatelliteReady(callback), 200);
   }
+}
+
+export default function init(eventName, verb, metaData, documentUnloading = true) {
   function getSessionID() {
     const aToken = window.adobeIMS.getAccessToken();
     const arrayToken = aToken?.token.split('.');
@@ -133,5 +136,11 @@ export default function init(eventName, verb, metaData, documentUnloading = true
   ensureSatelliteReady(() => {
     // eslint-disable-next-line no-underscore-dangle
     window._satellite.track('event', event);
+  });
+}
+
+export function reviewAnalytics(verb) {
+  ensureSatelliteReady(() => {
+    frictionless(verb);
   });
 }
