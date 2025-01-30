@@ -50,6 +50,6 @@ export default async function ContentSecurityPolicy() {
   // Content Security Policy Logging
   window.cspErrors = [];
   document.addEventListener('securitypolicyviolation', (e) => {
-    window.cspErrors.push(`${e.violatedDirective} violation ¶ Refused to load content from ${e.blockedURI}`);
+    window.cspErrors.push(`${e.violatedDirective} violation ¶ Refused to load content from ${e.blockedURI}, Script location: ${e.sourceFile} Line: ${e.lineNumber} Column: ${e.columnNumber}`);
   });
 }
