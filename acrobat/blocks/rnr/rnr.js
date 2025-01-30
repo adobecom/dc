@@ -498,7 +498,7 @@ export default async function init(element) {
     window.lana?.log('Verb not configured for the rnr widget');
   }
   preloadIcons();
-  await loadPlaceholders();
+  await loadPlaceholders('rnr');
   await loadRnrData();
   initControls(element);
 }
