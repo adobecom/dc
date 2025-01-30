@@ -34,42 +34,57 @@ export const [setLibs, getLibs] = (() => {
         return `https://${branch}${branch.includes('--') ? '' : '--milo--adobecom'}.${env}.live/libs`;
       })();
       return libs;
-    }, () => libs,
+    },
+    () => libs,
   ];
 })();
 
 export function getEnv() {
   const { hostname } = window.location;
   if (['www.adobe.com', 'sign.ing', 'edit.ing'].includes(hostname)) return 'prod';
-  if ([
-    'stage--dc--adobecom.hlx.page', 'main--dc--adobecom.hlx.page',
-    'stage--dc--adobecom.hlx.live', 'main--dc--adobecom.hlx.live',
-    'stage--dc--adobecom.aem.page', 'main--dc--adobecom.aem.page',
-    'stage--dc--adobecom.aem.live', 'main--dc--adobecom.aem.live',
-    'www.stage.adobe.com',
-  ].includes(hostname)) return 'stage';
+  if (
+    [
+      'stage--dc--adobecom.hlx.page',
+      'main--dc--adobecom.hlx.page',
+      'stage--dc--adobecom.hlx.live',
+      'main--dc--adobecom.hlx.live',
+      'stage--dc--adobecom.aem.page',
+      'main--dc--adobecom.aem.page',
+      'stage--dc--adobecom.aem.live',
+      'main--dc--adobecom.aem.live',
+      'www.stage.adobe.com',
+    ].includes(hostname)
+  ) return 'stage';
   return 'dev';
 }
 
 export function isOldBrowser() {
   const { name, version } = window?.browser || {};
   return (
-    name === 'Internet Explorer' || (name === 'Microsoft Edge' && (!version || version.split('.')[0] < 86)) || (name === 'Safari' && version.split('.')[0] < 14)
+    name === 'Internet Explorer'
+    || (name === 'Microsoft Edge' && (!version || version.split('.')[0] < 86))
+    || (name === 'Safari' && version.split('.')[0] < 14)
   );
 }
 
-export async function loadPlaceholders() {
+/**
+ * Loads placeholders, if SOME were not already loaded
+ * @param {string | undefined} prefix Optional prefix for loading specific placeholders
+ */
+export async function loadPlaceholders(prefix) {
   const miloLibs = setLibs('/libs');
   const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
   const config = getConfig();
 
-  if (!Object.keys(window.mph || {}).length) {
+  const mphKeys = Object.keys(window.mph || {}).filter((key) => !prefix || key.startsWith(prefix));
+  if (mphKeys.length === 0) {
     const placeholdersPath = `${config.locale.contentRoot}/placeholders.json`;
     try {
       const response = await fetch(placeholdersPath);
       if (response.ok) {
         const placeholderData = await response.json();
         placeholderData.data.forEach(({ key, value }) => {
+          if (prefix && !key.startsWith(prefix)) return;
           window.mph[key] = value.replace(/\u00A0/g, ' ');
         });
       }
