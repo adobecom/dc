@@ -8,6 +8,7 @@ const connectSrc = [
   '\'self\'',
   'blob:',
   '14257-chimera.adobeioruntime.net',
+  'www.adobe.com',
   '*.adobe.com',
   'prod.adobeccstatic.com',
   '*.clicktale.net/',
@@ -114,6 +115,7 @@ const frameSrc = [
   'ui.messaging.adobe.com/',
   'acrobatservices.adobe.com',
   'auth-light.identity.adobe.com',
+  'pixel.everesttech.net',
   ';',
 ];
 
@@ -181,6 +183,7 @@ const scriptSrc = [
   '\'self\'',
   '\'unsafe-inline\'',
   '\'unsafe-eval\'',
+  'www.adobe.com',
   '*.adobe.com',
   '*.clarity.ms',
   'accounts.google.com/gsi/client',
