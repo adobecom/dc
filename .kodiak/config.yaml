@@ -9,7 +9,7 @@ notifications:
       project: MWPW # Mandatory
       filters:
         include:
-          risk_rating: R5
+          risk_rating: R3
         exclude:
           files:
             - acrobat/blocks/acom-widget/acom-widget.js
@@ -17,13 +17,11 @@ notifications:
       fields:
         assignee:
           name: joaquinrivero
-        customfield_11800: MWPW-140779 #epic link
+        customfield_11800: MWPW-164516 #epic link
         customfield_12900:
           value: Slytherin
         watchers:
           - casalino
-          - jmichnow
-          - mauchley
           - tsay
         labels:
           - "OriginatingProcess=Kodiak"
