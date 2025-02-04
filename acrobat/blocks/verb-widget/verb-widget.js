@@ -82,6 +82,38 @@ function handleExit(event) {
   event.returnValue = true;
 }
 
+function isMobileDevice() {
+  const ua = navigator.userAgent.toLowerCase();
+  const isMobileUA = /android|iphone|ipod|blackberry|windows phone/i.test(ua);
+  return isMobileUA;
+}
+
+function isTabletDevice() {
+  const ua = navigator.userAgent.toLowerCase();
+  const isIPadOS = navigator.userAgent.includes('Mac') && 'ontouchend' in document && !/iphone|ipod/i.test(ua);
+  const isTabletUA = /ipad|android(?!.*mobile)/i.test(ua);
+  const largeTouchDevice = (navigator.maxTouchPoints || navigator.msMaxTouchPoints) > 1
+    && window.innerWidth >= 768;
+  return isIPadOS || isTabletUA || largeTouchDevice;
+}
+
+function getStoreType() {
+  const { ua } = window.browser;
+  if (/android/i.test(ua)) {
+    return 'google';
+  }
+  if (/iphone|ipod/i.test(ua)) {
+    return 'apple';
+  }
+  if (navigator.userAgent.includes('Mac') && 'ontouchend' in document && !/iphone|ipod/i.test(navigator.userAgent)) {
+    return 'apple';
+  }
+  if (/ipad/i.test(ua)) {
+    return 'apple';
+  }
+  return 'desktop';
+}
+
 async function showUpSell(verb, element) {
   const headline = window.mph[`verb-widget-upsell-headline-${verb}`] || window.mph['verb-widget-upsell-headline'];
   const headlineNopayment = window.mph['verb-widget-upsell-headline-nopayment'];
@@ -133,11 +165,10 @@ export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
+  const storeType = getStoreType();
   let mobileLink = null;
-  if (/iPad|iPhone|iPod/.test(window.browser?.ua) && !window.MSStream) {
-    mobileLink = window.mph[`verb-widget-${VERB}-apple`];
-  } else if (/android/i.test(window.browser?.ua)) {
-    mobileLink = window.mph[`verb-widget-${VERB}-google`];
+  if (storeType !== 'desktop') {
+    mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`];
   }
 
   children.forEach((child) => {
@@ -215,29 +246,45 @@ export default async function init(element) {
   widgetRow.append(widgetLeft, widgetRight);
   widgetHeader.append(widgetIcon, widgetTitle);
   errorState.append(errorIcon, errorStateText, errorCloseBtn);
+  const isMobile = isMobileDevice();
+  const isTablet = isTabletDevice();
+
+  if (isMobile) {
+    widget.classList.add('mobile');
+  } else if (isTablet) {
+    widget.classList.add('tablet');
+  }
+
   if (mobileLink && LIMITS[VERB].mobileApp) {
     widget.classList.add('mobile-app');
     widgetLeft.append(widgetHeader, widgetHeading, widgetMobCopy, errorState, widgetMobileButton);
     element.append(widget);
   } else {
-    widgetLeft.append(widgetHeader, widgetHeading, widgetCopy, errorState, widgetButton, button);
+    if (isMobile || isTablet) {
+      widgetLeft.append(
+        widgetHeader,
+        widgetHeading,
+        widgetMobCopy,
+        errorState,
+        widgetButton,
+        button,
+      );
+    } else {
+      widgetLeft.append(
+        widgetHeader,
+        widgetHeading,
+        widgetCopy,
+        errorState,
+        widgetButton,
+        button,
+      );
+    }
     legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
     legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
     legalWrapper.append(legal, legalTwo);
     footer.append(iconSecurity, legalWrapper, infoIcon);
     element.append(widget, footer);
-    if (window.browser?.isMobile) {
-      widgetCopy.after(widgetMobCopy);
-      widgetCopy.remove();
-      const infoMobIconSvg = createSvgElement('INFO_ICON_MOBILE');
-      infoIconSvg.remove();
-      infoIcon.append(infoMobIconSvg);
-      const verbMobImageSvg = createSvgElement(`${VERB}-mobile`);
-      if (verbMobImageSvg) {
-        verbImageSvg.remove();
-        verbMobImageSvg.classList.add('icon-verb-image');
-        widgetImage.appendChild(verbMobImageSvg);
-      }
+    if (isMobile && !isTablet) {
       widgetImage.after(widgetImage);
       iconSecurity.remove(iconSecurity);
       footer.prepend(infoIcon);
