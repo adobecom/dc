@@ -55,11 +55,6 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             `Error Code: ${error}, Status: 'Unknown', Message: An error occurred while sending ${verbEvent}, Account Type: ${accountType}`,
             { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
           );
-        } else {
-          window.lana?.log(
-            `Message: Event ${verbEvent} has been sent successfully, Account Type: ${accountType}`,
-            { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
-          );
         }
       }
     },
