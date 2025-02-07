@@ -76,7 +76,10 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             },
           },
           dcweb: {
-            event: { pagename: `acrobat:verb-${verb}:${eventName}` },
+            event: {
+              pagename: `acrobat:verb-${verb}:${eventName}`,
+              ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
+            },
             content: {
               type: metaData?.type,
               size: metaData?.size,
