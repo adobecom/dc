@@ -97,6 +97,11 @@ function isTabletDevice() {
   return isIPadOS || isTabletUA || largeTouchDevice;
 }
 
+const getCTA = (verb) => {
+  const verbConfig = LIMITS[verb];
+  return window.mph[`verb-widget-cta-${verbConfig?.uploadType}`] || window.mph['verb-widget-cta'];
+};
+
 function getStoreType() {
   const { ua } = window.browser;
   if (/android/i.test(ua)) {
@@ -195,7 +200,7 @@ export default async function init(element) {
   const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
   const widgetMobCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
   const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 });
-  const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, window.mph['verb-widget-cta']);
+  const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, getCTA(VERB));
   widgetButton.append(widgetButtonLabel);
   const uploadIconSvg = createSvgElement('UPLOAD_ICON');
   if (uploadIconSvg) {
