@@ -9,18 +9,16 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 // #region Constants
 
+const isProd = window.location.hostname === 'main--dc--adobecom.hlx.page'
+  || window.location.hostname === 'main--dc--adobecom.hlx.live'
+  || window.location.hostname === 'www.adobe.com';
+
 const COMMENTS_MAX_LENGTH = 500;
 const COMMENTS_MAX_LENGTH_ALLOWED = 10000;
 const SHOW_COMMENTS_TRESHOLD = 5;
 const ASSET_TYPE = 'ADOBE_COM';
-const RNR_API_URL = (function () {
-  if (
-    window.location.hostname === 'main--dc--adobecom.hlx.page'
-    || window.location.hostname === 'main--dc--adobecom.hlx.live'
-    || window.location.hostname === 'www.adobe.com'
-  ) return 'https://rnr.adobe.io/v1';
-  return 'https://rnr-stage.adobe.io/v1';
-}());
+const RNR_API_URL = isProd ? 'https://rnr.adobe.io/v1' : 'https://rnr-stage.adobe.io/v1';
+const RNR_API_KEY = isProd ? 'rnr-client-prod' : 'rnr-client';
 
 // #endregion
 
@@ -148,7 +146,7 @@ async function loadRnrData() {
   try {
     const headers = {
       Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
-      'x-api-key': 'ffc-addon-service',
+      'x-api-key': RNR_API_KEY,
       Authorization: window.adobeIMS.getAccessToken()?.token,
     };
 
