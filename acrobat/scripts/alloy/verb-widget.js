@@ -82,7 +82,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             },
             content: {
               type: metaData?.type,
-              size: metaData?.size,
+              size: metaData?.totalFileSize || metaData?.size,
               count: metaData?.count,
             },
             source: {
