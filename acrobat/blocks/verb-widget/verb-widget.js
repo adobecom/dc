@@ -167,6 +167,10 @@ export default async function init(element) {
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
   const storeType = getStoreType();
   let mobileLink = null;
+  let noOfFiles = null;
+  function mergeData(eventData = {}) {
+    return { ...eventData, noOfFiles };
+  }
   if (storeType !== 'desktop') {
     mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`];
   }
@@ -341,6 +345,12 @@ export default async function init(element) {
     }
   });
 
+  button.addEventListener('change', (data) => {
+    const { target: { files } } = data;
+    if (!files) return;
+    noOfFiles = files.length;
+  });
+
   button.addEventListener('cancel', () => {
     verbAnalytics('choose-file:close', VERB);
   });
@@ -352,6 +362,13 @@ export default async function init(element) {
 
   widget.addEventListener('dragleave', () => {
     setDraggingClass(widget, false);
+  });
+
+  widget.addEventListener('drop', (event) => {
+    event.preventDefault();
+    const { files } = event.dataTransfer;
+    if (!files) return;
+    noOfFiles = files.length;
   });
 
   errorCloseBtn.addEventListener('click', () => {
@@ -368,20 +385,20 @@ export default async function init(element) {
 
     const analyticsMap = {
       change: () => {
-        verbAnalytics('choose-file:open', VERB, data);
+        verbAnalytics('choose-file:open', VERB, mergeData(data));
         setUser();
       },
       drop: () => {
-        verbAnalytics('files-dropped', VERB, data);
+        verbAnalytics('files-dropped', VERB, mergeData(data));
         if (VERB === 'compress-pdf') {
-          verbAnalytics('entry:clicked', VERB, data);
-          verbAnalytics('discover:clicked', VERB, data);
+          verbAnalytics('entry:clicked', VERB, mergeData(data));
+          verbAnalytics('discover:clicked', VERB, mergeData(data));
         }
         setDraggingClass(widget, false);
         setUser();
       },
       cancel: () => {
-        verbAnalytics('job:cancel', VERB, data);
+        verbAnalytics('job:cancel', VERB, mergeData(data));
         setUser();
       },
       uploading: () => {
