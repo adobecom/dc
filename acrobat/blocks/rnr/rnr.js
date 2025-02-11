@@ -18,7 +18,7 @@ const COMMENTS_MAX_LENGTH_ALLOWED = 10000;
 const SHOW_COMMENTS_TRESHOLD = 5;
 const ASSET_TYPE = 'ADOBE_COM';
 const RNR_API_URL = isProd ? 'https://rnr.adobe.io/v1' : 'https://rnr-stage.adobe.io/v1';
-const RNR_API_KEY = isProd ? 'rnr-client-prod' : 'rnr-client';
+const RNR_API_KEY = 'dc-general';
 
 // #endregion
 
