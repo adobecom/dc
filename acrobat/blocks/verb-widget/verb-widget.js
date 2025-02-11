@@ -97,6 +97,11 @@ function isTabletDevice() {
   return isIPadOS || isTabletUA || largeTouchDevice;
 }
 
+const getCTA = (verb) => {
+  const verbConfig = LIMITS[verb];
+  return window.mph[`verb-widget-cta-${verbConfig?.uploadType}`] || window.mph['verb-widget-cta'];
+};
+
 function getStoreType() {
   const { ua } = window.browser;
   if (/android/i.test(ua)) {
@@ -167,6 +172,11 @@ export default async function init(element) {
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
   const storeType = getStoreType();
   let mobileLink = null;
+  let noOfFiles = null;
+  let totalFileSize = null;
+  function mergeData(eventData = {}) {
+    return { ...eventData, noOfFiles, totalFileSize };
+  }
   if (storeType !== 'desktop') {
     mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`];
   }
@@ -191,7 +201,7 @@ export default async function init(element) {
   const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
   const widgetMobCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
   const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 });
-  const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, window.mph['verb-widget-cta']);
+  const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, getCTA(VERB));
   widgetButton.append(widgetButtonLabel);
   const uploadIconSvg = createSvgElement('UPLOAD_ICON');
   if (uploadIconSvg) {
@@ -341,6 +351,13 @@ export default async function init(element) {
     }
   });
 
+  button.addEventListener('change', (data) => {
+    const { target: { files } } = data;
+    if (!files) return;
+    noOfFiles = files.length;
+    totalFileSize = Array.from(files).reduce((acc, file) => acc + file.size, 0);
+  });
+
   button.addEventListener('cancel', () => {
     verbAnalytics('choose-file:close', VERB);
   });
@@ -352,6 +369,14 @@ export default async function init(element) {
 
   widget.addEventListener('dragleave', () => {
     setDraggingClass(widget, false);
+  });
+
+  widget.addEventListener('drop', (event) => {
+    event.preventDefault();
+    const { files } = event.dataTransfer;
+    if (!files) return;
+    noOfFiles = files.length;
+    totalFileSize = Array.from(files).reduce((acc, file) => acc + file.size, 0);
   });
 
   errorCloseBtn.addEventListener('click', () => {
@@ -368,20 +393,20 @@ export default async function init(element) {
 
     const analyticsMap = {
       change: () => {
-        verbAnalytics('choose-file:open', VERB, data);
+        verbAnalytics('choose-file:open', VERB, mergeData(data));
         setUser();
       },
       drop: () => {
-        verbAnalytics('files-dropped', VERB, data);
+        verbAnalytics('files-dropped', VERB, mergeData(data));
         if (VERB === 'compress-pdf') {
-          verbAnalytics('entry:clicked', VERB, data);
-          verbAnalytics('discover:clicked', VERB, data);
+          verbAnalytics('entry:clicked', VERB, mergeData(data));
+          verbAnalytics('discover:clicked', VERB, mergeData(data));
         }
         setDraggingClass(widget, false);
         setUser();
       },
       cancel: () => {
-        verbAnalytics('job:cancel', VERB, data);
+        verbAnalytics('job:cancel', VERB, mergeData(data));
         setUser();
       },
       uploading: () => {

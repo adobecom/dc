@@ -47,6 +47,13 @@ const LIMITS = {
     multipleFiles: true,
     trial: 2,
   },
+  'merge-pdf': {
+    // multifile-only or single-hybrid
+    uploadType: 'multifile-only',
+    multipleFiles: true,
+    maxFileSize: 104857600,
+    maxFileSizeFriendly: '100 MB',
+  },
 };
 
 export default LIMITS;

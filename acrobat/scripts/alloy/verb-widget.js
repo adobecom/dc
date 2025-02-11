@@ -55,11 +55,6 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             `Error Code: ${error}, Status: 'Unknown', Message: An error occurred while sending ${verbEvent}, Account Type: ${accountType}`,
             { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
           );
-        } else {
-          window.lana?.log(
-            `Message: Event ${verbEvent} has been sent successfully, Account Type: ${accountType}`,
-            { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
-          );
         }
       }
     },
@@ -81,10 +76,13 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             },
           },
           dcweb: {
-            event: { pagename: `acrobat:verb-${verb}:${eventName}` },
+            event: {
+              pagename: `acrobat:verb-${verb}:${eventName}`,
+              ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
+            },
             content: {
               type: metaData?.type,
-              size: metaData?.size,
+              size: metaData?.totalFileSize || metaData?.size,
               count: metaData?.count,
             },
             source: {
