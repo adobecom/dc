@@ -552,7 +552,7 @@
   }
 
   .mobile-app .verb-image {
-    width: 100%;
+    max-width: 129px;
   }
 
   .verb-col.right {
