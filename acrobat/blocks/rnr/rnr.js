@@ -9,9 +9,13 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 // #region Constants
 
-const isProd = window.location.hostname === 'main--dc--adobecom.hlx.page'
-  || window.location.hostname === 'main--dc--adobecom.hlx.live'
-  || window.location.hostname === 'www.adobe.com';
+const isProd = [
+  'main--dc--adobecom.aem.page',
+  'main--dc--adobecom.aem.live',
+  'main--dc--adobecom.hlx.page',
+  'main--dc--adobecom.hlx.live',
+  'www.adobe.com',
+].includes(window.location.hostname);
 
 const COMMENTS_MAX_LENGTH = 500;
 const COMMENTS_MAX_LENGTH_ALLOWED = 10000;
@@ -195,7 +199,7 @@ async function postReview(data) {
     const headers = {
       Accept: 'application/vnd.adobe-review.review-data-v1+json',
       'Content-Type': 'application/vnd.adobe-review.review-request-v1+json',
-      'x-api-key': 'rnr-client',
+      'x-api-key': RNR_API_KEY,
       Authorization: window.adobeIMS.getAccessToken()?.token,
     };
 
