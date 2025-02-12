@@ -7,6 +7,10 @@ export default function init(verb) {
   // Review Alloy
   const miloReviewBlock = document.querySelector('.review');
   const rnrBlock = document.querySelector('.rnr');
+  /**
+   * TODO the milo block related code can be removed once all frictionless
+   * pages transition to rnr. For now, handle both.
+   */
   if (miloReviewBlock || rnrBlock) {
     reviewAlloy();
     const reviewWait = setInterval(() => {
