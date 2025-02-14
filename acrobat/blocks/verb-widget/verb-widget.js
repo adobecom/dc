@@ -176,6 +176,9 @@ export default async function init(element) {
     return;
   }
 
+  const isMobile = isMobileDevice();
+  const isTablet = isTabletDevice();
+
   const { locale } = getConfig();
   const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
   const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
@@ -247,7 +250,8 @@ export default async function init(element) {
   const iconSecurity = createTag('div', { class: 'security-icon' });
   const infoIcon = createTag('div', { class: 'info-icon milo-tooltip right', 'data-tooltip': `${window.mph['verb-widget-tool-tip']}` });
   const securityIconSvg = createSvgElement('SECURITY_ICON');
-  const infoIconSvg = createSvgElement('INFO_ICON');
+  const infoIconName = (isMobile || isTablet) ? 'INFO_ICON_MOBILE' : 'INFO_ICON';
+  const infoIconSvg = createSvgElement(infoIconName);
   if (securityIconSvg) {
     iconSecurity.appendChild(securityIconSvg);
     infoIcon.appendChild(infoIconSvg);
@@ -270,8 +274,6 @@ export default async function init(element) {
   widgetRow.append(widgetLeft, widgetRight);
   widgetHeader.append(widgetIcon, widgetTitle);
   errorState.append(errorIcon, errorStateText, errorCloseBtn);
-  const isMobile = isMobileDevice();
-  const isTablet = isTabletDevice();
 
   if (isMobile) {
     widget.classList.add('mobile');
