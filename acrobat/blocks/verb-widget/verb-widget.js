@@ -189,9 +189,8 @@ export default async function init(element) {
   const storeType = getStoreType();
   let mobileLink = null;
   let noOfFiles = null;
-  let totalFileSize = null;
   function mergeData(eventData = {}) {
-    return { ...eventData, noOfFiles, totalFileSize };
+    return { ...eventData, noOfFiles };
   }
   if (storeType !== 'desktop') {
     mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`];
@@ -373,7 +372,6 @@ export default async function init(element) {
     const { target: { files } } = data;
     if (!files) return;
     noOfFiles = files.length;
-    totalFileSize = Array.from(files).reduce((acc, file) => acc + file.size, 0);
   });
 
   button.addEventListener('cancel', () => {
@@ -394,7 +392,6 @@ export default async function init(element) {
     const { files } = event.dataTransfer;
     if (!files) return;
     noOfFiles = files.length;
-    totalFileSize = Array.from(files).reduce((acc, file) => acc + file.size, 0);
   });
 
   errorCloseBtn.addEventListener('click', () => {
