@@ -85,7 +85,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
               size: metaData?.size,
               count: metaData?.count,
               fileType: metaData?.type,
-              totalSize: metaData?.totalFileSize,
+              totalSize: metaData?.size,
             },
             source: {
               user_agent: navigator.userAgent,
@@ -111,7 +111,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
               size: metaData?.size,
               count: metaData?.count,
               fileType: metaData?.type,
-              totalSize: metaData?.totalFileSize,
+              totalSize: metaData?.size,
               // extension: 'docx', may not be needed
             },
             source: {
