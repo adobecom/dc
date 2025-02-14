@@ -82,8 +82,10 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             },
             content: {
               type: metaData?.type,
-              size: metaData?.totalFileSize || metaData?.size,
+              size: metaData?.size,
               count: metaData?.count,
+              fileType: metaData?.type,
+              totalSize: metaData?.size,
             },
             source: {
               user_agent: navigator.userAgent,
@@ -108,6 +110,8 @@ export default function init(eventName, verb, metaData, documentUnloading = true
               type: metaData?.type,
               size: metaData?.size,
               count: metaData?.count,
+              fileType: metaData?.type,
+              totalSize: metaData?.size,
               // extension: 'docx', may not be needed
             },
             source: {
