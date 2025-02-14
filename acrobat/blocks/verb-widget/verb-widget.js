@@ -119,6 +119,19 @@ function getStoreType() {
   return 'desktop';
 }
 
+function getPricingLink() {
+  const { locale } = getConfig();
+  const ENV = getEnv();
+  const links = {
+    dev: `https://www.stage.adobe.com${locale.prefix}/acrobat/pricing/pricing.html`,
+    stage: `https://www.stage.adobe.com${locale.prefix}/acrobat/pricing/pricing.html`,
+    prod: `https://www.adobe.com${locale.prefix}/acrobat/pricing/pricing.html`,
+  };
+
+  // If env is invalid or omitted, default to 'prod'
+  return links[ENV] || links.prod;
+}
+
 async function showUpSell(verb, element) {
   const headline = window.mph[`verb-widget-upsell-headline-${verb}`] || window.mph['verb-widget-upsell-headline'];
   const headlineNopayment = window.mph['verb-widget-upsell-headline-nopayment'];
@@ -209,7 +222,9 @@ export default async function init(element) {
     widgetButton.prepend(uploadIconSvg);
   }
 
-  const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
+  const mobileCTA = LIMITS[VERB].level === 0 ? 'verb-widget-cta-mobile-start-trial' : 'verb-widget-cta-mobile';
+  mobileLink = LIMITS[VERB].level === 0 ? getPricingLink() : mobileLink;
+  const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph[mobileCTA]);
   const button = createTag('input', {
     type: 'file',
     accept: LIMITS[VERB]?.acceptedFiles,
@@ -271,12 +286,13 @@ export default async function init(element) {
     element.append(widget);
   } else {
     if (isMobile || isTablet) {
+      const ctaElement = (LIMITS[VERB].level === 0) ? widgetMobileButton : widgetButton;
       widgetLeft.append(
         widgetHeader,
         widgetHeading,
         widgetMobCopy,
         errorState,
-        widgetButton,
+        ctaElement,
         button,
       );
     } else {

@@ -278,7 +278,7 @@
   display: flex;
   top: 324px;
   left: 40px;
-  padding: 11px 25px;
+  padding: 11px 26px;
   border-radius: 47px;
   background: #1473e6;
   color: white;
@@ -288,6 +288,9 @@
   align-items: center;
   width: 30%;
   min-width: fit-content;
+  font-size: 22px;
+  line-height: 29px;
+  text-decoration: none;
 }
 
 .verb-mobile-cta:hover,
@@ -527,6 +530,7 @@
 
   .verb-heading {
     font-size: 36px;
+    line-height: 45px;
   }
 
   .verb-copy {
