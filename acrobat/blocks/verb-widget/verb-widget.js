@@ -132,6 +132,18 @@ function getPricingLink() {
   return links[ENV] || links.prod;
 }
 
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function uploadedTime() {
+  const uploadingUTS = parseInt(getCookie('UTS_Uploading'), 10);
+  const uploadedUTS = parseInt(getCookie('UTS_Uploaded'), 10);
+  if (Number.isNaN(uploadingUTS) || Number.isNaN(uploadedUTS)) return 'N/A';
+  return ((uploadedUTS - uploadingUTS) / 1000).toFixed(1);
+}
+
 async function showUpSell(verb, element) {
   const headline = window.mph[`verb-widget-upsell-headline-${verb}`] || window.mph['verb-widget-upsell-headline'];
   const headlineNopayment = window.mph['verb-widget-upsell-headline-nopayment'];
@@ -442,13 +454,14 @@ export default async function init(element) {
         window.addEventListener('beforeunload', handleExit);
       },
       uploaded: () => {
-        verbAnalytics('job:test-uploaded', VERB, data, false);
+        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+        const calcUploadedTime = uploadedTime();
+        verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime }, false);
         if (VERB === 'compress-pdf') {
           verbAnalytics('job:test-multi-file-uploaded', VERB, data, false);
         }
         exitFlag = true;
         setUser();
-        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
       },
       redirectUrl: () => {
         if (data) initiatePrefetch(data);

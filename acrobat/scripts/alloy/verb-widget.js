@@ -79,6 +79,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             event: {
               pagename: `acrobat:verb-${verb}:${eventName}`,
               ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
+              ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
             },
             content: {
               type: metaData?.type,
@@ -105,7 +106,11 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             },
           },
           dcweb2: {
-            event: { pagename: `acrobat:verb-${verb}:${eventName}` },
+            event: {
+              pagename: `acrobat:verb-${verb}:${eventName}`,
+              ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
+              ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
+            },
             content: {
               type: metaData?.type,
               size: metaData?.size,
