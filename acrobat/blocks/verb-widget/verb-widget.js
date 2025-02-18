@@ -1,10 +1,13 @@
+/* eslint-disable compat/compat */
 import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics, { reviewAnalytics } from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag, getConfig, loadBlock } = await import(`${miloLibs}/utils/utils.js`);
+const {
+  createTag, getConfig, loadBlock, getMetadata, loadIms, loadScript,
+} = await import(`${miloLibs}/utils/utils.js`);
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -132,6 +135,13 @@ function getPricingLink() {
   return links[ENV] || links.prod;
 }
 
+async function loadGoogleLogin() {
+  if (window.adobeIMS?.isSignedInUser()) return;
+
+  const { default: initGoogleLogin } = await import(`${miloLibs}/features/google-login.js`);
+  initGoogleLogin(loadIms, getMetadata, loadScript, getConfig);
+}
+
 async function showUpSell(verb, element) {
   const headline = window.mph[`verb-widget-upsell-headline-${verb}`] || window.mph['verb-widget-upsell-headline'];
   const headlineNopayment = window.mph['verb-widget-upsell-headline-nopayment'];
@@ -168,6 +178,8 @@ async function showUpSell(verb, element) {
 
   element.classList.add('upsell');
   element.append(widget);
+
+  loadGoogleLogin();
 }
 
 export default async function init(element) {
