@@ -144,6 +144,22 @@ function uploadedTime() {
   return ((uploadedUTS - uploadingUTS) / 1000).toFixed(1);
 }
 
+function incrementVerbKey(verbKey) {
+  let count = parseInt(localStorage.getItem(verbKey), 10) || 0;
+  count += 1;
+  localStorage.setItem(verbKey, count);
+  return count;
+}
+
+function getVerbKey(verbKey) {
+  const count = parseInt(localStorage.getItem(verbKey), 10) || 0;
+  const trialMapping = {
+    1: '1st',
+    2: '2nd',
+  };
+  return count ? trialMapping[count] || '2+' : null;
+}
+
 async function showUpSell(verb, element) {
   const headline = window.mph[`verb-widget-upsell-headline-${verb}`] || window.mph['verb-widget-upsell-headline'];
   const headlineNopayment = window.mph['verb-widget-upsell-headline-nopayment'];
@@ -445,9 +461,11 @@ export default async function init(element) {
             localStorage.setItem(key, count + 1 || 1);
           }
         }
-        verbAnalytics('job:uploading', VERB, data, false);
+        incrementVerbKey(`${VERB}_attempts`);
+        const userAttempts = getVerbKey(`${VERB}_attempts`);
+        verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('job:multi-file-uploading', VERB, data, false);
+          verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
         }
         setUser();
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
@@ -456,9 +474,10 @@ export default async function init(element) {
       uploaded: () => {
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
-        verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime }, false);
+        const userAttempts = getVerbKey(`${VERB}_attempts`);
+        verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('job:test-multi-file-uploaded', VERB, data, false);
+          verbAnalytics('job:test-multi-file-uploaded', VERB, { ...data, userAttempts }, false);
         }
         exitFlag = true;
         setUser();
