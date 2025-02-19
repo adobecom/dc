@@ -90,11 +90,11 @@ function isMobileDevice() {
 
 function isTabletDevice() {
   const ua = navigator.userAgent.toLowerCase();
-  const isIPadOS = navigator.userAgent.includes('Mac') && 'ontouchend' in document && !/iphone|ipod/i.test(ua);
+  const isIPadOS = navigator.userAgent.includes('Mac')
+    && 'ontouchend' in document
+    && !/iphone|ipod/i.test(ua);
   const isTabletUA = /ipad|android(?!.*mobile)/i.test(ua);
-  const largeTouchDevice = (navigator.maxTouchPoints || navigator.msMaxTouchPoints) > 1
-    && window.innerWidth >= 768;
-  return isIPadOS || isTabletUA || largeTouchDevice;
+  return isIPadOS || isTabletUA;
 }
 
 const getCTA = (verb) => {
