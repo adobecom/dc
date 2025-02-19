@@ -41,6 +41,18 @@ const setDraggingClass = (widget, shouldToggle) => {
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
 };
 
+function prefetchTarget(verb, assetId) {
+  const ENV = getEnv();
+  const isProd = ENV === 'prod';
+  const isSignedIn = window.adobeIMS.isSignedInUser();
+  const nextPageHost = isProd ? 'acrobat.adobe.com' : 'stage.acrobat.adobe.com';
+  const nextPageUrl = isSignedIn ? `https://${nextPageHost}/id/${encodeURIComponent(assetId)}?viewer!megaVerb=verb-fill-sign&x_api_client_id=unity` : `https://${nextPageHost}/us/en/discover/${verb}#assets=${encodeURIComponent(assetId)}`;
+  const iframe = document.createElement('iframe');
+  iframe.src = nextPageUrl;
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+}
+
 function prefetchNextPage(url) {
   const link = document.createElement('link');
   link.rel = 'prefetch';
@@ -445,6 +457,7 @@ export default async function init(element) {
             localStorage.setItem(key, count + 1 || 1);
           }
         }
+        prefetchTarget(VERB, data?.id);
         verbAnalytics('job:uploading', VERB, data, false);
         if (VERB === 'compress-pdf') {
           verbAnalytics('job:multi-file-uploading', VERB, data, false);
