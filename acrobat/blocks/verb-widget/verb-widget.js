@@ -330,14 +330,20 @@ export default async function init(element) {
     }
   }
 
-  function checkSignedInUser() {
-    if (window.adobeIMS?.isSignedInUser?.()) {
-      element.classList.remove('upsell');
-      element.classList.add('signed-in');
-      if (window.adobeIMS.getAccountType() !== 'type1') {
-        redDir(VERB);
-      }
+  async function checkSignedInUser() {
+    if (!window.adobeIMS?.isSignedInUser?.()) return;
+
+    element.classList.remove('upsell');
+    element.classList.add('signed-in');
+
+    let accountType;
+    try {
+      accountType = window.adobeIMS.getAccountType();
+    } catch {
+      accountType = (await window.adobeIMS.getProfile()).account_type;
     }
+
+    if (accountType !== 'type1') redDir(VERB);
   }
 
   if (LIMITS[VERB].trial) {
@@ -350,7 +356,7 @@ export default async function init(element) {
   }
 
   // Race the condition
-  checkSignedInUser();
+  await checkSignedInUser();
 
   // Redirect after IMS:Ready
   window.addEventListener('IMS:Ready', checkSignedInUser);
