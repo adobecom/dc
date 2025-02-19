@@ -699,7 +699,7 @@ Then(/^I drag-and-drop the (?:PDF|file|files) "([^\"]*)" to upload$/, async func
   }
 });
 
-Then(/^I sign in as a (type1|type2) user$/, async function (type) {
+Then(/^I sign in as a (type1free|type2|type1paid) user$/, async function (type) {
   const accounts = JSON.parse(fs.readFileSync(".auth/accounts.json", "utf8"));
   const account = accounts[type];
   this.page = new DCPage("https://www.stage.adobe.com");
@@ -728,7 +728,7 @@ Then(/^I have tried "compress-pdf" twice$/, async function () {
   await this.page.native.reload({waitUntil: 'load'});
 });
 
-Then(/^I sign in as a (type1|type2) user using SUSI Light$/, async function (type) {
+Then(/^I sign in as a (type1free|type2|type1paid) user using SUSI Light$/, async function (type) {
   const accounts = JSON.parse(fs.readFileSync(".auth/accounts.json", "utf8"));
   const account = accounts[type];
   await this.page.native.locator('susi-sentry-light #sentry-email-field').click();
@@ -760,4 +760,9 @@ Then(/^I should see "([^"]*)" in the widget error toast$/, async function (text)
 Then(/^I should see "([^"]*)" in the widget upsell heading$/, async function (text) {
   this.context(UnityPage);
   await expect(this.page.widgetUpsellHeading).toHaveText(text);
+});
+
+Then(/^I should see the paywall$/, async function () {
+  this.context(UnityPage);
+  await expect(this.page.paywall).toBeVisible({timeout: 30000});
 });
