@@ -43,6 +43,16 @@ export default function init(eventName, verb, metaData, documentUnloading = true
     // eslint-disable-next-line consistent-return
     return tokenPayload.sub || tokenPayload.user_id;
   }
+  function getReturnUserType() {
+    const key = `${verb}_trial`;
+    const stored = localStorage.getItem(key);
+    const attemptCount = stored ? parseInt(stored, 10) : 0;
+    if (attemptCount === 1) return '1st';
+    if (attemptCount === 2) return '2nd';
+    return attemptCount > 2 ? '2+' : null;
+  }
+
+  const userTrial = getReturnUserType(verb);
   const event = {
     documentUnloading,
     // eslint-disable-next-line
@@ -103,6 +113,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
               user_tags: [
                 `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
               ],
+              return_user_type: userTrial,
             },
           },
           dcweb2: {
@@ -134,6 +145,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
               user_tags: [
                 `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
               ],
+              return_user_type: userTrial,
             },
           },
         },
