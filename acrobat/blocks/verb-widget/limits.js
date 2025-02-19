@@ -8,14 +8,35 @@ const LIMITS = {
     mobileApp: true,
   },
   'delete-pages': {
-    maxFileSize: 100000000, // 1 MB
+    maxFileSize: 104857600, // 100 MB
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 1,
   },
   'number-pages': {
-    maxFileSize: 100000000, // 1 MB
+    maxFileSize: 104857600, // 100 MB
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 1,
+    level: 0,
+  },
+  'split-pdf': {
+    maxFileSize: 104857600, // 1 GB
+    maxFileSizeFriendly: '1 GB',
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
+  'crop-pages': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+    level: 0,
+  },
+  'add-comment': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+    mobileApp: true,
   },
   'compress-pdf': {
     maxFileSize: 2147483648,
@@ -51,7 +72,7 @@ const LIMITS = {
     // multifile-only or single-hybrid
     uploadType: 'multifile-only',
     multipleFiles: true,
-    maxFileSize: 104857600,
+    maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
   },
 };

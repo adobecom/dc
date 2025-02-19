@@ -119,6 +119,31 @@ function getStoreType() {
   return 'desktop';
 }
 
+function getPricingLink() {
+  const { locale } = getConfig();
+  const ENV = getEnv();
+  const links = {
+    dev: `https://www.stage.adobe.com${locale.prefix}/acrobat/pricing/pricing.html`,
+    stage: `https://www.stage.adobe.com${locale.prefix}/acrobat/pricing/pricing.html`,
+    prod: `https://www.adobe.com${locale.prefix}/acrobat/pricing/pricing.html`,
+  };
+
+  // If env is invalid or omitted, default to 'prod'
+  return links[ENV] || links.prod;
+}
+
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function uploadedTime() {
+  const uploadingUTS = parseInt(getCookie('UTS_Uploading'), 10);
+  const uploadedUTS = parseInt(getCookie('UTS_Uploaded'), 10);
+  if (Number.isNaN(uploadingUTS) || Number.isNaN(uploadedUTS)) return 'N/A';
+  return ((uploadedUTS - uploadingUTS) / 1000).toFixed(1);
+}
+
 async function showUpSell(verb, element) {
   const headline = window.mph[`verb-widget-upsell-headline-${verb}`] || window.mph['verb-widget-upsell-headline'];
   const headlineNopayment = window.mph['verb-widget-upsell-headline-nopayment'];
@@ -163,6 +188,9 @@ export default async function init(element) {
     return;
   }
 
+  const isMobile = isMobileDevice();
+  const isTablet = isTabletDevice();
+
   const { locale } = getConfig();
   const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
   const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
@@ -173,9 +201,8 @@ export default async function init(element) {
   const storeType = getStoreType();
   let mobileLink = null;
   let noOfFiles = null;
-  let totalFileSize = null;
   function mergeData(eventData = {}) {
-    return { ...eventData, noOfFiles, totalFileSize };
+    return { ...eventData, noOfFiles };
   }
   if (storeType !== 'desktop') {
     mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`];
@@ -209,7 +236,9 @@ export default async function init(element) {
     widgetButton.prepend(uploadIconSvg);
   }
 
-  const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
+  const mobileCTA = LIMITS[VERB].level === 0 ? 'verb-widget-cta-mobile-start-trial' : 'verb-widget-cta-mobile';
+  mobileLink = LIMITS[VERB].level === 0 ? getPricingLink() : mobileLink;
+  const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph[mobileCTA]);
   const button = createTag('input', {
     type: 'file',
     accept: LIMITS[VERB]?.acceptedFiles,
@@ -233,7 +262,8 @@ export default async function init(element) {
   const iconSecurity = createTag('div', { class: 'security-icon' });
   const infoIcon = createTag('div', { class: 'info-icon milo-tooltip right', 'data-tooltip': `${window.mph['verb-widget-tool-tip']}` });
   const securityIconSvg = createSvgElement('SECURITY_ICON');
-  const infoIconSvg = createSvgElement('INFO_ICON');
+  const infoIconName = (isMobile || isTablet) ? 'INFO_ICON_MOBILE' : 'INFO_ICON';
+  const infoIconSvg = createSvgElement(infoIconName);
   if (securityIconSvg) {
     iconSecurity.appendChild(securityIconSvg);
     infoIcon.appendChild(infoIconSvg);
@@ -256,8 +286,6 @@ export default async function init(element) {
   widgetRow.append(widgetLeft, widgetRight);
   widgetHeader.append(widgetIcon, widgetTitle);
   errorState.append(errorIcon, errorStateText, errorCloseBtn);
-  const isMobile = isMobileDevice();
-  const isTablet = isTabletDevice();
 
   if (isMobile) {
     widget.classList.add('mobile');
@@ -271,12 +299,13 @@ export default async function init(element) {
     element.append(widget);
   } else {
     if (isMobile || isTablet) {
+      const ctaElement = (LIMITS[VERB].level === 0) ? widgetMobileButton : widgetButton;
       widgetLeft.append(
         widgetHeader,
         widgetHeading,
         widgetMobCopy,
         errorState,
-        widgetButton,
+        ctaElement,
         button,
       );
     } else {
@@ -355,7 +384,6 @@ export default async function init(element) {
     const { target: { files } } = data;
     if (!files) return;
     noOfFiles = files.length;
-    totalFileSize = Array.from(files).reduce((acc, file) => acc + file.size, 0);
   });
 
   button.addEventListener('cancel', () => {
@@ -376,7 +404,6 @@ export default async function init(element) {
     const { files } = event.dataTransfer;
     if (!files) return;
     noOfFiles = files.length;
-    totalFileSize = Array.from(files).reduce((acc, file) => acc + file.size, 0);
   });
 
   errorCloseBtn.addEventListener('click', () => {
@@ -427,13 +454,14 @@ export default async function init(element) {
         window.addEventListener('beforeunload', handleExit);
       },
       uploaded: () => {
-        verbAnalytics('job:test-uploaded', VERB, data, false);
+        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+        const calcUploadedTime = uploadedTime();
+        verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime }, false);
         if (VERB === 'compress-pdf') {
           verbAnalytics('job:test-multi-file-uploaded', VERB, data, false);
         }
         exitFlag = true;
         setUser();
-        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
       },
       redirectUrl: () => {
         if (data) initiatePrefetch(data);

@@ -79,11 +79,14 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             event: {
               pagename: `acrobat:verb-${verb}:${eventName}`,
               ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
+              ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
             },
             content: {
               type: metaData?.type,
-              size: metaData?.totalFileSize || metaData?.size,
+              size: metaData?.size,
               count: metaData?.count,
+              fileType: metaData?.type,
+              totalSize: metaData?.size,
             },
             source: {
               user_agent: navigator.userAgent,
@@ -103,11 +106,17 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             },
           },
           dcweb2: {
-            event: { pagename: `acrobat:verb-${verb}:${eventName}` },
+            event: {
+              pagename: `acrobat:verb-${verb}:${eventName}`,
+              ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
+              ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
+            },
             content: {
               type: metaData?.type,
               size: metaData?.size,
               count: metaData?.count,
+              fileType: metaData?.type,
+              totalSize: metaData?.size,
               // extension: 'docx', may not be needed
             },
             source: {
