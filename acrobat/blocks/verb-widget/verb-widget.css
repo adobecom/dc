@@ -278,7 +278,7 @@
   display: flex;
   top: 324px;
   left: 40px;
-  padding: 11px 25px;
+  padding: 11px 26px;
   border-radius: 47px;
   background: #1473e6;
   color: white;
@@ -287,6 +287,10 @@
   justify-content: center;
   align-items: center;
   width: 30%;
+  min-width: fit-content;
+  font-size: 22px;
+  line-height: 29px;
+  text-decoration: none;
 }
 
 .verb-mobile-cta:hover,
@@ -441,6 +445,10 @@
     margin: 0;
   }
 
+  .tablet .verb-image {
+    max-width: 129px;
+  }
+
   .tablet .verb-heading {
     font-size: 36px;
     line-height: 45px;
@@ -526,6 +534,7 @@
 
   .verb-heading {
     font-size: 36px;
+    line-height: 45px;
   }
 
   .verb-copy {
@@ -552,7 +561,7 @@
   }
 
   .mobile-app .verb-image {
-    width: 100%;
+    max-width: 129px;
   }
 
   .verb-col.right {

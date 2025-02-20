@@ -90,11 +90,11 @@ function isMobileDevice() {
 
 function isTabletDevice() {
   const ua = navigator.userAgent.toLowerCase();
-  const isIPadOS = navigator.userAgent.includes('Mac') && 'ontouchend' in document && !/iphone|ipod/i.test(ua);
+  const isIPadOS = navigator.userAgent.includes('Mac')
+    && 'ontouchend' in document
+    && !/iphone|ipod/i.test(ua);
   const isTabletUA = /ipad|android(?!.*mobile)/i.test(ua);
-  const largeTouchDevice = (navigator.maxTouchPoints || navigator.msMaxTouchPoints) > 1
-    && window.innerWidth >= 768;
-  return isIPadOS || isTabletUA || largeTouchDevice;
+  return isIPadOS || isTabletUA;
 }
 
 const getCTA = (verb) => {
@@ -117,6 +117,47 @@ function getStoreType() {
     return 'apple';
   }
   return 'desktop';
+}
+
+function getPricingLink() {
+  const { locale } = getConfig();
+  const ENV = getEnv();
+  const links = {
+    dev: `https://www.stage.adobe.com${locale.prefix}/acrobat/pricing/pricing.html`,
+    stage: `https://www.stage.adobe.com${locale.prefix}/acrobat/pricing/pricing.html`,
+    prod: `https://www.adobe.com${locale.prefix}/acrobat/pricing/pricing.html`,
+  };
+
+  // If env is invalid or omitted, default to 'prod'
+  return links[ENV] || links.prod;
+}
+
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function uploadedTime() {
+  const uploadingUTS = parseInt(getCookie('UTS_Uploading'), 10);
+  const uploadedUTS = parseInt(getCookie('UTS_Uploaded'), 10);
+  if (Number.isNaN(uploadingUTS) || Number.isNaN(uploadedUTS)) return 'N/A';
+  return ((uploadedUTS - uploadingUTS) / 1000).toFixed(1);
+}
+
+function incrementVerbKey(verbKey) {
+  let count = parseInt(localStorage.getItem(verbKey), 10) || 0;
+  count += 1;
+  localStorage.setItem(verbKey, count);
+  return count;
+}
+
+function getVerbKey(verbKey) {
+  const count = parseInt(localStorage.getItem(verbKey), 10) || 0;
+  const trialMapping = {
+    0: '1st',
+    1: '2nd',
+  };
+  return trialMapping[count] || '2+';
 }
 
 async function showUpSell(verb, element) {
@@ -163,6 +204,9 @@ export default async function init(element) {
     return;
   }
 
+  const isMobile = isMobileDevice();
+  const isTablet = isTabletDevice();
+
   const { locale } = getConfig();
   const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
   const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
@@ -173,9 +217,10 @@ export default async function init(element) {
   const storeType = getStoreType();
   let mobileLink = null;
   let noOfFiles = null;
-  let totalFileSize = null;
+  const userAttempts = getVerbKey(`${VERB}_attempts`);
+
   function mergeData(eventData = {}) {
-    return { ...eventData, noOfFiles, totalFileSize };
+    return { ...eventData, noOfFiles };
   }
   if (storeType !== 'desktop') {
     mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`];
@@ -209,7 +254,9 @@ export default async function init(element) {
     widgetButton.prepend(uploadIconSvg);
   }
 
-  const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
+  const mobileCTA = LIMITS[VERB].level === 0 ? 'verb-widget-cta-mobile-start-trial' : 'verb-widget-cta-mobile';
+  mobileLink = LIMITS[VERB].level === 0 ? getPricingLink() : mobileLink;
+  const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph[mobileCTA]);
   const button = createTag('input', {
     type: 'file',
     accept: LIMITS[VERB]?.acceptedFiles,
@@ -233,7 +280,8 @@ export default async function init(element) {
   const iconSecurity = createTag('div', { class: 'security-icon' });
   const infoIcon = createTag('div', { class: 'info-icon milo-tooltip right', 'data-tooltip': `${window.mph['verb-widget-tool-tip']}` });
   const securityIconSvg = createSvgElement('SECURITY_ICON');
-  const infoIconSvg = createSvgElement('INFO_ICON');
+  const infoIconName = (isMobile || isTablet) ? 'INFO_ICON_MOBILE' : 'INFO_ICON';
+  const infoIconSvg = createSvgElement(infoIconName);
   if (securityIconSvg) {
     iconSecurity.appendChild(securityIconSvg);
     infoIcon.appendChild(infoIconSvg);
@@ -256,8 +304,6 @@ export default async function init(element) {
   widgetRow.append(widgetLeft, widgetRight);
   widgetHeader.append(widgetIcon, widgetTitle);
   errorState.append(errorIcon, errorStateText, errorCloseBtn);
-  const isMobile = isMobileDevice();
-  const isTablet = isTabletDevice();
 
   if (isMobile) {
     widget.classList.add('mobile');
@@ -271,12 +317,13 @@ export default async function init(element) {
     element.append(widget);
   } else {
     if (isMobile || isTablet) {
+      const ctaElement = (LIMITS[VERB].level === 0) ? widgetMobileButton : widgetButton;
       widgetLeft.append(
         widgetHeader,
         widgetHeading,
         widgetMobCopy,
         errorState,
-        widgetButton,
+        ctaElement,
         button,
       );
     } else {
@@ -301,39 +348,45 @@ export default async function init(element) {
     }
   }
 
-  function checkSignedInUser() {
-    if (window.adobeIMS?.isSignedInUser?.()) {
-      element.classList.remove('upsell');
-      element.classList.add('signed-in');
-      if (window.adobeIMS.getAccountType() !== 'type1') {
-        redDir(VERB);
-      }
+  async function checkSignedInUser() {
+    if (!window.adobeIMS?.isSignedInUser?.()) return;
+
+    element.classList.remove('upsell');
+    element.classList.add('signed-in');
+
+    let accountType;
+    try {
+      accountType = window.adobeIMS.getAccountType();
+    } catch {
+      accountType = (await window.adobeIMS.getProfile()).account_type;
     }
+
+    if (accountType !== 'type1') redDir(VERB);
   }
 
   if (LIMITS[VERB].trial) {
     const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
     if (count >= LIMITS[VERB].trial) {
       await showUpSell(VERB, element);
-      verbAnalytics('upsell:shown', VERB);
-      verbAnalytics('upsell-wall:shown', VERB);
+      verbAnalytics('upsell:shown', VERB, { userAttempts });
+      verbAnalytics('upsell-wall:shown', VERB, { userAttempts });
     }
   }
 
   // Race the condition
-  checkSignedInUser();
+  await checkSignedInUser();
 
   // Redirect after IMS:Ready
   window.addEventListener('IMS:Ready', checkSignedInUser);
 
   // Analytics
-  verbAnalytics('landing:shown', VERB);
+  verbAnalytics('landing:shown', VERB, { userAttempts });
   reviewAnalytics(VERB);
 
   window.prefetchInitiated = false;
 
   widgetMobileButton.addEventListener('click', () => {
-    verbAnalytics('goto-app:clicked', VERB);
+    verbAnalytics('goto-app:clicked', VERB, { userAttempts });
   });
 
   widget.addEventListener('click', (e) => {
@@ -342,12 +395,12 @@ export default async function init(element) {
   });
 
   button.addEventListener('click', (data) => {
-    verbAnalytics('filepicker:shown', VERB);
-    verbAnalytics('dropzone:choose-file-clicked', VERB);
-    verbAnalytics('files-selected', VERB);
+    verbAnalytics('filepicker:shown', VERB, { userAttempts });
+    verbAnalytics('dropzone:choose-file-clicked', VERB, { userAttempts });
+    verbAnalytics('files-selected', VERB, { userAttempts });
     if (VERB === 'compress-pdf') {
-      verbAnalytics('entry:clicked', VERB, data);
-      verbAnalytics('discover:clicked', VERB, data);
+      verbAnalytics('entry:clicked', VERB, { ...data, userAttempts });
+      verbAnalytics('discover:clicked', VERB, { ...data, userAttempts });
     }
   });
 
@@ -355,11 +408,10 @@ export default async function init(element) {
     const { target: { files } } = data;
     if (!files) return;
     noOfFiles = files.length;
-    totalFileSize = Array.from(files).reduce((acc, file) => acc + file.size, 0);
   });
 
   button.addEventListener('cancel', () => {
-    verbAnalytics('choose-file:close', VERB);
+    verbAnalytics('choose-file:close', VERB, { userAttempts });
   });
 
   widget.addEventListener('dragover', (e) => {
@@ -376,7 +428,6 @@ export default async function init(element) {
     const { files } = event.dataTransfer;
     if (!files) return;
     noOfFiles = files.length;
-    totalFileSize = Array.from(files).reduce((acc, file) => acc + file.size, 0);
   });
 
   errorCloseBtn.addEventListener('click', () => {
@@ -393,21 +444,18 @@ export default async function init(element) {
 
     const analyticsMap = {
       change: () => {
-        verbAnalytics('choose-file:open', VERB, mergeData(data));
-        setUser();
+        verbAnalytics('choose-file:open', VERB, mergeData({ ...data, userAttempts }));
       },
       drop: () => {
-        verbAnalytics('files-dropped', VERB, mergeData(data));
+        verbAnalytics('files-dropped', VERB, mergeData({ ...data, userAttempts }));
         if (VERB === 'compress-pdf') {
-          verbAnalytics('entry:clicked', VERB, mergeData(data));
-          verbAnalytics('discover:clicked', VERB, mergeData(data));
+          verbAnalytics('entry:clicked', VERB, mergeData({ ...data, userAttempts }));
+          verbAnalytics('discover:clicked', VERB, mergeData({ ...data, userAttempts }));
         }
         setDraggingClass(widget, false);
-        setUser();
       },
       cancel: () => {
-        verbAnalytics('job:cancel', VERB, mergeData(data));
-        setUser();
+        verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
       },
       uploading: () => {
         if (LIMITS[VERB].trial) {
@@ -418,22 +466,23 @@ export default async function init(element) {
             localStorage.setItem(key, count + 1 || 1);
           }
         }
-        verbAnalytics('job:uploading', VERB, data, false);
+        verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('job:multi-file-uploading', VERB, data, false);
+          verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
         }
-        setUser();
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         window.addEventListener('beforeunload', handleExit);
       },
       uploaded: () => {
-        verbAnalytics('job:test-uploaded', VERB, data, false);
+        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+        const calcUploadedTime = uploadedTime();
+        verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('job:test-multi-file-uploaded', VERB, data, false);
+          verbAnalytics('job:test-multi-file-uploaded', VERB, { ...data, userAttempts }, false);
         }
         exitFlag = true;
         setUser();
-        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+        incrementVerbKey(`${VERB}_attempts`);
       },
       redirectUrl: () => {
         if (data) initiatePrefetch(data);

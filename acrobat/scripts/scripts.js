@@ -267,7 +267,7 @@ const CONFIG = {
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   page: {
-    pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
+    pdfViewerClientId: '332f83ea8edc489e9d1bd116affe3fe2', // client id for aem.page domain
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   stagePage: {
@@ -281,14 +281,22 @@ const CONFIG = {
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   live: {
-    edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
-    pdfViewerClientId: '18e9175fc6754b9892d315cae9f346f1',
+    pdfViewerClientId: '2ecc42a42bf24c6bb5dca41a25908a1f', // client id for aem.live domain
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   prod: {
     edgeConfigId: '913eac4d-900b-45e8-9ee7-306216765cd2',
     pdfViewerClientId: '8a1d0707bf0f45af8af9f3bead0d213e',
     pdfViewerReportSuite: 'adbadobenonacdcprod,adbadobedxprod,adbadobeprototype',
+  },
+  hlxPage: {
+    pdfViewerClientId: 'a42d91c0e5ec46f982d2da0846d9f7d0',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
+  hlxLive: {
+    edgeConfigId: 'e065836d-be57-47ef-b8d1-999e1657e8fd',
+    pdfViewerClientId: '18e9175fc6754b9892d315cae9f346f1',
+    pdfViewerReportSuite: 'adbadobedxqa',
   },
   locales,
   // geoRouting: 'on',

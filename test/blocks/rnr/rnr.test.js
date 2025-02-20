@@ -10,6 +10,7 @@ describe('rnr - Ratings and reviews', () => {
   beforeEach(async () => {
     document.head.innerHTML = await readFile({ path: './mocks/head.html' });
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    localStorage.removeItem('rnr-snapshot');
     window.mph = { 'rnr-rating-tooltips': 'Poor, Below Average, Good, Very Good, Outstanding' };
     window.adobeIMS = { getAccessToken: () => {} };
     window.lana = { log: () => {} };
