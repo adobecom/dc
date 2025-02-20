@@ -154,10 +154,10 @@ function incrementVerbKey(verbKey) {
 function getVerbKey(verbKey) {
   const count = parseInt(localStorage.getItem(verbKey), 10) || 0;
   const trialMapping = {
-    1: '1st',
-    2: '2nd',
+    0: '1st',
+    1: '2nd',
   };
-  return count ? trialMapping[count] || '2+' : null;
+  return trialMapping[count] || '2+';
 }
 
 async function showUpSell(verb, element) {
@@ -217,6 +217,8 @@ export default async function init(element) {
   const storeType = getStoreType();
   let mobileLink = null;
   let noOfFiles = null;
+  const userAttempts = getVerbKey(`${VERB}_attempts`);
+
   function mergeData(eventData = {}) {
     return { ...eventData, noOfFiles };
   }
@@ -360,8 +362,8 @@ export default async function init(element) {
     const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
     if (count >= LIMITS[VERB].trial) {
       await showUpSell(VERB, element);
-      verbAnalytics('upsell:shown', VERB);
-      verbAnalytics('upsell-wall:shown', VERB);
+      verbAnalytics('upsell:shown', VERB, { userAttempts });
+      verbAnalytics('upsell-wall:shown', VERB, { userAttempts });
     }
   }
 
@@ -372,13 +374,13 @@ export default async function init(element) {
   window.addEventListener('IMS:Ready', checkSignedInUser);
 
   // Analytics
-  verbAnalytics('landing:shown', VERB);
+  verbAnalytics('landing:shown', VERB, { userAttempts });
   reviewAnalytics(VERB);
 
   window.prefetchInitiated = false;
 
   widgetMobileButton.addEventListener('click', () => {
-    verbAnalytics('goto-app:clicked', VERB);
+    verbAnalytics('goto-app:clicked', VERB, { userAttempts });
   });
 
   widget.addEventListener('click', (e) => {
@@ -387,12 +389,12 @@ export default async function init(element) {
   });
 
   button.addEventListener('click', (data) => {
-    verbAnalytics('filepicker:shown', VERB);
-    verbAnalytics('dropzone:choose-file-clicked', VERB);
-    verbAnalytics('files-selected', VERB);
+    verbAnalytics('filepicker:shown', VERB, { userAttempts });
+    verbAnalytics('dropzone:choose-file-clicked', VERB, { userAttempts });
+    verbAnalytics('files-selected', VERB, { userAttempts });
     if (VERB === 'compress-pdf') {
-      verbAnalytics('entry:clicked', VERB, data);
-      verbAnalytics('discover:clicked', VERB, data);
+      verbAnalytics('entry:clicked', VERB, { ...data, userAttempts });
+      verbAnalytics('discover:clicked', VERB, { ...data, userAttempts });
     }
   });
 
@@ -403,7 +405,7 @@ export default async function init(element) {
   });
 
   button.addEventListener('cancel', () => {
-    verbAnalytics('choose-file:close', VERB);
+    verbAnalytics('choose-file:close', VERB, { userAttempts });
   });
 
   widget.addEventListener('dragover', (e) => {
@@ -436,21 +438,18 @@ export default async function init(element) {
 
     const analyticsMap = {
       change: () => {
-        verbAnalytics('choose-file:open', VERB, mergeData(data));
-        setUser();
+        verbAnalytics('choose-file:open', VERB, mergeData({ ...data, userAttempts }));
       },
       drop: () => {
-        verbAnalytics('files-dropped', VERB, mergeData(data));
+        verbAnalytics('files-dropped', VERB, mergeData({ ...data, userAttempts }));
         if (VERB === 'compress-pdf') {
-          verbAnalytics('entry:clicked', VERB, mergeData(data));
-          verbAnalytics('discover:clicked', VERB, mergeData(data));
+          verbAnalytics('entry:clicked', VERB, mergeData({ ...data, userAttempts }));
+          verbAnalytics('discover:clicked', VERB, mergeData({ ...data, userAttempts }));
         }
         setDraggingClass(widget, false);
-        setUser();
       },
       cancel: () => {
-        verbAnalytics('job:cancel', VERB, mergeData(data));
-        setUser();
+        verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
       },
       uploading: () => {
         if (LIMITS[VERB].trial) {
@@ -461,26 +460,23 @@ export default async function init(element) {
             localStorage.setItem(key, count + 1 || 1);
           }
         }
-        incrementVerbKey(`${VERB}_attempts`);
-        const userAttempts = getVerbKey(`${VERB}_attempts`);
         verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
         if (VERB === 'compress-pdf') {
           verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
         }
-        setUser();
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         window.addEventListener('beforeunload', handleExit);
       },
       uploaded: () => {
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
-        const userAttempts = getVerbKey(`${VERB}_attempts`);
         verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
         if (VERB === 'compress-pdf') {
           verbAnalytics('job:test-multi-file-uploaded', VERB, { ...data, userAttempts }, false);
         }
         exitFlag = true;
         setUser();
+        incrementVerbKey(`${VERB}_attempts`);
       },
       redirectUrl: () => {
         if (data) initiatePrefetch(data);
