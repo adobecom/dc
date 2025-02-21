@@ -723,8 +723,11 @@ Then(/^I should see "([^"]*)" in the dropzone$/, async function (text) {
 
 Then(/^I have tried "compress-pdf" twice$/, async function () {
   this.context(UnityPage);
-  const token = '2';
-  await this.page.native.evaluate(token => localStorage.setItem('compress-pdf_trial', token), token);
+  const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
+  await this.page.native.evaluate((exp) => {
+    document.cookie = `p_ac_cm_p_ops=1;domain=.adobe.com;path=/;expires=${exp}`;
+    document.cookie = `s_ta_cm_p_ops=1;domain=.adobe.com;path=/;expires=${exp}`;
+  }, cookieExp);
   await this.page.native.reload({waitUntil: 'load'});
 });
 
