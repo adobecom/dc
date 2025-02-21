@@ -177,9 +177,7 @@ function attachQtyUpdateObserver(button, clonedButton) {
     for (const mutation of mutationsList) {
       if (mutation.type === 'attributes' && mutation.attributeName === 'data-quantity') {
         const qty = button.dataset.quantity;
-        console.log('BEFORE: ', clonedButton.dataset.quantity);
         clonedButton.dataset.quantity = `${qty},${qty}`;
-        console.log('AFTER: ', clonedButton.dataset.quantity);
       }
     }
   });
