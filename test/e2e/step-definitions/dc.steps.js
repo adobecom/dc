@@ -669,8 +669,7 @@ Then(/^I (try to |)choose the (?:PDF|file|files) "([^\"]*)" to upload$/, async f
       if (tryTo !== '') {
         break;
       }
-      await this.page.native.waitForTimeout(2000);
-      await expect(this.page.selectButton).toHaveCount(0, { timeout: 5000 });
+      await expect(this.page.splashLoader).toHaveCount(1, { timeout: 3000 });
       retry = 0;
     } catch {
       retry--;
@@ -702,7 +701,8 @@ Then(/^I drag-and-drop the (?:PDF|file|files) "([^\"]*)" to upload$/, async func
 Then(/^I sign in as a (type1free|type2|type1paid) user$/, async function (type) {
   const accounts = JSON.parse(fs.readFileSync(".auth/accounts.json", "utf8"));
   const account = accounts[type];
-  this.page = new DCPage("https://www.stage.adobe.com");
+  const url = global.config.profile.profile === 'prod' ? 'https://www.adobe.com' : 'https://www.stage.adobe.com';
+  this.page = new DCPage(url);
   await this.page.open();
   await this.page.native.locator(".profile-comp").click();
   await this.page.native.locator("#EmailPage-EmailField").type(account.email + '\n');
