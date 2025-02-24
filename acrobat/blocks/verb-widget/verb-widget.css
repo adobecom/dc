@@ -445,6 +445,10 @@
     margin: 0;
   }
 
+  .tablet .verb-image {
+    max-width: 129px;
+  }
+
   .tablet .verb-heading {
     font-size: 36px;
     line-height: 45px;

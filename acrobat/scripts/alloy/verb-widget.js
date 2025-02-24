@@ -79,6 +79,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
             event: {
               pagename: `acrobat:verb-${verb}:${eventName}`,
               ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
+              ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
             },
             content: {
               type: metaData?.type,
@@ -102,10 +103,15 @@ export default function init(eventName, verb, metaData, documentUnloading = true
               user_tags: [
                 `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
               ],
+              ...(metaData?.userAttempts ? { return_user_type: metaData.userAttempts } : {}),
             },
           },
           dcweb2: {
-            event: { pagename: `acrobat:verb-${verb}:${eventName}` },
+            event: {
+              pagename: `acrobat:verb-${verb}:${eventName}`,
+              ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
+              ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
+            },
             content: {
               type: metaData?.type,
               size: metaData?.size,
@@ -129,6 +135,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
               user_tags: [
                 `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
               ],
+              ...(metaData?.userAttempts ? { return_user_type: metaData.userAttempts } : {}),
             },
           },
         },

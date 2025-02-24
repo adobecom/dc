@@ -29,6 +29,7 @@ export class UnityPage extends classes(DcGnavPage, VerbWidgetSection, CaaSSectio
       widgetCompressButton: '*[data-testid="ls-footer-primary-compress-button"]',
       widgetToast: '*[class$="-Toast-content"]',
       widgetUpsellHeading: 'h1[data-testid$="-upsell-heading"]',
+      paywall: 'h2[data-testid="paywall-header-subtitle"]',
     });
   }
 
