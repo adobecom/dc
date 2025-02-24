@@ -214,16 +214,12 @@ export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
-  const storeType = getStoreType();
-  let mobileLink = null;
   let noOfFiles = null;
+  let openFilePicker = true;
   const userAttempts = getVerbKey(`${VERB}_attempts`);
 
   function mergeData(eventData = {}) {
     return { ...eventData, noOfFiles };
-  }
-  if (storeType !== 'desktop') {
-    mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`];
   }
 
   children.forEach((child) => {
@@ -254,9 +250,6 @@ export default async function init(element) {
     widgetButton.prepend(uploadIconSvg);
   }
 
-  const mobileCTA = LIMITS[VERB].level === 0 ? 'verb-widget-cta-mobile-start-trial' : 'verb-widget-cta-mobile';
-  mobileLink = LIMITS[VERB].level === 0 ? getPricingLink() : mobileLink;
-  const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph[mobileCTA]);
   const button = createTag('input', {
     type: 'file',
     accept: LIMITS[VERB]?.acceptedFiles,
@@ -311,41 +304,43 @@ export default async function init(element) {
     widget.classList.add('tablet');
   }
 
-  if (mobileLink && LIMITS[VERB].mobileApp) {
-    widget.classList.add('mobile-app');
-    widgetLeft.append(widgetHeader, widgetHeading, widgetMobCopy, errorState, widgetMobileButton);
-    element.append(widget);
-  } else {
-    if (isMobile || isTablet) {
-      const ctaElement = (LIMITS[VERB].level === 0) ? widgetMobileButton : widgetButton;
-      widgetLeft.append(
-        widgetHeader,
-        widgetHeading,
-        widgetMobCopy,
-        errorState,
-        ctaElement,
-        button,
-      );
+  widgetLeft.append(widgetHeader, widgetHeading, errorState);
+
+  if (isMobile || isTablet) {
+    widgetLeft.insertBefore(widgetMobCopy, errorState);
+    if (LIMITS[VERB].level === 0) {
+      openFilePicker = false;
+      widget.classList.add('trial');
+      const widgetMobileFreeTrial = createTag('a', { class: 'verb-mobile-cta', href: getPricingLink() }, window.mph['verb-widget-cta-mobile-start-trial']);
+      widgetLeft.insertBefore(widgetMobileFreeTrial, errorState);
+    } else if (LIMITS[VERB].mobileApp) {
+      openFilePicker = false;
+      widget.classList.add('mobile-app');
+      const storeType = getStoreType();
+      const mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`] || window.mph[`verb-widget-${VERB}-apple`];
+      const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
+      widgetMobileButton.addEventListener('click', () => {
+        verbAnalytics('goto-app:clicked', VERB, { userAttempts });
+      });
+      widgetLeft.insertBefore(widgetMobileButton, errorState);
     } else {
-      widgetLeft.append(
-        widgetHeader,
-        widgetHeading,
-        widgetCopy,
-        errorState,
-        widgetButton,
-        button,
-      );
+      widgetLeft.insertBefore(widgetButton, errorState);
+      widgetLeft.insertBefore(button, errorState);
     }
-    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
-    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
-    legalWrapper.append(legal, legalTwo);
-    footer.append(iconSecurity, legalWrapper, infoIcon);
-    element.append(widget, footer);
-    if (isMobile && !isTablet) {
-      widgetImage.after(widgetImage);
-      iconSecurity.remove(iconSecurity);
-      footer.prepend(infoIcon);
-    }
+  } else {
+    widgetLeft.insertBefore(widgetCopy, errorState);
+    widgetLeft.insertBefore(widgetButton, errorState);
+    widgetLeft.insertBefore(button, errorState);
+  }
+  legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
+  legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
+  legalWrapper.append(legal, legalTwo);
+  footer.append(iconSecurity, legalWrapper, infoIcon);
+  element.append(widget, footer);
+  if (isMobile && !isTablet) {
+    widgetImage.after(widgetImage);
+    iconSecurity.remove(iconSecurity);
+    footer.prepend(infoIcon);
   }
 
   async function checkSignedInUser() {
@@ -385,13 +380,9 @@ export default async function init(element) {
 
   window.prefetchInitiated = false;
 
-  widgetMobileButton.addEventListener('click', () => {
-    verbAnalytics('goto-app:clicked', VERB, { userAttempts });
-  });
-
   widget.addEventListener('click', (e) => {
     if (e.srcElement.classList.value.includes('error')) { return; }
-    if (!mobileLink) { button.click(); }
+    if (openFilePicker === true) { button.click(); }
   });
 
   button.addEventListener('click', (data) => {
