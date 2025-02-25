@@ -542,41 +542,31 @@ export default async function init(element) {
   };
 
   element.addEventListener('unity:show-error-toast', (e) => {
-    if (e.detail?.code.includes('error_only_accept_one_file')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error', VERB);
-    }
+    const errorCode = e.detail?.code;
+    if (!errorCode) return;
 
-    if (e.detail?.code.includes('error_unsupported_type')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error:unsupported_type', VERB);
-    }
+    handleError(e.detail, true, lanaOptions);
 
-    if (e.detail?.code.includes('error_empty_file')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error:empty_file', VERB);
-    }
+    if (errorCode.includes('cookie_not_set')) return;
 
-    if (e.detail?.code.includes('error_file_too_large')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error', VERB);
-    }
+    const errorAnalyticsMap = {
+      error_only_accept_one_file: 'error',
+      error_unsupported_type: 'error:unsupported_type',
+      error_empty_file: 'error:empty_file',
+      error_file_too_large: 'error',
+      error_max_page_count: 'error:max_page_count',
+      error_min_page_count: 'error:min_page_count',
+      error_generic: 'error',
+      error_max_quota_exceeded: 'error',
+      error_no_storage_provision: 'error',
+      error_duplicate_asset: 'error',
+    };
 
-    if (e.detail?.code.includes('error_max_page_count')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error:max_page_count', VERB);
-    }
-
-    if (e.detail?.code.includes('cookie_not_set')) {
-      handleError(e.detail, true, lanaOptions);
-    }
-
-    if (e.detail?.code.includes('error_generic')
-      || e.detail?.code.includes('error_max_quota_exceeded')
-      || e.detail?.code.includes('error_no_storage_provision')
-      || e.detail?.code.includes('error_duplicate_asset')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error', VERB);
+    const matchedError = Object.keys(errorAnalyticsMap).find(
+      (errorKey) => errorCode.includes(errorKey),
+    );
+    if (matchedError) {
+      verbAnalytics(errorAnalyticsMap[matchedError], VERB);
     }
   });
 
