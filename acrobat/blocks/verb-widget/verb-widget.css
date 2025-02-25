@@ -162,7 +162,7 @@
 
 .verb-cta {
   cursor: pointer;
-  background: var(--link-color);
+  background: #1473E6;
   border-radius: 8px;
   padding: 11px 27px;
   color: white;
@@ -547,7 +547,7 @@
   .verb-cta {
     cursor: pointer;
     font-size: 22px;
-    padding: 9px 25px;
+    padding: 11px 25px;
   }
 
   .verb-cta .upload-icon {
