@@ -35,6 +35,22 @@ const verbRedirMap = {
   'chat-pdf-student': 'study',
 };
 
+const exhLimitCookieMap = {
+  'to-pdf': 'cr_p_c',
+  'pdf-to': 'ex_p_c',
+  'compress-pdf': 'cm_p_ops',
+  'rotate-pages': 'or_p_c',
+  createpdf: 'cr_p_c',
+  'ocr-pdf': 'ocr_p_c',
+};
+
+const appEnvCookieMap = {
+  stage: 's_ta_',
+  prod: 'p_ac_',
+};
+
+const DC_ENV = ['www.adobe.com', 'sign.ing', 'edit.ing'].includes(window.location.hostname) ? 'prod' : 'stage';
+
 const setUser = () => {
   localStorage.setItem('unity.user', 'true');
 };
@@ -371,13 +387,15 @@ export default async function init(element) {
     if (accountType !== 'type1') redDir(VERB);
   }
 
-  if (LIMITS[VERB].trial) {
-    const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
-    if (count >= LIMITS[VERB].trial) {
-      await showUpSell(VERB, element);
-      verbAnalytics('upsell:shown', VERB, { userAttempts });
-      verbAnalytics('upsell-wall:shown', VERB, { userAttempts });
-    }
+  const { cookie } = document;
+  const limitCookie = exhLimitCookieMap[VERB] || exhLimitCookieMap[VERB.match(/^pdf-to|to-pdf$/)?.[0]];
+  const cookiePrefix = appEnvCookieMap[DC_ENV] || '';
+  const isLimitExhausted = limitCookie && cookie.includes(`${cookiePrefix}${limitCookie}`);
+
+  if (!window.adobeIMS?.isSignedInUser?.() && isLimitExhausted) {
+    await showUpSell(VERB, element);
+    verbAnalytics('upsell:shown', VERB, { userAttempts });
+    verbAnalytics('upsell-wall:shown', VERB, { userAttempts });
   }
 
   // Race the condition
@@ -461,14 +479,6 @@ export default async function init(element) {
         verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
       },
       uploading: () => {
-        if (LIMITS[VERB].trial) {
-          if (!window.adobeIMS?.isSignedInUser?.()) {
-            const key = `${VERB}_trial`;
-            const stored = localStorage.getItem(key);
-            const count = parseInt(stored, 10);
-            localStorage.setItem(key, count + 1 || 1);
-          }
-        }
         verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
         if (VERB === 'compress-pdf') {
           verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
