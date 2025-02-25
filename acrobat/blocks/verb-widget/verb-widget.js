@@ -1,10 +1,13 @@
+/* eslint-disable compat/compat */
 import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics, { reviewAnalytics } from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag, getConfig, loadBlock } = await import(`${miloLibs}/utils/utils.js`);
+const {
+  createTag, getConfig, loadBlock, getMetadata, loadIms, loadScript,
+} = await import(`${miloLibs}/utils/utils.js`);
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -31,6 +34,22 @@ const verbRedirMap = {
   'chat-pdf': 'chat',
   'chat-pdf-student': 'study',
 };
+
+const exhLimitCookieMap = {
+  'to-pdf': 'cr_p_c',
+  'pdf-to': 'ex_p_c',
+  'compress-pdf': 'cm_p_ops',
+  'rotate-pages': 'or_p_c',
+  createpdf: 'cr_p_c',
+  'ocr-pdf': 'ocr_p_c',
+};
+
+const appEnvCookieMap = {
+  stage: 's_ta_',
+  prod: 'p_ac_',
+};
+
+const DC_ENV = ['www.adobe.com', 'sign.ing', 'edit.ing'].includes(window.location.hostname) ? 'prod' : 'stage';
 
 const setUser = () => {
   localStorage.setItem('unity.user', 'true');
@@ -132,6 +151,13 @@ function getPricingLink() {
   return links[ENV] || links.prod;
 }
 
+async function loadGoogleLogin() {
+  if (window.adobeIMS?.isSignedInUser()) return;
+
+  const { default: initGoogleLogin } = await import(`${miloLibs}/features/google-login.js`);
+  initGoogleLogin(loadIms, getMetadata, loadScript, getConfig);
+}
+
 function getCookie(name) {
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
   return match ? decodeURIComponent(match[1]) : null;
@@ -196,6 +222,8 @@ async function showUpSell(verb, element) {
 
   element.classList.add('upsell');
   element.append(widget);
+
+  loadGoogleLogin();
 }
 
 export default async function init(element) {
@@ -359,13 +387,15 @@ export default async function init(element) {
     if (accountType !== 'type1') redDir(VERB);
   }
 
-  if (LIMITS[VERB].trial) {
-    const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
-    if (count >= LIMITS[VERB].trial) {
-      await showUpSell(VERB, element);
-      verbAnalytics('upsell:shown', VERB, { userAttempts });
-      verbAnalytics('upsell-wall:shown', VERB, { userAttempts });
-    }
+  const { cookie } = document;
+  const limitCookie = exhLimitCookieMap[VERB] || exhLimitCookieMap[VERB.match(/^pdf-to|to-pdf$/)?.[0]];
+  const cookiePrefix = appEnvCookieMap[DC_ENV] || '';
+  const isLimitExhausted = limitCookie && cookie.includes(`${cookiePrefix}${limitCookie}`);
+
+  if (!window.adobeIMS?.isSignedInUser?.() && isLimitExhausted) {
+    await showUpSell(VERB, element);
+    verbAnalytics('upsell:shown', VERB, { userAttempts });
+    verbAnalytics('upsell-wall:shown', VERB, { userAttempts });
   }
 
   // Race the condition
@@ -449,14 +479,6 @@ export default async function init(element) {
         verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
       },
       uploading: () => {
-        if (LIMITS[VERB].trial) {
-          if (!window.adobeIMS?.isSignedInUser?.()) {
-            const key = `${VERB}_trial`;
-            const stored = localStorage.getItem(key);
-            const count = parseInt(stored, 10);
-            localStorage.setItem(key, count + 1 || 1);
-          }
-        }
         verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
         if (VERB === 'compress-pdf') {
           verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
