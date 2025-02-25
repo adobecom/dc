@@ -7,11 +7,6 @@ const LIMITS = {
     multipleFiles: false,
     mobileApp: true,
   },
-  'delete-pages': {
-    maxFileSize: 104857600, // 100 MB
-    acceptedFiles: ['application/pdf'],
-    maxNumFiles: 1,
-  },
   'number-pages': {
     maxFileSize: 104857600, // 100 MB
     acceptedFiles: ['application/pdf'],
@@ -67,6 +62,32 @@ const LIMITS = {
     ],
     multipleFiles: true,
     trial: 2,
+  },
+  'delete-pages': {
+    maxFileSize: 104857600, // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
+  'insert-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
+  'extract-pages': {
+    maxFileSize: 104857600, // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
+  'reorder-pages': {
+    maxFileSize: 104857600, // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
+  sendforsignature: {
+    maxFileSize: 5242880, // 5 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+    mobileApp: true,
   },
   'merge-pdf': {
     // multifile-only or single-hybrid
