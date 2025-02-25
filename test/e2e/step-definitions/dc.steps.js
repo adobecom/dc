@@ -22,6 +22,7 @@ import { PdfEditorPage } from "../page-objects/pdfeditor.page";
 import { MergePdfPage } from "../page-objects/mergepdf.page";
 import { CompressPdfPage } from "../page-objects/compresspdf.page";
 import { PasswordProtectPdfPage } from "../page-objects/passwordprotectpdf.page";
+import { AddPdfPageNumbersPage } from "../page-objects/addpdfpagenumbers.page";
 import { FrictionlessPage } from "../page-objects/frictionless.page";
 import { UnityPage } from "../page-objects/unity.page";
 import { DCPage } from "../page-objects/dc.page";
@@ -60,7 +61,8 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
     "pdf-editor": PdfEditorPage,
     "merge-pdf": MergePdfPage,
     "compress-pdf": CompressPdfPage,
-    "password-protect-pdf": PasswordProtectPdfPage
+    "password-protect-pdf": PasswordProtectPdfPage,
+    "add-pdf-page-numbers": AddPdfPageNumbersPage
   }[verb];
   this.page = new pageClass();
 
