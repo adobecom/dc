@@ -2,6 +2,9 @@ version: 1.0
 
 snow:
   - id: 545806 # Milo DC
+    - source_path:
+      - exclude:
+        - '.github/**'
 
 notifications:
   jira:
