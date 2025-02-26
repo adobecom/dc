@@ -4,7 +4,7 @@ Feature: Frictionless Converter Block
     Given I have a new browser context
 
   @smoke @unity @sign-pdf @choosefile
-  Scenario Outline: L1 Verb - Upload and sign-in
+  Scenario Outline: L1 Verb - Upload
     Given I go to the <Verb> page
      Then I choose the file "<File>" to upload
      Then I wait for 5 seconds
@@ -15,7 +15,7 @@ Feature: Frictionless Converter Block
       | sign-pdf          | test-files/test.pdf |
 
   @smoke @unity @sign-pdf @dragndrop
-  Scenario Outline: L1 Verb - Upload and sign-in
+  Scenario Outline: L1 Verb - Upload
     Given I go to the <Verb> page
      Then I drag-and-drop the file "<File>" to upload
      Then I wait for 5 seconds
@@ -26,7 +26,7 @@ Feature: Frictionless Converter Block
       | sign-pdf          | test-files/test.pdf |
 
   @smoke @unity @compress-pdf @choosefile
-  Scenario Outline: L1 Verb - Upload and sign-in
+  Scenario Outline: L1 Verb - Upload
     Given I go to the <Verb> page
      Then I choose the file "<File>" to upload
      Then I wait for 5 seconds

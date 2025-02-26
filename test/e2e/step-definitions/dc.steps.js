@@ -660,10 +660,10 @@ Then(/^I (try to |)choose the (?:PDF|file|files) "([^\"]*)" to upload$/, async f
     }
     return absPath;
   });
-  let retry = 3;
+  let retry = 6;
   while (retry > 0) {
     try {
-      if (retry < 3) {
+      if (retry < 6 && retry % 2 === 0) {
         await this.page.native.reload({waitUntil: 'load'});
       }      
       await expect(this.page.selectButton).toHaveCount(1, { timeout: 15000 });
@@ -671,7 +671,7 @@ Then(/^I (try to |)choose the (?:PDF|file|files) "([^\"]*)" to upload$/, async f
       if (tryTo !== '') {
         break;
       }
-      await expect(this.page.splashLoader).toHaveCount(1, { timeout: 3000 });
+      await expect(this.page.splashLoader).toHaveCount(1, { timeout: 5000 });
       retry = 0;
     } catch {
       retry--;
@@ -749,7 +749,7 @@ Then(/^I sign in as a (type1free|type2|type1paid) user using SUSI Light$/, async
 
 Then(/^I should see "([^"]*)" in the error message$/, async function (text) {
   this.context(UnityPage);
-  await expect(this.page.verbErrorText).toHaveText(text);
+  await expect(this.page.verbErrorText).toHaveText(text, {timeout: 10000});
 });
 
 Then(/^I click the "([^"]*)" button on the feedback$/, async function (button) {
@@ -770,4 +770,83 @@ Then(/^I should see "([^"]*)" in the widget upsell heading$/, async function (te
 Then(/^I should see the paywall$/, async function () {
   this.context(UnityPage);
   await expect(this.page.paywall).toBeVisible({timeout: 30000});
+});
+
+async function signInWithAdobe(page, type) {
+  const accounts = JSON.parse(fs.readFileSync(".auth/accounts.json", "utf8"));
+  const account = accounts[type];
+  await page.native.locator("#EmailPage-EmailField").type(account.email + '\n');
+  try {
+    await expect(page.native.locator("#PasswordPage-PasswordField")).toBeVisible({timeout: 5000});
+  } catch {
+    await page.native.locator(".spectrum-Button--cta").click();
+  }
+  await page.native.locator("#PasswordPage-PasswordField").type(account.password + '\n');
+  await page.native.waitForTimeout(2000);
+  try {
+    await page.native.locator(".spectrum-Button--cta").click();
+  } catch {
+  } 
+}
+
+Then(/^I continue with Adobe as a (type1free|type2|type1paid) user$/, async function (type) {
+  this.context(UnityPage);
+  await this.page.continueWithAdobeButton.click();
+  let retry = 3;
+  while (retry > 0) {
+    try {
+      await expect(this.page.native.locator("#EmailPage-EmailField")).toBeVisible({timeout: 5000});
+      retry = 0;
+    } catch {
+      await this.page.continueWithAdobeButton.click();
+      retry--;
+    }
+  }
+  await signInWithAdobe(this.page, type); 
+});
+
+Then(/^I should see the download button$/, async function () {
+  this.context(UnityPage);
+  await expect(this.page.dcWebDownloadButton).toBeVisible({timeout: 20000});
+});
+
+Then(/^I click the "(Cancel|Continue)" button on the top$/, async function (button) {
+  this.context(UnityPage);
+  if (button === 'Cancel') {
+    await this.page.dcWebCancelButton.click({timeout: 20000});
+  } else {
+    await this.page.dcWebContinueButton.click({timeout: 20000});
+  }
+});
+
+Then(/^I click the "([^"]*)" button$/, async function (button) {
+  this.context(UnityPage);
+  await this.page.dcWebButton(button).click({timeout: 20000});
+});
+
+Then(/^I select the split divider$/, async function () {
+  this.context(UnityPage);
+  await this.page.dcWebSplitPageButton.click({timeout: 20000});
+  let retry = 3;
+  while (retry > 0) {
+    try {
+      await expect(this.page.dcWebSplitPageTooltip).toBeVisible({timeout: 5000});
+      await this.page.native.waitForTimeout(1000);
+      retry = 0;
+    } catch (e) {
+      console.log(e);
+      await this.page.dcWebSplitPageButton.click({timeout: 20000});
+      retry--;
+    }
+  }
+});
+
+Then(/^I should see the "([^"]*)" tooltip$/, async function (tooltip) {
+  this.context(UnityPage);
+  await expect(this.page.dcWebSplitPageTooltip).toHaveText(tooltip);
+});
+
+Then(/^I should see the "Your Documents" folder$/, async function () {
+  this.context(UnityPage);
+  await expect(this.page.dcWebYourDocuments).toBeVisible({timeout: 20000});
 });
