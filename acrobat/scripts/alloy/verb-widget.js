@@ -30,7 +30,7 @@ function ensureSatelliteReady(callback) {
   if (window._satellite?.track instanceof Function) {
     callback();
   } else {
-    setTimeout(() => ensureSatelliteReady(callback), 200);
+    setTimeout(() => ensureSatelliteReady(callback), 50);
   }
 }
 
@@ -142,14 +142,29 @@ export default function init(eventName, verb, metaData, documentUnloading = true
       },
     },
   };
-  ensureSatelliteReady(() => {
+
+  // eslint-disable-next-line no-underscore-dangle
+  if (window._satellite?.track instanceof Function) {
+    // If satellite is already ready, just track immediately
     // eslint-disable-next-line no-underscore-dangle
     window._satellite.track('event', event);
-  });
+  } else {
+    // Otherwise, keep waiting until _satellite is ready
+    // This should be just a 50 milliseconds delay
+    ensureSatelliteReady(() => {
+      // eslint-disable-next-line no-underscore-dangle
+      window._satellite.track('event', event);
+    });
+  }
 }
 
 export function reviewAnalytics(verb) {
-  ensureSatelliteReady(() => {
+  // eslint-disable-next-line no-underscore-dangle
+  if (window._satellite?.track instanceof Function) {
     frictionless(verb);
-  });
+  } else {
+    ensureSatelliteReady(() => {
+      frictionless(verb);
+    });
+  }
 }
