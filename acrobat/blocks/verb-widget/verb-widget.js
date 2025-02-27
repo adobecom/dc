@@ -384,6 +384,10 @@ export default async function init(element) {
       accountType = (await window.adobeIMS.getProfile()).account_type;
     }
 
+    if (LIMITS[VERB].signedInAcceptedFiles) {
+      button.accept = [...LIMITS[VERB].acceptedFiles, ...LIMITS[VERB].signedInAcceptedFiles];
+    }
+
     if (accountType !== 'type1') redDir(VERB);
   }
 
