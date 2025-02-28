@@ -420,11 +420,15 @@ export default async function init(element) {
   });
 
   button.addEventListener('click', (data) => {
-    verbAnalytics('filepicker:shown', VERB, { userAttempts });
-    verbAnalytics('dropzone:choose-file-clicked', VERB, { userAttempts });
-    verbAnalytics('files-selected', VERB, { userAttempts });
-    verbAnalytics('entry:clicked', VERB, { ...data, userAttempts });
-    verbAnalytics('discover:clicked', VERB, { ...data, userAttempts });
+    [
+      'filepicker:shown',
+      'dropzone:choose-file-clicked',
+      'files-selected',
+      'entry:clicked',
+      'discover:clicked',
+    ].forEach((analyticsEvent) => {
+      verbAnalytics(analyticsEvent, VERB, { ...data, userAttempts });
+    });
   });
 
   button.addEventListener('change', (data) => {
@@ -470,9 +474,13 @@ export default async function init(element) {
         verbAnalytics('choose-file:open', VERB, mergeData({ ...data, userAttempts }));
       },
       drop: () => {
-        verbAnalytics('files-dropped', VERB, mergeData({ ...data, userAttempts }));
-        verbAnalytics('entry:clicked', VERB, mergeData({ ...data, userAttempts }));
-        verbAnalytics('discover:clicked', VERB, mergeData({ ...data, userAttempts }));
+        [
+          'files-dropped',
+          'entry:clicked',
+          'discover:clicked',
+        ].forEach((analyticsEvent) => {
+          verbAnalytics(analyticsEvent, VERB, mergeData({ ...data, userAttempts }));
+        });
         setDraggingClass(widget, false);
       },
       cancel: () => {
