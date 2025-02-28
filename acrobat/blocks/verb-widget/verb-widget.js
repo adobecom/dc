@@ -423,10 +423,8 @@ export default async function init(element) {
     verbAnalytics('filepicker:shown', VERB, { userAttempts });
     verbAnalytics('dropzone:choose-file-clicked', VERB, { userAttempts });
     verbAnalytics('files-selected', VERB, { userAttempts });
-    if (VERB === 'compress-pdf') {
-      verbAnalytics('entry:clicked', VERB, { ...data, userAttempts });
-      verbAnalytics('discover:clicked', VERB, { ...data, userAttempts });
-    }
+    verbAnalytics('entry:clicked', VERB, { ...data, userAttempts });
+    verbAnalytics('discover:clicked', VERB, { ...data, userAttempts });
   });
 
   button.addEventListener('change', (data) => {
@@ -473,10 +471,8 @@ export default async function init(element) {
       },
       drop: () => {
         verbAnalytics('files-dropped', VERB, mergeData({ ...data, userAttempts }));
-        if (VERB === 'compress-pdf') {
-          verbAnalytics('entry:clicked', VERB, mergeData({ ...data, userAttempts }));
-          verbAnalytics('discover:clicked', VERB, mergeData({ ...data, userAttempts }));
-        }
+        verbAnalytics('entry:clicked', VERB, mergeData({ ...data, userAttempts }));
+        verbAnalytics('discover:clicked', VERB, mergeData({ ...data, userAttempts }));
         setDraggingClass(widget, false);
       },
       cancel: () => {
