@@ -446,7 +446,7 @@ export default async function init(element) {
           }
         }
         verbAnalytics('job:uploading', VERB, data, false);
-        if (VERB === 'compress-pdf') {
+        if (LIMITS[VERB]?.multipleFiles === true) {
           verbAnalytics('job:multi-file-uploading', VERB, data, false);
         }
         setUser();
@@ -457,7 +457,7 @@ export default async function init(element) {
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
         verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime }, false);
-        if (VERB === 'compress-pdf') {
+        if (LIMITS[VERB]?.multipleFiles === true) {
           verbAnalytics('job:test-multi-file-uploaded', VERB, data, false);
         }
         exitFlag = true;
