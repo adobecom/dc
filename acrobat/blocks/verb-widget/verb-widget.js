@@ -1,10 +1,13 @@
+/* eslint-disable compat/compat */
 import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 import verbAnalytics, { reviewAnalytics } from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag, getConfig, loadBlock } = await import(`${miloLibs}/utils/utils.js`);
+const {
+  createTag, getConfig, loadBlock, getMetadata, loadIms, loadScript,
+} = await import(`${miloLibs}/utils/utils.js`);
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -31,6 +34,22 @@ const verbRedirMap = {
   'chat-pdf': 'chat',
   'chat-pdf-student': 'study',
 };
+
+const exhLimitCookieMap = {
+  'to-pdf': 'cr_p_c',
+  'pdf-to': 'ex_p_c',
+  'compress-pdf': 'cm_p_ops',
+  'rotate-pages': 'or_p_c',
+  createpdf: 'cr_p_c',
+  'ocr-pdf': 'ocr_p_c',
+};
+
+const appEnvCookieMap = {
+  stage: 's_ta_',
+  prod: 'p_ac_',
+};
+
+const DC_ENV = ['www.adobe.com', 'sign.ing', 'edit.ing'].includes(window.location.hostname) ? 'prod' : 'stage';
 
 const setUser = () => {
   localStorage.setItem('unity.user', 'true');
@@ -97,11 +116,11 @@ function isMobileDevice() {
 
 function isTabletDevice() {
   const ua = navigator.userAgent.toLowerCase();
-  const isIPadOS = navigator.userAgent.includes('Mac') && 'ontouchend' in document && !/iphone|ipod/i.test(ua);
+  const isIPadOS = navigator.userAgent.includes('Mac')
+    && 'ontouchend' in document
+    && !/iphone|ipod/i.test(ua);
   const isTabletUA = /ipad|android(?!.*mobile)/i.test(ua);
-  const largeTouchDevice = (navigator.maxTouchPoints || navigator.msMaxTouchPoints) > 1
-    && window.innerWidth >= 768;
-  return isIPadOS || isTabletUA || largeTouchDevice;
+  return isIPadOS || isTabletUA;
 }
 
 const getCTA = (verb) => {
@@ -139,6 +158,13 @@ function getPricingLink() {
   return links[ENV] || links.prod;
 }
 
+async function loadGoogleLogin() {
+  if (window.adobeIMS?.isSignedInUser()) return;
+
+  const { default: initGoogleLogin } = await import(`${miloLibs}/features/google-login.js`);
+  initGoogleLogin(loadIms, getMetadata, loadScript, getConfig);
+}
+
 function getCookie(name) {
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
   return match ? decodeURIComponent(match[1]) : null;
@@ -149,6 +175,22 @@ function uploadedTime() {
   const uploadedUTS = parseInt(getCookie('UTS_Uploaded'), 10);
   if (Number.isNaN(uploadingUTS) || Number.isNaN(uploadedUTS)) return 'N/A';
   return ((uploadedUTS - uploadingUTS) / 1000).toFixed(1);
+}
+
+function incrementVerbKey(verbKey) {
+  let count = parseInt(localStorage.getItem(verbKey), 10) || 0;
+  count += 1;
+  localStorage.setItem(verbKey, count);
+  return count;
+}
+
+function getVerbKey(verbKey) {
+  const count = parseInt(localStorage.getItem(verbKey), 10) || 0;
+  const trialMapping = {
+    0: '1st',
+    1: '2nd',
+  };
+  return trialMapping[count] || '2+';
 }
 
 async function showUpSell(verb, element) {
@@ -187,6 +229,8 @@ async function showUpSell(verb, element) {
 
   element.classList.add('upsell');
   element.append(widget);
+
+  loadGoogleLogin();
 }
 
 export default async function init(element) {
@@ -205,14 +249,12 @@ export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
-  const storeType = getStoreType();
-  let mobileLink = null;
   let noOfFiles = null;
+  let openFilePicker = true;
+  const userAttempts = getVerbKey(`${VERB}_attempts`);
+
   function mergeData(eventData = {}) {
     return { ...eventData, noOfFiles };
-  }
-  if (storeType !== 'desktop') {
-    mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`];
   }
 
   children.forEach((child) => {
@@ -243,9 +285,6 @@ export default async function init(element) {
     widgetButton.prepend(uploadIconSvg);
   }
 
-  const mobileCTA = LIMITS[VERB].level === 0 ? 'verb-widget-cta-mobile-start-trial' : 'verb-widget-cta-mobile';
-  mobileLink = LIMITS[VERB].level === 0 ? getPricingLink() : mobileLink;
-  const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph[mobileCTA]);
   const button = createTag('input', {
     type: 'file',
     accept: LIMITS[VERB]?.acceptedFiles,
@@ -300,91 +339,103 @@ export default async function init(element) {
     widget.classList.add('tablet');
   }
 
-  if (mobileLink && LIMITS[VERB].mobileApp) {
-    widget.classList.add('mobile-app');
-    widgetLeft.append(widgetHeader, widgetHeading, widgetMobCopy, errorState, widgetMobileButton);
-    element.append(widget);
-  } else {
-    if (isMobile || isTablet) {
-      const ctaElement = (LIMITS[VERB].level === 0) ? widgetMobileButton : widgetButton;
-      widgetLeft.append(
-        widgetHeader,
-        widgetHeading,
-        widgetMobCopy,
-        errorState,
-        ctaElement,
-        button,
-      );
+  widgetLeft.append(widgetHeader, widgetHeading, errorState);
+
+  if (isMobile || isTablet) {
+    widgetLeft.insertBefore(widgetMobCopy, errorState);
+    if (LIMITS[VERB].level === 0) {
+      openFilePicker = false;
+      widget.classList.add('trial');
+      const widgetMobileFreeTrial = createTag('a', { class: 'verb-mobile-cta', href: getPricingLink() }, window.mph['verb-widget-cta-mobile-start-trial']);
+      widgetLeft.insertBefore(widgetMobileFreeTrial, errorState);
+    } else if (LIMITS[VERB].mobileApp) {
+      openFilePicker = false;
+      widget.classList.add('mobile-app');
+      const storeType = getStoreType();
+      const mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`] || window.mph[`verb-widget-${VERB}-apple`];
+      const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
+      widgetMobileButton.addEventListener('click', () => {
+        verbAnalytics('goto-app:clicked', VERB, { userAttempts });
+      });
+      widgetLeft.insertBefore(widgetMobileButton, errorState);
     } else {
-      widgetLeft.append(
-        widgetHeader,
-        widgetHeading,
-        widgetCopy,
-        errorState,
-        widgetButton,
-        button,
-      );
+      widgetLeft.insertBefore(widgetButton, errorState);
+      widgetLeft.insertBefore(button, errorState);
     }
-    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
-    legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
-    legalWrapper.append(legal, legalTwo);
-    footer.append(iconSecurity, legalWrapper, infoIcon);
-    element.append(widget, footer);
-    if (isMobile && !isTablet) {
-      widgetImage.after(widgetImage);
-      iconSecurity.remove(iconSecurity);
-      footer.prepend(infoIcon);
-    }
+  } else {
+    widgetLeft.insertBefore(widgetCopy, errorState);
+    widgetLeft.insertBefore(widgetButton, errorState);
+    widgetLeft.insertBefore(button, errorState);
+  }
+  legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}"> ${window.mph['verb-widget-terms-of-use']}</a>`);
+  legalTwo.innerHTML = legalTwo.outerHTML.replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}"> ${window.mph['verb-widget-privacy-policy']}</a>`);
+  legalWrapper.append(legal, legalTwo);
+  footer.append(iconSecurity, legalWrapper, infoIcon);
+  element.append(widget, footer);
+  if (isMobile && !isTablet) {
+    widgetImage.after(widgetImage);
+    iconSecurity.remove(iconSecurity);
+    footer.prepend(infoIcon);
   }
 
-  function checkSignedInUser() {
-    if (window.adobeIMS?.isSignedInUser?.()) {
-      element.classList.remove('upsell');
-      element.classList.add('signed-in');
-      if (window.adobeIMS.getAccountType() !== 'type1') {
-        redDir(VERB);
-      }
+  async function checkSignedInUser() {
+    if (!window.adobeIMS?.isSignedInUser?.()) return;
+
+    element.classList.remove('upsell');
+    element.classList.add('signed-in');
+
+    let accountType;
+    try {
+      accountType = window.adobeIMS.getAccountType();
+    } catch {
+      accountType = (await window.adobeIMS.getProfile()).account_type;
     }
+
+    if (LIMITS[VERB].signedInAcceptedFiles) {
+      button.accept = [...LIMITS[VERB].acceptedFiles, ...LIMITS[VERB].signedInAcceptedFiles];
+    }
+
+    if (accountType !== 'type1') redDir(VERB);
   }
 
-  if (LIMITS[VERB].trial) {
-    const count = parseInt(localStorage.getItem(`${VERB}_trial`), 10);
-    if (count >= LIMITS[VERB].trial) {
-      await showUpSell(VERB, element);
-      verbAnalytics('upsell:shown', VERB);
-      verbAnalytics('upsell-wall:shown', VERB);
-    }
+  const { cookie } = document;
+  const limitCookie = exhLimitCookieMap[VERB] || exhLimitCookieMap[VERB.match(/^pdf-to|to-pdf$/)?.[0]];
+  const cookiePrefix = appEnvCookieMap[DC_ENV] || '';
+  const isLimitExhausted = limitCookie && cookie.includes(`${cookiePrefix}${limitCookie}`);
+
+  if (!window.adobeIMS?.isSignedInUser?.() && isLimitExhausted) {
+    await showUpSell(VERB, element);
+    verbAnalytics('upsell:shown', VERB, { userAttempts });
+    verbAnalytics('upsell-wall:shown', VERB, { userAttempts });
   }
 
   // Race the condition
-  checkSignedInUser();
+  await checkSignedInUser();
 
   // Redirect after IMS:Ready
   window.addEventListener('IMS:Ready', checkSignedInUser);
 
   // Analytics
-  verbAnalytics('landing:shown', VERB);
+  verbAnalytics('landing:shown', VERB, { userAttempts });
   reviewAnalytics(VERB);
 
   window.prefetchTargetUrl = null;
 
-  widgetMobileButton.addEventListener('click', () => {
-    verbAnalytics('goto-app:clicked', VERB);
-  });
-
   widget.addEventListener('click', (e) => {
     if (e.srcElement.classList.value.includes('error')) { return; }
-    if (!mobileLink) { button.click(); }
+    if (openFilePicker === true) { button.click(); }
   });
 
   button.addEventListener('click', (data) => {
-    verbAnalytics('filepicker:shown', VERB);
-    verbAnalytics('dropzone:choose-file-clicked', VERB);
-    verbAnalytics('files-selected', VERB);
-    if (VERB === 'compress-pdf') {
-      verbAnalytics('entry:clicked', VERB, data);
-      verbAnalytics('discover:clicked', VERB, data);
-    }
+    [
+      'filepicker:shown',
+      'dropzone:choose-file-clicked',
+      'files-selected',
+      'entry:clicked',
+      'discover:clicked',
+    ].forEach((analyticsEvent) => {
+      verbAnalytics(analyticsEvent, VERB, { ...data, userAttempts });
+    });
   });
 
   button.addEventListener('change', (data) => {
@@ -394,7 +445,7 @@ export default async function init(element) {
   });
 
   button.addEventListener('cancel', () => {
-    verbAnalytics('choose-file:close', VERB);
+    verbAnalytics('choose-file:close', VERB, { userAttempts });
   });
 
   widget.addEventListener('dragover', (e) => {
@@ -427,49 +478,40 @@ export default async function init(element) {
 
     const analyticsMap = {
       change: () => {
-        verbAnalytics('choose-file:open', VERB, mergeData(data));
-        setUser();
+        verbAnalytics('choose-file:open', VERB, mergeData({ ...data, userAttempts }));
       },
       drop: () => {
-        verbAnalytics('files-dropped', VERB, mergeData(data));
-        if (VERB === 'compress-pdf') {
-          verbAnalytics('entry:clicked', VERB, mergeData(data));
-          verbAnalytics('discover:clicked', VERB, mergeData(data));
-        }
+        [
+          'files-dropped',
+          'entry:clicked',
+          'discover:clicked',
+        ].forEach((analyticsEvent) => {
+          verbAnalytics(analyticsEvent, VERB, mergeData({ ...data, userAttempts }));
+        });
         setDraggingClass(widget, false);
-        setUser();
       },
       cancel: () => {
-        verbAnalytics('job:cancel', VERB, mergeData(data));
-        setUser();
+        verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
       },
       uploading: () => {
-        if (LIMITS[VERB].trial) {
-          if (!window.adobeIMS?.isSignedInUser?.()) {
-            const key = `${VERB}_trial`;
-            const stored = localStorage.getItem(key);
-            const count = parseInt(stored, 10);
-            localStorage.setItem(key, count + 1 || 1);
-          }
-        }
         prefetchTarget();
-        verbAnalytics('job:uploading', VERB, data, false);
+        verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('job:multi-file-uploading', VERB, data, false);
+          verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
         }
-        setUser();
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         window.addEventListener('beforeunload', handleExit);
       },
       uploaded: () => {
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
-        verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime }, false);
+        verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
         if (VERB === 'compress-pdf') {
-          verbAnalytics('job:test-multi-file-uploaded', VERB, data, false);
+          verbAnalytics('job:test-multi-file-uploaded', VERB, { ...data, userAttempts }, false);
         }
         exitFlag = true;
         setUser();
+        incrementVerbKey(`${VERB}_attempts`);
       },
       redirectUrl: () => {
         if (data) initiatePrefetch(data);
@@ -516,41 +558,31 @@ export default async function init(element) {
   };
 
   element.addEventListener('unity:show-error-toast', (e) => {
-    if (e.detail?.code.includes('error_only_accept_one_file')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error', VERB);
-    }
+    const errorCode = e.detail?.code;
+    if (!errorCode) return;
 
-    if (e.detail?.code.includes('error_unsupported_type')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error:unsupported_type', VERB);
-    }
+    handleError(e.detail, true, lanaOptions);
 
-    if (e.detail?.code.includes('error_empty_file')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error:empty_file', VERB);
-    }
+    if (errorCode.includes('cookie_not_set')) return;
 
-    if (e.detail?.code.includes('error_file_too_large')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error', VERB);
-    }
+    const errorAnalyticsMap = {
+      error_only_accept_one_file: 'error',
+      error_unsupported_type: 'error:unsupported_type',
+      error_empty_file: 'error:empty_file',
+      error_file_too_large: 'error',
+      error_max_page_count: 'error:max_page_count',
+      error_min_page_count: 'error:min_page_count',
+      error_generic: 'error',
+      error_max_quota_exceeded: 'error',
+      error_no_storage_provision: 'error',
+      error_duplicate_asset: 'error',
+    };
 
-    if (e.detail?.code.includes('error_max_page_count')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error:max_page_count', VERB);
-    }
-
-    if (e.detail?.code.includes('cookie_not_set')) {
-      handleError(e.detail, true, lanaOptions);
-    }
-
-    if (e.detail?.code.includes('error_generic')
-      || e.detail?.code.includes('error_max_quota_exceeded')
-      || e.detail?.code.includes('error_no_storage_provision')
-      || e.detail?.code.includes('error_duplicate_asset')) {
-      handleError(e.detail, true, lanaOptions);
-      verbAnalytics('error', VERB);
+    const matchedError = Object.keys(errorAnalyticsMap).find(
+      (errorKey) => errorCode.includes(errorKey),
+    );
+    if (matchedError) {
+      verbAnalytics(errorAnalyticsMap[matchedError], VERB);
     }
   });
 

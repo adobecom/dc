@@ -28,23 +28,29 @@ const RNR_API_KEY = 'dc-general';
 
 // #region Snapshot
 
-const snapshot = (function () {
-  const localSnapshot = localStorage.getItem('rnr-snapshot');
-  if (!localSnapshot) return null;
-  return JSON.parse(localSnapshot);
-}());
+let snapshot = null;
 
-function createSnapshot(rating, currentAverage, currentVotes) {
+function retrieveSnapshot(verb) {
+  const localSnapshotValue = localStorage.getItem('rnr-snapshot');
+  if (!localSnapshotValue) return;
+  const localSnapshot = JSON.parse(localSnapshotValue);
+  snapshot = localSnapshot[verb] || null;
+}
+
+function createSnapshot(verb, rating, currentAverage, currentVotes) {
   const newVotes = currentVotes + 1;
   const newAverage = (currentAverage * currentVotes + rating) / newVotes;
-  localStorage.setItem(
-    'rnr-snapshot',
-    JSON.stringify({
-      rating,
-      average: newAverage,
-      votes: newVotes,
-    }),
-  );
+
+  const localSnapshotValue = localStorage.getItem('rnr-snapshot');
+  let newSnapshot = {};
+  if (localSnapshotValue) newSnapshot = JSON.parse(localSnapshotValue);
+  newSnapshot[verb] = {
+    rating,
+    average: newAverage,
+    votes: newVotes,
+  };
+
+  localStorage.setItem('rnr-snapshot', JSON.stringify(newSnapshot));
 }
 
 // #endregion
@@ -79,6 +85,7 @@ function processNumberOption(value, minValue, maxValue, defaultValue) {
 }
 
 function extractMetadata(options) {
+  metadata.verb = options.verb;
   metadata.hideTitleOnUninteractive = options.hidetitle ? options.hidetitle === 'true' : true;
   metadata.initialValue = snapshot
     ? snapshot.rating
@@ -96,21 +103,21 @@ function extractMetadata(options) {
     SHOW_COMMENTS_TRESHOLD,
   );
   metadata.interactive = snapshot ? false : !options.interactive || options.interactive === 'true';
-  metadata.verb = options.verb;
 }
 
 // #endregion
 
 // #region Data
 
-const rnrData = (function () {
-  const data = { average: 5, votes: 0 };
+let rnrData = null;
+
+function initData() {
+  rnrData = { average: 5, votes: 0 };
   if (snapshot) {
-    data.average = snapshot.average;
-    data.votes = snapshot.votes;
+    rnrData.average = snapshot.average;
+    rnrData.votes = snapshot.votes;
   }
-  return data;
-}());
+}
 
 // #region Linked data
 
@@ -443,7 +450,7 @@ function initControls(element) {
       return;
     }
 
-    createSnapshot(data.rating, rnrData.average, rnrData.votes);
+    createSnapshot(metadata.verb, data.rating, rnrData.average, rnrData.votes);
 
     postReview(data);
 
@@ -494,7 +501,9 @@ function preloadIcons() {
 export default async function init(element) {
   const options = getOptions(element);
   removeOptionElements(element);
+  retrieveSnapshot(options.verb);
   extractMetadata(options);
+  initData();
   // Get verb from meta
   if (!metadata.verb) {
     window.lana?.log('Verb not configured for the rnr widget');
