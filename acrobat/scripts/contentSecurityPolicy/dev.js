@@ -98,6 +98,7 @@ const frameSrc = [
   'dc-api-dev.adobecontent.io',
   'dc.dev.dexilab.acrobat.com',
   'dev.acrobat.adobe.com',
+  'stage.acrobat.adobe.com',
   'servedby.flashtalking.com',
   'tr.snapchat.com/',
   'tr6.snapchat.com/',
