@@ -62,7 +62,7 @@ const setDraggingClass = (widget, shouldToggle) => {
 
 function prefetchTarget() {
   const iframe = document.createElement('iframe');
-  iframe.src = prefetchTargetUrl;
+  iframe.src = window.prefetchTargetUrl;
   iframe.style.display = 'none';
   document.body.appendChild(iframe);
 }
