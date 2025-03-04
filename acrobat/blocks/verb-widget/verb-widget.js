@@ -60,6 +60,13 @@ const setDraggingClass = (widget, shouldToggle) => {
   shouldToggle ? widget.classList.add('dragging') : widget.classList.remove('dragging');
 };
 
+function prefetchTarget() {
+  const iframe = document.createElement('iframe');
+  iframe.src = window.prefetchTargetUrl;
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+}
+
 function prefetchNextPage(url) {
   const link = document.createElement('link');
   link.rel = 'prefetch';
@@ -71,9 +78,9 @@ function prefetchNextPage(url) {
 }
 
 function initiatePrefetch(url) {
-  if (!window.prefetchInitiated) {
+  if (!window.prefetchTargetUrl) {
     prefetchNextPage(url);
-    window.prefetchInitiated = true;
+    window.prefetchTargetUrl = url;
   }
 }
 
@@ -384,6 +391,10 @@ export default async function init(element) {
       accountType = (await window.adobeIMS.getProfile()).account_type;
     }
 
+    if (LIMITS[VERB].signedInAcceptedFiles) {
+      button.accept = [...LIMITS[VERB].acceptedFiles, ...LIMITS[VERB].signedInAcceptedFiles];
+    }
+
     if (accountType !== 'type1') redDir(VERB);
   }
 
@@ -408,7 +419,7 @@ export default async function init(element) {
   verbAnalytics('landing:shown', VERB, { userAttempts });
   reviewAnalytics(VERB);
 
-  window.prefetchInitiated = false;
+  window.prefetchTargetUrl = null;
 
   widget.addEventListener('click', (e) => {
     if (e.srcElement.classList.value.includes('error')) { return; }
@@ -416,13 +427,15 @@ export default async function init(element) {
   });
 
   button.addEventListener('click', (data) => {
-    verbAnalytics('filepicker:shown', VERB, { userAttempts });
-    verbAnalytics('dropzone:choose-file-clicked', VERB, { userAttempts });
-    verbAnalytics('files-selected', VERB, { userAttempts });
-    if (VERB === 'compress-pdf') {
-      verbAnalytics('entry:clicked', VERB, { ...data, userAttempts });
-      verbAnalytics('discover:clicked', VERB, { ...data, userAttempts });
-    }
+    [
+      'filepicker:shown',
+      'dropzone:choose-file-clicked',
+      'files-selected',
+      'entry:clicked',
+      'discover:clicked',
+    ].forEach((analyticsEvent) => {
+      verbAnalytics(analyticsEvent, VERB, { ...data, userAttempts });
+    });
   });
 
   button.addEventListener('change', (data) => {
@@ -468,17 +481,20 @@ export default async function init(element) {
         verbAnalytics('choose-file:open', VERB, mergeData({ ...data, userAttempts }));
       },
       drop: () => {
-        verbAnalytics('files-dropped', VERB, mergeData({ ...data, userAttempts }));
-        if (VERB === 'compress-pdf') {
-          verbAnalytics('entry:clicked', VERB, mergeData({ ...data, userAttempts }));
-          verbAnalytics('discover:clicked', VERB, mergeData({ ...data, userAttempts }));
-        }
+        [
+          'files-dropped',
+          'entry:clicked',
+          'discover:clicked',
+        ].forEach((analyticsEvent) => {
+          verbAnalytics(analyticsEvent, VERB, mergeData({ ...data, userAttempts }));
+        });
         setDraggingClass(widget, false);
       },
       cancel: () => {
         verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
       },
       uploading: () => {
+        prefetchTarget();
         verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
         if (VERB === 'compress-pdf') {
           verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);

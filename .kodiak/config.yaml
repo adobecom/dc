@@ -5,6 +5,7 @@ snow:
     - source_path:
       - exclude:
         - '.github/**'
+        - 'edgeworkers/**'
 
 notifications:
   jira:
