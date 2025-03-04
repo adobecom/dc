@@ -660,11 +660,14 @@ Then(/^I (try to |)choose the (?:PDF|file|files) "([^\"]*)" to upload$/, async f
     }
     return absPath;
   });
-  let retry = 6;
+  let retry = 8;
+  let loadDelay = 5000;
   while (retry > 0) {
     try {
       if (retry < 6 && retry % 2 === 0) {
         await this.page.native.reload({waitUntil: 'load'});
+        await this.page.native.waitForTimeout(loadDelay);
+        loadDelay += 2000;
       }      
       await expect(this.page.selectButton).toHaveCount(1, { timeout: 15000 });
       await this.page.chooseFiles(absPaths);

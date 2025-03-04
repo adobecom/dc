@@ -11,3 +11,4 @@ Feature: Compress PDF
      Then I click the "Compress" button on the feedback
      Then I should see "test-compressed.pdf" in the page content
      Then I should see "test2-compressed.pdf" in the page content
+
