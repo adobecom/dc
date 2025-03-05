@@ -7,21 +7,13 @@ Feature: Compress PDF
   @regression @unity @compress-pdf @signed-in-type1free
   Scenario: Type1 user upload of single file
     Given I go to the compress-pdf page
-     Then I wait for 5 seconds
      When I choose the file "test-files/test.pdf" to upload
-     Then I wait for 5 seconds
      Then I should see the address bar contains "acrobat.adobe.com"
-     Then I wait for 5 seconds
-     When I go to the compress-pdf page
-     Then I wait for 5 seconds     
+     When I go to the compress-pdf page   
      Then I choose the file "test-files/test.pdf" to upload
-     Then I wait for 5 seconds
      Then I should see the address bar contains "acrobat.adobe.com"
-     Then I wait for 5 seconds
-     Then I go to the compress-pdf page
-     Then I wait for 5 seconds     
+     When I go to the compress-pdf page   
      Then I choose the file "test-files/test.pdf" to upload
-     Then I wait for 5 seconds
      Then I should see the address bar contains "acrobat.adobe.com"
 
   @regression @unity @compress-pdf @multi-files-type1free
