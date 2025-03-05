@@ -579,9 +579,11 @@ export default async function init(element) {
       error_duplicate_asset: 'error_duplicate_asset',
     };
 
-    const matchedError = errorAnalyticsMap[errorCode];
-    if (matchedError) {
-      verbAnalytics(matchedError, VERB, matchedError === 'error' ? { errorMsg } : {});
+    const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
+
+    if (key) {
+      const event = errorAnalyticsMap[key];
+      verbAnalytics(event, VERB, event === 'error' ? { errorMsg } : {});
     }
   });
 
