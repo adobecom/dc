@@ -505,9 +505,9 @@ export default async function init(element) {
       uploaded: () => {
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
-        verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
+        verbAnalytics('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
         if (LIMITS[VERB]?.multipleFiles === true) {
-          verbAnalytics('job:test-multi-file-uploaded', VERB, { ...data, userAttempts }, false);
+          verbAnalytics('job:multi-file-uploaded', VERB, { ...data, userAttempts }, false);
         }
         exitFlag = true;
         setUser();
