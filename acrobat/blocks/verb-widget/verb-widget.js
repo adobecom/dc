@@ -559,6 +559,7 @@ export default async function init(element) {
 
   element.addEventListener('unity:show-error-toast', (e) => {
     const errorCode = e.detail?.code;
+    const errorMsg = e.detail?.message;
     if (!errorCode) return;
 
     handleError(e.detail, true, lanaOptions);
@@ -566,23 +567,21 @@ export default async function init(element) {
     if (errorCode.includes('cookie_not_set')) return;
 
     const errorAnalyticsMap = {
-      error_only_accept_one_file: 'error',
+      error_only_accept_one_file: 'error_only_accept_one_file',
       error_unsupported_type: 'error:unsupported_type',
       error_empty_file: 'error:empty_file',
-      error_file_too_large: 'error',
+      error_file_too_large: 'error_file_too_large',
       error_max_page_count: 'error:max_page_count',
       error_min_page_count: 'error:min_page_count',
       error_generic: 'error',
-      error_max_quota_exceeded: 'error',
-      error_no_storage_provision: 'error',
-      error_duplicate_asset: 'error',
+      error_max_quota_exceeded: 'error_max_quota_exceeded',
+      error_no_storage_provision: 'error_no_storage_provision',
+      error_duplicate_asset: 'error_duplicate_asset',
     };
 
-    const matchedError = Object.keys(errorAnalyticsMap).find(
-      (errorKey) => errorCode.includes(errorKey),
-    );
+    const matchedError = errorAnalyticsMap[errorCode];
     if (matchedError) {
-      verbAnalytics(errorAnalyticsMap[matchedError], VERB);
+      verbAnalytics(matchedError, VERB, matchedError === 'error' ? { errorMsg } : {});
     }
   });
 
