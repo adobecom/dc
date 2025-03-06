@@ -7,11 +7,6 @@ const LIMITS = {
     multipleFiles: false,
     mobileApp: true,
   },
-  'delete-pages': {
-    maxFileSize: 104857600, // 100 MB
-    acceptedFiles: ['application/pdf'],
-    maxNumFiles: 1,
-  },
   'number-pages': {
     maxFileSize: 104857600, // 100 MB
     acceptedFiles: ['application/pdf'],
@@ -22,6 +17,29 @@ const LIMITS = {
     maxFileSize: 104857600, // 1 GB
     maxFileSizeFriendly: '1 GB',
     acceptedFiles: ['application/pdf'],
+    signedInAcceptedFiles: [
+      'application/msword',
+      'application/xml',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/x-tika-ooxml',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/x-tika-msworks-spreadsheet',
+      'application/vnd.adobe.form.fillsign',
+      'application/illustrator',
+      'application/rtf',
+      'application/x-indesign',
+      'image/jpeg',
+      'image/png',
+      'image/bmp',
+      'image/gif',
+      'image/vnd.adobe.photoshop',
+      'image/tiff',
+      'message/rfc822',
+      'text/plain',
+    ],
     maxNumFiles: 1,
   },
   'crop-pages': {
@@ -67,6 +85,32 @@ const LIMITS = {
     ],
     multipleFiles: true,
     trial: 2,
+  },
+  'delete-pages': {
+    maxFileSize: 104857600, // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
+  'insert-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
+  'extract-pages': {
+    maxFileSize: 104857600, // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
+  'reorder-pages': {
+    maxFileSize: 104857600, // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
+  sendforsignature: {
+    maxFileSize: 5242880, // 5 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+    mobileApp: true,
   },
   'merge-pdf': {
     // multifile-only or single-hybrid

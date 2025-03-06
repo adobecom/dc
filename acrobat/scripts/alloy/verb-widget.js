@@ -30,7 +30,7 @@ function ensureSatelliteReady(callback) {
   if (window._satellite?.track instanceof Function) {
     callback();
   } else {
-    setTimeout(() => ensureSatelliteReady(callback), 200);
+    setTimeout(() => ensureSatelliteReady(callback), 50);
   }
 }
 
@@ -71,13 +71,13 @@ export default function init(eventName, verb, metaData, documentUnloading = true
         digitalData: {
           primaryEvent: {
             eventInfo: {
-              eventName: `acrobat:verb-${verb}:${eventName}`,
+              eventName: `acrobat:verb-${verb}:${eventName}${metaData?.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
               value: `${verb} - Frictionless to Acrobat Web`,
             },
           },
           dcweb: {
             event: {
-              pagename: `acrobat:verb-${verb}:${eventName}`,
+              pagename: `acrobat:verb-${verb}:${eventName}${metaData?.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
               ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
               ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
             },
@@ -108,7 +108,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
           },
           dcweb2: {
             event: {
-              pagename: `acrobat:verb-${verb}:${eventName}`,
+              pagename: `acrobat:verb-${verb}:${eventName}${metaData?.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
               ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
               ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
             },
@@ -142,14 +142,29 @@ export default function init(eventName, verb, metaData, documentUnloading = true
       },
     },
   };
-  ensureSatelliteReady(() => {
+
+  // eslint-disable-next-line no-underscore-dangle
+  if (window._satellite?.track instanceof Function) {
+    // If satellite is already ready, just track immediately
     // eslint-disable-next-line no-underscore-dangle
     window._satellite.track('event', event);
-  });
+  } else {
+    // Otherwise, keep waiting until _satellite is ready
+    // This should be just a 50 milliseconds delay
+    ensureSatelliteReady(() => {
+      // eslint-disable-next-line no-underscore-dangle
+      window._satellite.track('event', event);
+    });
+  }
 }
 
 export function reviewAnalytics(verb) {
-  ensureSatelliteReady(() => {
+  // eslint-disable-next-line no-underscore-dangle
+  if (window._satellite?.track instanceof Function) {
     frictionless(verb);
-  });
+  } else {
+    ensureSatelliteReady(() => {
+      frictionless(verb);
+    });
+  }
 }

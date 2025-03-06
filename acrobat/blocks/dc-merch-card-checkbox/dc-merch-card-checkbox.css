@@ -38,7 +38,3 @@ merch-card[variant="mini-compare-chart"] [slot='callout-content'].ai-checkbox-co
   padding: 0;
   margin: var(--consonant-merch-spacing-xs) var(--consonant-merch-spacing-s) .5rem;
 }
-
-merch-card.product[data-ai-added] div[slot="footer"] a:first-child {
-  margin-top: 5px;
-}
