@@ -71,13 +71,13 @@ export default function init(eventName, verb, metaData, documentUnloading = true
         digitalData: {
           primaryEvent: {
             eventInfo: {
-              eventName: `acrobat:verb-${verb}:${eventName}${metaData?.errorMsg ? ` ${metaData.errorMsg}` : ''}`,
+              eventName: `acrobat:verb-${verb}:${eventName}${metaData?.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
               value: `${verb} - Frictionless to Acrobat Web`,
             },
           },
           dcweb: {
             event: {
-              pagename: `acrobat:verb-${verb}:${eventName}${metaData?.errorMsg ? ` ${metaData.errorMsg}` : ''}`,
+              pagename: `acrobat:verb-${verb}:${eventName}${metaData?.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
               ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
               ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
             },
@@ -108,7 +108,7 @@ export default function init(eventName, verb, metaData, documentUnloading = true
           },
           dcweb2: {
             event: {
-              pagename: `acrobat:verb-${verb}:${eventName}${metaData?.errorMsg ? ` ${metaData.errorMsg}` : ''}`,
+              pagename: `acrobat:verb-${verb}:${eventName}${metaData?.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
               ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
               ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
             },

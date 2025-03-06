@@ -1,6 +1,8 @@
 {
   "project": "DC",
   "host": "www.adobe.com",
+  "previewHost": "main--dc--adobecom.hlx.page",
+  "liveHost": "main--dc--adobecom.hlx.live",
   "plugins": [
     {
       "id": "path",
