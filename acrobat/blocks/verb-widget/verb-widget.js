@@ -559,7 +559,7 @@ export default async function init(element) {
 
   element.addEventListener('unity:show-error-toast', (e) => {
     const errorCode = e.detail?.code;
-    const errorMsg = e.detail?.message;
+    const errorInfo = e.detail?.info;
     if (!errorCode) return;
 
     handleError(e.detail, true, lanaOptions);
@@ -583,7 +583,7 @@ export default async function init(element) {
 
     if (key) {
       const event = errorAnalyticsMap[key];
-      verbAnalytics(event, VERB, event === 'error' ? { errorMsg } : {});
+      verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
     }
   });
 
