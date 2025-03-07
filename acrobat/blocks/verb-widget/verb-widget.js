@@ -90,7 +90,7 @@ function redDirLink(verb) {
   const VERB = verb;
   let newLocation;
   if (hostname !== 'www.adobe.com' && hostname !== 'sign.ing' && hostname !== 'edit.ing') {
-    newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-${ENV}`;
+    newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}-stage`;
   } else {
     newLocation = `https://www.adobe.com/go/acrobat-${verbRedirMap[VERB] || VERB.split('-').join('')}` || fallBack;
   }
@@ -99,6 +99,30 @@ function redDirLink(verb) {
 
 function redDir(verb) {
   window.location.href = redDirLink(verb);
+}
+
+async function transitionToProduct(verb) {
+  const element = await new Promise(resolve => {
+    const observer = new MutationObserver((mutations, obs) => {
+      const loader = document.querySelector('.splash-loader');
+      if (loader) {
+        obs.disconnect();
+        resolve(loader);
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  });
+
+  document.body.replaceChildren(element);
+  element.style.display = 'block';
+
+  setTimeout(() => {
+    window.location.href = redDirLink(verb);
+  }, 2000);
 }
 
 let exitFlag;
@@ -395,7 +419,7 @@ export default async function init(element) {
       button.accept = [...LIMITS[VERB].acceptedFiles, ...LIMITS[VERB].signedInAcceptedFiles];
     }
 
-    if (accountType !== 'type1') redDir(VERB);
+    transitionToProduct(VERB);
   }
 
   const { cookie } = document;
