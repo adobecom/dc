@@ -559,7 +559,7 @@ export default async function init(element) {
 
   element.addEventListener('unity:show-error-toast', (e) => {
     const errorCode = e.detail?.code;
-    const errorMsg = e.detail?.message;
+    const errorInfo = e.detail?.info;
     if (!errorCode) return;
 
     handleError(e.detail, true, lanaOptions);
@@ -579,9 +579,11 @@ export default async function init(element) {
       error_duplicate_asset: 'error_duplicate_asset',
     };
 
-    const matchedError = errorAnalyticsMap[errorCode];
-    if (matchedError) {
-      verbAnalytics(matchedError, VERB, matchedError === 'error' ? { errorMsg } : {});
+    const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
+
+    if (key) {
+      const event = errorAnalyticsMap[key];
+      verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
     }
   });
 
