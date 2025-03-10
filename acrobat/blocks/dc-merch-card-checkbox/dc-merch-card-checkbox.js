@@ -195,6 +195,22 @@ function addReaderButton(button, md, aiOsiCodes) {
     button.setAttribute('aria-label', `${button.textContent} ${headline}`);
   }
   button.parentNode.appendChild(buyButton);
+  if (buyButton.hasAttribute('aria-label')) {
+    const newLabel = buyButton.getAttribute('aria-label').replace('Acrobat', 'AI Assistant');
+    buyButton.setAttribute('aria-label', newLabel);
+  } else {
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'aria-label') {
+          const newLabel = buyButton.getAttribute('aria-label').replace('Acrobat', 'AI Assistant');
+          buyButton.setAttribute('aria-label', newLabel);
+          observer.disconnect();
+        }
+      }
+    });
+    observer.observe(button, { attributes: true, attributeFilter: ['aria-label'] });
+  }
+
 }
 function addAriaLabel(button, newButton) {
   if (button.hasAttribute('aria-label')) {
