@@ -496,7 +496,7 @@ export default async function init(element) {
       uploading: () => {
         prefetchTarget();
         verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
-        if (VERB === 'compress-pdf') {
+        if (LIMITS[VERB]?.multipleFiles === true) {
           verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
         }
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
@@ -506,7 +506,7 @@ export default async function init(element) {
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
         verbAnalytics('job:test-uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
-        if (VERB === 'compress-pdf') {
+        if (LIMITS[VERB]?.multipleFiles === true) {
           verbAnalytics('job:test-multi-file-uploaded', VERB, { ...data, userAttempts }, false);
         }
         exitFlag = true;
