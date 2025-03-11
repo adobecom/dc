@@ -372,11 +372,13 @@ if (IMS_GUEST) {
   };
 }
 
+const { ietf, prefix } = getLocale(locales);
+
 function replaceDotMedia(area = document) {
   // eslint-disable-next-line compat/compat
   const currUrl = new URL(window.location);
   const pathSeg = currUrl.pathname.split('/').length;
-  if (pathSeg >= 3) return;
+  if ((prefix === '' && pathSeg >= 3) || (prefix !== '' && pathSeg >= 4)) return;
   const resetAttributeBase = (tag, attr) => {
     area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
       // eslint-disable-next-line compat/compat
@@ -407,7 +409,6 @@ replaceDotMedia(document);
  * Edit below at your own risk
  * ------------------------------------------------------------
  */
-const { ietf } = getLocale(locales);
 
 (async function loadPage() {
   // Fast track the widget
