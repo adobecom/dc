@@ -34,7 +34,7 @@ function ensureSatelliteReady(callback) {
   }
 }
 
-export default function init(eventName, verb, metaData, documentUnloading = true) {
+function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
   function getSessionID() {
     const aToken = window.adobeIMS.getAccessToken();
     const arrayToken = aToken?.token.split('.');
@@ -43,13 +43,46 @@ export default function init(eventName, verb, metaData, documentUnloading = true
     // eslint-disable-next-line consistent-return
     return tokenPayload.sub || tokenPayload.user_id;
   }
+  const {
+    verb, eventName, errorInfo = '', noOfFiles, uploadTime, type, size, count, userAttempts,
+  } = metaData;
+
+  return {
+    event: {
+      pagename: `acrobat:verb-${verb}:${eventName}${errorInfo ? ` ${errorInfo}` : ''}`,
+      ...(noOfFiles ? { no_of_files: noOfFiles } : {}),
+      ...(uploadTime ? { uploadTime } : {}),
+    },
+    content: { type, size, count, fileType: type, totalSize: size },
+    source: {
+      user_agent: navigator.userAgent,
+      lang: document.documentElement.lang,
+      app_name: `unity:${verb}`,
+      url: window.location.href,
+      referrer,
+      tracking,
+    },
+    user: {
+      locale: document.documentElement.lang.toLocaleLowerCase(),
+      id: getSessionID(),
+      is_authenticated: `${window.adobeIMS?.isSignedInUser() ? 'true' : 'false'}`,
+      user_tags: [`${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`],
+      ...(userAttempts && { return_user_type: userAttempts }),
+    },
+  };
+}
+
+export default function init(eventName, verb, metaData, documentUnloading = true) {
+  const trackingParams = { appReferrer, trackingId };
+  const verbEvent = `acrobat:verb-${verb}:${eventName}`;
+  const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
+
   const event = {
     documentUnloading,
     // eslint-disable-next-line
     done: function (AJOPropositionResult, error) {
       if (!documentUnloading) {
         const accountType = window?.adobeIMS?.getAccountType();
-        const verbEvent = `acrobat:verb-${verb}:${eventName}`;
         if (error) {
           window.lana?.log(
             `Error Code: ${error}, Status: 'Unknown', Message: An error occurred while sending ${verbEvent}, Account Type: ${accountType}`,
@@ -64,80 +97,19 @@ export default function init(eventName, verb, metaData, documentUnloading = true
         webInteraction: {
           linkClicks: { value: 1 },
           type: 'other',
-          name: `acrobat:verb-${verb}:${eventName}`,
+          name: verbEvent,
         },
       },
       _adobe_corpnew: {
         digitalData: {
           primaryEvent: {
             eventInfo: {
-              eventName: `acrobat:verb-${verb}:${eventName}${metaData?.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
+              eventName: `${verbEvent}${metaData.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
               value: `${verb} - Frictionless to Acrobat Web`,
             },
           },
-          dcweb: {
-            event: {
-              pagename: `acrobat:verb-${verb}:${eventName}${metaData?.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
-              ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
-              ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
-            },
-            content: {
-              type: metaData?.type,
-              size: metaData?.size,
-              count: metaData?.count,
-              fileType: metaData?.type,
-              totalSize: metaData?.size,
-            },
-            source: {
-              user_agent: navigator.userAgent,
-              lang: document.documentElement.lang,
-              app_name: `unity:${verb}`,
-              url: window.location.href,
-              app_referrer: appReferrer,
-              tracking_id: trackingId,
-            },
-            user: {
-              locale: document.documentElement.lang.toLocaleLowerCase(),
-              id: getSessionID(),
-              is_authenticated: `${window.adobeIMS?.isSignedInUser() ? 'true' : 'false'}`,
-              user_tags: [
-                `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
-              ],
-              ...(metaData?.userAttempts ? { return_user_type: metaData.userAttempts } : {}),
-            },
-          },
-          dcweb2: {
-            event: {
-              pagename: `acrobat:verb-${verb}:${eventName}${metaData?.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
-              ...(metaData?.noOfFiles ? { no_of_files: metaData.noOfFiles } : {}),
-              ...(metaData?.uploadTime ? { uploadTime: metaData.uploadTime } : {}),
-            },
-            content: {
-              type: metaData?.type,
-              size: metaData?.size,
-              count: metaData?.count,
-              fileType: metaData?.type,
-              totalSize: metaData?.size,
-              // extension: 'docx', may not be needed
-            },
-            source: {
-              user_agent: navigator.userAgent,
-              lang: document.documentElement.lang,
-              app_name: `unity:${verb}`,
-              url: window.location.href,
-              app_referrer: appReferrer,
-              tracking_id: trackingId,
-            },
-            user: {
-              locale: document.documentElement.lang.toLocaleLowerCase(),
-              id: getSessionID(),
-              is_authenticated: `${window.adobeIMS?.isSignedInUser() ? 'true' : 'false'}`,
-              user_tags: [
-                `${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`,
-              ],
-              ...(metaData?.userAttempts ? { return_user_type: metaData.userAttempts } : {}),
-            },
-          },
+          dcweb: eventDataPayload,
+          dcweb2: eventDataPayload,
         },
       },
     },
