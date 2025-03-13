@@ -45,10 +45,6 @@
     return link;
   }
 
-  window.loadStyle = (href, callback) => {
-    return loadLink(href, { rel: 'stylesheet', callback });
-  }
-
   const miloLibs = setLibs('/libs');
   const unityLibs = getUnityLibs();
 
@@ -57,10 +53,10 @@
     if (link.endsWith('.js')) {
       loadLink(link, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
     } else if (link.endsWith('.css')) {
-      loadStyle(link);
-    } else if (link.endsWith('.json') || link.endsWith('.html')) {
+      loadLink(link, { as: 'style', rel: 'preload' });
+    } else if (/\.(json|html|svg)$/.test(link)) {
       loadLink(link, { as: 'fetch', rel: 'preload', crossorigin: 'anonymous' });
-    } else if (/\.(png|jpg|jpeg|gif|webp|svg)$/.test(link)) {
+    } else if (/\.(png|jpg|jpeg|gif|webp)$/.test(link)) {
       loadLink(link, { as: 'image', rel: 'preload', fetchpriority: 'high' });
     }
   });
