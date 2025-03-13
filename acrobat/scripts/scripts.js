@@ -346,6 +346,13 @@ const CONFIG = {
   imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations,account_cluster.read',
 };
 
+/*
+ ⚠ IMPORTANT NOTICE ⚠
+ Before modifying IMS scope configurations, please review the IMS Scope Update Guide:
+ → https://github.com/adobecom/dc/wiki/IMS-Scope-Update-Guide
+ IMS Scope updates must match the IMS portal scopes. Any incorrect changes may result in a CSO.
+*/
+
 const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
 
 if (IMS_GUEST) {
