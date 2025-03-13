@@ -184,13 +184,23 @@ export async function responseProvider(request) {
         '<https://use.typekit.net>;rel="preconnect"',
         `</libs/deps/imslib.min.js>;rel="preload";as="script"`,
     ];
-    if (!(mobileWidget && request.device.isMobile) && !unityWorkflow) {
-      headerLink = [...headerLink,
-        `<${acrobat}>;rel="preconnect"`,
-        `<${pdfnow}>;rel="preconnect"`,
-        `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.js>;rel="preload";as="script"`,
-        `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.css>;rel="preload";as="style"`,
-      ];
+    if (!(mobileWidget && request.device.isMobile)) {
+      if (unityWorkflow) {
+        headerLink = [...headerLink,
+          `</unitylibs/core/workflow/workflow.js>;rel="preload";as="script";crossorigin="anonymous"`,
+          `</unitylibs/scripts/utils.js>;rel="preload";as="script";crossorigin="anonymous"`,
+          `</unitylibs/core/workflow/workflow-acrobat/action-binder.js>;rel="preload";as="script";crossorigin="anonymous"`,
+          `</acrobat/blocks/unity/unity.js>;rel="preload";as="script";crossorigin="anonymous"`,
+          `</acrobat/blocks/unity/unity.css>;rel="preload";as="style"`,
+        ];
+      } else {
+        headerLink = [...headerLink,
+          `<${acrobat}>;rel="preconnect"`,
+          `<${pdfnow}>;rel="preconnect"`,
+          `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.js>;rel="preload";as="script"`,
+          `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.css>;rel="preload";as="style"`,
+        ];
+      }
     }
     headerLink = headerLink.join();
 
