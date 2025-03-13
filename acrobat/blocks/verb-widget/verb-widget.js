@@ -420,6 +420,7 @@ export default async function init(element) {
   reviewAnalytics(VERB);
 
   window.prefetchTargetUrl = null;
+  element.parentNode.style.display = 'block';
 
   widget.addEventListener('click', (e) => {
     if (e.srcElement.classList.value.includes('error')) { return; }
