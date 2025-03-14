@@ -190,7 +190,42 @@ function addReaderButton(button, md, aiOsiCodes) {
   buyButton.classList.add(AI_CLASS);
   buyButton.classList.add('button-l');
   buyButton.dataset.wcsOsi = aiOsiCodes.primary;
+  if (!button.getAttribute('aria-label')) {
+    const headline = button.closest('div:has(h3)')?.querySelector('h3')?.textContent;
+    button.setAttribute('aria-label', `${button.textContent} ${headline}`);
+  }
   button.parentNode.appendChild(buyButton);
+  if (buyButton.hasAttribute('aria-label')) {
+    const newLabel = buyButton.getAttribute('aria-label').replace('Acrobat', 'AI Assistant');
+    buyButton.setAttribute('aria-label', newLabel);
+  } else {
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'aria-label') {
+          const newLabel = buyButton.getAttribute('aria-label').replace('Acrobat', 'AI Assistant');
+          buyButton.setAttribute('aria-label', newLabel);
+          observer.disconnect();
+        }
+      }
+    });
+    observer.observe(button, { attributes: true, attributeFilter: ['aria-label'] });
+  }
+
+}
+function addAriaLabel(button, newButton) {
+  if (button.hasAttribute('aria-label')) {
+    newButton.setAttribute('aria-label', `${button.getAttribute('aria-label')} with AI Assistant`);
+  } else {
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'aria-label') {
+          newButton.setAttribute('aria-label', `${button.getAttribute('aria-label')} with AI Assistant`);
+          observer.disconnect();
+        }
+      }
+    });
+    observer.observe(button, { attributes: true, attributeFilter: ['aria-label'] });
+  }
 }
 async function addButtons({ card, md, fragAudience, cardPlanType }) {
   decorateDefaultLinkAnalytics(card, getConfig());
@@ -211,6 +246,7 @@ async function addButtons({ card, md, fragAudience, cardPlanType }) {
     clonedButton.setAttribute('daa-ll', `ai-${daaLl}`);
     button.classList.add(NO_AI_CLASS);
     button.parentNode.insertBefore(clonedButton, button);
+    addAriaLabel(button, clonedButton);
     attachQtyUpdateObserver(button, clonedButton);
   });
 }
