@@ -233,6 +233,73 @@ async function showUpSell(verb, element) {
   loadGoogleLogin();
 }
 
+// How to unity
+const getImage = (el) => el.querySelector('picture') || el.querySelector('a[href$=".svg"');
+const getVideo = (el) => el.querySelector('.video-container, .pause-play-wrapper, video, .milo-video');
+
+const getLegacyList = (rows) => {
+  const rowArray = [...rows];
+  rowArray.shift();
+  const list = createTag('ol');
+  rowArray.forEach((row) => {
+    list.append(createTag('li', null, row.innerHTML));
+  });
+  Array.from(rows).forEach((row, idx) => { if (idx > 1) row.remove(); });
+  return list;
+};
+
+const getHowToSteps = (el) => {
+  const stepsDiv = el?.firstElementChild;
+  let list = stepsDiv?.querySelector('ol, ul');
+  if (!stepsDiv) return {};
+  if (!list) list = getLegacyList(el.children);
+
+  const steps = [...list.children].reduce(
+    (stepInfo, step, idx) => {
+      step.append(createTag('div', {}, [...step.childNodes]));
+      stepInfo.steps.push(step);
+      const img = getImage(step);
+      if (img) {
+        stepInfo.images[idx] = img;
+        if (img.previousElementSibling.nodeName === 'BR') {
+          img.previousElementSibling.remove();
+        }
+        step.insertBefore(img, step.firstElementChild);
+      }
+      return stepInfo;
+    },
+    { steps: [], images: {} },
+  );
+
+  el.children[1]?.remove();
+  return steps;
+};
+
+const getHowToInfo = (children) => {
+  const infoDiv = children[2]?.querySelector(':scope > div');
+  if (!infoDiv) return {};
+
+  const heading = infoDiv.firstElementChild;
+  heading.classList.add('heading-xl');
+  if (!heading.id) {
+    heading.id = heading.textContent.replace(/\s+/g, '-').toLowerCase();
+  }
+
+  const image = getImage(infoDiv.lastElementChild);
+  const video = getVideo(infoDiv.lastElementChild);
+
+  const desc = infoDiv.childElementCount > 2 || (infoDiv.childElementCount === 2 && !image)
+    ? infoDiv.children[1]
+    : infoDiv.children[2] || '';
+
+  return {
+    heading,
+    desc,
+    mainImage: image,
+    mainVideo: video,
+  };
+};
+
 export default async function init(element) {
   if (isOldBrowser()) {
     window.location.href = EOLBrowserPage;
@@ -249,6 +316,7 @@ export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
+
   let noOfFiles = null;
   let openFilePicker = true;
   const userAttempts = getVerbKey(`${VERB}_attempts`);
@@ -595,4 +663,37 @@ export default async function init(element) {
       window.location.reload();
     }
   });
+  // How to section
+  if (children[3]) {
+    const howToSection = createTag('div', { class: 'section' });
+    const howToContainer = createTag('div', { class: 'how-to large-image seo container con-block' });
+    const howToForeground = createTag('div', { class: 'foreground' });
+
+    const isSeo = howToForeground.classList.contains('seo');
+    const isLargeMedia = howToContainer.classList.contains('large-image') || howToContainer.classList.contains('large-media');
+    const { desc, heading, mainImage, mainVideo } = getHowToInfo(children);
+    const { steps, images } = getHowToSteps(children[3]);
+    const orderedList = document.createElement('ol');
+    if (steps) orderedList.append(...steps);
+    if (mainImage) {
+      const imageClass = `how-to-media${isLargeMedia ? ' how-to-media-large' : ''}`;
+      howToForeground.append(createTag('div', { class: imageClass }, mainImage));
+    }
+    if (mainVideo) {
+      const videoClass = `how-to-media${isLargeMedia ? ' how-to-media-large' : ''}`;
+      howToForeground.append(createTag('div', { class: videoClass }, mainVideo));
+    }
+
+    if (mainImage) howToForeground.classList.add('has-image');
+    if (mainVideo) howToForeground.classList.add('has-video');
+
+    const howToHeading = createTag('div', { class: 'how-to-heading' }, heading, desc);
+    howToForeground.append(howToHeading);
+    if (orderedList.children.length > 0) howToForeground.append(orderedList);
+
+    // Add the howToSection after the element
+    howToContainer.append(howToForeground);
+
+    element.parentElement.append(howToContainer);
+  }
 }
