@@ -1,7 +1,6 @@
 /* eslint-disable compat/compat */
 import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
-import verbAnalytics, { reviewAnalytics } from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
@@ -252,6 +251,9 @@ export default async function init(element) {
   let noOfFiles = null;
   let openFilePicker = true;
   const userAttempts = getVerbKey(`${VERB}_attempts`);
+
+  // Dynamically import analytics functions
+  const { default: verbAnalytics, reviewAnalytics } = await import('../../scripts/alloy/verb-widget.js');
 
   function mergeData(eventData = {}) {
     return { ...eventData, noOfFiles };
