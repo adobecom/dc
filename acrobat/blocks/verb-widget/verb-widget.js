@@ -1,7 +1,6 @@
 /* eslint-disable compat/compat */
 import LIMITS from './limits.js';
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
-import verbAnalytics, { reviewAnalytics } from '../../scripts/alloy/verb-widget.js';
 import createSvgElement from './icons.js';
 
 const miloLibs = setLibs('/libs');
@@ -253,6 +252,9 @@ export default async function init(element) {
   let openFilePicker = true;
   const userAttempts = getVerbKey(`${VERB}_attempts`);
 
+  // Dynamically import analytics functions
+  const { default: verbAnalytics, reviewAnalytics } = await import('../../scripts/alloy/verb-widget.js');
+
   function mergeData(eventData = {}) {
     return { ...eventData, noOfFiles };
   }
@@ -421,6 +423,8 @@ export default async function init(element) {
 
   window.prefetchTargetUrl = null;
 
+  element.parentNode.style.display = 'block';
+
   widget.addEventListener('click', (e) => {
     if (e.srcElement.classList.value.includes('error')) { return; }
     if (openFilePicker === true) { button.click(); }
@@ -568,15 +572,15 @@ export default async function init(element) {
 
     const errorAnalyticsMap = {
       error_only_accept_one_file: 'error_only_accept_one_file',
-      error_unsupported_type: 'error:unsupported_type',
-      error_empty_file: 'error:empty_file',
-      error_file_too_large: 'error_file_too_large',
+      error_unsupported_type: 'error:UnsupportedFile',
+      error_empty_file: 'error:EmptyFile',
+      error_file_too_large: 'error:TooLargeFile',
       error_max_page_count: 'error:max_page_count',
       error_min_page_count: 'error:min_page_count',
       error_generic: 'error',
-      error_max_quota_exceeded: 'error_max_quota_exceeded',
-      error_no_storage_provision: 'error_no_storage_provision',
-      error_duplicate_asset: 'error_duplicate_asset',
+      error_max_quota_exceeded: 'error:max_quota_exceeded',
+      error_no_storage_provision: 'error:no_storage_provision',
+      error_duplicate_asset: 'error:duplicate_asset',
     };
 
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
