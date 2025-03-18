@@ -120,6 +120,8 @@ export default function init(eventName, verb, metaData, documentUnloading = true
     const event = createEventObject(eventName, verb, metaData, trackingParams, documentUnloading);
     // eslint-disable-next-line no-underscore-dangle
     await window._satellite.track('event', event);
+    // eslint-disable-next-line no-underscore-dangle
+    await window._satellite.track('propositionDisplay', event);
     console.log('AA was fired! 😁');
   };
 
