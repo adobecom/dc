@@ -116,10 +116,11 @@ function createEventObject(eventName, verb, metaData, trackingParams, documentUn
 export default function init(eventName, verb, metaData, documentUnloading = true) {
   const trackingParams = { appReferrer, trackingId };
 
-  const trackEvent = () => {
+  const trackEvent = async () => {
     const event = createEventObject(eventName, verb, metaData, trackingParams, documentUnloading);
     // eslint-disable-next-line no-underscore-dangle
-    window._satellite.track('event', event);
+    await window._satellite.track('event', event);
+    console.log('AA was fired! 😁');
   };
 
   // eslint-disable-next-line no-underscore-dangle
