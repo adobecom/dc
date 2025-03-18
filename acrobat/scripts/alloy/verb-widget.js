@@ -1,5 +1,3 @@
-import frictionless from '../frictionless.js';
-
 const params = new Proxy(
   // eslint-disable-next-line compat/compat
   new URLSearchParams(window.location.search),
@@ -72,12 +70,11 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
   };
 }
 
-export default function init(eventName, verb, metaData, documentUnloading = true) {
-  const trackingParams = { appReferrer, trackingId };
+function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {
   const verbEvent = `acrobat:verb-${verb}:${eventName}`;
   const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
 
-  const event = {
+  return {
     documentUnloading,
     // eslint-disable-next-line
     done: function (AJOPropositionResult, error) {
@@ -114,29 +111,39 @@ export default function init(eventName, verb, metaData, documentUnloading = true
       },
     },
   };
+}
+
+export default function init(eventName, verb, metaData, documentUnloading = true) {
+  const trackingParams = { appReferrer, trackingId };
+
+  const trackEvent = () => {
+    const event = createEventObject(eventName, verb, metaData, trackingParams, documentUnloading);
+    // eslint-disable-next-line no-underscore-dangle
+    window._satellite.track('event', event);
+  };
 
   // eslint-disable-next-line no-underscore-dangle
   if (window._satellite?.track instanceof Function) {
     // If satellite is already ready, just track immediately
-    // eslint-disable-next-line no-underscore-dangle
-    window._satellite.track('event', event);
+    trackEvent();
   } else {
     // Otherwise, keep waiting until _satellite is ready
     // This should be just a 50 milliseconds delay
-    ensureSatelliteReady(() => {
-      // eslint-disable-next-line no-underscore-dangle
-      window._satellite.track('event', event);
-    });
+    ensureSatelliteReady(trackEvent);
   }
 }
 
 export function reviewAnalytics(verb) {
   // eslint-disable-next-line no-underscore-dangle
   if (window._satellite?.track instanceof Function) {
-    frictionless(verb);
+    import('../frictionless.js').then((mod) => {
+      mod.default(verb);
+    });
   } else {
     ensureSatelliteReady(() => {
-      frictionless(verb);
+      import('../frictionless.js').then((mod) => {
+        mod.default(verb);
+      });
     });
   }
 }
