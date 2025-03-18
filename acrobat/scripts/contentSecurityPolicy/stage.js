@@ -266,7 +266,7 @@ const scriptSrc = [
   'yjtag.yahoo.co.jp',
   'tr.snapchat.com',
   '\'sha256-Xo/ZSoqCyuyuIS4WXnJLvyEI1jU81BRcs4uxRkDqaM0=\'',
-  '\'sha256-nAigApwVAFaAG381OAPIUWINK3JzGgUcb2TZvwX6MK8=\'',
+  '\'sha256-ggQ3UJlEGjUjmJjLZXZyjmCbwSLYYVLQQ3S4Kyxo1GI=\'',
   ';',
 ];
 
