@@ -187,6 +187,11 @@
   height: 28px;
 }
 
+html[dir="rtl"] .verb-cta .upload-icon {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
 .verb-cta:hover {
   text-decoration: none;
   color: #fff;
