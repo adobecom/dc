@@ -873,3 +873,8 @@ a[href*="susi"] {
   pointer-events: none;
   cursor: default;
 }
+
+/* hlx Review Override */
+.hlx-Review-ratingFields input[name='rating'] {
+  margin: 1px;
+}
