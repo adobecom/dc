@@ -1,4 +1,4 @@
-import LIMITS from '../verb-widget/limits.js';
+import { LIMITS } from '../verb-widget/verb-widget.js';
 
 export const localeMap = {
   '': 'en-us',

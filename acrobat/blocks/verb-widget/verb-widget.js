@@ -46,7 +46,7 @@ const appEnvCookieMap = {
   prod: 'p_ac_',
 };
 
-const LIMITS = {
+export const LIMITS = {
   fillsign: {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB', // 100 MB
