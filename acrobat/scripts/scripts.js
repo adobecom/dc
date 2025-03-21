@@ -403,11 +403,8 @@ replaceDotMedia(document);
   const blocks = '.marquee,.hero-marquee';
   const marquee = document.querySelector(blocks); // first marquee only
   if (marquee) {
-    const index = window.browser.isMobile ? 1 : 3;
-    const selectorBG = `${blocks} > div:nth-child(1) > div:nth-of-type(${index}) img`;
-    const selectorFG = `${blocks} > div:nth-child(2) img`;
-    marquee.querySelector(selectorBG)?.setAttribute('loading', 'eager');
-    marquee.querySelector(selectorFG)?.setAttribute('loading', 'eager');
+    const index = window.browser.isMobile ? 0 : 1;
+    marquee.querySelectorAll('img')[index]?.setAttribute('loading', 'eager');
   }
 }());
 
