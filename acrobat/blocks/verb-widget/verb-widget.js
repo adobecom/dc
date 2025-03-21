@@ -390,8 +390,10 @@ function createSvgElement(iconName) {
 
   const svgString = ICONS[iconName];
   if (!svgString) {
-    // eslint-disable-next-line no-console
-    console.warn(`Icon not found: ${iconName}`);
+    window.lana?.log(
+      `Error Code: Unknown, Status: 'Unknown', Message: Icon not found: ${iconName}`,
+      lanaOptions,
+    );
     return null;
   }
 
@@ -406,6 +408,52 @@ function createSvgElement(iconName) {
   // Return a clone
   return svgElement.cloneNode(true);
 }
+
+// Initialize analytics functions as no-ops until loaded
+window.analytics = {
+  verbAnalytics: () => {},
+  reviewAnalytics: () => {},
+};
+
+async function loadAnalyticsAfterLCP(analyticsData) {
+  const { verb, userAttempts } = analyticsData;
+  try {
+    const analyticsModule = await import('../../scripts/alloy/verb-widget.js');
+    const { default: verbAnalytics, reviewAnalytics } = analyticsModule;
+    window.analytics.verbAnalytics = verbAnalytics;
+    window.analytics.reviewAnalytics = reviewAnalytics;
+    window.analytics.verbAnalytics('landing:shown', verb, { userAttempts });
+    window.analytics.reviewAnalytics(verb);
+  } catch (error) {
+    window.lana?.log(
+      `Error Code: Unknown, Status: 'Unknown', Message: ${error.message} on ${verb}`,
+      lanaOptions,
+    );
+  }
+  return window.analytics;
+}
+
+window.addEventListener('analyticsLoad', async (analyticsData) => {
+  const { detail } = analyticsData;
+  if ('PerformanceObserver' in window) {
+    const waitForLCP = new Promise((resolve) => {
+      const lcpObserver = new PerformanceObserver((entryList, observer) => {
+        const entries = entryList.getEntries();
+        if (entries.length > 0) {
+          observer.disconnect();
+          setTimeout(resolve, 50);
+        }
+      });
+      lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+    });
+    await waitForLCP;
+    loadAnalyticsAfterLCP(detail);
+  } else {
+    const timeoutPromise = new Promise((resolve) => { setTimeout(() => resolve(), 3000); });
+    await timeoutPromise;
+    loadAnalyticsAfterLCP(detail);
+  }
+});
 
 export default async function init(element) {
   if (isOldBrowser()) {
@@ -426,9 +474,6 @@ export default async function init(element) {
   let noOfFiles = null;
   let openFilePicker = true;
   const userAttempts = getVerbKey(`${VERB}_attempts`);
-
-  // Dynamically import analytics functions
-  const { default: verbAnalytics, reviewAnalytics } = await import('../../scripts/alloy/verb-widget.js');
 
   function mergeData(eventData = {}) {
     return { ...eventData, noOfFiles };
@@ -532,7 +577,7 @@ export default async function init(element) {
       const mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`] || window.mph[`verb-widget-${VERB}-apple`];
       const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
       widgetMobileButton.addEventListener('click', () => {
-        verbAnalytics('goto-app:clicked', VERB, { userAttempts });
+        window.analytics.verbAnalytics('goto-app:clicked', VERB, { userAttempts });
       });
       widgetLeft.insertBefore(widgetMobileButton, errorState);
     } else {
@@ -582,8 +627,8 @@ export default async function init(element) {
 
   if (!window.adobeIMS?.isSignedInUser?.() && isLimitExhausted) {
     await showUpSell(VERB, element);
-    verbAnalytics('upsell:shown', VERB, { userAttempts });
-    verbAnalytics('upsell-wall:shown', VERB, { userAttempts });
+    window.analytics.verbAnalytics('upsell:shown', VERB, { userAttempts });
+    window.analytics.verbAnalytics('upsell-wall:shown', VERB, { userAttempts });
   }
 
   // Race the condition
@@ -591,10 +636,6 @@ export default async function init(element) {
 
   // Redirect after IMS:Ready
   window.addEventListener('IMS:Ready', checkSignedInUser);
-
-  // Analytics
-  verbAnalytics('landing:shown', VERB, { userAttempts });
-  reviewAnalytics(VERB);
 
   window.prefetchTargetUrl = null;
 
@@ -613,7 +654,7 @@ export default async function init(element) {
       'entry:clicked',
       'discover:clicked',
     ].forEach((analyticsEvent) => {
-      verbAnalytics(analyticsEvent, VERB, { ...data, userAttempts });
+      window.analytics.verbAnalytics(analyticsEvent, VERB, { ...data, userAttempts });
     });
   });
 
@@ -624,7 +665,7 @@ export default async function init(element) {
   });
 
   button.addEventListener('cancel', () => {
-    verbAnalytics('choose-file:close', VERB, { userAttempts });
+    window.analytics.verbAnalytics('choose-file:close', VERB, { userAttempts });
   });
 
   widget.addEventListener('dragover', (e) => {
@@ -657,7 +698,7 @@ export default async function init(element) {
 
     const analyticsMap = {
       change: () => {
-        verbAnalytics('choose-file:open', VERB, mergeData({ ...data, userAttempts }));
+        window.analytics.verbAnalytics('choose-file:open', VERB, mergeData({ ...data, userAttempts }));
       },
       drop: () => {
         [
@@ -665,18 +706,22 @@ export default async function init(element) {
           'entry:clicked',
           'discover:clicked',
         ].forEach((analyticsEvent) => {
-          verbAnalytics(analyticsEvent, VERB, mergeData({ ...data, userAttempts }));
+          window.analytics.verbAnalytics(
+            analyticsEvent,
+            VERB,
+            mergeData({ ...data, userAttempts }),
+          );
         });
         setDraggingClass(widget, false);
       },
       cancel: () => {
-        verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
+        window.analytics.verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
       },
       uploading: () => {
         prefetchTarget();
-        verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
+        window.analytics.verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
         if (LIMITS[VERB]?.multipleFiles === true) {
-          verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
+          window.analytics.verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
         }
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         window.addEventListener('beforeunload', handleExit);
@@ -684,9 +729,9 @@ export default async function init(element) {
       uploaded: () => {
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
-        verbAnalytics('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
+        window.analytics.verbAnalytics('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
         if (LIMITS[VERB]?.multipleFiles === true) {
-          verbAnalytics('job:multi-file-uploaded', VERB, { ...data, userAttempts }, false);
+          window.analytics.verbAnalytics('job:multi-file-uploaded', VERB, { ...data, userAttempts }, false);
         }
         exitFlag = true;
         setUser();
@@ -756,7 +801,7 @@ export default async function init(element) {
 
     if (key) {
       const event = errorAnalyticsMap[key];
-      verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
+      window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
     }
   });
 
@@ -767,5 +812,20 @@ export default async function init(element) {
     if (historyTraversal) {
       window.location.reload();
     }
+  });
+  function runWhenDocumentIsReady(callback) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback);
+    } else {
+      callback();
+    }
+  }
+  runWhenDocumentIsReady(() => {
+    window.dispatchEvent(new CustomEvent('analyticsLoad', {
+      detail: {
+        verb: VERB,
+        userAttempts,
+      },
+    }));
   });
 }
