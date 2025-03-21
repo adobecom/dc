@@ -434,6 +434,7 @@ async function loadAnalyticsAfterLCP(analyticsData) {
 }
 
 window.addEventListener('analyticsLoad', async (analyticsData) => {
+  const { detail } = analyticsData;
   if ('PerformanceObserver' in window) {
     const waitForLCP = new Promise((resolve) => {
       const lcpObserver = new PerformanceObserver((entryList, observer) => {
@@ -446,9 +447,11 @@ window.addEventListener('analyticsLoad', async (analyticsData) => {
       lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
     });
     await waitForLCP;
-    loadAnalyticsAfterLCP(analyticsData.detail);
+    loadAnalyticsAfterLCP(detail);
   } else {
-    loadAnalyticsAfterLCP(analyticsData.detail);
+    const timeoutPromise = new Promise((resolve) => { setTimeout(() => resolve(), 3000); });
+    await timeoutPromise;
+    loadAnalyticsAfterLCP(detail);
   }
 });
 
