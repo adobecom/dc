@@ -24,6 +24,14 @@
     return `https://${branch}${branch.includes('--')? '' : '--unity--adobecom'}.${env}.live/unitylibs`;
   }
 
+  window.extractLocalePrefix = (pathname = window.location.pathname) => {
+    const segments = pathname.split('/').filter(Boolean);
+    if (!segments[0] || segments[0] === 'acrobat') {
+      return '';
+    }
+    return `/${segments[0]}`;
+  }
+
   window.loadLink = (href, options = {}) => {
     const { as, callback, crossorigin, rel, fetchpriority } = options;
     let link = document.head.querySelector(`link[href="${href}"]`);
@@ -47,8 +55,10 @@
 
   const miloLibs = setLibs('/libs');
   const unityLibs = getUnityLibs();
+  const localePrefix =  extractLocalePrefix();
 
-  const preloads = document.querySelector('meta[name="preloads"]')?.content?.split(',').map(x => x.trim().replace('$MILOLIBS', miloLibs).replace('$UNITYLIBS', unityLibs)) || [];
+
+  const preloads = document.querySelector('meta[name="preloads"]')?.content?.split(',').map(x => x.trim().replace('$MILOLIBS', miloLibs).replace('$UNITYLIBS', unityLibs).replace('$LOCALEPREFIX', localePrefix)) || [];
   preloads.forEach((link) => {
     if (link.endsWith('.js')) {
       loadLink(link, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
