@@ -1,4 +1,4 @@
-import LIMITS from '../verb-widget/limits.js';
+import { LIMITS } from '../verb-widget/verb-widget.js';
 
 export const localeMap = {
   '': 'en-us',
@@ -111,7 +111,8 @@ export default async function init(el) {
   }
 
   const element = el.querySelector('span');
-  const verb = element.classList[1].replace('icon-', '');
+  const verbWidget = el.closest('.section')?.querySelector('.verb-widget');
+  const verb = (verbWidget && [...verbWidget.classList].find((cn) => LIMITS[cn])) || element.classList[1].replace('icon-', '');
   if (mobileApp && LIMITS[verb].mobileApp) return;
 
   const unitylibs = getUnityLibs();

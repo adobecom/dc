@@ -346,6 +346,13 @@ const CONFIG = {
   imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations,account_cluster.read',
 };
 
+/*
+ ⚠ IMPORTANT NOTICE ⚠
+ Before modifying IMS scope configurations, please review the IMS Scope Update Guide:
+ → https://github.com/adobecom/dc/wiki/IMS-Scope-Update-Guide
+ IMS Scope updates must match the IMS portal scopes. Any incorrect changes may result in a CSO.
+*/
+
 const IMS_GUEST = document.querySelector('meta[name="ims-guest"]')?.content;
 
 if (IMS_GUEST) {
@@ -372,11 +379,13 @@ if (IMS_GUEST) {
   };
 }
 
+const { ietf, prefix } = getLocale(locales);
+
 function replaceDotMedia(area = document) {
   // eslint-disable-next-line compat/compat
   const currUrl = new URL(window.location);
   const pathSeg = currUrl.pathname.split('/').length;
-  if (pathSeg >= 3) return;
+  if ((prefix === '' && pathSeg >= 3) || (prefix !== '' && pathSeg >= 4)) return;
   const resetAttributeBase = (tag, attr) => {
     area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
       // eslint-disable-next-line compat/compat
@@ -407,7 +416,6 @@ replaceDotMedia(document);
  * Edit below at your own risk
  * ------------------------------------------------------------
  */
-const { ietf } = getLocale(locales);
 
 (async function loadPage() {
   // Fast track the widget

@@ -436,9 +436,10 @@ div.how-to ol li::before{
   fill: #fa0f00;
 }
 
-
+/* hlx Review Override on margin */
 .hlx-Review-ratingFields input[name='rating'] {
   background-image: url('/acrobat/img/icons/star-outline.svg') !important;
+  margin: 1px;
 }
 
 .hlx-Review-ratingFields input[name='rating'].is-Active {
