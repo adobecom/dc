@@ -461,6 +461,7 @@ export default async function init(element) {
     window.location.href = EOLBrowserPage;
     return;
   }
+  const ENV = getEnv();
 
   const isMobile = isMobileDevice();
   const isTablet = isTabletDevice();
@@ -731,7 +732,7 @@ export default async function init(element) {
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
         // window.analytics.verbAnalytics('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
-        window.analytics.sendDirect('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
+        window.analytics.sendDirect('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, ENV);
         if (LIMITS[VERB]?.multipleFiles === true) {
           window.analytics.verbAnalytics('job:multi-file-uploaded', VERB, { ...data, userAttempts }, false);
         }
