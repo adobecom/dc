@@ -147,3 +147,21 @@ export function reviewAnalytics(verb) {
     });
   }
 }
+
+export function sendDirect(eventName, verb, metaData, documentUnloading = true) {
+  console.log('RESTR');
+  const trackingParams = { appReferrer, trackingId };
+  const event = createEventObject(eventName, verb, metaData, trackingParams, documentUnloading);
+  const dataStreamId = '913eac4d-900b-45e8-9ee7-306216765cd2'; // PROD get stage and make dynamic
+  const url = `https://sstats.adobe.com/ee/v2/interact?dataStreamId=${dataStreamId}`;
+  const headers = { Accept: 'application/json' };
+  // eslint-disable-next-line compat/compat
+  const fetchPromise = fetch(url, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(event),
+  });
+  if (!fetchPromise.ok) {
+    console.log(`LANA error - ${fetchPromise.message}`);
+  }
+}
