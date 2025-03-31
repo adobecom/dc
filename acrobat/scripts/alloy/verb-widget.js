@@ -1,3 +1,8 @@
+await window.alloy_getIdentity
+  .then((value) => {
+    window.ecid = value.identity.ECID;
+  });
+
 const params = new Proxy(
   // eslint-disable-next-line compat/compat
   new URLSearchParams(window.location.search),
@@ -113,6 +118,60 @@ function createEventObject(eventName, verb, metaData, trackingParams, documentUn
   };
 }
 
+function createEventObjectDirect(eventName, verb, metaData, trackingParams) {
+  const verbEvent = `acrobat:verb-${verb}:${eventName}`;
+  const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
+  return {
+    event: {
+      xdm: {
+        identityMap: {
+          ECID: [
+            {
+              id: window.ecid,
+              primary: 'true',
+            },
+          ],
+        },
+        eventType: 'web.webinteraction.linkClicks',
+        timestamp: (new Date()).toISOString(),
+        web: {
+          webPageDetails: {
+            name: verbEvent,
+            pageViews: { value: 1 },
+          },
+          webInteraction: {
+            linkClicks: { value: 1 },
+            type: 'other',
+            name: verbEvent,
+          },
+        },
+      },
+      data: {
+        eventType: 'web.webinteraction.linkClicks',
+        web: {
+          webInteraction: {
+            linkClicks: { value: 1 },
+            type: 'other',
+            name: verbEvent,
+          },
+        },
+        _adobe_corpnew: {
+          digitalData: {
+            primaryEvent: {
+              eventInfo: {
+                eventName: `${verbEvent}${metaData.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
+                value: `${verb} - Frictionless to Acrobat Web`,
+              },
+            },
+            dcweb: eventDataPayload,
+            dcweb2: eventDataPayload,
+          },
+        },
+      },
+    },
+  };
+}
+
 export default function init(eventName, verb, metaData, documentUnloading = true) {
   const trackingParams = { appReferrer, trackingId };
 
@@ -145,5 +204,30 @@ export function reviewAnalytics(verb) {
         mod.default(verb);
       });
     });
+  }
+}
+
+export function sendDirect(eventName, verb, metaData, env) {
+  const trackingParams = { appReferrer, trackingId };
+  let dataStreamId = 'e065836d-be57-47ef-b8d1-999e1657e8fd';
+  // requestId qp for requestId?
+  if (env === 'prod') {
+    dataStreamId = '913eac4d-900b-45e8-9ee7-306216765cd2';
+  }
+  const url = `https://sstats.adobe.com/ee/v2/interact?dataStreamId=${dataStreamId}`;
+  const event = createEventObjectDirect(eventName, verb, metaData, trackingParams);
+
+  const headers = { Accept: 'application/json' };
+  // eslint-disable-next-line compat/compat
+  const fetchPromise = fetch(url, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(event),
+  });
+  if (!fetchPromise.ok) {
+    window.lana?.log(
+      'File Uploaded did not POST',
+      { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+    );
   }
 }
