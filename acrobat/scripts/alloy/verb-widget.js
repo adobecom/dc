@@ -217,9 +217,10 @@ export function sendDirect(eventName, verb, metaData, env) {
   const url = `https://sstats.adobe.com/ee/v2/interact?dataStreamId=${dataStreamId}`;
   const event = createEventObjectDirect(eventName, verb, metaData, trackingParams);
 
-  const headers = { Accept: 'application/json' };
-  const blob = new Blob([JSON.stringify(event)], headers);
-  navigator.sendBeacon(url, blob);
+  // const headers = { Accept: 'application/json' };
+  // const blob = new Blob([JSON.stringify(event)], headers);
+  navigator.sendBeacon(url, JSON.stringify(event));
+  // navigator.sendBeacon(url, blob);
   // eslint-disable-next-line compat/compat
   // const fetchPromise = fetch(url, {
   //   method: 'POST',
