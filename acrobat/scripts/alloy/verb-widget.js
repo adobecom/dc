@@ -218,16 +218,18 @@ export function sendDirect(eventName, verb, metaData, env) {
   const event = createEventObjectDirect(eventName, verb, metaData, trackingParams);
 
   const headers = { Accept: 'application/json' };
+  const blob = new Blob([JSON.stringify(event)], headers);
+  navigator.sendBeacon(url, blob);
   // eslint-disable-next-line compat/compat
-  const fetchPromise = fetch(url, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(event),
-  });
-  if (!fetchPromise.ok) {
-    window.lana?.log(
-      'File Uploaded did not POST',
-      { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
-    );
-  }
+  // const fetchPromise = fetch(url, {
+  //   method: 'POST',
+  //   headers,
+  //   body: JSON.stringify(event),
+  // });
+  // if (!fetchPromise.ok) {
+  //   window.lana?.log(
+  //     'File Uploaded did not POST',
+  //     { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+  //   );
+  // }
 }

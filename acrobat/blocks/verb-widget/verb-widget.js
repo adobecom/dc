@@ -413,6 +413,7 @@ function createSvgElement(iconName) {
 window.analytics = {
   verbAnalytics: () => {},
   reviewAnalytics: () => {},
+  sendDirect: () => {},
 };
 
 async function loadAnalyticsAfterLCP(analyticsData) {
