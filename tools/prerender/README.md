@@ -26,7 +26,7 @@ node tools/prerender/prerender.js "https://www.adobe.com/acrobat/online/sign-pdf
 ```
 and for mobile
 ```
-node tools/prerender/prerender.js "https://www.adobe.com/acrobat/online/sign-pdf.html" desktop
+node tools/prerender/prerender.js "https://www.adobe.com/acrobat/online/sign-pdf.html" mobile
 ```
 Prerender is saved as <pagename>-<desktop|mobile>.html and .json in /tools/prerender
 
