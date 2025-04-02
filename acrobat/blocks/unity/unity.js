@@ -1,5 +1,11 @@
 import { LIMITS } from '../verb-widget/verb-widget.js';
 
+// export const LIMITS = {
+//   fillsign: { mobileApp: true },
+//   'add-comment': { mobileApp: true },
+//   sendforsignature: { mobileApp: true },
+// };
+
 export const localeMap = {
   '': 'en-us',
   br: 'pt-br',
@@ -110,10 +116,11 @@ export default async function init(el) {
     mobileApp = true;
   }
 
-  const element = el.querySelector('span');
-  const verbWidget = el.closest('.section')?.querySelector('.verb-widget');
-  const verb = (verbWidget && [...verbWidget.classList].find(cn => LIMITS[cn])) || element.classList[1].replace('icon-', '');
-  if (mobileApp && LIMITS[verb].mobileApp) return;
+  // const element = el.querySelector('span');
+  // const verbWidget = el.closest('.section')?.querySelector('.verb-widget');
+  // const verb = (verbWidget && [...verbWidget.classList].find(cn => LIMITS[cn])) || element.classList[1].replace('icon-', '');
+  const verb = [...el.classList].find((cls) => cls !== 'unity' && cls !== 'workflow-acrobat');
+  if (mobileApp && LIMITS[verb]?.mobileApp) return;
 
   const unitylibs = getUnityLibs();
   const langFromPath = window.location.pathname.split('/')[1];
