@@ -1,8 +1,3 @@
-await window.alloy_getIdentity
-  .then((value) => {
-    window.ecid = value.identity.ECID;
-  });
-
 const params = new Proxy(
   // eslint-disable-next-line compat/compat
   new URLSearchParams(window.location.search),
@@ -179,6 +174,10 @@ export default function init(eventName, verb, metaData, documentUnloading = true
     const event = createEventObject(eventName, verb, metaData, trackingParams, documentUnloading);
     // eslint-disable-next-line no-underscore-dangle
     window._satellite.track('event', event);
+    window.alloy_getIdentity
+      .then((value) => {
+        window.ecid = value.identity.ECID;
+      });
   };
 
   // eslint-disable-next-line no-underscore-dangle
@@ -210,27 +209,10 @@ export function reviewAnalytics(verb) {
 export function sendDirect(eventName, verb, metaData, env) {
   const trackingParams = { appReferrer, trackingId };
   let dataStreamId = 'e065836d-be57-47ef-b8d1-999e1657e8fd';
-  // requestId qp for requestId?
   if (env === 'prod') {
     dataStreamId = '913eac4d-900b-45e8-9ee7-306216765cd2';
   }
   const url = `https://sstats.adobe.com/ee/v2/interact?dataStreamId=${dataStreamId}`;
   const event = createEventObjectDirect(eventName, verb, metaData, trackingParams);
-
-  // const headers = { Accept: 'application/json' };
-  // const blob = new Blob([JSON.stringify(event)], headers);
   navigator.sendBeacon(url, JSON.stringify(event));
-  // navigator.sendBeacon(url, blob);
-  // eslint-disable-next-line compat/compat
-  // const fetchPromise = fetch(url, {
-  //   method: 'POST',
-  //   headers,
-  //   body: JSON.stringify(event),
-  // });
-  // if (!fetchPromise.ok) {
-  //   window.lana?.log(
-  //     'File Uploaded did not POST',
-  //     { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
-  //   );
-  // }
 }
