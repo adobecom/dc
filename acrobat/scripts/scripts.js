@@ -130,6 +130,7 @@ function loadLink(href, { as, callback, crossorigin, rel, fetchpriority } = {}) 
       link.onload = (e) => callback(e.type);
       link.onerror = (e) => callback(e.type);
     }
+    if (as === 'style' && rel === 'preload') link.onload = () => { link.rel = 'stylesheet'; };
     document.head.appendChild(link);
   } else if (callback) {
     callback('noop');
