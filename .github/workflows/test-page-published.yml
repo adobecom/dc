@@ -21,7 +21,7 @@ jobs:
     name: Running tests
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.50.0-noble
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
     if: github.event.inputs.action == 'run-tests'
 
     steps: 
@@ -51,7 +51,7 @@ jobs:
     name: Generate prerender
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.50.0-noble    
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
     if: github.event.inputs.action == 'gen-prerender'
 
     steps:
