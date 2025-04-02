@@ -2,7 +2,8 @@
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag, loadBlock } = await import(`${miloLibs}/utils/utils.js`);
+// Move this to a variable declaration instead of immediate awaiting
+const utilsModulePromise = import(`${miloLibs}/utils/utils.js`);
 
 function runWhenDocumentIsReady(callback) {
   if (document.readyState === 'loading') {
@@ -24,6 +25,8 @@ export default async function init(element) {
   element.innerHTML = '<div class="fillsign prerendered-verb-widget verb-widget"><div class=verb-wrapper id=drop-zone><div class=verb-container><div class=verb-row><div class=verb-col><div class=verb-header><div class=verb-icon></div><div class=verb-title>Adobe Acrobat</div></div><h1 class=verb-heading>Fill and sign a PDF</h1><p class=verb-copy>Drag and drop a PDF to use Acrobat as a PDF form filler.</p><button class=verb-cta for=file-upload tabindex=0><span class=verb-cta-label>Select a file</span></button> <input accept=application/pdf aria-hidden=true class=hide id=file-upload type=file><div class="hide error"><div class=verb-errorIcon></div><p class=verb-errorText><div class=verb-errorBtn></div></div></div><div class="verb-col right"><div class=verb-image></div></div></div></div></div><div class=verb-footer><div class=security-icon></div><div class=verb-legal-wrapper><p class=verb-legal>Your file will be securely handled by Adobe servers and deleted unless you sign in to save it.<p class="verb-legal verb-legal-two"><p class="verb-legal verb-legal-two"><p class="verb-legal verb-legal-two">By using this service, you agree to the Adobe <a class=verb-legal-url href=https://www.adobe.com/legal/terms.html target=_blank>Terms of Use</a> and <a class=verb-legal-url href=https://www.adobe.com/privacy/policy.html target=_blank>Privacy Policy</a>.<p></div></div></div>';
 
   runWhenDocumentIsReady(async () => {
+    // Now we resolve the promise here, which started earlier
+    const { createTag, loadBlock } = await utilsModulePromise;
     const parent = element.parentElement;
 
     // Create the dynamic widget that will replace the prerendered one
@@ -43,10 +46,10 @@ export default async function init(element) {
               element.remove();
             }
             parent.append(verbWidget);
-            verbWidget.style.display = '';
-            parent.setAttribute('data-hydration-state', 'hydrated');
             parent.append(unityBlock);
+            verbWidget.style.display = '';
             unityBlock.style.display = '';
+            parent.setAttribute('data-hydration-state', 'hydrated');
 
             // Cleanup the observer as it's no longer needed
             observer.disconnect();
@@ -55,19 +58,22 @@ export default async function init(element) {
       });
     });
 
-    // Start observing before loading the block
-    observer.observe(verbWidget, {
-      attributes: true,
-      attributeFilter: ['data-block-status'],
-    });
-
+    // Check status immediately before setting up the observer
     if (verbWidget.getAttribute('data-block-status') === 'loaded') {
       if (element) {
         element.remove();
       }
       parent.append(verbWidget);
+      parent.append(unityBlock);
       verbWidget.style.display = '';
+      unityBlock.style.display = '';
       parent.setAttribute('data-hydration-state', 'hydrated');
+    } else {
+      // Only set up the observer if not already loaded
+      observer.observe(verbWidget, {
+        attributes: true,
+        attributeFilter: ['data-block-status'],
+      });
     }
 
     // Load the block to trigger hydration
