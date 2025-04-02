@@ -7,13 +7,22 @@ on:
         description: 'Test URL'
         required: true
         default: 'https://www.adobe.com/'
+      action:
+        description: 'Action to perform'
+        required: true
+        type: choice
+        options:
+          - run-tests
+          - gen-prerender
+        default: 'run-tests'
 
 jobs:
   run-tests:
     name: Running tests
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.43.0-jammy
+      image: mcr.microsoft.com/playwright:v1.50.0-noble
+    if: github.event.inputs.action == 'run-tests'
 
     steps: 
     - name: Checkout repository
@@ -37,4 +46,49 @@ jobs:
       env:
         USER_AGENT_SUFFIX: "${{ secrets.USER_AGENT_SUFFIX }}"
         TEST_URL: "${{ github.event.inputs.test_url }}"
+
+  gen-prerender:
+    name: Generate prerender
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.50.0-noble    
+    if: github.event.inputs.action == 'gen-prerender'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: Cache dependencies
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: ./node_modules
+        key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
+
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --ignore-scripts
+
+    - name: Generate prerender desktop
+      run: node tools/prerender/prerender.js "${{ github.event.inputs.test_url }}" desktop
+      env:
+        USER_AGENT_SUFFIX: "${{ secrets.USER_AGENT_SUFFIX }}"
+        TEST_URL: "${{ github.event.inputs.test_url }}"
+
+    - name: Generate prerender mobile
+      run: node tools/prerender/prerender.js "${{ github.event.inputs.test_url }}" mobile
+      env:
+        USER_AGENT_SUFFIX: "${{ secrets.USER_AGENT_SUFFIX }}"
+        TEST_URL: "${{ github.event.inputs.test_url }}"
+
+    - name: Upload prerender artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: prerender-files
+        path: |
+          tools/prerender/*.html
+          tools/prerender/*.json
+        retention-days: 7
      
