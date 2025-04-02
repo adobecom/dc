@@ -107,6 +107,7 @@ const frameSrc = [
   'vimeo.com',
   'www.facebook.com',
   'www.youtube.com',
+  'www.youtube-nocookie.com',
   's.company-target.com',
   'stage-ui.messaging.adobe.com/',
   'acrobatservices.adobe.com',
@@ -215,7 +216,7 @@ const scriptSrc = [
   '*.aem.page',
   '*.aem.live',
   'tr.snapchat.com',
-  '\'sha256-ggQ3UJlEGjUjmJjLZXZyjmCbwSLYYVLQQ3S4Kyxo1GI=\'',
+  '\'sha256-/XKhgJSKy7/PtMNXm1ich1mVVa9BU4USHHVLjUnBTt4=\'',
   ';',
 ];
 
