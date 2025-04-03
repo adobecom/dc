@@ -112,6 +112,7 @@ const frameSrc = [
   'vimeo.com',
   'www.facebook.com',
   'www.youtube.com',
+  'www.youtube-nocookie.com',
   's.company-target.com',
   'stage-ui.messaging.adobe.com/',
   'acrobatservices.adobe.com',
