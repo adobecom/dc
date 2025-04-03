@@ -75,12 +75,14 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
   };
 }
 
+const redirectReady = new CustomEvent('DCUnity:RedirectReady');
+
 function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {
   const verbEvent = `acrobat:verb-${verb}:${eventName}`;
   const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
 
   return {
-    documentUnloading,
+    documentUnloading, // if this is false we can use the done callback! emit event here
     // eslint-disable-next-line
     done: function (AJOPropositionResult, error) {
       if (!documentUnloading) {
@@ -90,6 +92,9 @@ function createEventObject(eventName, verb, metaData, trackingParams, documentUn
             `Error Code: ${error}, Status: 'Unknown', Message: An error occurred while sending ${verbEvent}, Account Type: ${accountType}`,
             { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
           );
+          setTimeout(() => {
+            window.dispatchEvent(redirectReady);
+          }, 3000);
         }
       }
     },
