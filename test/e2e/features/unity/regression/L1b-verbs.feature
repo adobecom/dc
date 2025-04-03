@@ -1,4 +1,4 @@
-Feature: L1a Verbs
+Feature: L1b Verbs
 
   Background:
     Given I have a new browser context
@@ -9,25 +9,26 @@ Feature: L1a Verbs
      Then I choose the file "test-files/test-2pages.pdf" to upload
      Then I should see the address bar contains "acrobat.adobe.com"
      Then I continue with Adobe as a type1paid user
-     Then I should see the download button
+     Then I should see the save button
 
-  @pdf-editor
+  @delete-pdf-pages
   Examples:
     | Page       |
-    | pdf-editor |
+    | delete-pdf-pages |
 
-  @crop-pdf
-  Examples:
-    | Page     |
-    | crop-pdf |
-
-  @add-pdf-page-numbers
-  Examples:
-    | Page                 |    
-    | add-pdf-page-numbers |
-
-  @request-signature
+  @add-pages-to-pdf
   Examples:
     | Page       |
-    | request-signature |    
+    | add-pages-to-pdf |
+
+  @rearrange-pdf
+  Examples:
+    | Page       |
+    | rearrange-pdf |
+
+  @extract-pdf-pages
+  Examples:
+    | Page       |
+    | extract-pdf-pages |
+      
 
