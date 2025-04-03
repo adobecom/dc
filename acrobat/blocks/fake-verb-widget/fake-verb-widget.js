@@ -27,7 +27,7 @@ export default async function init(element) {
   runWhenDocumentIsReady(async () => {
     // Now we resolve the promise here, which started earlier
     const { createTag, loadBlock } = await utilsModulePromise;
-    const parent = element.parentElement;
+    const parent = document.querySelector('main');
 
     // Create the dynamic widget that will replace the prerendered one
     const verbWidget = createTag('div', { class: 'verb-widget fillsign' });
@@ -41,12 +41,16 @@ export default async function init(element) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'data-block-status') {
           const newValue = verbWidget.getAttribute('data-block-status');
           if (newValue === 'loaded') {
+            console.log('loaded');
             // Replace the prerendered element with the hydrated one
+            const container = document.createElement('section');
+            container.id = 'hydration-target';
+            container.append(verbWidget);
+            container.append(unityBlock);
+            parent.append(container);
             if (element) {
-              element.remove();
+              element.parentElement.replaceWith(container);
             }
-            parent.append(verbWidget);
-            parent.append(unityBlock);
             verbWidget.style.display = '';
             unityBlock.style.display = '';
             parent.setAttribute('data-hydration-state', 'hydrated');
