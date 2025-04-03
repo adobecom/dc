@@ -75,26 +75,28 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
   };
 }
 
-const redirectReady = new CustomEvent('DCUnity:RedirectReady');
-
 function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {
   const verbEvent = `acrobat:verb-${verb}:${eventName}`;
   const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
+  const redirectReady = new CustomEvent('DCUnity:RedirectReady');
 
   return {
-    documentUnloading, // if this is false we can use the done callback! emit event here
+    documentUnloading,
     // eslint-disable-next-line
     done: function (AJOPropositionResult, error) {
       if (!documentUnloading) {
+        if (eventName === 'job:uploaded') {
+          window.dispatchEvent(redirectReady);
+          setTimeout(() => {
+            window.dispatchEvent(redirectReady);
+          }, 3000);
+        }
         const accountType = window?.adobeIMS?.getAccountType();
         if (error) {
           window.lana?.log(
             `Error Code: ${error}, Status: 'Unknown', Message: An error occurred while sending ${verbEvent}, Account Type: ${accountType}`,
             { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
           );
-          setTimeout(() => {
-            window.dispatchEvent(redirectReady);
-          }, 3000);
         }
       }
     },
