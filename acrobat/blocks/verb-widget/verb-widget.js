@@ -9,6 +9,8 @@ const {
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 
+const redirectReady = new CustomEvent('DCUnity:RedirectReady');
+
 const verbRedirMap = {
   createpdf: 'createpdf',
   'crop-pages': 'crop',
@@ -728,6 +730,14 @@ export default async function init(element) {
         window.addEventListener('beforeunload', handleExit);
       },
       uploaded: () => {
+        setTimeout(() => {
+          window.dispatchEvent(redirectReady);
+          window.lana?.log(
+            'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
+            { sampleRate: 100, tags: tag },
+          );
+        }, 3000);
+
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
         window.analytics.verbAnalytics('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
