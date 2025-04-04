@@ -134,60 +134,6 @@ function createEventObject(eventName, verb, metaData, trackingParams, documentUn
   };
 }
 
-function createEventObjectDirect(eventName, verb, metaData, trackingParams) {
-  const verbEvent = `acrobat:verb-${verb}:${eventName}`;
-  const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
-  return {
-    event: {
-      xdm: {
-        identityMap: {
-          ECID: [
-            {
-              id: window.ecid,
-              primary: 'true',
-            },
-          ],
-        },
-        eventType: 'web.webinteraction.linkClicks',
-        timestamp: (new Date()).toISOString(),
-        web: {
-          webPageDetails: {
-            name: verbEvent,
-            pageViews: { value: 1 },
-          },
-          webInteraction: {
-            linkClicks: { value: 1 },
-            type: 'other',
-            name: verbEvent,
-          },
-        },
-      },
-      data: {
-        eventType: 'web.webinteraction.linkClicks',
-        web: {
-          webInteraction: {
-            linkClicks: { value: 1 },
-            type: 'other',
-            name: verbEvent,
-          },
-        },
-        _adobe_corpnew: {
-          digitalData: {
-            primaryEvent: {
-              eventInfo: {
-                eventName: `${verbEvent}${metaData.errorInfo ? ` ${metaData.errorInfo}` : ''}`,
-                value: `${verb} - Frictionless to Acrobat Web`,
-              },
-            },
-            dcweb: eventDataPayload,
-            dcweb2: eventDataPayload,
-          },
-        },
-      },
-    },
-  };
-}
-
 export default function init(eventName, verb, metaData, documentUnloading = true) {
   const trackingParams = { appReferrer, trackingId };
 
@@ -222,4 +168,3 @@ export function reviewAnalytics(verb) {
     });
   }
 }
-
