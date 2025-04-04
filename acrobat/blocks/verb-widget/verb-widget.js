@@ -413,17 +413,15 @@ function createSvgElement(iconName) {
 window.analytics = {
   verbAnalytics: () => {},
   reviewAnalytics: () => {},
-  sendDirect: () => {},
 };
 
 async function loadAnalyticsAfterLCP(analyticsData) {
   const { verb, userAttempts } = analyticsData;
   try {
     const analyticsModule = await import('../../scripts/alloy/verb-widget.js');
-    const { default: verbAnalytics, reviewAnalytics, sendDirect } = analyticsModule;
+    const { default: verbAnalytics, reviewAnalytics } = analyticsModule;
     window.analytics.verbAnalytics = verbAnalytics;
     window.analytics.reviewAnalytics = reviewAnalytics;
-    window.analytics.sendDirect = sendDirect;
     window.analytics.verbAnalytics('landing:shown', verb, { userAttempts });
     window.analytics.reviewAnalytics(verb);
   } catch (error) {
@@ -733,8 +731,6 @@ export default async function init(element) {
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
         window.analytics.verbAnalytics('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
-        window.analytics.verbAnalytics('job:uploaded-API_TEST_TWO', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, true);
-        window.analytics.sendDirect('job:uploaded-API_TEST', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, ENV);
         if (LIMITS[VERB]?.multipleFiles === true) {
           window.analytics.verbAnalytics('job:multi-file-uploaded', VERB, { ...data, userAttempts }, false);
         }
