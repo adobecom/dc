@@ -1,10 +1,3 @@
-const tag = 'DC_Milo,Project Unity (DC)';
-
-await window.alloy_getIdentity
-  .then((value) => {
-    window.ecid = value.identity.ECID;
-  });
-
 const params = new Proxy(
   // eslint-disable-next-line compat/compat
   new URLSearchParams(window.location.search),
@@ -81,16 +74,6 @@ function createEventObject(eventName, verb, metaData, trackingParams, documentUn
   const verbEvent = `acrobat:verb-${verb}:${eventName}`;
   const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
   const redirectReady = new CustomEvent('DCUnity:RedirectReady');
-
-  if (eventName === 'job:uploaded') {
-    setTimeout(() => {
-      window.dispatchEvent(redirectReady);
-      window.lana?.log(
-        'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
-        { sampleRate: 100, tags: tag },
-      );
-    }, 3000);
-  }
 
   return {
     documentUnloading,
