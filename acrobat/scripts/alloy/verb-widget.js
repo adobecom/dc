@@ -87,7 +87,7 @@ function createEventObject(eventName, verb, metaData, trackingParams, documentUn
         if (error) {
           window.lana?.log(
             `Error Code: ${error}, Status: 'Unknown', Message: An error occurred while sending ${verbEvent}, Account Type: ${accountType}`,
-            { sampleRate: 100, tags: tag },
+            { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
           );
         }
       }
