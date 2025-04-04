@@ -80,6 +80,12 @@ function createEventObject(eventName, verb, metaData, trackingParams, documentUn
   const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
   const redirectReady = new CustomEvent('DCUnity:RedirectReady');
 
+  if (eventName === 'job:uploaded') {
+    setTimeout(() => {
+      window.dispatchEvent(redirectReady);
+    }, 3000);
+  }
+
   return {
     documentUnloading,
     // eslint-disable-next-line
@@ -87,9 +93,6 @@ function createEventObject(eventName, verb, metaData, trackingParams, documentUn
       if (!documentUnloading) {
         if (eventName === 'job:uploaded') {
           window.dispatchEvent(redirectReady);
-          setTimeout(() => {
-            window.dispatchEvent(redirectReady);
-          }, 3000);
         }
         const accountType = window?.adobeIMS?.getAccountType();
         if (error) {
@@ -214,13 +217,3 @@ export function reviewAnalytics(verb) {
   }
 }
 
-export function sendDirect(eventName, verb, metaData, env) {
-  const trackingParams = { appReferrer, trackingId };
-  let dataStreamId = 'e065836d-be57-47ef-b8d1-999e1657e8fd';
-  if (env === 'prod') {
-    dataStreamId = '913eac4d-900b-45e8-9ee7-306216765cd2';
-  }
-  const url = `https://sstats.adobe.com/ee/v2/interact?dataStreamId=${dataStreamId}`;
-  const event = createEventObjectDirect(eventName, verb, metaData, trackingParams);
-  navigator.sendBeacon(url, JSON.stringify(event));
-}
