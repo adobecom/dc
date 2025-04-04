@@ -124,6 +124,10 @@ export default function init(eventName, verb, metaData, documentUnloading = true
     const event = createEventObject(eventName, verb, metaData, trackingParams, documentUnloading);
     // eslint-disable-next-line no-underscore-dangle
     window._satellite.track('event', event);
+    window.alloy_getIdentity
+      .then((value) => {
+        window.ecid = value.identity.ECID;
+      });
   };
 
   // eslint-disable-next-line no-underscore-dangle
