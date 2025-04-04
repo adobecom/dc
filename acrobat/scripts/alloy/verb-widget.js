@@ -73,12 +73,16 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
 function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {
   const verbEvent = `acrobat:verb-${verb}:${eventName}`;
   const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
+  const redirectReady = new CustomEvent('DCUnity:RedirectReady');
 
   return {
     documentUnloading,
     // eslint-disable-next-line
     done: function (AJOPropositionResult, error) {
       if (!documentUnloading) {
+        if (eventName === 'job:uploaded') {
+          window.dispatchEvent(redirectReady);
+        }
         const accountType = window?.adobeIMS?.getAccountType();
         if (error) {
           window.lana?.log(
@@ -120,6 +124,10 @@ export default function init(eventName, verb, metaData, documentUnloading = true
     const event = createEventObject(eventName, verb, metaData, trackingParams, documentUnloading);
     // eslint-disable-next-line no-underscore-dangle
     window._satellite.track('event', event);
+    window.alloy_getIdentity
+      .then((value) => {
+        window.ecid = value.identity.ECID;
+      });
   };
 
   // eslint-disable-next-line no-underscore-dangle
