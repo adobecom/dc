@@ -30,12 +30,11 @@ jobs:
           repositories: "dc-graybox"
 
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          persist-credentials: false
           ref: ${{ inputs.syncBranch || github.ref_name }}
 
-      - name: Clone Graybox Repository and Checkout Stage Branch
+      - name: Clone Graybox Repository and Checkout Selected Branch
         run: |
           git clone https://github.com/adobecom/dc-graybox.git ../dc-graybox
           cd ../dc-graybox
@@ -58,7 +57,7 @@ jobs:
           echo "dc-graybox branch"
           git branch
           git config user.email "$FG_SYNC_BOT_EMAIL"
-          git config user.name "milo-repo-sync[bot]"
+          git config user.name "$FG_SYNC_BOT_NAME"
           git status
           if [[ -n $(git status -s) ]]; then
             git remote set-url origin https://oauth2:$GITHUB_TOKEN@github.com/adobecom/dc-graybox.git
@@ -73,4 +72,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           FG_SYNC_BOT_EMAIL: ${{ secrets.FG_SYNC_BOT_EMAIL }}
+          FG_SYNC_BOT_NAME: ${{ secrets.FG_SYNC_BOT_NAME }}
           GB_SYNC_BRANCH: ${{ inputs.syncBranch || github.ref_name }}
