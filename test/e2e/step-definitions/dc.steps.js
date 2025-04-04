@@ -778,15 +778,18 @@ Then(/^I should see the paywall$/, async function () {
 async function signInWithAdobe(page, type) {
   const accounts = JSON.parse(fs.readFileSync(".auth/accounts.json", "utf8"));
   const account = accounts[type];
-  await page.native.locator("#EmailPage-EmailField").type(account.email + '\n');
+  await page.native.locator("#EmailPage-EmailField").type(account.email);
+  await page.native.locator("#EmailPage-EmailField").press('Enter');
   try {
     await expect(page.native.locator("#PasswordPage-PasswordField")).toBeVisible({timeout: 5000});
   } catch {
     await page.native.locator(".spectrum-Button--cta").click();
   }
-  await page.native.locator("#PasswordPage-PasswordField").type(account.password + '\n');
+  await page.native.locator("#PasswordPage-PasswordField").type(account.password);
+  await page.native.locator("#PasswordPage-PasswordField").press('Enter');
   await page.native.waitForTimeout(2000);
   try {
+    await expect(page.native.locator(".spectrum-Button--cta")).toBeEnabled({timeout: 5000});
     await page.native.locator(".spectrum-Button--cta").click();
   } catch {
   } 
@@ -810,7 +813,7 @@ Then(/^I continue with Adobe as a (type1free|type2|type1paid) user$/, async func
 
 Then(/^I should see the download button$/, async function () {
   this.context(UnityPage);
-  await expect(this.page.dcWebDownloadButton).toBeVisible({timeout: 20000});
+  await expect(this.page.native.locator('button[data-test-id="gnav-download-button"]')).toBeVisible({timeout: 20000});
 });
 
 Then(/^I click the "(Cancel|Continue)" button on the top$/, async function (button) {
@@ -852,4 +855,9 @@ Then(/^I should see the "([^"]*)" tooltip$/, async function (tooltip) {
 Then(/^I should see the "Your Documents" folder$/, async function () {
   this.context(UnityPage);
   await expect(this.page.dcWebYourDocuments).toBeVisible({timeout: 20000});
+});
+
+Then(/^I should see the save button$/, async function () {
+  this.context(UnityPage);
+  await expect(this.page.dcWebContinueButton).toBeVisible({timeout: 20000});
 });

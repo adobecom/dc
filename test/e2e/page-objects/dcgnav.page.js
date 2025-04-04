@@ -17,7 +17,7 @@ export class DcGnavPage extends GnavPage {
     // US uses the new gnav. Other locales use the old one.
     // Same in SubMenu()
     this.buildProps({
-      cta: '.feds-cta-wrapper a, .gnav-cta a >> visible=true',
+      cta: 'a[daa-ll="Free trial-8"] >> visible=true',
       commerceButton: 'a[href*="commerce.adobe.com"]',
       signInLabel: '[data-testid="user-title"]:has-text("Signed in as")',
       fedsPopup: '.feds-popup, .gnav-navitem-menu.large-Variant, .gnav-navitem-menu.small-Variant >> visible=true',
