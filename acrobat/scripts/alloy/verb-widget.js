@@ -1,3 +1,5 @@
+const tag = 'DC_Milo,Project Unity (DC)';
+
 await window.alloy_getIdentity
   .then((value) => {
     window.ecid = value.identity.ECID;
@@ -83,6 +85,10 @@ function createEventObject(eventName, verb, metaData, trackingParams, documentUn
   if (eventName === 'job:uploaded') {
     setTimeout(() => {
       window.dispatchEvent(redirectReady);
+      window.lana?.log(
+        'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
+        { sampleRate: 100, tags: tag },
+      );
     }, 3000);
   }
 
@@ -98,7 +104,7 @@ function createEventObject(eventName, verb, metaData, trackingParams, documentUn
         if (error) {
           window.lana?.log(
             `Error Code: ${error}, Status: 'Unknown', Message: An error occurred while sending ${verbEvent}, Account Type: ${accountType}`,
-            { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+            { sampleRate: 100, tags: tag },
           );
         }
       }
