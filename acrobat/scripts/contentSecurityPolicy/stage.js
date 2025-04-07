@@ -171,6 +171,7 @@ const imgSrc = [
   'yjtag.yahoo.co.jp',
   'client.messaging.adobe.com/',
   'ad.doubleclick.net',
+  'i.ytimg.com',
   ';',
 ];
 
