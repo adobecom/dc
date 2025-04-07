@@ -115,6 +115,17 @@ export async function responseProvider(request) {
     return [responseStream, responseHeaders, dcCoreVersion, mobileWidget, unityWorkflow];
   };
 
+  const insertPrerenderHtml = (jsonContent) => {
+    const jsonData = JSON.parse(jsonContent);
+    const htmlContent = jsonData.data[0].html;
+    const top = jsonData.data[0].top;
+
+    rewriter.onElement('body', el => {
+      el.append(`<div id="prerender_verb-widget">${htmlContent}</div>`);
+    });
+    return top;
+  };
+
   const scriptHashes = [];
 
   const inlineScripts = async (unityWorkflow, mobileWidget, scripts, dcConverter) => {
@@ -155,6 +166,18 @@ export async function responseProvider(request) {
     });
   };
 
+  const inlineVerbWidgetStyles = (verbWidgetStyles) => {
+    rewriter.onElement('head', el => {
+      el.append(`<style id="inline-verb-widget-styles">${verbWidgetStyles}</style>`);
+    });
+  };
+
+  const inlinePrerenderStyles = (top) => {
+    rewriter.onElement('head', el => {
+      el.append(`<style id="prerender-styles">#prerender_verb-widget { position: absolute; top: ${top}; left: 0; width: 100%; z-index: -1; pointer-events: auto; }</style>`);
+    });
+  };
+
   try {
     const [
       [responseStream, responseHeaders, dcCoreVersion, mobileWidget, unityWorkflow],
@@ -172,6 +195,16 @@ export async function responseProvider(request) {
 
     await inlineScripts(unityWorkflow, mobileWidget, scripts, dcConverter);
     inlineStyles(dcStyles, miloStyles);
+
+    if (unityWorkflow) {
+      const [prerenderVerbWidget, verbWidgetStyles] = await Promise.all([
+        fetchResource('/acrobat/online/test/prompt-card/prerendered.json?sheet=sign-pdf`'),
+        fetchResource('/acrobat/blocks/verb-widget/verb-widget.css'),
+      ]);
+      const top = insertPrerenderHtml(prerenderVerbWidget);
+      inlineVerbWidgetStyles(verbWidgetStyles);
+      inlinePrerenderStyles(top);
+    }
 
     const csp = contentSecurityPolicy(isProd, scriptHashes);
     const acrobat = isProd ? 'https://acrobat.adobe.com' : 'https://stage.acrobat.adobe.com';
