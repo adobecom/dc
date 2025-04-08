@@ -112,6 +112,7 @@ const frameSrc = [
   'vimeo.com',
   'www.facebook.com',
   'www.youtube.com',
+  'www.youtube-nocookie.com',
   's.company-target.com',
   'stage-ui.messaging.adobe.com/',
   'acrobatservices.adobe.com',
@@ -170,6 +171,7 @@ const imgSrc = [
   'yjtag.yahoo.co.jp',
   'client.messaging.adobe.com/',
   'ad.doubleclick.net',
+  'i.ytimg.com',
   ';',
 ];
 
@@ -265,7 +267,7 @@ const scriptSrc = [
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
   'tr.snapchat.com',
-  '\'sha256-nAigApwVAFaAG381OAPIUWINK3JzGgUcb2TZvwX6MK8=\'',
+  '\'sha256-/XKhgJSKy7/PtMNXm1ich1mVVa9BU4USHHVLjUnBTt4=\'',
   ';',
 ];
 

@@ -111,6 +111,7 @@ const frameSrc = [
   'vimeo.com',
   'www.facebook.com',
   'www.youtube.com',
+  'www.youtube-nocookie.com',
   's.company-target.com',
   'ui.messaging.adobe.com/',
   'acrobatservices.adobe.com',
@@ -171,6 +172,7 @@ const imgSrc = [
   's.yimg.jp',
   'yjtag.yahoo.co.jp',
   'client.messaging.adobe.com/',
+  'i.ytimg.com',
   ';',
 ];
 
@@ -260,7 +262,7 @@ const scriptSrc = [
   'rum.hlx.page',
   'tr.snapchat.com',
   'api.demandbase.com/api/v3',
-  '\'sha256-nAigApwVAFaAG381OAPIUWINK3JzGgUcb2TZvwX6MK8=\'',
+  '\'sha256-/XKhgJSKy7/PtMNXm1ich1mVVa9BU4USHHVLjUnBTt4=\'',
   ';',
 ];
 

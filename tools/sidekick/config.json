@@ -1,6 +1,8 @@
 {
   "project": "DC",
   "host": "www.adobe.com",
+  "previewHost": "main--dc--adobecom.aem.page",
+  "liveHost": "main--dc--adobecom.aem.live",
   "plugins": [
     {
       "id": "path",

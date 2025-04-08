@@ -12,7 +12,7 @@ Feature: Frictionless Gnav Tests
      Then I go back
      Then I should see the address bar contains "<Verb>"
      When I click 7th nav item in the header
-     Then I should see the address bar contains "/acrobat/pricing/pricing.html"
+     Then I should see the address bar contains "/acrobat/pricing.html"
      Then I go back
      Then I should see the address bar contains "<Verb>"
      When I click "Free trial" button in the header

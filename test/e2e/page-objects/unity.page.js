@@ -25,15 +25,27 @@ export class UnityPage extends classes(DcGnavPage, VerbWidgetSection, CaaSSectio
       closeExtensionModal: '#chromeext .dialog-close, #edgeext .dialog-close',
       eventwrapperOnload: '.eventwrapper.onload',
       previewDescription: 'div[class*="previewDescription"]',
-      verbErrorText: '.verb-errorText',
+      verbErrorText: '.verb-errorText:visible',
       widgetCompressButton: '*[data-testid="ls-footer-primary-compress-button"]',
       widgetToast: '*[class$="-Toast-content"]',
       widgetUpsellHeading: 'h1[data-testid$="-upsell-heading"]',
       paywall: 'h2[data-testid="paywall-header-subtitle"]',
+      splashLoader: '.splash-loader:visible',
+      continueWithAdobeButton: 'button[data-testid="adobe-sign-in-button"]',
+      dcWebDownloadButton: 'button[data-test-id="gnav-download-button"]',
+      dcWebCancelButton: 'button[data-test-id="gnav-cancel-button"]',
+      dcWebContinueButton: 'button[data-test-id="gnav-save-button"]',
+      dcWebSplitPageButton: 'button#split-1',
+      dcWebSplitPageTooltip: 'div[role="tooltip"][data-test-id="Begin file 2"]',
+      dcWebYourDocuments: 'nav[data-testid="asset-list-title"]',
     });
   }
 
   reviewStartInput(rating) {
     return this.native.locator(`.hlx-Review-ratingFields input[value="${rating}"]`);
+  }
+
+  dcWebButton(text) {
+    return this.native.locator(`.spectrum-Button:has-text("${text}")`);
   }
 }
