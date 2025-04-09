@@ -1,5 +1,6 @@
 /* eslint-disable compat/compat */
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
+console.log('af');
 
 const miloLibs = setLibs('/libs');
 const {
@@ -224,8 +225,13 @@ function redDir(verb) {
 }
 
 let exitFlag;
-function handleExit(event) {
+function handleExit(event, verb, userObj, unloadFlag) {
+  console.log('handle exit');
+  console.log(event);
+  console.log(userObj);
+  console.log(unloadFlag);
   if (exitFlag) { return; }
+  window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
   event.preventDefault();
   event.returnValue = true;
 }
@@ -462,7 +468,6 @@ export default async function init(element) {
     window.location.href = EOLBrowserPage;
     return;
   }
-  const ENV = getEnv();
 
   const isMobile = isMobileDevice();
   const isTablet = isTabletDevice();
@@ -727,14 +732,16 @@ export default async function init(element) {
           window.analytics.verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
         }
         document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-        window.addEventListener('beforeunload', handleExit);
+        window.addEventListener('beforeunload', (windowEvent) => {
+          handleExit(windowEvent, VERB, { ...data, userAttempts }, false);
+        });
       },
       uploaded: () => {
         setTimeout(() => {
           window.dispatchEvent(redirectReady);
           window.lana?.log(
             'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
-            { sampleRate: 100, tags: tag },
+            { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
           );
         }, 3000);
 
