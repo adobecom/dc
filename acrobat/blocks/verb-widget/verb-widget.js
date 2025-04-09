@@ -1,6 +1,5 @@
 /* eslint-disable compat/compat */
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
-console.log('af');
 
 const miloLibs = setLibs('/libs');
 const {
@@ -226,10 +225,6 @@ function redDir(verb) {
 
 let exitFlag;
 function handleExit(event, verb, userObj, unloadFlag) {
-  console.log('handle exit');
-  console.log(event);
-  console.log(userObj);
-  console.log(unloadFlag);
   if (exitFlag) { return; }
   window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
   event.preventDefault();
