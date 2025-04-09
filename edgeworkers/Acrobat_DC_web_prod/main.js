@@ -5,7 +5,7 @@ import { WritableStream } from 'streams';
 import { createResponse } from 'create-response';
 import { httpRequest } from 'http-request';
 //import { logger } from 'log';
-import { EdgeKV } from './edgekv.js';
+import { EdgeKV } from './utils/edgekv.js';
 import localeMap from './utils/locales.js';
 import verbMap from './utils/verbs.js';
 import contentSecurityPolicy from './utils/csp/index.js';
