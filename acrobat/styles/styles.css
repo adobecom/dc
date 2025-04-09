@@ -7,6 +7,10 @@
  *
  */
 
+ .global-navigation.has-breadcrumbs.new-nav:not(:has(+ .feds-localnav)) {
+  height: 106px;
+}
+
 @media (min-width: 900px) {
   .dc-bc .has-breadcrumbs,
   header.has-breadcrumbs {
