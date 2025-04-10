@@ -819,7 +819,10 @@ export default async function init(element) {
   };
   function sendAnalyticsToLana(eventName, metadata) {
     const lanaPayload = window.analytics.createEventObject({ ...metadata, eventName, VERB });
-    handleEvent(lanaPayload, lanaOptions);
+    handleEvent(lanaPayload, {
+      sampleRate: 1,
+      tags: 'DC_Milo,Project Unity (DC)',
+    });
   }
 
   function handleAnalyticsEvent(eventName, metadata, isMultiFile = false) {
