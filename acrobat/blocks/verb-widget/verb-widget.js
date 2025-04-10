@@ -795,6 +795,7 @@ export default async function init(element) {
       window.location.reload();
     }
   });
+
   function runWhenDocumentIsReady(callback) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', callback);
@@ -817,6 +818,7 @@ export default async function init(element) {
       logOptions,
     );
   };
+
   function sendAnalyticsToLana(eventName, metadata) {
     const lanaPayload = window.analytics.createEventObject({ ...metadata, eventName, VERB });
     handleEvent(lanaPayload, {
@@ -842,15 +844,18 @@ export default async function init(element) {
       handleAnalyticsEvent('job:multi-file-uploading', metadata);
     }
     setCookie('UTS_Uploading', Date.now(), cookieExp);
-    window.addEventListener('beforeunload', handleExit);
+    // window.addEventListener('beforeunload', handleExit);
+    window.addEventListener('beforeunload', (windowEvent) => {
+      handleExit(windowEvent, VERB, { ...data, userAttempts }, false);
+    });
   }
-  
+
   function handleUploadedEvent(data, userAttempts, cookieExp) {
     setTimeout(() => {
       window.dispatchEvent(redirectReady);
       window.lana?.log(
         'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
-        { sampleRate: 100, tags: tag },
+        { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
       );
     }, 3000);
     setCookie('UTS_Uploaded', Date.now(), cookieExp);
@@ -864,5 +869,4 @@ export default async function init(element) {
     setUser();
     incrementVerbKey(`${VERB}_attempts`);
   }
-
 }
