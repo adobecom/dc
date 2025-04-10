@@ -70,7 +70,7 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
   };
 }
 
-function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {
+export function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {
   const verbEvent = `acrobat:verb-${verb}:${eventName}`;
   const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
   const redirectReady = new CustomEvent('DCUnity:RedirectReady');
