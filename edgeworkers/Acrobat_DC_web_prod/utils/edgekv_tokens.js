@@ -1,11 +1,11 @@
 var edgekv_access_tokens = {
-  stage: {
+  'namespace-stage': {
     name: 'dc',
-    reference: 'ded00d06-d606-56ef-a90d-3191ad9322ea',
+    reference: '13669a55-1351-5131-8e07-974afe513d0c',
   },
-  prod: {
+  'namespace-prod': {
     name: 'dc',
-    reference: 'ded00d06-d606-56ef-a90d-3191ad9322ea',
+    reference: '13669a55-1351-5131-8e07-974afe513d0c',
   },
 };
 export { edgekv_access_tokens };
