@@ -224,8 +224,9 @@ function redDir(verb) {
 }
 
 let exitFlag;
-function handleExit(event) {
+function handleExit(event, verb, userObj, unloadFlag) {
   if (exitFlag) { return; }
+  window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
   event.preventDefault();
   event.returnValue = true;
 }
@@ -464,7 +465,6 @@ export default async function init(element) {
     window.location.href = EOLBrowserPage;
     return;
   }
-  const ENV = getEnv();
 
   const isMobile = isMobileDevice();
   const isTablet = isTabletDevice();
