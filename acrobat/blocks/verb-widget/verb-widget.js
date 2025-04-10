@@ -416,17 +416,15 @@ function createSvgElement(iconName) {
 window.analytics = {
   verbAnalytics: () => {},
   reviewAnalytics: () => {},
-  createEventObject: () => {},
 };
 
 async function loadAnalyticsAfterLCP(analyticsData) {
   const { verb, userAttempts } = analyticsData;
   try {
     const analyticsModule = await import('../../scripts/alloy/verb-widget.js');
-    const { default: verbAnalytics, reviewAnalytics, createEventObject } = analyticsModule;
+    const { default: verbAnalytics, reviewAnalytics } = analyticsModule;
     window.analytics.verbAnalytics = verbAnalytics;
     window.analytics.reviewAnalytics = reviewAnalytics;
-    window.analytics.createEventObject = createEventObject;
     window.analytics.verbAnalytics('landing:shown', verb, { userAttempts });
     window.analytics.reviewAnalytics(verb);
   } catch (error) {
@@ -703,22 +701,55 @@ export default async function init(element) {
 
     const analyticsMap = {
       change: () => {
-        const metadata = mergeData({ ...data, userAttempts });
-        handleAnalyticsEvent('choose-file:open', metadata);
+        window.analytics.verbAnalytics('choose-file:open', VERB, mergeData({ ...data, userAttempts }));
       },
       drop: () => {
-        ['files-dropped', 'entry:clicked', 'discover:clicked'].forEach((analyticsEvent) => {
-          const metadata = mergeData({ ...data, userAttempts });
-          handleAnalyticsEvent(analyticsEvent, metadata);
+        [
+          'files-dropped',
+          'entry:clicked',
+          'discover:clicked',
+        ].forEach((analyticsEvent) => {
+          window.analytics.verbAnalytics(
+            analyticsEvent,
+            VERB,
+            mergeData({ ...data, userAttempts }),
+          );
         });
         setDraggingClass(widget, false);
       },
       cancel: () => {
-        const metadata = mergeData({ ...data, userAttempts });
-        handleAnalyticsEvent('job:cancel', metadata);
+        window.analytics.verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
       },
-      uploading: () => handleUploadingEvent(data, userAttempts, cookieExp),
-      uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp),
+      uploading: () => {
+        prefetchTarget();
+        window.analytics.verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
+        if (LIMITS[VERB]?.multipleFiles === true) {
+          window.analytics.verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
+        }
+        document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+        window.addEventListener('beforeunload', (windowEvent) => {
+          handleExit(windowEvent, VERB, { ...data, userAttempts }, false);
+        });
+      },
+      uploaded: () => {
+        setTimeout(() => {
+          window.dispatchEvent(redirectReady);
+          window.lana?.log(
+            'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
+            { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+          );
+        }, 3000);
+
+        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
+        const calcUploadedTime = uploadedTime();
+        window.analytics.verbAnalytics('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
+        if (LIMITS[VERB]?.multipleFiles === true) {
+          window.analytics.verbAnalytics('job:multi-file-uploaded', VERB, { ...data, userAttempts }, false);
+        }
+        exitFlag = true;
+        setUser();
+        incrementVerbKey(`${VERB}_attempts`);
+      },
       redirectUrl: () => {
         if (data) initiatePrefetch(data);
       },
@@ -795,7 +826,6 @@ export default async function init(element) {
       window.location.reload();
     }
   });
-
   function runWhenDocumentIsReady(callback) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', callback);
@@ -811,62 +841,4 @@ export default async function init(element) {
       },
     }));
   });
-
-  const handleEvent = (eventData, logOptions = {}) => {
-    window.lana?.log(
-      `${JSON.stringify(eventData)}`,
-      logOptions,
-    );
-  };
-
-  function sendAnalyticsToLana(eventName, metadata) {
-    const lanaPayload = window.analytics.createEventObject({ ...metadata, eventName, VERB });
-    handleEvent(lanaPayload, {
-      sampleRate: 1,
-      tags: 'DC_Milo,Project Unity (DC)',
-    });
-  }
-
-  function handleAnalyticsEvent(eventName, metadata, isMultiFile = false) {
-    window.analytics.verbAnalytics(eventName, VERB, metadata, isMultiFile);
-    sendAnalyticsToLana(eventName, metadata);
-  }
-
-  function setCookie(name, value, expires) {
-    document.cookie = `${name}=${value};domain=.adobe.com;path=/;expires=${expires}`;
-  }
-
-  function handleUploadingEvent(data, userAttempts, cookieExp) {
-    prefetchTarget();
-    const metadata = mergeData({ ...data, userAttempts });
-    handleAnalyticsEvent('job:uploading', metadata);
-    if (LIMITS[VERB]?.multipleFiles) {
-      handleAnalyticsEvent('job:multi-file-uploading', metadata);
-    }
-    setCookie('UTS_Uploading', Date.now(), cookieExp);
-    // window.addEventListener('beforeunload', handleExit);
-    window.addEventListener('beforeunload', (windowEvent) => {
-      handleExit(windowEvent, VERB, { ...data, userAttempts }, false);
-    });
-  }
-
-  function handleUploadedEvent(data, userAttempts, cookieExp) {
-    setTimeout(() => {
-      window.dispatchEvent(redirectReady);
-      window.lana?.log(
-        'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
-        { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
-      );
-    }, 3000);
-    setCookie('UTS_Uploaded', Date.now(), cookieExp);
-    const calcUploadedTime = uploadedTime();
-    const metadata = { ...data, uploadTime: calcUploadedTime, userAttempts };
-    handleAnalyticsEvent('job:uploaded', metadata);
-    if (LIMITS[VERB]?.multipleFiles) {
-      handleAnalyticsEvent('job:multi-file-uploaded', metadata);
-    }
-    exitFlag = true;
-    setUser();
-    incrementVerbKey(`${VERB}_attempts`);
-  }
 }
