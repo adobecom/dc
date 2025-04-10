@@ -435,6 +435,12 @@ async function loadAnalyticsAfterLCP(analyticsData) {
   }
   return window.analytics;
 }
+async function loadUnityAfterLCP() {
+  const unityBlock = createTag('div', { class: 'unity workflow-acrobat' });
+  const verbWidget = document.querySelector('.verb-widget');
+  verbWidget.append(unityBlock);
+  await loadBlock(unityBlock);
+}
 
 window.addEventListener('analyticsLoad', async (analyticsData) => {
   const { detail } = analyticsData;
@@ -450,10 +456,12 @@ window.addEventListener('analyticsLoad', async (analyticsData) => {
       lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
     });
     await waitForLCP;
+    loadUnityAfterLCP();
     loadAnalyticsAfterLCP(detail);
   } else {
     const timeoutPromise = new Promise((resolve) => { setTimeout(() => resolve(), 3000); });
     await timeoutPromise;
+    loadUnityAfterLCP();
     loadAnalyticsAfterLCP(detail);
   }
 });
