@@ -159,6 +159,7 @@ const imgSrc = [
   '*.aem.live',
   'client.messaging.adobe.com/',
   'ad.doubleclick.net',
+  'i.ytimg.com',
   ';',
 ];
 

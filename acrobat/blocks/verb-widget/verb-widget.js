@@ -9,6 +9,8 @@ const {
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
 
+const redirectReady = new CustomEvent('DCUnity:RedirectReady');
+
 const verbRedirMap = {
   createpdf: 'createpdf',
   'crop-pages': 'crop',
@@ -413,17 +415,15 @@ function createSvgElement(iconName) {
 window.analytics = {
   verbAnalytics: () => {},
   reviewAnalytics: () => {},
-  sendDirect: () => {},
 };
 
 async function loadAnalyticsAfterLCP(analyticsData) {
   const { verb, userAttempts } = analyticsData;
   try {
     const analyticsModule = await import('../../scripts/alloy/verb-widget.js');
-    const { default: verbAnalytics, reviewAnalytics, sendDirect } = analyticsModule;
+    const { default: verbAnalytics, reviewAnalytics } = analyticsModule;
     window.analytics.verbAnalytics = verbAnalytics;
     window.analytics.reviewAnalytics = reviewAnalytics;
-    window.analytics.sendDirect = sendDirect;
     window.analytics.verbAnalytics('landing:shown', verb, { userAttempts });
     window.analytics.reviewAnalytics(verb);
   } catch (error) {
@@ -730,10 +730,17 @@ export default async function init(element) {
         window.addEventListener('beforeunload', handleExit);
       },
       uploaded: () => {
+        setTimeout(() => {
+          window.dispatchEvent(redirectReady);
+          window.lana?.log(
+            'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
+            { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+          );
+        }, 3000);
+
         document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
         const calcUploadedTime = uploadedTime();
         window.analytics.verbAnalytics('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
-        window.analytics.sendDirect('job:uploaded-API_TEST', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, ENV);
         if (LIMITS[VERB]?.multipleFiles === true) {
           window.analytics.verbAnalytics('job:multi-file-uploaded', VERB, { ...data, userAttempts }, false);
         }

@@ -7,11 +7,19 @@
  *
  */
 
+ .global-navigation.has-breadcrumbs.new-nav:not(:has(+ .feds-localnav)) {
+  height: 106px;
+}
+
 @media (min-width: 900px) {
   .dc-bc .has-breadcrumbs,
   header.has-breadcrumbs {
     box-sizing: content-box;
   }
+}
+
+div[data-section="widget"] {
+  display: block !important;
 }
 
 #dc-converter-widget {
