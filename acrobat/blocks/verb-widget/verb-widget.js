@@ -700,21 +700,18 @@ export default async function init(element) {
     const { event, data } = e.detail || {};
 
     if (!event) return;
-
+    const metadata = mergeData({ ...data, userAttempts });
     const analyticsMap = {
       change: () => {
-        const metadata = mergeData({ ...data, userAttempts });
         handleAnalyticsEvent('choose-file:open', metadata);
       },
       drop: () => {
         ['files-dropped', 'entry:clicked', 'discover:clicked'].forEach((analyticsEvent) => {
-          const metadata = mergeData({ ...data, userAttempts });
           handleAnalyticsEvent(analyticsEvent, metadata);
         });
         setDraggingClass(widget, false);
       },
       cancel: () => {
-        const metadata = mergeData({ ...data, userAttempts });
         handleAnalyticsEvent('job:cancel', metadata);
       },
       uploading: () => handleUploadingEvent(data, userAttempts, cookieExp),
