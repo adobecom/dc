@@ -815,7 +815,7 @@ export default async function init(element) {
   });
 
   function handleAnalyticsEvent(eventName, metadata, documentUnloading = true) {
-    window.analytics.verbAnalytics(eventName, VERB, metadata, isMultiFile);
+    window.analytics.verbAnalytics(eventName, VERB, metadata, documentUnloading);
     window.analytics.sendAnalyticsToSplunk(eventName, VERB, metadata);
   }
 
