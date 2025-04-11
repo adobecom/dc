@@ -642,7 +642,9 @@ export default async function init(element) {
 
   window.prefetchTargetUrl = null;
 
-  element.parentNode.style.display = 'block';
+  if (element.parentNode) {
+    element.parentNode.style.display = 'block';
+  }
 
   widget.addEventListener('click', (e) => {
     if (e.srcElement.classList.value.includes('error')) { return; }
