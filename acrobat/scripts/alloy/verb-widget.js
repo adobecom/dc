@@ -73,7 +73,7 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
 
 function createPayloadForSplunk(metaData) {
   const {
-    verb, eventName, noOfFiles, uploadTime, name, type, size, count, uploadType, userAttempts,
+    verb, eventName, noOfFiles, uploadTime, name, type, size, count, uploadType, userAttempts, errorData
   } = metaData;
 
   return {
@@ -101,15 +101,15 @@ function createPayloadForSplunk(metaData) {
       ...(userAttempts && { return_user_type: userAttempts }),
     },
     error: {
-      type: errorInfo.code,
-      subtype: errorInfo.subcode,
-      message: errorInfo.message,
+      type: errorData.code,
+      ...(errorData.subcode && {subCode: errorData.subCode}),
+      ...(errorData.desc && {desc: errorData.desc}),
     }
   };
 }
 
-export function sendAnalyticsToSplunk(eventName, metaData) {
-  const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, VERB });
+export function sendAnalyticsToSplunk(eventName, verb, metaData) {
+  const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
   fetch("https://unity-dev-ue1.adobe.io/api/v1/log", {
     method: 'POST',
     headers: 'Content-Type: application/json',

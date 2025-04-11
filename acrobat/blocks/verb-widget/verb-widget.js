@@ -762,6 +762,9 @@ export default async function init(element) {
   element.addEventListener('unity:show-error-toast', (e) => {
     const errorCode = e.detail?.code;
     const errorInfo = e.detail?.info;
+    const metadata = e.detail?.metadata;
+    const errorMetaData = e.detail?.errorMetaData;
+
     if (!errorCode) return;
 
     handleError(e.detail, true, lanaOptions);
@@ -786,6 +789,7 @@ export default async function init(element) {
     if (key) {
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
+      window.analytics.sendAnalyticsToSplunk(eventName, VERB, {...metadata, errorMetaData});
     }
   });
 
@@ -815,7 +819,7 @@ export default async function init(element) {
 
   function handleAnalyticsEvent(eventName, metadata, isMultiFile = false) {
     window.analytics.verbAnalytics(eventName, VERB, metadata, isMultiFile);
-    window.analytics.sendAnalyticsToSplunk(eventName, metadata);
+    window.analytics.sendAnalyticsToSplunk(eventName, VERB, metadata);
   }
 
   function setCookie(name, value, expires) {
@@ -830,7 +834,9 @@ export default async function init(element) {
       handleAnalyticsEvent('job:multi-file-uploading', metadata);
     }
     setCookie('UTS_Uploading', Date.now(), cookieExp);
-    window.addEventListener('beforeunload', handleExit);
+    window.addEventListener('beforeunload', (windowEvent) => {
+      handleExit(windowEvent, VERB, { ...data, userAttempts }, false);
+    });
   }
 
   function handleUploadedEvent(data, userAttempts, cookieExp) {
