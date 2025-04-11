@@ -12,7 +12,7 @@ import contentSecurityPolicy from './utils/csp/index.js';
 
 export async function responseProvider(request) {
   const path = request.path.split('/');
-  const first = path.splice(1, 1);
+  const first = path[1];
   const locale = localeMap[first];
   const last = path.splice(-1)[0].split('.')[0];
   const verb = verbMap[last] || last;
