@@ -704,18 +704,18 @@ export default async function init(element) {
     const analyticsMap = {
       change: () => {
         const metadata = mergeData({ ...data, userAttempts });
-        handleAnalyticsEvent('choose-file:open', metadata);
+        handleAnalyticsEvent('choose-file:open', metadata, true);
       },
       drop: () => {
         ['files-dropped', 'entry:clicked', 'discover:clicked'].forEach((analyticsEvent) => {
           const metadata = mergeData({ ...data, userAttempts });
-          handleAnalyticsEvent(analyticsEvent, metadata);
+          handleAnalyticsEvent(analyticsEvent, metadata, true);
         });
         setDraggingClass(widget, false);
       },
       cancel: () => {
         const metadata = mergeData({ ...data, userAttempts });
-        handleAnalyticsEvent('job:cancel', metadata);
+        handleAnalyticsEvent('job:cancel', metadata, true);
       },
       uploading: () => handleUploadingEvent(data, userAttempts, cookieExp),
       uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp),
