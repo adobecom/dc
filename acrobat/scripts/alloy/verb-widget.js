@@ -32,15 +32,16 @@ function ensureSatelliteReady(callback) {
   }
 }
 
+function getSessionID() {
+  const aToken = window.adobeIMS.getAccessToken();
+  const arrayToken = aToken?.token.split('.');
+  if (!arrayToken) return;
+  const tokenPayload = JSON.parse(atob(arrayToken[1]));
+  // eslint-disable-next-line consistent-return
+  return tokenPayload.sub || tokenPayload.user_id;
+}
+
 function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
-  function getSessionID() {
-    const aToken = window.adobeIMS.getAccessToken();
-    const arrayToken = aToken?.token.split('.');
-    if (!arrayToken) return;
-    const tokenPayload = JSON.parse(atob(arrayToken[1]));
-    // eslint-disable-next-line consistent-return
-    return tokenPayload.sub || tokenPayload.user_id;
-  }
   const {
     verb, eventName, errorInfo = '', noOfFiles, uploadTime, type, size, count, userAttempts,
   } = metaData;
@@ -68,6 +69,59 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
       ...(userAttempts && { return_user_type: userAttempts }),
     },
   };
+}
+
+function createPayloadForSplunk(metaData) {
+  const {
+    verb, eventName, noOfFiles, uploadTime, name, type, size, count, uploadType, userAttempts, errorData
+  } = metaData;
+
+  return {
+    event: {
+      name: eventName,
+      category: "acrobat",
+      subcategory: verb,
+      ...(uploadTime && { uploadTime }),
+      ...(uploadType && { uploadType })
+    },
+    content: { name, type, size, count, fileType: type, totalSize: size,
+      ...(noOfFiles && { no_of_files: noOfFiles }),
+    },
+    source: {
+      user_agent: navigator.userAgent,
+      lang: document.documentElement.lang,
+      app_name: `unity`,
+      url: window.location.href
+    },
+    user: {
+      locale: document.documentElement.lang.toLocaleLowerCase(),
+      id: getSessionID(),
+      isAuthenticated: `${window.adobeIMS?.isSignedInUser() ? 'true' : 'false'}`,
+      type: [`${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`],
+      ...(userAttempts && { return_user_type: userAttempts }),
+    },
+    error: {
+      type: errorData.code,
+      ...(errorData.subcode && {subCode: errorData.subCode}),
+      ...(errorData.desc && {desc: errorData.desc}),
+    }
+  };
+}
+
+export function sendAnalyticsToSplunk(eventName, verb, metaData) {
+  const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
+  try {
+    fetch("https://unity-dev-ue1.adobe.io/api/v1/log", {
+      method: 'POST',
+      headers: 'Content-Type: application/json',
+      body: JSON.stringify(eventDataPayload),
+    });
+  } catch(error) {
+    window.lana?.log(
+      `An error occurred while sending ${eventName} to splunk, verb: ${verb}, metadata: ${metaData}, error: ${error}`,
+      { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+    );
+  }
 }
 
 export function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {
