@@ -145,15 +145,18 @@ export async function responseProvider(request) {
       let prerenderHtml = '<!-- init -->';
       try {
         const item = last + (request.device.isMobile ? '_mobile' : '_desktop');
-        const prerenderJson = await edgeKv.getJson({ item, default_value: '<!-- default -->' });
+        const prerenderJson = await edgeKv.getJson({ item, default_value: {html: '', top: 0} });
         prerenderHtml = prerenderJson.html;
         prerenderTop = prerenderJson.top;
+        if (prerenderHtml) {
+          prerenderHtml = `<div id="prerender_verb-widget">${prerenderHtml}</div>`;
+        }
       } catch (e) {
         prerenderHtml = `<!-- ${e.toString()} -->`;
       }
 
       rewriter.onElement('body', el => {
-        el.prepend(`<div id="prerender_verb-widget">${prerenderHtml}</div>`);
+        el.prepend(prerenderHtml);
       });
     }
 
@@ -173,7 +176,7 @@ export async function responseProvider(request) {
       el.append(`<style id="inline-milo-styles">${miloStyles}</style>`);
       el.append(`<style id="inline-dc-styles">${dcStyles}</style>`);
       if (unityWorkflow) {
-        el.append(`<style id="inline-dc-styles">${verbWidgetStyles}</style>`);
+        el.append(`<style id="inline-verb-widget-styles">${verbWidgetStyles}</style>`);
         el.append(`<style>#prerender_verb-widget { position: absolute; top: ${prerenderTop}; left: 0; width: 100%; z-index: -1; pointer-events: auto; }</style></head>`);
       }
     });
