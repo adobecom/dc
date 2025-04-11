@@ -704,25 +704,25 @@ export default async function init(element) {
     const analyticsMap = {
       change: () => {
         const metadata = mergeData({ ...data, userAttempts });
-        handleAnalyticsEvent('choose-file:open', metadata, true);
+        handleAnalyticsEvent('choose-file:open', metadata);
       },
       drop: () => {
         ['files-dropped', 'entry:clicked', 'discover:clicked'].forEach((analyticsEvent) => {
           const metadata = mergeData({ ...data, userAttempts });
-          handleAnalyticsEvent(analyticsEvent, metadata, true);
+          handleAnalyticsEvent(analyticsEvent, metadata);
         });
         setDraggingClass(widget, false);
       },
       cancel: () => {
         const metadata = mergeData({ ...data, userAttempts });
-        handleAnalyticsEvent('job:cancel', metadata, true);
+        handleAnalyticsEvent('job:cancel', metadata);
       },
       uploading: () => handleUploadingEvent(data, userAttempts, cookieExp),
       uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp),
       redirectUrl: () => {
         if (data) initiatePrefetch(data);
         const metadata = mergeData({ ...data, userAttempts });
-        handleAnalyticsEvent('job:redirect-success', metadata);
+        handleAnalyticsEvent('job:redirect-success', metadata, false);
       },
     };
 
@@ -829,9 +829,9 @@ export default async function init(element) {
   function handleUploadingEvent(data, userAttempts, cookieExp) {
     prefetchTarget();
     const metadata = mergeData({ ...data, userAttempts });
-    handleAnalyticsEvent('job:uploading', metadata);
+    handleAnalyticsEvent('job:uploading', metadata, false);
     if (LIMITS[VERB]?.multipleFiles) {
-      handleAnalyticsEvent('job:multi-file-uploading', metadata);
+      handleAnalyticsEvent('job:multi-file-uploading', metadata, false);
     }
     setCookie('UTS_Uploading', Date.now(), cookieExp);
     window.addEventListener('beforeunload', (windowEvent) => {
@@ -850,9 +850,9 @@ export default async function init(element) {
     setCookie('UTS_Uploaded', Date.now(), cookieExp);
     const calcUploadedTime = uploadedTime();
     const metadata = { ...data, uploadTime: calcUploadedTime, userAttempts };
-    handleAnalyticsEvent('job:uploaded', metadata);
+    handleAnalyticsEvent('job:uploaded', metadata, false);
     if (LIMITS[VERB]?.multipleFiles) {
-      handleAnalyticsEvent('job:multi-file-uploaded', metadata);
+      handleAnalyticsEvent('job:multi-file-uploaded', metadata, false);
     }
     exitFlag = true;
     setUser();
