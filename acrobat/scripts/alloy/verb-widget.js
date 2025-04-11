@@ -117,9 +117,11 @@ export function sendAnalyticsToSplunk(eventName, verb, metaData) {
       body: JSON.stringify(eventDataPayload),
     });
   } catch(error) {
-    console.error(error);
+    window.lana?.log(
+      `An error occurred while sending ${eventName} to splunk, verb: ${verb}, metadata: ${metaData}, error: ${error}`,
+      { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+    );
   }
-  
 }
 
 export function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {

@@ -814,7 +814,7 @@ export default async function init(element) {
     }));
   });
 
-  function handleAnalyticsEvent(eventName, metadata, isMultiFile = false) {
+  function handleAnalyticsEvent(eventName, metadata, documentUnloading = true) {
     window.analytics.verbAnalytics(eventName, VERB, metadata, isMultiFile);
     window.analytics.sendAnalyticsToSplunk(eventName, VERB, metadata);
   }
@@ -841,7 +841,7 @@ export default async function init(element) {
       window.dispatchEvent(redirectReady);
       window.lana?.log(
         'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
-        { sampleRate: 100, tags: tag },
+        { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
       );
     }, 3000);
     setCookie('UTS_Uploaded', Date.now(), cookieExp);
