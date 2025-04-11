@@ -786,7 +786,7 @@ export default async function init(element) {
     if (key) {
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
-      window.analytics.sendAnalyticsToSplunk(eventName, VERB, {...metadata, errorMetaData});
+      window.analytics.sendAnalyticsToSplunk(event, VERB, {...metadata, errorMetaData});
     }
   });
 

@@ -100,11 +100,11 @@ function createPayloadForSplunk(metaData) {
       type: [`${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`],
       ...(userAttempts && { return_user_type: userAttempts }),
     },
-    error: {
+    error: errorData ? {
       type: errorData.code,
-      ...(errorData.subcode && {subCode: errorData.subCode}),
-      ...(errorData.desc && {desc: errorData.desc}),
-    }
+      ...(errorData.subCode && { subCode: errorData.subCode }),
+      ...(errorData.desc && { desc: errorData.desc }),
+    } : undefined,
   };
 }
 
