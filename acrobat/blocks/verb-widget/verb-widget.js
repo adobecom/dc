@@ -717,7 +717,7 @@ export default async function init(element) {
       uploading: () => handleUploadingEvent(data, userAttempts, cookieExp),
       uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp),
       redirectUrl: () => {
-        if (data) initiatePrefetch(data);
+        if (data) initiatePrefetch(data.redirectUrl);
         const metadata = mergeData({ ...data, userAttempts });
         handleAnalyticsEvent('job:redirect-success', metadata, false);
       },
