@@ -788,7 +788,7 @@ export default async function init(element) {
     if (key) {
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
-      if(canSendDataToSplunk) window.analytics.sendAnalyticsToSplunk(event, VERB, {...metadata, errorData});
+      if(canSendDataToSplunk) window.analytics.sendAnalyticsToSplunk(event, VERB, {...metadata, errorData}, getSplunkEndpoint());
     }
   });
 
@@ -816,13 +816,16 @@ export default async function init(element) {
     }));
   });
 
+  function getSplunkEndpoint() {
+    return (getEnv() === 'prod')
+    ? 'https://unity.adobe.io/api/v1/log'
+    : 'https://unity-stage.adobe.io/api/v1/log'; 
+  }
+
   function handleAnalyticsEvent(eventName, metadata, documentUnloading = true, canSendDataToSplunk = true) {
     window.analytics.verbAnalytics(eventName, VERB, metadata, documentUnloading);
     if(!canSendDataToSplunk)  return;
-    const splunkEndpoint =(getEnv() === 'prod')
-      ? 'https://unity.adobe.io/api/v1/log'
-      : 'https://unity-stage.adobe.io/api/v1/log'; 
-    window.analytics.sendAnalyticsToSplunk(eventName, VERB, metadata, splunkEndpoint);
+    window.analytics.sendAnalyticsToSplunk(eventName, VERB, metadata, getSplunkEndpoint());
   }
 
   function setCookie(name, value, expires) {
