@@ -111,12 +111,12 @@ function createPayloadForSplunk(metaData) {
 export function sendAnalyticsToSplunk(eventName, verb, metaData, env) {
   const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
 
-  const serviceEndpoint = env === 'prod'
+  const splunkEndpoint = env === 'prod'
     ? 'https://unity.adobe.io/api/v1/log'
     : 'https://unity-stage.adobe.io/api/v1/log';
 
   try {
-    fetch(serviceEndpoint, {
+    fetch(splunkEndpoint, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(eventDataPayload),
