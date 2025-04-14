@@ -816,7 +816,10 @@ export default async function init(element) {
 
   function handleAnalyticsEvent(eventName, metadata, documentUnloading = true) {
     window.analytics.verbAnalytics(eventName, VERB, metadata, documentUnloading);
-    window.analytics.sendAnalyticsToSplunk(eventName, VERB, metadata, getEnv());
+    const splunkEndpoint =(getEnv() === 'prod')
+      ? 'https://unity.adobe.io/api/v1/log'
+      : 'https://unity-stage.adobe.io/api/v1/log'; 
+    window.analytics.sendAnalyticsToSplunk(eventName, VERB, metadata, splunkEndpoint);
   }
 
   function setCookie(name, value, expires) {

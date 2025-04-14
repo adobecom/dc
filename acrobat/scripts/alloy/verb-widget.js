@@ -108,12 +108,8 @@ function createPayloadForSplunk(metaData) {
   };
 }
 
-export function sendAnalyticsToSplunk(eventName, verb, metaData, env) {
+export function sendAnalyticsToSplunk(eventName, verb, metaData, splunkEndpoint) {
   const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
-
-  const splunkEndpoint = env === 'prod'
-    ? 'https://unity.adobe.io/api/v1/log'
-    : 'https://unity-stage.adobe.io/api/v1/log';
 
   try {
     fetch(splunkEndpoint, {
