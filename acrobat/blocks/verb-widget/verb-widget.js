@@ -224,8 +224,9 @@ function redDir(verb) {
 }
 
 let exitFlag;
-function handleExit(event) {
+function handleExit(event, verb, userObj, unloadFlag) {
   if (exitFlag) { return; }
+  window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
   event.preventDefault();
   event.returnValue = true;
 }
@@ -415,15 +416,17 @@ function createSvgElement(iconName) {
 window.analytics = {
   verbAnalytics: () => {},
   reviewAnalytics: () => {},
+  sendAnalyticsToSplunk: () => {}
 };
 
 async function loadAnalyticsAfterLCP(analyticsData) {
   const { verb, userAttempts } = analyticsData;
   try {
     const analyticsModule = await import('../../scripts/alloy/verb-widget.js');
-    const { default: verbAnalytics, reviewAnalytics } = analyticsModule;
+    const { default: verbAnalytics, reviewAnalytics, sendAnalyticsToSplunk } = analyticsModule;
     window.analytics.verbAnalytics = verbAnalytics;
     window.analytics.reviewAnalytics = reviewAnalytics;
+    window.analytics.sendAnalyticsToSplunk = sendAnalyticsToSplunk;
     window.analytics.verbAnalytics('landing:shown', verb, { userAttempts });
     window.analytics.reviewAnalytics(verb);
   } catch (error) {
@@ -462,7 +465,6 @@ export default async function init(element) {
     window.location.href = EOLBrowserPage;
     return;
   }
-  const ENV = getEnv();
 
   const isMobile = isMobileDevice();
   const isTablet = isTabletDevice();
@@ -698,58 +700,26 @@ export default async function init(element) {
     const { event, data } = e.detail || {};
 
     if (!event) return;
-
+    const metadata = mergeData({ ...data, userAttempts });
     const analyticsMap = {
       change: () => {
-        window.analytics.verbAnalytics('choose-file:open', VERB, mergeData({ ...data, userAttempts }));
+        handleAnalyticsEvent('choose-file:open', metadata);
       },
       drop: () => {
-        [
-          'files-dropped',
-          'entry:clicked',
-          'discover:clicked',
-        ].forEach((analyticsEvent) => {
-          window.analytics.verbAnalytics(
-            analyticsEvent,
-            VERB,
-            mergeData({ ...data, userAttempts }),
-          );
+        ['files-dropped', 'entry:clicked', 'discover:clicked'].forEach((analyticsEvent) => {
+          handleAnalyticsEvent(analyticsEvent, metadata);
         });
         setDraggingClass(widget, false);
       },
       cancel: () => {
-        window.analytics.verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
+        handleAnalyticsEvent('job:cancel', metadata);
       },
-      uploading: () => {
-        prefetchTarget();
-        window.analytics.verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
-        if (LIMITS[VERB]?.multipleFiles === true) {
-          window.analytics.verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
-        }
-        document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-        window.addEventListener('beforeunload', handleExit);
-      },
-      uploaded: () => {
-        setTimeout(() => {
-          window.dispatchEvent(redirectReady);
-          window.lana?.log(
-            'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
-            { sampleRate: 100, tags: tag },
-          );
-        }, 3000);
-
-        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-        const calcUploadedTime = uploadedTime();
-        window.analytics.verbAnalytics('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
-        if (LIMITS[VERB]?.multipleFiles === true) {
-          window.analytics.verbAnalytics('job:multi-file-uploaded', VERB, { ...data, userAttempts }, false);
-        }
-        exitFlag = true;
-        setUser();
-        incrementVerbKey(`${VERB}_attempts`);
-      },
+      uploading: () => handleUploadingEvent(data, userAttempts, cookieExp),
+      uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp),
       redirectUrl: () => {
         if (data) initiatePrefetch(data);
+        const metadata = mergeData({ ...data, userAttempts });
+        handleAnalyticsEvent('job:redirect-success', metadata, false);
       },
     };
 
@@ -789,6 +759,9 @@ export default async function init(element) {
   element.addEventListener('unity:show-error-toast', (e) => {
     const errorCode = e.detail?.code;
     const errorInfo = e.detail?.info;
+    const metadata = e.detail?.metadata;
+    const errorMetaData = e.detail?.errorMetaData;
+
     if (!errorCode) return;
 
     handleError(e.detail, true, lanaOptions);
@@ -813,6 +786,7 @@ export default async function init(element) {
     if (key) {
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
+      window.analytics.sendAnalyticsToSplunk(event, VERB, {...metadata, errorMetaData});
     }
   });
 
@@ -839,4 +813,46 @@ export default async function init(element) {
       },
     }));
   });
+
+  function handleAnalyticsEvent(eventName, metadata, documentUnloading = true) {
+    window.analytics.verbAnalytics(eventName, VERB, metadata, documentUnloading);
+    window.analytics.sendAnalyticsToSplunk(eventName, VERB, metadata);
+  }
+
+  function setCookie(name, value, expires) {
+    document.cookie = `${name}=${value};domain=.adobe.com;path=/;expires=${expires}`;
+  }
+
+  function handleUploadingEvent(data, userAttempts, cookieExp) {
+    prefetchTarget();
+    const metadata = mergeData({ ...data, userAttempts });
+    handleAnalyticsEvent('job:uploading', metadata, false);
+    if (LIMITS[VERB]?.multipleFiles) {
+      handleAnalyticsEvent('job:multi-file-uploading', metadata, false);
+    }
+    setCookie('UTS_Uploading', Date.now(), cookieExp);
+    window.addEventListener('beforeunload', (windowEvent) => {
+      handleExit(windowEvent, VERB, { ...data, userAttempts }, false);
+    });
+  }
+
+  function handleUploadedEvent(data, userAttempts, cookieExp) {
+    setTimeout(() => {
+      window.dispatchEvent(redirectReady);
+      window.lana?.log(
+        'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
+        { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+      );
+    }, 3000);
+    setCookie('UTS_Uploaded', Date.now(), cookieExp);
+    const calcUploadedTime = uploadedTime();
+    const metadata = { ...data, uploadTime: calcUploadedTime, userAttempts };
+    handleAnalyticsEvent('job:uploaded', metadata, false);
+    if (LIMITS[VERB]?.multipleFiles) {
+      handleAnalyticsEvent('job:multi-file-uploaded', metadata, false);
+    }
+    exitFlag = true;
+    setUser();
+    incrementVerbKey(`${VERB}_attempts`);
+  }
 }
