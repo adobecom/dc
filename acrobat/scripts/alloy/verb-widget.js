@@ -109,9 +109,8 @@ function createPayloadForSplunk(metaData) {
 }
 
 export function sendAnalyticsToSplunk(eventName, verb, metaData, splunkEndpoint) {
-  const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
-
   try {
+    const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
     fetch(splunkEndpoint, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
