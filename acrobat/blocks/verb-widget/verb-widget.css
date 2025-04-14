@@ -167,7 +167,7 @@
   border-radius: 8px;
   padding: 11px 27px;
   color: white;
-  white-space: nowrap;
+  white-space: pre-wrap;
   font-weight: 700;
   display: flex;
   justify-content: center;
@@ -176,6 +176,7 @@
   font-family: var(--font-family);
   font-size: 18px;
   border: none;
+  text-align: left;
 }
 
 .verb-cta .upload-icon {
@@ -264,6 +265,7 @@ html[dir="rtl"] .verb-cta .upload-icon {
   font-size: 44px;
   margin: revert;
   margin-bottom: 16px;
+  line-height: 125%;
 }
 
 .verb-header {
