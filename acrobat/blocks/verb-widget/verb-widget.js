@@ -698,28 +698,29 @@ export default async function init(element) {
     const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
 
     const { event, data } = e.detail || {};
+    const canSendDataToSplunk = e.detail?.sendToSplunk || true;
 
     if (!event) return;
     const metadata = mergeData({ ...data, userAttempts });
     const analyticsMap = {
       change: () => {
-        handleAnalyticsEvent('choose-file:open', metadata);
+        handleAnalyticsEvent('choose-file:open', metadata, true, canSendDataToSplunk);
       },
       drop: () => {
         ['files-dropped', 'entry:clicked', 'discover:clicked'].forEach((analyticsEvent) => {
-          handleAnalyticsEvent(analyticsEvent, metadata);
+          handleAnalyticsEvent(analyticsEvent, metadata, true, canSendDataToSplunk);
         });
         setDraggingClass(widget, false);
       },
       cancel: () => {
-        handleAnalyticsEvent('job:cancel', metadata);
+        handleAnalyticsEvent('job:cancel', metadata, true, canSendDataToSplunk);
       },
-      uploading: () => handleUploadingEvent(data, userAttempts, cookieExp),
-      uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp),
+      uploading: () => handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
+      uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
       redirectUrl: () => {
         if (data) initiatePrefetch(data.redirectUrl);
         const metadata = mergeData({ ...data, userAttempts });
-        handleAnalyticsEvent('job:redirect-success', metadata, false);
+        handleAnalyticsEvent('job:redirect-success', metadata, false, canSendDataToSplunk);
       },
     };
 
@@ -761,6 +762,7 @@ export default async function init(element) {
     const errorInfo = e.detail?.info;
     const metadata = e.detail?.metadata;
     const errorData = e.detail?.errorData;
+    const canSendDataToSplunk = e.detail?.sendToSplunk || true;
 
     if (!errorCode) return;
 
@@ -786,7 +788,7 @@ export default async function init(element) {
     if (key) {
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
-      window.analytics.sendAnalyticsToSplunk(event, VERB, {...metadata, errorData});
+      if(canSendDataToSplunk) window.analytics.sendAnalyticsToSplunk(event, VERB, {...metadata, errorData});
     }
   });
 
@@ -814,8 +816,9 @@ export default async function init(element) {
     }));
   });
 
-  function handleAnalyticsEvent(eventName, metadata, documentUnloading = true) {
+  function handleAnalyticsEvent(eventName, metadata, documentUnloading = true, canSendDataToSplunk = true) {
     window.analytics.verbAnalytics(eventName, VERB, metadata, documentUnloading);
+    if(!canSendDataToSplunk)  return;
     const splunkEndpoint =(getEnv() === 'prod')
       ? 'https://unity.adobe.io/api/v1/log'
       : 'https://unity-stage.adobe.io/api/v1/log'; 
@@ -826,12 +829,12 @@ export default async function init(element) {
     document.cookie = `${name}=${value};domain=.adobe.com;path=/;expires=${expires}`;
   }
 
-  function handleUploadingEvent(data, userAttempts, cookieExp) {
+  function handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk) {
     prefetchTarget();
     const metadata = mergeData({ ...data, userAttempts });
-    handleAnalyticsEvent('job:uploading', metadata, false);
+    handleAnalyticsEvent('job:uploading', metadata, false, canSendDataToSplunk);
     if (LIMITS[VERB]?.multipleFiles) {
-      handleAnalyticsEvent('job:multi-file-uploading', metadata, false);
+      handleAnalyticsEvent('job:multi-file-uploading', metadata, false, canSendDataToSplunk);
     }
     setCookie('UTS_Uploading', Date.now(), cookieExp);
     window.addEventListener('beforeunload', (windowEvent) => {
@@ -839,7 +842,7 @@ export default async function init(element) {
     });
   }
 
-  function handleUploadedEvent(data, userAttempts, cookieExp) {
+  function handleUploadedEvent(data, userAttempts, cookieExp, canSendDataToSplunk) {
     setTimeout(() => {
       window.dispatchEvent(redirectReady);
       window.lana?.log(
@@ -850,9 +853,9 @@ export default async function init(element) {
     setCookie('UTS_Uploaded', Date.now(), cookieExp);
     const calcUploadedTime = uploadedTime();
     const metadata = { ...data, uploadTime: calcUploadedTime, userAttempts };
-    handleAnalyticsEvent('job:uploaded', metadata, false);
+    handleAnalyticsEvent('job:uploaded', metadata, false, canSendDataToSplunk);
     if (LIMITS[VERB]?.multipleFiles) {
-      handleAnalyticsEvent('job:multi-file-uploaded', metadata, false);
+      handleAnalyticsEvent('job:multi-file-uploaded', metadata, false, canSendDataToSplunk);
     }
     exitFlag = true;
     setUser();
