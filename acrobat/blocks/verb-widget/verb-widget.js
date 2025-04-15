@@ -416,8 +416,14 @@ function createSvgElement(iconName) {
 window.analytics = {
   verbAnalytics: () => {},
   reviewAnalytics: () => {},
-  sendAnalyticsToSplunk: () => {}
+  sendAnalyticsToSplunk: () => {},
 };
+
+function getSplunkEndpoint() {
+  return (getEnv() === 'prod')
+    ? 'https://unity.adobe.io/api/v1/log'
+    : 'https://unity-stage.adobe.io/api/v1/log';
+}
 
 async function loadAnalyticsAfterLCP(analyticsData) {
   const { verb, userAttempts } = analyticsData;
@@ -798,7 +804,14 @@ export default async function init(element) {
     if (key) {
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
-      if(canSendDataToSplunk) window.analytics.sendAnalyticsToSplunk(event, VERB, {...metadata, errorData}, getSplunkEndpoint());
+      if (canSendDataToSplunk) {
+        window.analytics.sendAnalyticsToSplunk(
+          event,
+          VERB,
+          { ...metadata, errorData },
+          getSplunkEndpoint(),
+        );
+      }
     }
   });
 
@@ -826,15 +839,14 @@ export default async function init(element) {
     }));
   });
 
-  function getSplunkEndpoint() {
-    return (getEnv() === 'prod')
-    ? 'https://unity.adobe.io/api/v1/log'
-    : 'https://unity-stage.adobe.io/api/v1/log'; 
-  }
-
-  function handleAnalyticsEvent(eventName, metadata, documentUnloading = true, canSendDataToSplunk = true) {
+  function handleAnalyticsEvent(
+    eventName,
+    metadata,
+    documentUnloading = true,
+    canSendDataToSplunk = true,
+  ) {
     window.analytics.verbAnalytics(eventName, VERB, metadata, documentUnloading);
-    if(!canSendDataToSplunk)  return;
+    if (!canSendDataToSplunk) return;
     window.analytics.sendAnalyticsToSplunk(eventName, VERB, metadata, getSplunkEndpoint());
   }
 
@@ -842,9 +854,9 @@ export default async function init(element) {
     document.cookie = `${name}=${value};domain=.adobe.com;path=/;expires=${expires}`;
   }
 
-  function handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk) {
+  function handleUploadingEvent(data, attempts, cookieExp, canSendDataToSplunk) {
     prefetchTarget();
-    const metadata = mergeData({ ...data, userAttempts });
+    const metadata = mergeData({ ...data, userAttempts: attempts });
     handleAnalyticsEvent('job:uploading', metadata, false, canSendDataToSplunk);
     if (LIMITS[VERB]?.multipleFiles) {
       handleAnalyticsEvent('job:multi-file-uploading', metadata, false, canSendDataToSplunk);
@@ -855,7 +867,7 @@ export default async function init(element) {
     });
   }
 
-  function handleUploadedEvent(data, userAttempts, cookieExp, canSendDataToSplunk) {
+  function handleUploadedEvent(data, attempts, cookieExp, canSendDataToSplunk) {
     setTimeout(() => {
       window.dispatchEvent(redirectReady);
       window.lana?.log(
@@ -865,7 +877,7 @@ export default async function init(element) {
     }, 3000);
     setCookie('UTS_Uploaded', Date.now(), cookieExp);
     const calcUploadedTime = uploadedTime();
-    const metadata = { ...data, uploadTime: calcUploadedTime, userAttempts };
+    const metadata = { ...data, uploadTime: calcUploadedTime, userAttempts: attempts };
     handleAnalyticsEvent('job:uploaded', metadata, false, canSendDataToSplunk);
     if (LIMITS[VERB]?.multipleFiles) {
       handleAnalyticsEvent('job:multi-file-uploaded', metadata, false, canSendDataToSplunk);
