@@ -223,10 +223,17 @@ function redDir(verb) {
   window.location.href = redDirLink(verb);
 }
 
+function getSplunkEndpoint() {
+  return (getEnv() === 'prod')
+  ? 'https://unity.adobe.io/api/v1/log'
+  : 'https://unity-stage.adobe.io/api/v1/log'; 
+}
+
 let exitFlag;
 function handleExit(event, verb, userObj, unloadFlag) {
   if (exitFlag) { return; }
   window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
+  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, userObj, getSplunkEndpoint());
   event.preventDefault();
   event.returnValue = true;
 }
@@ -815,12 +822,6 @@ export default async function init(element) {
       },
     }));
   });
-
-  function getSplunkEndpoint() {
-    return (getEnv() === 'prod')
-    ? 'https://unity.adobe.io/api/v1/log'
-    : 'https://unity-stage.adobe.io/api/v1/log'; 
-  }
 
   function handleAnalyticsEvent(eventName, metadata, documentUnloading = true, canSendDataToSplunk = true) {
     window.analytics.verbAnalytics(eventName, VERB, metadata, documentUnloading);
