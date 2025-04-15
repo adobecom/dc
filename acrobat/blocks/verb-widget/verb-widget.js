@@ -225,8 +225,8 @@ function redDir(verb) {
 
 function getSplunkEndpoint() {
   return (getEnv() === 'prod')
-  ? 'https://unity.adobe.io/api/v1/log'
-  : 'https://unity-stage.adobe.io/api/v1/log';
+    ? 'https://unity.adobe.io/api/v1/log'
+    : 'https://unity-stage.adobe.io/api/v1/log';
 }
 
 let exitFlag;
