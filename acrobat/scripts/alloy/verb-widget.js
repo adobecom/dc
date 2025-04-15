@@ -100,20 +100,20 @@ function createPayloadForSplunk(metaData) {
       type: [`${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`],
       ...(userAttempts && { return_user_type: userAttempts }),
     },
-    error: {
+    error: errorData ? {
       type: errorData.code,
-      ...(errorData.subcode && {subCode: errorData.subCode}),
-      ...(errorData.desc && {desc: errorData.desc}),
-    }
+      ...(errorData.subCode && { subCode: errorData.subCode }),
+      ...(errorData.desc && { desc: errorData.desc }),
+    } : undefined,
   };
 }
 
-export function sendAnalyticsToSplunk(eventName, verb, metaData) {
-  const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
+export function sendAnalyticsToSplunk(eventName, verb, metaData, splunkEndpoint) {
   try {
-    fetch("https://unity-dev-ue1.adobe.io/api/v1/log", {
+    const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
+    fetch(splunkEndpoint, {
       method: 'POST',
-      headers: 'Content-Type: application/json',
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(eventDataPayload),
     });
   } catch(error) {
