@@ -426,12 +426,6 @@ window.analytics = {
   sendAnalyticsToSplunk: () => {},
 };
 
-function getSplunkEndpoint() {
-  return (getEnv() === 'prod')
-    ? 'https://unity.adobe.io/api/v1/log'
-    : 'https://unity-stage.adobe.io/api/v1/log';
-}
-
 async function loadAnalyticsAfterLCP(analyticsData) {
   const { verb, userAttempts } = analyticsData;
   try {
