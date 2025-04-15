@@ -22,11 +22,11 @@ node tools/prerender/prerender.js <URL> <desktop|mobile>
 e.g.
 Generate a preredener for desktop
 ```
-node tools/prerender/prerender.js "https://www.adobe.com/acrobat/online/sign-pdf.html" desktop
+node tools/prerender/prerender.js "https://www.adobe.com/acrobat/online/sign-pdf.html" --layout desktop
 ```
 and for mobile
 ```
-node tools/prerender/prerender.js "https://www.adobe.com/acrobat/online/sign-pdf.html" mobile
+node tools/prerender/prerender.js "https://www.adobe.com/acrobat/online/sign-pdf.html" --layout mobile
 ```
 Prerender is saved as <pagename>-<desktop|mobile>.html and .json in /tools/prerender
 

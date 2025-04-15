@@ -45,7 +45,7 @@
     "@babel/register": "7.22.15",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@web/dev-server-import-maps": "^0.2.1",
-    "akamai-edgegrid": "^3.4.5",
+    "akamai-edgegrid": "^3.5.3",
     "braces": "^3.0.3",
     "chai": "4.3.6",
     "compare-versions": "^6.1.0",

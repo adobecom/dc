@@ -1,17 +1,50 @@
+/* eslint-disable no-console */
+/* eslint-disable compat/compat */
 const { chromium } = require('playwright');
+const EdgeGrid = require('akamai-edgegrid');
 const fs = require('fs').promises;
 const path = require('path');
+const os = require('os');
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
 
-// Get command line arguments
-const args = process.argv.slice(2);
-if (args.length < 1) {
-  console.error('Usage: node take_prerender.js <url> [layout]');
-  console.error('layout: desktop (default) or mobile');
-  process.exit(1);
-}
+// Parse command line arguments
+const { _, layout, network, namespace, group, edgekv } = yargs(hideBin(process.argv))
+  .usage('Usage: $0 <url> [options]')
+  .option('layout', {
+    alias: 'l',
+    describe: 'Layout to use for rendering',
+    choices: ['desktop', 'mobile'],
+    default: 'desktop',
+  })
+  .option('network', {
+    alias: 'n',
+    describe: 'EdgeKV network environment',
+    choices: ['staging', 'production'],
+    default: 'staging',
+  })
+  .option('namespace', {
+    alias: 'ns',
+    describe: 'EdgeKV namespace',
+    choices: ['stage', 'prod'],
+    default: 'stage',
+  })
+  .option('group', {
+    alias: 'g',
+    describe: 'EdgeKV group name',
+    default: 'frictionless',
+  })
+  .option('edgekv', {
+    alias: 'e',
+    describe: 'Write content to EdgeKV',
+    type: 'boolean',
+    default: false,
+  })
+  .demandCommand(1, 'Please provide a URL to prerender')
+  .help()
+  .argv;
 
-const url = args[0];
-const layout = args[1]?.toLowerCase() === 'mobile' ? 'mobile' : 'desktop';
+const url = _[0];
 
 // Device configurations
 const deviceConfig = {
@@ -29,7 +62,7 @@ const deviceConfig = {
   const browser = await chromium.launch();
   const context = await browser.newContext({
     viewport: deviceConfig[layout].viewport,
-    userAgent: deviceConfig[layout].userAgent
+    userAgent: deviceConfig[layout].userAgent,
   });
   const page = await context.newPage();
 
@@ -45,13 +78,15 @@ const deviceConfig = {
       const rect = el.getBoundingClientRect();
       const { scrollTop } = document.documentElement;
       return {
-        top: Math.round(rect.top + scrollTop) + 'px',
-        height: Math.round(rect.height) + 'px'
+        top: `${Math.round(rect.top + scrollTop)}px`,
+        height: `${Math.round(rect.height)}px`,
       };
     });
 
     // Extract basename from URL and create filenames with layout suffix
     const urlPath = new URL(url).pathname;
+    const pathParts = urlPath.split('/').filter(Boolean);
+    const locale = pathParts[0] === 'acrobat' ? '' : `_${pathParts[0]}`;
     const basename = path.basename(urlPath, '.html');
     const outputHtmlPath = path.join(__dirname, `${basename}-${layout}.html`);
     const outputJsonPath = path.join(__dirname, `${basename}-${layout}.json`);
@@ -67,11 +102,33 @@ const deviceConfig = {
     };
     await fs.writeFile(outputJsonPath, JSON.stringify(jsonContent, null, 2), 'utf8');
     console.log(`The top position is ${top}`);
-    console.log(`The heigh is ${height}`);
+    console.log(`The height is ${height}`);
     console.log(`JSON content has been saved to ${outputJsonPath}`);
+
+    if (edgekv) {
+      const eg = new EdgeGrid({
+        path: path.join(os.homedir(), '.edgerc'),
+        section: 'edgekv',
+      });
+
+      eg.auth({
+        path: `/edgekv/v1/networks/${network}/namespaces/${namespace}/groups/${group}${locale}/items/${basename}_${layout}`,
+        method: 'PUT',
+        headers: {},
+        body: jsonContent,
+      });
+
+      eg.send((error, response, body) => {
+        if (error) {
+          console.warn('Warning: EdgeKV write failed:', error);
+        } else {
+          console.log('EdgeKV write response:', body);
+        }
+      });
+    }
   } catch (error) {
     console.error('An error occurred:', error);
   } finally {
     await browser.close();
   }
-})(); 
+})();
