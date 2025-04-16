@@ -32,15 +32,16 @@ function ensureSatelliteReady(callback) {
   }
 }
 
+function getSessionID() {
+  const aToken = window.adobeIMS.getAccessToken();
+  const arrayToken = aToken?.token.split('.');
+  if (!arrayToken) return;
+  const tokenPayload = JSON.parse(atob(arrayToken[1]));
+  // eslint-disable-next-line consistent-return
+  return tokenPayload.sub || tokenPayload.user_id;
+}
+
 function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
-  function getSessionID() {
-    const aToken = window.adobeIMS.getAccessToken();
-    const arrayToken = aToken?.token.split('.');
-    if (!arrayToken) return;
-    const tokenPayload = JSON.parse(atob(arrayToken[1]));
-    // eslint-disable-next-line consistent-return
-    return tokenPayload.sub || tokenPayload.user_id;
-  }
   const {
     verb, eventName, errorInfo = '', noOfFiles, uploadTime, type, size, count, userAttempts,
   } = metaData;
@@ -70,7 +71,60 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
   };
 }
 
-function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {
+function createPayloadForSplunk(metaData) {
+  const {
+    verb, eventName, noOfFiles, uploadTime, name, type, size, count, uploadType, userAttempts, errorData
+  } = metaData;
+
+  return {
+    event: {
+      name: eventName,
+      category: "acrobat",
+      subcategory: verb,
+      ...(uploadTime && { uploadTime }),
+      ...(uploadType && { uploadType })
+    },
+    content: { name, type, size, count, fileType: type, totalSize: size,
+      ...(noOfFiles && { no_of_files: noOfFiles }),
+    },
+    source: {
+      user_agent: navigator.userAgent,
+      lang: document.documentElement.lang,
+      app_name: `unity`,
+      url: window.location.href
+    },
+    user: {
+      locale: document.documentElement.lang.toLocaleLowerCase(),
+      id: getSessionID(),
+      isAuthenticated: `${window.adobeIMS?.isSignedInUser() ? 'true' : 'false'}`,
+      type: [`${localStorage['unity.user'] ? 'frictionless_return_user' : 'frictionless_new_user'}`],
+      ...(userAttempts && { return_user_type: userAttempts }),
+    },
+    error: errorData ? {
+      type: errorData.code,
+      ...(errorData.subCode && { subCode: errorData.subCode }),
+      ...(errorData.desc && { desc: errorData.desc }),
+    } : undefined,
+  };
+}
+
+export function sendAnalyticsToSplunk(eventName, verb, metaData, splunkEndpoint) {
+  try {
+    const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
+    fetch(splunkEndpoint, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(eventDataPayload),
+    });
+  } catch(error) {
+    window.lana?.log(
+      `An error occurred while sending ${eventName} to splunk, verb: ${verb}, metadata: ${metaData}, error: ${error}`,
+      { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+    );
+  }
+}
+
+export function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {
   const verbEvent = `acrobat:verb-${verb}:${eventName}`;
   const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
   const redirectReady = new CustomEvent('DCUnity:RedirectReady');

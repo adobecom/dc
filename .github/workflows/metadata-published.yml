@@ -35,7 +35,7 @@ jobs:
     - name: Query Metadata
       if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}
       run: node .github/scripts/query_metadata.js metadata-stage-eng.json query_metadata-stage-eng.json query_metadata-stage-eng.json
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: ${{ startsWith(github.event.client_payload.path, '/metadata') }}    
       with:
         name: base-query-metadata-cache

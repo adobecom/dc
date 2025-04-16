@@ -223,9 +223,17 @@ function redDir(verb) {
   window.location.href = redDirLink(verb);
 }
 
+function getSplunkEndpoint() {
+  return (getEnv() === 'prod')
+  ? 'https://unity.adobe.io/api/v1/log'
+  : 'https://unity-stage.adobe.io/api/v1/log'; 
+}
+
 let exitFlag;
-function handleExit(event) {
+function handleExit(event, verb, userObj, unloadFlag) {
   if (exitFlag) { return; }
+  window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
+  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, userObj, getSplunkEndpoint());
   event.preventDefault();
   event.returnValue = true;
 }
@@ -415,15 +423,17 @@ function createSvgElement(iconName) {
 window.analytics = {
   verbAnalytics: () => {},
   reviewAnalytics: () => {},
+  sendAnalyticsToSplunk: () => {}
 };
 
 async function loadAnalyticsAfterLCP(analyticsData) {
   const { verb, userAttempts } = analyticsData;
   try {
     const analyticsModule = await import('../../scripts/alloy/verb-widget.js');
-    const { default: verbAnalytics, reviewAnalytics } = analyticsModule;
+    const { default: verbAnalytics, reviewAnalytics, sendAnalyticsToSplunk } = analyticsModule;
     window.analytics.verbAnalytics = verbAnalytics;
     window.analytics.reviewAnalytics = reviewAnalytics;
+    window.analytics.sendAnalyticsToSplunk = sendAnalyticsToSplunk;
     window.analytics.verbAnalytics('landing:shown', verb, { userAttempts });
     window.analytics.reviewAnalytics(verb);
   } catch (error) {
@@ -462,7 +472,6 @@ export default async function init(element) {
     window.location.href = EOLBrowserPage;
     return;
   }
-  const ENV = getEnv();
 
   const isMobile = isMobileDevice();
   const isTablet = isTabletDevice();
@@ -696,60 +705,29 @@ export default async function init(element) {
     const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
 
     const { event, data } = e.detail || {};
+    const canSendDataToSplunk = e.detail?.sendToSplunk || true;
 
     if (!event) return;
-
+    const metadata = mergeData({ ...data, userAttempts });
     const analyticsMap = {
       change: () => {
-        window.analytics.verbAnalytics('choose-file:open', VERB, mergeData({ ...data, userAttempts }));
+        handleAnalyticsEvent('choose-file:open', metadata, true, canSendDataToSplunk);
       },
       drop: () => {
-        [
-          'files-dropped',
-          'entry:clicked',
-          'discover:clicked',
-        ].forEach((analyticsEvent) => {
-          window.analytics.verbAnalytics(
-            analyticsEvent,
-            VERB,
-            mergeData({ ...data, userAttempts }),
-          );
+        ['files-dropped', 'entry:clicked', 'discover:clicked'].forEach((analyticsEvent) => {
+          handleAnalyticsEvent(analyticsEvent, metadata, true, canSendDataToSplunk);
         });
         setDraggingClass(widget, false);
       },
       cancel: () => {
-        window.analytics.verbAnalytics('job:cancel', VERB, mergeData({ ...data, userAttempts }));
+        handleAnalyticsEvent('job:cancel', metadata, true, canSendDataToSplunk);
       },
-      uploading: () => {
-        prefetchTarget();
-        window.analytics.verbAnalytics('job:uploading', VERB, { ...data, userAttempts }, false);
-        if (LIMITS[VERB]?.multipleFiles === true) {
-          window.analytics.verbAnalytics('job:multi-file-uploading', VERB, { ...data, userAttempts }, false);
-        }
-        document.cookie = `UTS_Uploading=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-        window.addEventListener('beforeunload', handleExit);
-      },
-      uploaded: () => {
-        setTimeout(() => {
-          window.dispatchEvent(redirectReady);
-          window.lana?.log(
-            'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
-            { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
-          );
-        }, 3000);
-
-        document.cookie = `UTS_Uploaded=${Date.now()};domain=.adobe.com;path=/;expires=${cookieExp}`;
-        const calcUploadedTime = uploadedTime();
-        window.analytics.verbAnalytics('job:uploaded', VERB, { ...data, uploadTime: calcUploadedTime, userAttempts }, false);
-        if (LIMITS[VERB]?.multipleFiles === true) {
-          window.analytics.verbAnalytics('job:multi-file-uploaded', VERB, { ...data, userAttempts }, false);
-        }
-        exitFlag = true;
-        setUser();
-        incrementVerbKey(`${VERB}_attempts`);
-      },
+      uploading: () => handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
+      uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
       redirectUrl: () => {
-        if (data) initiatePrefetch(data);
+        if (data) initiatePrefetch(data.redirectUrl);
+        const metadata = mergeData({ ...data, userAttempts });
+        handleAnalyticsEvent('job:redirect-success', metadata, false, canSendDataToSplunk);
       },
     };
 
@@ -789,6 +767,10 @@ export default async function init(element) {
   element.addEventListener('unity:show-error-toast', (e) => {
     const errorCode = e.detail?.code;
     const errorInfo = e.detail?.info;
+    const metadata = e.detail?.metadata;
+    const errorData = e.detail?.errorData;
+    const canSendDataToSplunk = e.detail?.sendToSplunk || true;
+
     if (!errorCode) return;
 
     handleError(e.detail, true, lanaOptions);
@@ -813,6 +795,7 @@ export default async function init(element) {
     if (key) {
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
+      if(canSendDataToSplunk) window.analytics.sendAnalyticsToSplunk(event, VERB, {...metadata, errorData}, getSplunkEndpoint());
     }
   });
 
@@ -839,4 +822,47 @@ export default async function init(element) {
       },
     }));
   });
+
+  function handleAnalyticsEvent(eventName, metadata, documentUnloading = true, canSendDataToSplunk = true) {
+    window.analytics.verbAnalytics(eventName, VERB, metadata, documentUnloading);
+    if(!canSendDataToSplunk)  return;
+    window.analytics.sendAnalyticsToSplunk(eventName, VERB, metadata, getSplunkEndpoint());
+  }
+
+  function setCookie(name, value, expires) {
+    document.cookie = `${name}=${value};domain=.adobe.com;path=/;expires=${expires}`;
+  }
+
+  function handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk) {
+    prefetchTarget();
+    const metadata = mergeData({ ...data, userAttempts });
+    handleAnalyticsEvent('job:uploading', metadata, false, canSendDataToSplunk);
+    if (LIMITS[VERB]?.multipleFiles) {
+      handleAnalyticsEvent('job:multi-file-uploading', metadata, false, canSendDataToSplunk);
+    }
+    setCookie('UTS_Uploading', Date.now(), cookieExp);
+    window.addEventListener('beforeunload', (windowEvent) => {
+      handleExit(windowEvent, VERB, { ...data, userAttempts }, false);
+    });
+  }
+
+  function handleUploadedEvent(data, userAttempts, cookieExp, canSendDataToSplunk) {
+    setTimeout(() => {
+      window.dispatchEvent(redirectReady);
+      window.lana?.log(
+        'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
+        { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+      );
+    }, 3000);
+    setCookie('UTS_Uploaded', Date.now(), cookieExp);
+    const calcUploadedTime = uploadedTime();
+    const metadata = { ...data, uploadTime: calcUploadedTime, userAttempts };
+    handleAnalyticsEvent('job:uploaded', metadata, false, canSendDataToSplunk);
+    if (LIMITS[VERB]?.multipleFiles) {
+      handleAnalyticsEvent('job:multi-file-uploaded', metadata, false, canSendDataToSplunk);
+    }
+    exitFlag = true;
+    setUser();
+    incrementVerbKey(`${VERB}_attempts`);
+  }
 }
