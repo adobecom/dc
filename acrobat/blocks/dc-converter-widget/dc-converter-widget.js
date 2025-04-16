@@ -344,18 +344,27 @@ export default async function init(element) {
   });
 
   window.addEventListener('DC_Hosted:Error', (err) => {
+    let errorString;
     const dropZone = document.querySelector('.dropZoneContent');
+    const hTwo = document.createElement('h2');
+    hTwo.style.textAlign = 'center';
+    hTwo.textContent = 'Currently unavailable';
     if (dropZone && !dropZone.classList.contains('unavailable')) {
       dropZone.classList.add('unavailable');
       dropZone.style.pointerEvents = 'none';
       dropZone.parentElement.style.border = 'none';
-      document.querySelector('h1').textContent = 'Currently unavailable';
+      document.querySelector('h1').parentElement.appendChild(hTwo);
       dropZone.innerHTML = '<img src="/acrobat/img/icons/error.svg"><p>We apologize for the inconvenience. We are working hard to make the service available. Please check back shortly.</p>';
       document.querySelector('div[class*="DropZoneFooter__dropzoneFooter"]').innerHTML = '';
     }
     const { cause, message, name, type } = err.detail?.wrappedException || {};
+    if (err.detail?.wrappedException) {
+      errorString = JSON.stringify(err.detail?.wrappedException, Object.getOwnPropertyNames(err.detail?.wrappedException));
+    }
+    const errorStringBasic = err.detail?.wrappedException;
+
     // eslint-disable-next-line prefer-template
-    const info = `DC Widget failed. type=${type} name=${name} message=${message}` + (cause ? ` cause.message=${cause.message}` : '');
+    const info = `DC Widget failed. type=${type} name=${name} message=${message} errorString=${errorString} errorStringBasic=${errorStringBasic}` + (cause ? ` cause.message=${cause.message}` : '');
     window.lana?.log(info, lanaOptions);
   });
 }
