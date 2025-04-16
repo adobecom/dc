@@ -26,6 +26,9 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
       robots:
         select: head > meta[name="robots"]
+        value: attribute(el, 'content')  
+      unity:
+        select: body > div[class="unity workflow-acrobat"]
         value: attribute(el, 'content')        
 
   de:
@@ -827,4 +830,13 @@ indices:
       - '/vn_vi/sign/**'
     exclude:
       - '/vn_vi/dc-shared/*'
-    target: /vn_vi/dc-shared/assets/query-index.xlsx  
+    target: /vn_vi/dc-shared/assets/query-index.xlsx
+
+  unity:
+    <<: *def
+    include:
+      - '/acrobat/online/**'
+      - '/**/acrobat/online/**'
+    exclude:
+      - '/vn_vi/dc-shared/*'
+    target: /unity-metadata-index.xlsx

@@ -22,7 +22,7 @@ jobs:
           github_token: ${{ secrets.DC_PAT }}
       - name: Query Index
         run: node .github/scripts/query_index.js query_index.json query_index.json
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: base-query-index-cache
           path: query_index.json        
