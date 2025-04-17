@@ -60,7 +60,7 @@ jobs:
           EDGERC: ${{ secrets.AKAMAI_EDGERC }}
 
       - name: Deploy Edge Worker
-        uses: jdmevo123/akamai-edgeworker-action@1.1
+        uses: adobecom/akamai-edgeworker-action@1.2
         env:
           EDGERC: ${{ secrets.AKAMAI_EDGERC }}
           WORKER_DIR: edgeworkers/${{ inputs.edgeworker }}

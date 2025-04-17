@@ -1,0 +1,58 @@
+name: Prerender - Delete EdgeKV Items
+
+on:
+  workflow_dispatch:
+    inputs:
+      network:
+        description: 'Network environment'
+        required: true
+        type: choice
+        options:
+            - staging
+            - production
+        default: 'staging'
+      namespace:
+        description: 'Namespace'
+        required: true
+        type: choice
+        options:
+            - stage
+            - prod
+        default: 'stage'
+      group:
+        description: 'Group name'
+        required: true
+        type: string
+        default: 'frictionless'
+      item:
+        description: 'Item key to remove (use * for all items)'
+        required: true
+        type: string
+
+jobs:
+  remove-items:
+    runs-on: ubuntu-latest
+    container:
+      image: akamai/edgeworkers
+      
+    steps:
+      - name: Setup Akamai Authentication
+        env:
+          EDGERC: ${{ secrets.EDGERC_EDGEKV }}
+        run: |
+          echo "${EDGERC}" > ~/.edgerc
+
+      - name: Remove EdgeKV Items
+        run: |
+          if [ "${{ inputs.item }}" = "*" ]; then
+            # List all items and delete them one by one
+            items=$(akamai edgekv --section edgekv list items ${{ inputs.network }} ${{ inputs.namespace }} ${{ inputs.group }})
+            echo "Found items to delete: $items"
+            for item in $items; do
+              echo "Deleting item: $item"
+              akamai edgekv --section edgekv del item ${{ inputs.network }} ${{ inputs.namespace }} ${{ inputs.group }} "$item"
+            done
+          else
+            # Delete single item
+            akamai edgekv --section edgekv del item ${{ inputs.network }} ${{ inputs.namespace }} ${{ inputs.group }} "${{ inputs.item }}"
+          fi
