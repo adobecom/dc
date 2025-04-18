@@ -224,9 +224,7 @@ function redDir(verb) {
 }
 
 function getSplunkEndpoint() {
-  return (getEnv() === 'prod')
-  ? 'https://unity.adobe.io/api/v1/log'
-  : 'https://unity-stage.adobe.io/api/v1/log'; 
+  return (getEnv() === 'prod') ? 'https://unity.adobe.io/api/v1/log' : 'https://unity-stage.adobe.io/api/v1/log';
 }
 
 let exitFlag;
@@ -445,26 +443,50 @@ async function loadAnalyticsAfterLCP(analyticsData) {
   return window.analytics;
 }
 
-window.addEventListener('analyticsLoad', async (analyticsData) => {
-  const { detail } = analyticsData;
-  if ('PerformanceObserver' in window) {
-    const waitForLCP = new Promise((resolve) => {
-      const lcpObserver = new PerformanceObserver((entryList, observer) => {
-        const entries = entryList.getEntries();
-        if (entries.length > 0) {
-          observer.disconnect();
-          setTimeout(resolve, 50);
+window.addEventListener('analyticsLoad', async ({ detail }) => {
+  const load = () => loadAnalyticsAfterLCP(detail);
+  const delay = (ms) => new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+
+  if (!window.PerformanceObserver) {
+    await delay(3000);
+    return load();
+  }
+
+  let timedOut = false;
+  const timeoutMs = 3000;
+
+  const lcpPromise = new Promise((resolveLCP) => {
+    try {
+      const obs = new PerformanceObserver((entries) => {
+        if (entries.getEntries().length) {
+          obs.disconnect();
+          resolveLCP();
         }
       });
-      lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
-    });
-    await waitForLCP;
-    loadAnalyticsAfterLCP(detail);
-  } else {
-    const timeoutPromise = new Promise((resolve) => { setTimeout(() => resolve(), 3000); });
-    await timeoutPromise;
-    loadAnalyticsAfterLCP(detail);
+      obs.observe({ type: 'largest-contentful-paint', buffered: true });
+    } catch {
+      resolveLCP();
+    }
+  });
+
+  const timeoutPromise = new Promise((resolveTimeOut) => {
+    setTimeout(() => {
+      timedOut = true;
+      resolveTimeOut();
+    }, timeoutMs);
+  });
+
+  await Promise.race([lcpPromise, timeoutPromise]);
+
+  if (timedOut) {
+    window.lana?.log(
+      `LCP didn't fire within ${timeoutMs}ms; loading analytics`,
+      { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+    );
   }
+  return load();
 });
 
 export default async function init(element) {
