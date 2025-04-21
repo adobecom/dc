@@ -10,7 +10,9 @@ const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
 
 // Parse command line arguments
-const { _, layout, network, namespace, group, edgekv } = yargs(hideBin(process.argv))
+const {
+  _, layout, network, namespace, group, edgekv,
+} = yargs(hideBin(process.argv))
   .usage('Usage: $0 <url> [options]')
   .option('layout', {
     alias: 'l',
