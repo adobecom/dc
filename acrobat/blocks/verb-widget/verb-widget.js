@@ -436,7 +436,7 @@ async function loadAnalyticsAfterLCP(analyticsData) {
     window.analytics.reviewAnalytics(verb);
   } catch (error) {
     window.lana?.log(
-      `Error Code: Unknown, Status: 'Unknown', Message: ${error.message} on ${verb}`,
+      `Error Code: Unknown, Status: 'Unknown', Message: Analytics import failed: ${error.message} on ${verb}`,
       lanaOptions,
     );
   }
@@ -444,49 +444,55 @@ async function loadAnalyticsAfterLCP(analyticsData) {
 }
 
 window.addEventListener('analyticsLoad', async ({ detail }) => {
-  const load = () => loadAnalyticsAfterLCP(detail);
   const delay = (ms) => new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 
-  if (!window.PerformanceObserver) {
+  const {
+    verbAnalytics: stubVerb,
+    reviewAnalytics: stubReview,
+    sendAnalyticsToSplunk: stubSend,
+  } = window.analytics;
+
+  if (window.PerformanceObserver) {
+    await Promise.race([
+      new Promise((res) => {
+        try {
+          const obs = new PerformanceObserver((entries) => {
+            if (entries.getEntries().length > 0) {
+              obs.disconnect();
+              res();
+            }
+          });
+          obs.observe({ type: 'largest-contentful-paint', buffered: true });
+        } catch (error) {
+          res();
+        }
+      }),
+      delay(3000),
+    ]);
+  } else {
     await delay(3000);
-    return load();
   }
 
-  let timedOut = false;
-  const timeoutMs = 3000;
+  await loadAnalyticsAfterLCP(detail);
 
-  const lcpPromise = new Promise((resolveLCP) => {
-    try {
-      const obs = new PerformanceObserver((entries) => {
-        if (entries.getEntries().length) {
-          obs.disconnect();
-          resolveLCP();
-        }
-      });
-      obs.observe({ type: 'largest-contentful-paint', buffered: true });
-    } catch {
-      resolveLCP();
-    }
-  });
+  const {
+    verbAnalytics,
+    reviewAnalytics,
+    sendAnalyticsToSplunk,
+  } = window.analytics;
 
-  const timeoutPromise = new Promise((resolveTimeOut) => {
-    setTimeout(() => {
-      timedOut = true;
-      resolveTimeOut();
-    }, timeoutMs);
-  });
-
-  await Promise.race([lcpPromise, timeoutPromise]);
-
-  if (timedOut) {
+  if (
+    verbAnalytics === stubVerb
+    || reviewAnalytics === stubReview
+    || sendAnalyticsToSplunk === stubSend
+  ) {
     window.lana?.log(
-      `LCP didn't fire within ${timeoutMs}ms; loading analytics`,
-      { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+      'Analytics failed to initialize correctly: some methods remain no-ops on verb-widget block',
+      lanaOptions,
     );
   }
-  return load();
 });
 
 export default async function init(element) {
