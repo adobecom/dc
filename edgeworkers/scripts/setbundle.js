@@ -84,6 +84,14 @@ async function main() {
   console.log(`New bundle info: ${JSON.stringify(bundleJson, null, 2)}`);
 
   fs.writeFileSync(bundleJsonPath, JSON.stringify(bundleJson, null, 2), 'utf8');
+
+  const edgekvTokenPath = `edgeworkers/${edgeworkerName}/edgekv_tokens.js`;
+
+  if (fs.existsSync(edgekvTokenPath)) {
+    let edgekvToken = fs.readFileSync(edgekvTokenPath, 'utf8');
+    edgekvToken = edgekvToken.replace('<edgekv-access-token-ref>', process.env.EDGEKV_TOKEN_REF);
+    fs.writeFileSync(edgekvTokenPath, edgekvToken, 'utf8');
+  }
 }
 
 main();
