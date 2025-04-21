@@ -3,6 +3,7 @@ const blocks = [
   'eventwrapper',
   'personalization',
   'verb-subfooters',
+  'color-select',
 ];
 
 export default blocks;
