@@ -1,0 +1,214 @@
+/* Hero Marquee Variables */
+:root {
+  --s-min-height: 248px;
+  --m-min-height: 448px;
+  --l-min-height: 588px;
+}
+
+/* Basic block container styles */
+.blockname {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Block-specific container styles */
+.blockname-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Heading styles */
+.blockname-heading {
+  font-size: 3rem;
+  line-height: 1.2;
+  font-weight: 600;
+  margin: 0;
+}
+
+.blockname-subheading {
+  font-size: 2rem;
+  line-height: 1.3;
+  margin: 0;
+}
+
+/* CTA button styles */
+.blockname-cta-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.blockname-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.blockname-button-primary {
+  background-color: #5a4fd0;
+  color: white;
+}
+
+.blockname-button-primary:hover {
+  background-color: #483fad;
+}
+
+.blockname-button-secondary {
+  background-color: transparent;
+  color: #505050;
+}
+
+.blockname-button-secondary:hover {
+  color: #000;
+}
+
+/* Icon for arrow */
+.blockname-button-arrow {
+  margin-left: 8px;
+}
+
+/* Hero Marquee styles */
+.hero-marquee {
+  --s-min-height: 248px;
+  --m-min-height: 448px;
+  --l-min-height: 588px;
+
+  padding: var(--spacing-xl, 56px) 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m, 24px);
+  width: 100%;
+  overflow: hidden;
+  min-height: var(--m-min-height);
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-marquee.s-min-height { min-height: var(--s-min-height); }
+.hero-marquee.l-min-height { min-height: var(--l-min-height); }
+
+/* Foreground and content styles */
+.hero-marquee > .foreground {
+  max-width: var(--grid-container-width, 1200px);
+  min-width: var(--grid-container-width, 1200px);
+  margin: 0 auto;
+  display: grid;
+  gap: var(--spacing-m, 24px);
+}
+
+.hero-marquee .foreground .copy {
+  display: grid;
+  gap: var(--spacing-xs, 16px);
+}
+
+.hero-marquee .main-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 16px);
+  justify-content: center;
+}
+
+/* Action area styles */
+.hero-marquee .action-area {
+  display: flex;
+  flex-flow: column wrap;
+  gap: var(--spacing-s, 20px);
+  width: 100%;
+  margin-top: 30px;
+}
+
+/* Center alignment */
+.hero-marquee.center {
+  text-align: center;
+  align-items: center;
+}
+
+.hero-marquee.center .action-area {
+  justify-content: center;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .blockname-heading {
+    font-size: 2.2rem;
+  }
+
+  .blockname-subheading {
+    font-size: 1.6rem;
+  }
+
+  .blockname-button {
+    padding: 10px 20px;
+  }
+
+  .blockname-cta-container {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-marquee .action-area {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Make buttons full width on mobile */
+  .hero-marquee .con-button {
+    display: block;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .blockname-heading {
+    font-size: 1.8rem;
+  }
+
+  .blockname-subheading {
+    font-size: 1.4rem;
+  }
+
+  .blockname-cta-container {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-marquee .action-area {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+/* Tablet UP */
+@media screen and (min-width: 600px) {
+  .hero-marquee,
+  .hero-marquee .action-area {
+    flex-direction: row;
+  }
+
+  .hero-marquee .action-area {
+    align-items: center;
+  }
+
+  .hero-marquee.center .action-area {
+    justify-content: center;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1200px) {
+  .hero-marquee {
+    display: flex;
+    flex-direction: row;
+  }
+}
