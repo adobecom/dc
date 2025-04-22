@@ -1,0 +1,75 @@
+name: Prerender - Check prerenders for URLs
+
+on:
+  workflow_dispatch:
+    inputs:
+      url_or_gist:
+        description: 'URL to prerender or GitHub Gist ID containing URLs (one per line)'
+        required: true
+        type: string
+      layout:
+        description: 'Layout to prerender (For URL input only)'
+        required: true
+        type: choice
+        options:
+          - desktop
+          - mobile
+      hostsHack:
+        description: 'Hosts File Hack'
+        required: false
+        type: string
+
+jobs:
+  check-prerender:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.51.1-noble    
+      
+    steps:
+      - name: Hosts file hack
+        if: "${{ github.event.inputs.hostsHack != '' }}"
+        run: |
+          echo ${{ inputs.hostsHack }} | sudo tee -a /etc/hosts
+          cat /etc/hosts
+          
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tools/prerender/screenshot-gist.js
+            tools/prerender/screenshot.js
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Process URLs
+        run: |
+          if [[ "${{ inputs.url_or_gist }}" =~ ^[0-9a-f]{32}$ ]]; then
+            # If input looks like a gist ID, use screenshot-gist.js
+            node tools/prerender/screenshot-gist.js "${{ inputs.url_or_gist }}"
+          else
+            # Otherwise treat as a single URL
+            node tools/prerender/screenshot.js "${{ inputs.url_or_gist }}" --layout ${{ inputs.layout }}
+          fi
+        env:
+          USER_AGENT_SUFFIX: ${{ secrets.USER_AGENT_SUFFIX }}
+      
+      - name: Upload prerender artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: prerender-screenshots
+          path: tools/prerender/*.png
+
+      - name: Cleanup hosts file hack
+        if: always() && "${{ github.event.inputs.hostsHack != '' }}"
+        run: |
+          sudo sed -i "/${{ github.event.inputs.hostsHack }}/d" /etc/hosts
+          cat /etc/hosts
