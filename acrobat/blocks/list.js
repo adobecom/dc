@@ -1,4 +1,5 @@
 const blocks = [
+  'color-select',
   'dc-converter-widget',
   'eventwrapper',
   'personalization',
