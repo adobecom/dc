@@ -1,80 +1,97 @@
+import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import { stub } from 'sinon';
 
-// Mock the import
-const mockCreateTag = stub();
-mockCreateTag.callsFake((tag, attributes, html) => {
-  const element = document.createElement(tag);
+const createTag = (tag, attributes, html) => {
+  const el = document.createElement(tag);
   if (attributes) {
-    Object.entries(attributes).forEach(([key, value]) => {
-      if (key === 'class') {
-        element.className = value;
-      } else {
-        element.setAttribute(key, value);
-      }
+    Object.entries(attributes).forEach(([key, val]) => {
+      el.setAttribute(key, val);
     });
   }
   if (html) {
-    element.innerHTML = html;
+    if (typeof html === 'string') {
+      el.innerHTML = html;
+    } else {
+      el.append(html);
+    }
   }
-  return element;
-});
-
-// Mock utils import
-const mockUtils = { createTag: mockCreateTag };
+  return el;
+};
 
 describe('Color Select Block', () => {
   let colorSelectBlock;
-  let utils;
+  let colorSelectJs;
 
   beforeEach(async () => {
-    utils = mockUtils;
-    document.body.innerHTML = '<main><div class="color-select"></div></main>';
-    colorSelectBlock = document.querySelector('.color-select');
-
-    // Set up the mock for utils import
-    window.miloLibs = 'miloLibs';
-    window.import = stub().resolves(utils);
-
-    // Import the block's init function
-    const { default: init } = await import('../../../acrobat/blocks/color-select/color-select.js');
-
-    // Initialize the block
-    await init(colorSelectBlock);
+    // Load the JS implementation
+    const jsContent = await readFile({ path: './acrobat/blocks/color-select/color-select.js' });
+    
+    // Create a mock global environment
+    window.miloLibs = '/libs';
+    window.setLibs = stub().returns('/libs');
+    window.createTag = createTag;
+    
+    // Mock import
+    window.import = stub().resolves({ createTag });
+    
+    // Load the block JS
+    const module = new Function('import', `const setLibs = window.setLibs; ${jsContent}; return { default: init };`);
+    colorSelectJs = await module(window.import);
+    
+    // Create block element
+    colorSelectBlock = document.createElement('div');
+    document.body.appendChild(colorSelectBlock);
   });
 
-  it('should create a color select dropdown and display', () => {
+  afterEach(() => {
+    document.body.removeChild(colorSelectBlock);
+  });
+
+  it('should create a color select dropdown with 5 color options', async () => {
+    await colorSelectJs.default(colorSelectBlock);
+    
     const container = colorSelectBlock.querySelector('.color-select-container');
     expect(container).to.exist;
-
+    
     const select = colorSelectBlock.querySelector('.color-select-dropdown');
     expect(select).to.exist;
-    expect(select.tagName).to.equal('SELECT');
-
+    
     const options = select.querySelectorAll('option');
-    expect(options.length).to.equal(5);
+    expect(options.length).to.equal(5); // 5 colors
+    
+    // Verify all color options
+    const colorNames = Array.from(options).map(option => option.textContent);
+    expect(colorNames).to.include.members(['Red', 'Blue', 'Green', 'Black', 'White']);
+  });
 
+  it('should create a 500x500 color display div', async () => {
+    await colorSelectJs.default(colorSelectBlock);
+    
     const colorDisplay = colorSelectBlock.querySelector('.color-select-display');
     expect(colorDisplay).to.exist;
+    
+    // Check dimensions
     expect(colorDisplay.style.width).to.equal('500px');
     expect(colorDisplay.style.height).to.equal('500px');
   });
 
-  it('should change the displayed color when a new option is selected', () => {
+  it('should change the color of the display div when a different option is selected', async () => {
+    await colorSelectJs.default(colorSelectBlock);
+    
     const select = colorSelectBlock.querySelector('.color-select-dropdown');
     const colorDisplay = colorSelectBlock.querySelector('.color-select-display');
-
-    // Get the initial color
-    const initialColor = colorDisplay.style.backgroundColor;
-
-    // Select a different color (second option)
+    
+    // Initial color should be set (first option)
+    const initialColor = select.value;
+    expect(colorDisplay.style.backgroundColor).to.equal(initialColor);
+    
+    // Change selection to the second option
     select.selectedIndex = 1;
-
-    // Trigger the change event
-    const changeEvent = new Event('change');
-    select.dispatchEvent(changeEvent);
-
-    // Check if the color display was updated
-    expect(colorDisplay.style.backgroundColor).to.not.equal(initialColor);
+    const newEvent = new Event('change');
+    select.dispatchEvent(newEvent);
+    
+    // Color display should update to match the new selection
+    expect(colorDisplay.style.backgroundColor).to.equal(select.value);
   });
 });
