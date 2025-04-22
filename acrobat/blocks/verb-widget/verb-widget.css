@@ -283,22 +283,21 @@ html[dir="rtl"] .verb-cta .upload-icon {
 }
 
 .verb-mobile-cta {
-  display: flex;
+  display: inline-flex;
   top: 324px;
   left: 40px;
-  padding: 11px 26px;
-  border-radius: 47px;
+  padding: 12px 24px;
+  border-radius: 100px;
   background: #1473e6;
   color: white;
-  white-space: nowrap;
   font-weight: 700;
   justify-content: center;
   align-items: center;
-  width: 30%;
-  min-width: fit-content;
-  font-size: 22px;
+  font-size: 19px;
   line-height: 29px;
   text-decoration: none;
+  white-space: pre-wrap;
+  text-align: center;
 }
 
 .verb-mobile-cta:hover,
@@ -503,7 +502,7 @@ html[dir="rtl"] .verb-cta .upload-icon {
   :root {
     --verb-widget-padding: 16px;
     --verb-wrapper-padding-y: 60px;
-    --verb-wrapper-padding-x: 29px;
+    --verb-wrapper-padding-x: 21px;
     --verb-wrapper-border-width: 3px;
   }
 
@@ -637,4 +636,13 @@ html[dir="rtl"] .verb-cta .upload-icon {
     background-color: transparent;
     padding: 0;
   }
+}
+
+
+.verb-widget .milo-tooltip.top::before {
+  transform: translateX(-80%) translateY(-100%) !important;
+}
+
+.verb-widget .mobile.milo-tooltip.top::before {
+  transform: translateX(-20%) translateY(-100%) !important;
 }
