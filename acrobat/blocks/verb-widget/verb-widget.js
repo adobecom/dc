@@ -501,6 +501,15 @@ export default async function init(element) {
     return;
   }
 
+  // Remove the prerender element when it's in the viewport
+  const observer = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      document.querySelector('#prerender_verb-widget')?.remove();
+      observer.disconnect();
+    }
+  });
+  observer.observe(element);
+
   const isMobile = isMobileDevice();
   const isTablet = isTabletDevice();
 
