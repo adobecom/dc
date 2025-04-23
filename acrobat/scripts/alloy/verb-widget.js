@@ -124,6 +124,33 @@ export function sendAnalyticsToSplunk(eventName, verb, metaData, splunkEndpoint)
   }
 }
 
+export function sendBeaconToSplunk(eventName, verb, metaData, splunkEndpoint) {
+  try {
+    const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
+    const payload = JSON.stringify(eventDataPayload);
+    const isBeaconSent = navigator.sendBeacon(splunkEndpoint, payload);
+    if (!isBeaconSent) {
+      // If beacon fails, fallback to using fetch or log the error
+      console.error('Failed to send data using sendBeacon. Falling back to fetch.');
+      fetch(splunkEndpoint, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: payload,
+      });
+    }
+  } catch (error) {
+    window.lana?.log(
+      `An error occurred while sending ${eventName} to Splunk, verb: ${verb}, metadata: ${metaData}, error: ${error}`,
+      { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+    );
+  }
+}
+
+// Listen for the 'beforeunload' event to send analytics before the page is unloaded
+window.addEventListener('beforeunload', function () {
+  sendAnalyticsToSplunk('pageClose', 'GET', { additionalInfo: 'Page is closing' }, '/your-splunk-endpoint');
+});
+
 export function createEventObject(eventName, verb, metaData, trackingParams, documentUnloading) {
   const verbEvent = `acrobat:verb-${verb}:${eventName}`;
   const eventDataPayload = eventData({ ...metaData, eventName, verb }, trackingParams);
