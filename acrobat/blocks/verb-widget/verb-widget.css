@@ -637,3 +637,12 @@ html[dir="rtl"] .verb-cta .upload-icon {
     padding: 0;
   }
 }
+
+
+.verb-widget .milo-tooltip.top::before {
+  transform: translateX(-80%) translateY(-100%) !important;
+}
+
+.verb-widget .mobile.milo-tooltip.top::before {
+  transform: translateX(-20%) translateY(-100%) !important;
+}

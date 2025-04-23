@@ -1,0 +1,75 @@
+name: Prerender - Create a prerender for a URL
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'URL to prerender'
+        required: true
+        type: string
+      layout:
+        description: 'Layout to prerender'
+        required: true
+        type: choice
+        options:
+          - desktop
+          - mobile
+      network:
+        description: 'Network to write to'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      namespace:
+        description: 'Namespace to write to'
+        required: true
+        type: choice
+        options:
+          - stage
+          - prod
+      group:
+        description: 'Group to write to'
+        required: true
+        type: string
+        default: 'frictionless'
+
+jobs:
+  create-prerender:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
+      
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tools/prerender/prerender.js
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Setup Akamai Authentication
+        env:
+          EDGERC: ${{ secrets.EDGERC_EDGEKV }}
+        run: |
+          echo "${EDGERC}" > ~/.edgerc
+
+      - name: Write EdgeKV Items
+        run: |
+          node tools/prerender/prerender.js "${{ inputs.url }}" --layout ${{ inputs.layout }} --network ${{ inputs.network }} --namespace ${{ inputs.namespace }} --group ${{ inputs.group }} --edgekv
+        env:
+          USER_AGENT_SUFFIX: ${{ secrets.USER_AGENT_SUFFIX }}
+
+      - name: Cleanup Akamai credentials
+        if: always()
+        run: rm -f ~/.edgerc          

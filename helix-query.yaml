@@ -28,8 +28,8 @@ indices:
         select: head > meta[name="robots"]
         value: attribute(el, 'content')  
       unity:
-        select: body > div[class="unity workflow-acrobat"]
-        value: attribute(el, 'content')        
+        select: div[class="unity workflow-acrobat"]
+        value: innerHTML(el)        
 
   de:
     <<: *def
