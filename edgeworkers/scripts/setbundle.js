@@ -89,7 +89,7 @@ async function main() {
 
   if (fs.existsSync(edgekvTokenPath)) {
     let edgekvToken = fs.readFileSync(edgekvTokenPath, 'utf8');
-    edgekvToken = edgekvToken.replace('<edgekv-access-token-ref>', process.env.EDGEKV_TOKEN_REF);
+    edgekvToken = edgekvToken.replace(/<edgekv-access-token-ref>/g, process.env.EDGEKV_TOKEN_REF);
     fs.writeFileSync(edgekvTokenPath, edgekvToken, 'utf8');
   }
 }
