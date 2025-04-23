@@ -58,9 +58,10 @@ jobs:
           npm run ewsetbundle ${{ inputs.edgeworker }} "${{ inputs.description }}"
         env:
           EDGERC: ${{ secrets.AKAMAI_EDGERC }}
+          EDGEKV_TOKEN_REF: ${{ secrets.EDGEKV_TOKEN_REF }}
 
       - name: Deploy Edge Worker
-        uses: jdmevo123/akamai-edgeworker-action@1.1
+        uses: adobecom/akamai-edgeworker-action@1.2
         env:
           EDGERC: ${{ secrets.AKAMAI_EDGERC }}
           WORKER_DIR: edgeworkers/${{ inputs.edgeworker }}
