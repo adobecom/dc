@@ -1,4 +1,4 @@
-name: Prerender - Create prerenders for URLs
+name: Prerender - Create N prerenders - Stage
 
 on:
   workflow_dispatch:

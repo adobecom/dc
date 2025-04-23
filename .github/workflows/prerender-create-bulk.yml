@@ -1,4 +1,4 @@
-name: Prerender - Create bulk prerenders from gist
+name: Prerender - Create N prerenders
 
 on:
   workflow_dispatch:
