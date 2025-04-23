@@ -25,7 +25,7 @@ jobs:
       
     steps:
       - name: Hosts file hack
-        if: "${{ github.event.inputs.hostsHack != '' }}"
+        if: inputs.hostsHack != ''
         run: |
           echo ${{ inputs.hostsHack }} | sudo tee -a /etc/hosts
           cat /etc/hosts
@@ -61,13 +61,15 @@ jobs:
           USER_AGENT_SUFFIX: ${{ secrets.USER_AGENT_SUFFIX }}
 
       - name: Upload prerender artifacts
+        if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: prerender-screenshots
           path: tools/prerender/*.png
 
       - name: Cleanup hosts file hack
-        if: always() && ${{ github.event.inputs.hostsHack != '' }}
+        if: inputs.hostsHack != ''
         run: |
           sudo sed -i "/${{ github.event.inputs.hostsHack }}/d" /etc/hosts
           cat /etc/hosts
