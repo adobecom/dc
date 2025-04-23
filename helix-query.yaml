@@ -29,7 +29,10 @@ indices:
         value: attribute(el, 'content')  
       unity:
         select: div[class="unity workflow-acrobat"]
-        value: innerHTML(el)        
+        value: innerHTML(el)   
+      target:
+        select: head > meta[name="target"]
+        value: attribute(el, 'content')     
 
   de:
     <<: *def
