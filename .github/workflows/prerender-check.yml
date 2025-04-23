@@ -1,4 +1,4 @@
-name: Prerender - Check prerenders for URLs
+name: Prerender - Check prerenders
 
 on:
   workflow_dispatch:
@@ -69,7 +69,7 @@ jobs:
           path: tools/prerender/*.png
 
       - name: Cleanup hosts file hack
-        if: always() && "${{ github.event.inputs.hostsHack != '' }}"
+        if: always() && ${{ github.event.inputs.hostsHack != '' }}
         run: |
           sudo sed -i "/${{ github.event.inputs.hostsHack }}/d" /etc/hosts
           cat /etc/hosts

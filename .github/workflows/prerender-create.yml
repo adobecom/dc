@@ -1,4 +1,4 @@
-name: Prerender - Create a prerender for a URL
+name: Prerender - Create prerender
 
 on:
   workflow_dispatch:
