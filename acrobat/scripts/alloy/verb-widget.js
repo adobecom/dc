@@ -130,7 +130,6 @@ export function sendBeaconToSplunk(eventName, verb, metaData, splunkEndpoint) {
     const payload = JSON.stringify(eventDataPayload);
     const isBeaconSent = navigator.sendBeacon(splunkEndpoint, payload);
     if (!isBeaconSent) {
-      // If beacon fails, fallback to using fetch or log the error
       console.error('Failed to send data using sendBeacon. Falling back to fetch.');
       fetch(splunkEndpoint, {
         method: 'POST',
