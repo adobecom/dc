@@ -139,12 +139,17 @@ export async function responseProvider(request) {
     const hash64 = btoa(String.fromCharCode(...new Uint8Array(hash)));
     scriptHashes.push(`'sha256-${hash64}'`);
 
-    if (unityWorkflow) {
+    const headers = request.getHeaders();
+    const ua = headers["user-agent"][0];
+    const isMobile = /android|iphone|ipod|blackberry|windows phone/i.test(ua);
+    const isIPadOS = ua.includes('Mac') && ua.includes('Version/') && !/iphone|ipod/i.test(ua);
+    const isTablet = /ipad|android(?!.*mobile)/i.test(ua);    
+    if (unityWorkflow && !(isTablet || isIPadOS)) {
       const group = 'frictionless' + (first === 'acrobat' ? '' : `_${first}`);
       const edgeKv = new EdgeKV({namespace: isProd? 'prod' : 'stage', group});
       let prerenderHtml = '<!-- init -->';
       try {
-        const item = last + ((request.device.isMobile || request.device.isTablet) ? '_mobile' : '_desktop');
+        const item = last + (isMobile ? '_mobile' : '_desktop');
         const prerenderJson = await edgeKv.getJson({ item, default_value: {html: '', top: 0} });
         prerenderHtml = prerenderJson.html;
         prerenderTop = prerenderJson.top;
@@ -250,10 +255,16 @@ export async function responseProvider(request) {
 }
 
 export function onClientRequest (request) {
+  const headers = request.getHeaders();
+  const ua = headers["user-agent"][0];
+  const isMobile = /android|iphone|ipod|blackberry|windows phone/i.test(ua);
+  const isIPadOS = ua.includes('Mac') && ua.includes('Version/') && !/iphone|ipod/i.test(ua);
+  const isTablet = /ipad|android(?!.*mobile)/i.test(ua);
+
   request.setVariable('PMUSER_DEVICETYPE', 'Desktop');
-  if (request.device.isMobile) {
+  if (isMobile) {
     request.setVariable('PMUSER_DEVICETYPE', 'Mobile');
-  } else if (request.device.isTablet) {
+  } else if (isIPadOS || isTablet) {
     request.setVariable('PMUSER_DEVICETYPE', 'Tablet');
   }
   request.cacheKey.includeVariable('PMUSER_DEVICETYPE');
