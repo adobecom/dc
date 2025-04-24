@@ -134,7 +134,6 @@ export const LIMITS = {
       'text/plain',
     ],
     multipleFiles: true,
-    trial: 2,
   },
   'delete-pages': {
     maxFileSize: 104857600, // 100 MB
@@ -174,28 +173,24 @@ export const LIMITS = {
     maxFileSizeFriendly: '250 MB',
     acceptedFiles: ['application/pdf'],
     multipleFiles: true,
-    trial: 2,
   },
   'pdf-to-excel': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
     acceptedFiles: ['application/pdf'],
     multipleFiles: true,
-    trial: 2,
   },
   'pdf-to-jpg': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
     acceptedFiles: ['application/pdf'],
     multipleFiles: true,
-    trial: 2,
   },
   'pdf-to-ppt': {
     maxFileSize: 262144000, // 250 MB
     maxFileSizeFriendly: '250 MB',
     acceptedFiles: ['application/pdf'],
     multipleFiles: true,
-    trial: 2,
   },
   createpdf: {
     maxFileSize: 104857600, // 100 MB
@@ -225,7 +220,6 @@ export const LIMITS = {
       'text/plain',
     ],
     multipleFiles: true,
-    trial: 2,
   },
   'word-to-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -255,7 +249,6 @@ export const LIMITS = {
       'text/plain',
     ],
     multipleFiles: true,
-    trial: 2,
   },
   'jpg-to-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -285,7 +278,6 @@ export const LIMITS = {
       'text/plain',
     ],
     multipleFiles: true,
-    trial: 2,
   },
   'png-to-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -315,7 +307,6 @@ export const LIMITS = {
       'text/plain',
     ],
     multipleFiles: true,
-    trial: 2,
   },
   'excel-to-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -345,7 +336,6 @@ export const LIMITS = {
       'text/plain',
     ],
     multipleFiles: true,
-    trial: 2,
   },
   'ppt-to-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -375,7 +365,6 @@ export const LIMITS = {
       'text/plain',
     ],
     multipleFiles: true,
-    trial: 2,
   },
 };
 
