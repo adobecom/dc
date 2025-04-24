@@ -5,3 +5,16 @@ node_modules/*
 .DS_Store
 .idea
 tools/cspUpdate/token.json
+reports/*
+CODEOWNERS
+.github/CODEOWNERS
+
+#Environment
+.env
+
+#Auth
+.auth/*
+
+#Test files
+/**/test-files/empty.*
+/**/test-files/bad.*

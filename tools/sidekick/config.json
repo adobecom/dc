@@ -1,8 +1,21 @@
 {
   "project": "DC",
   "host": "www.adobe.com",
+  "previewHost": "main--dc--adobecom.aem.page",
+  "liveHost": "main--dc--adobecom.aem.live",
   "trustedHosts": ["milo.adobe.com", "main--milo--adobecom.hlx.page"],
   "plugins": [
+    {
+      "id": "path",
+      "title": "Path",
+      "environments": [ "edit" ],
+      "url": "https://milo.adobe.com/tools/path-finder",
+      "isPalette": true,
+      "passReferrer": true,
+      "passConfig": true,
+      "paletteRect": "top: 50%; left: 50%; transform: translate(-50%,-50%); height: 84px; width: 900px; overflow: hidden; border-radius: 6px; box-shadow: 0 20px 35px 0px rgba(0, 0, 0, 0.5);",
+      "includePaths": [ "**.docx**", "**.xlsx**" ]
+    },
     {
       "id": "library",
       "title": "Library",
@@ -34,6 +47,26 @@
       "passConfig": true,
       "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
+    },
+    {
+      "containerId": "tools",
+      "id": "localize-2",
+      "title": "Localize (V2)",
+      "environments": [ "edit" ],
+      "url": "https://main--dc--adobecom.hlx.page/tools/loc?milolibs=locui",
+      "passReferrer": true,
+      "passConfig": true,
+      "includePaths": [ "**.xlsx**" ]
+    },
+    {
+      "containerId": "tools",
+      "id": "floodgate",
+      "title": "Floodgate",
+      "environments": [ "edit" ],
+      "url": "https://main--dc--adobecom.hlx.page/tools/floodgate?milolibs=floodgateui",
+      "passReferrer": true,
+      "passConfig": true,
+      "includePaths": [ "**.xlsx**" ]
     },
     {
       "containerId": "tools",
@@ -93,6 +126,74 @@
       "includePaths": [
         "**.docx**"
       ]
+    },
+    {
+      "containerId": "tools",
+      "id": "version-history",
+      "title": "Version History",
+      "environments": [ "edit" ],
+      "url": "https://milo.adobe.com/tools/version-history",
+      "isPalette": true,
+      "passReferrer": true,
+      "passConfig": true,
+      "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 498px; width: 460px;",
+      "includePaths": [ "**.docx**", "**.xlsx**" ]
+    },
+    {
+      "containerId": "tools",
+      "title": "Tag Selector",
+      "id": "tag-selector",
+      "environments": ["edit"],
+      "url": "https://milo.adobe.com/tools/tag-selector",
+      "isPalette": true,
+      "paletteRect": "top: 100px; left: 7%; height: 675px; width: 85vw;"
+    },
+    {
+      "containerId": "tools",
+      "id": "caas-configurator",
+      "title": "CaaS Configurator",
+      "environments": [ "edit", "preview", "dev" ],
+      "url": "https://milo.adobe.com/tools/caas",
+      "isPalette": false,
+      "includePaths": [ "**.docx**"]
+    },
+    {
+      "containerId": "tools",
+      "id": "faas-configurator",
+      "title": "FaaS Configurator",
+      "environments": [ "edit", "preview", "dev" ],
+      "url": "https://milo.adobe.com/tools/faas",
+      "isPalette": false,
+      "includePaths": [ "**.docx**"]
+    },
+    {
+      "containerId": "tools",
+      "id": "ost",
+      "title": "Use offer",
+      "environments": [ "edit", "dev", "preview" ],
+      "url": "https://milo.adobe.com/tools/ost",
+      "includePaths": [ "**.docx**" ],
+      "passConfig": true,
+      "passReferrer": true
+    },
+    {
+      "containerId": "tools",
+      "id": "bulk",
+      "title": "Bulk operations",
+      "environments": [ "edit", "dev", "preview", "live" ],
+      "url": "https://main--dc--adobecom.hlx.page/tools/bulk-publish"
+    },
+    {
+      "containerId": "tools",
+      "id": "rollout",
+      "title": "Rollout",
+      "environments": [ "preview" ],
+      "isPalette": true,
+      "passReferrer": true,
+      "passConfig": true,
+      "url": "https://milo.adobe.com/tools/rollout",
+      "includePaths": [ "**.docx**", "**.xlsx**" ],
+      "paletteRect": "top: 40%; left: 50%; transform: translate(-50%,-50%); height: 350px; width: 500px; overflow: hidden; border-radius: 15px; box-shadow: 0 20px 35px 0px rgba(0, 0, 0, 0.5);"
     }
   ]
 }

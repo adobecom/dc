@@ -1,0 +1,36 @@
+version: 1.0
+
+snow:
+  - id: 545806 # Milo DC
+    - source_path:
+      - exclude:
+        - '.github/**'
+        - 'edgeworkers/**'
+
+notifications:
+  jira:
+    default:
+      project: MWPW # Mandatory
+      filters:
+        include:
+          risk_rating: R3
+        exclude:
+          files:
+            - acrobat/blocks/acom-widget/acom-widget.js
+            - acrobat/blocks/acom-widget/pdfAssetManager.js
+      fields:
+        assignee:
+          name: joaquinrivero
+        customfield_11800: MWPW-164516 #epic link
+        customfield_12900:
+          value: Slytherin
+        watchers:
+          - casalino
+          - tsay
+        labels:
+          - "OriginatingProcess=Kodiak"
+          - "security"
+          - "kodiak-ticket"
+          - "dc-security"
+        components:
+          - name: "DevOps Security"

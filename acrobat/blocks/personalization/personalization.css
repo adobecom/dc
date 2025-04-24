@@ -12,14 +12,15 @@
   background-color: #f44336;
   padding: 5px;
 }
+
 .personalization > div,
 .personalization > div > div:nth-child(1) {
   display: none;
 }
 
-[data-tag='default'],
-[data-tag='2nd conversion'],
-[data-tag='upsell'] {
+div[data-tag='default'],
+div[data-tag='2nd conversion'],
+div[data-tag='upsell'] {
   display: block !important;
 }
 
@@ -31,8 +32,4 @@
   transition: max-height 1s;
   max-height: 0;
   overflow: hidden;
-}
-
-main {
-  isolation: isolate;
 }

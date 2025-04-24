@@ -1,6 +1,6 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { setMobileOS } from '../../../acrobat/blocks/app-banner/app-banner.js';
+import { setMobileOS, getMobileOperatingSystem } from '../../../acrobat/blocks/app-banner/app-banner.js';
 import { waitForElement } from '../../helpers/waitfor.js';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
@@ -126,5 +126,40 @@ describe('app-banner Andriod block', () => {
     node.click();
     const node1 = document.body.querySelector('.app-banner-details');
     expect(node1).not.to.exist;
+  });
+});
+
+describe('get mobile operating system', () => {
+  it('should return "Windows Phone" for Windows Phone user agent', () => {
+    const userAgent = 'Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Mobile Safari/537.36 Edge/13.10586\n';
+    Object.defineProperty(window.navigator, 'userAgent', {
+      value: userAgent,
+      configurable: true,
+    });
+    expect(getMobileOperatingSystem()).to.be.equal('Windows Phone');
+  });
+  it('should return "Android" for Android user agent', () => {
+    const userAgent = 'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.66 Mobile Safari/537.36\n';
+    Object.defineProperty(window.navigator, 'userAgent', {
+      value: userAgent,
+      configurable: true,
+    });
+    expect(getMobileOperatingSystem()).to.be.equal('Android');
+  });
+  it('should return "iOS" for iOS user agent', () => {
+    const userAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Mobile/15E148 Safari/604.1\n';
+    Object.defineProperty(window.navigator, 'userAgent', {
+      value: userAgent,
+      configurable: true,
+    });
+    expect(getMobileOperatingSystem()).to.be.equal('iOS');
+  });
+  it('should return "unknown" for unknown user agent', () => {
+    const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36\n';
+    Object.defineProperty(window.navigator, 'userAgent', {
+      value: userAgent,
+      configurable: true,
+    });
+    expect(getMobileOperatingSystem()).to.be.equal('unknown');
   });
 });

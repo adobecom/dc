@@ -1,0 +1,23 @@
+---
+default: -p prod -b chromium --headless false --logConsole
+
+prod:
+  baseUrl: https://www.adobe.com
+
+stage:
+  baseUrl: https://www.stage.adobe.com
+
+live:
+  baseUrl: https://${branch}--dc--adobecom.hlx.live
+
+preview:
+  baseUrl: https://${branch}--dc--adobecom.hlx.page
+
+local:
+  baseUrl: http://localhost:3000
+
+signing:
+  baseUrl: https://sign.ing
+
+editing:
+  baseUrl: https://edit.ing
