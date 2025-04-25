@@ -73,7 +73,7 @@ describe('dc-converter-widget block', () => {
     await delay(500);
     const errorImg = document.querySelector('div[class*="DCHosted__container"] img');
     expect(errorImg.src).to.contain('error.svg');
-    expect(window.lana.log.getCall(0).args[0]).to.eq('DC Widget failed. type=undefined name=undefined message=undefined');
+    expect(window.lana.log.getCall(0).args[0]).to.eq('DC Widget failed. type=undefined name=undefined message=undefined errorString=undefined errorStringBasic=undefined');
   });
 
   it('handle multiple DC_Hosted:Errors', async () => {
@@ -84,7 +84,7 @@ describe('dc-converter-widget block', () => {
     await delay(500);
     const errorImg = document.querySelector('div[class*="DCHosted__container"] img');
     expect(errorImg.src).to.contain('error.svg');
-    expect(window.lana.log.getCall(0).args[0]).to.eq('DC Widget failed. type=undefined name=undefined message=undefined');
-    expect(window.lana.log.getCall(1).args[0]).to.eq('DC Widget failed. type=undefined name=undefined message=undefined');
+    expect(window.lana.log.getCall(0).args[0]).to.eq('DC Widget failed. type=undefined name=undefined message=undefined errorString=undefined errorStringBasic=undefined');
+    expect(window.lana.log.getCall(1).args[0]).to.eq('DC Widget failed. type=undefined name=undefined message=undefined errorString=undefined errorStringBasic=undefined');
   });
 });
