@@ -161,6 +161,10 @@
   margin: revert;
 }
 
+.verb-sub-copy {
+  color: #6d6d6d;
+}
+
 .verb-cta {
   cursor: pointer;
   background: #1473E6;
@@ -188,6 +192,15 @@
   height: 28px;
 }
 
+.demo-cta {
+  margin-top: 12px;
+  border: #2C2C2C 2px solid;
+  color: #2C2C2C;
+  background-color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
 html[dir="rtl"] .verb-cta .upload-icon {
   margin-right: 0;
   margin-left: 8px;
@@ -197,6 +210,11 @@ html[dir="rtl"] .verb-cta .upload-icon {
   text-decoration: none;
   color: #fff;
   background: #0054b6;
+}
+
+.demo-cta:hover {
+  background-color: #6d6d6d;
+  color: #2C2C2C;
 }
 
 .verb-error {
@@ -374,6 +392,15 @@ html[dir="rtl"] .verb-cta .upload-icon {
     flex: 1 1 55%;
     flex-direction: row;
     padding: 48px;
+  }
+
+  .demo-button-wrapper {
+    display: flex;
+    gap: 12px;
+  }
+
+  .demo-cta {
+    margin-top: 0;
   }
 }
 

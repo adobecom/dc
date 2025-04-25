@@ -1,0 +1,53 @@
+name: Prerender - List EdgeKV Items
+
+on:
+  workflow_dispatch:
+    inputs:
+      network:
+        description: 'Network environment'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+        default: 'staging'
+      namespace:
+        description: 'Namespace'
+        required: true
+        type: choice
+        options:
+          - stage
+          - prod
+        default: 'stage'
+      group:
+        description: 'Group name'
+        required: true
+        type: string
+        default: 'frictionless'
+
+jobs:
+  list-edgekv:
+    runs-on: ubuntu-latest
+    container:
+      image: akamai/edgeworkers
+      
+    steps:
+      - name: Setup Akamai Authentication
+        env:
+          EDGERC: ${{ secrets.EDGERC_EDGEKV }}
+        run: |
+          echo "${EDGERC}" > ~/.edgerc
+
+      - name: List EdgeKV Items
+        run: |
+          akamai edgekv --section edgekv list items ${{ inputs.network }} ${{ inputs.namespace }} ${{ inputs.group }}
+          
+      - name: Save EdgeKV List Output
+        run: |
+          akamai edgekv --section edgekv list items ${{ inputs.network }} ${{ inputs.namespace }} ${{ inputs.group }} > edgekv-list.txt
+          
+      - name: Upload EdgeKV List as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: edgekv-list-${{ inputs.network }}-${{ inputs.namespace }}-${{ inputs.group }}
+          path: edgekv-list.txt
