@@ -10,11 +10,9 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 // #region Constants
 
 const isProd = [
-  'main--dc--adobecom.aem.page',
-  'main--dc--adobecom.aem.live',
-  'main--dc--adobecom.hlx.page',
-  'main--dc--adobecom.hlx.live',
   'www.adobe.com',
+  'sign.ing',
+  'edit.ing',
 ].includes(window.location.hostname);
 
 const COMMENTS_MAX_LENGTH = 500;
