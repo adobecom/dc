@@ -431,9 +431,11 @@ function getDemoEndpoint() {
 
 let exitFlag;
 function handleExit(event, verb, userObj, unloadFlag) {
-  if (exitFlag) { return; }
-  window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
-  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, userObj, getSplunkEndpoint());
+  if (exitFlag) return;
+  const splunkEndpoint = getSplunkEndpoint();
+  const metadata = { ...userObj };
+  window.analytics.verbAnalytics('job:browser-tab-closure', verb, metadata, unloadFlag);
+  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, metadata, splunkEndpoint, true);
   event.preventDefault();
   event.returnValue = true;
 }
