@@ -1049,6 +1049,9 @@ export default async function init(element) {
         if (data) initiatePrefetch(data.redirectUrl);
         handleAnalyticsEvent('job:redirect-success', metadata, false, canSendDataToSplunk);
       },
+      chunk_uploaded: () => {
+        if (canSendDataToSplunk)  window.analytics.sendAnalyticsToSplunk('job:chunk-uploaded', VERB, metadata, getSplunkEndpoint());
+      }
     };
 
     if (analyticsMap[event]) {
