@@ -108,13 +108,15 @@ function createPayloadForSplunk(metaData) {
   };
 }
 
-export function sendAnalyticsToSplunk(eventName, verb, metaData, splunkEndpoint) {
+export function sendAnalyticsToSplunk(eventName, verb, metaData, splunkEndpoint, sendBeacon = false) {
   try {
     const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
+    const payloadString = JSON.stringify(eventDataPayload);
+    if (sendBeacon && navigator.sendBeacon && navigator.sendBeacon(splunkEndpoint, payloadString)) return;
     fetch(splunkEndpoint, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(eventDataPayload),
+      headers: { 'Content-Type': 'application/json' },
+      body: payloadString,
     });
   } catch(error) {
     window.lana?.log(

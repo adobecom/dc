@@ -433,7 +433,7 @@ let exitFlag;
 function handleExit(event, verb, userObj, unloadFlag) {
   if (exitFlag) { return; }
   window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
-  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, userObj, getSplunkEndpoint());
+  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, userObj, getSplunkEndpoint(), true);
   event.preventDefault();
   event.returnValue = true;
 }
