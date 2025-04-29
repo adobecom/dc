@@ -9,7 +9,9 @@ export const mockGetHeader = jest.fn();
 export const mockSetHeader = jest.fn();
 export const mockAddHeader = jest.fn();
 export const mockRemoveHeader = jest.fn();
-export const mockGetHeaders = jest.fn();
+export const mockGetHeaders = jest.fn().mockReturnValue({
+  'user-agent': ['Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'],
+});
 export const mockGetVariable = jest.fn();
 export const mockSetVariable = jest.fn();
 export const mockRoute = jest.fn();

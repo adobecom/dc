@@ -73,7 +73,7 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
 
 function createPayloadForSplunk(metaData) {
   const {
-    verb, eventName, noOfFiles, uploadTime, name, type, size, count, uploadType, userAttempts, errorData
+    verb, eventName, noOfFiles, uploadTime, name, type, size, count, workflowStep, uploadType, userAttempts, errorData, chunkUploadAttempt, chunkNumber, assetId, maxRetryCount
   } = metaData;
 
   return {
@@ -85,7 +85,12 @@ function createPayloadForSplunk(metaData) {
       ...(uploadType && { uploadType })
     },
     content: { name, type, size, count, fileType: type, totalSize: size,
+      ...(workflowStep && { workflowStep }),
       ...(noOfFiles && { no_of_files: noOfFiles }),
+      ...(chunkUploadAttempt && { chunkUploadAttempt }),
+      ...(chunkNumber && { chunkNumber }),
+      ...(assetId && { assetId }),
+      ...(maxRetryCount && { maxRetryCount })
     },
     source: {
       user_agent: navigator.userAgent,
@@ -108,13 +113,15 @@ function createPayloadForSplunk(metaData) {
   };
 }
 
-export function sendAnalyticsToSplunk(eventName, verb, metaData, splunkEndpoint) {
+export function sendAnalyticsToSplunk(eventName, verb, metaData, splunkEndpoint, sendBeacon = false) {
   try {
     const eventDataPayload = createPayloadForSplunk({ ...metaData, eventName, verb });
+    const payloadString = JSON.stringify(eventDataPayload);
+    if (sendBeacon && navigator.sendBeacon && navigator.sendBeacon(splunkEndpoint, payloadString)) return;
     fetch(splunkEndpoint, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(eventDataPayload),
+      headers: { 'Content-Type': 'application/json' },
+      body: payloadString,
     });
   } catch(error) {
     window.lana?.log(

@@ -29,6 +29,12 @@ describe('dc-converter-widget block', () => {
     };
     window.dispatchEvent(new CustomEvent('DC_Hosted:Ready'));
     await delay(100);
-    expect(window.lana.log.getCall(0).args[0]).to.eq('DC Widget failed. type=undefined name=TypeError message=Cannot read properties of null (reading \'upload\')');
+    const loggedMessage = window.lana.log.getCall(0).args[0];
+    expect(loggedMessage).to.include('DC Widget failed.');
+    expect(loggedMessage).to.include('type=undefined');
+    expect(loggedMessage).to.include('name=TypeError');
+    expect(loggedMessage).to.include('message=Cannot read properties of null (reading \'upload\')');
+    expect(loggedMessage).to.include('at http://localhost:2000/acrobat/blocks/dc-converter-widget/dc-converter-widget.js:314:32');
+    expect(loggedMessage).to.include('errorStringBasic=TypeError: Cannot read properties of null (reading \'upload\')');
   });
 });
