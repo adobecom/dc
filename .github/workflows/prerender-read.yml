@@ -1,0 +1,47 @@
+name: Prerender - Read EdgeKV Item
+
+on:
+  workflow_dispatch:
+    inputs:
+      network:
+        description: 'Network environment'
+        required: true
+        type: choice
+        options:
+            - staging
+            - production
+        default: 'staging'
+      namespace:
+        description: 'Namespace'
+        required: true
+        type: choice
+        options:
+            - stage
+            - prod
+        default: 'stage'
+      group:
+        description: 'Group name'
+        required: true
+        type: string
+        default: 'frictionless'
+      item:
+        description: 'Item key'
+        required: true
+        type: string
+
+jobs:
+  read-item:
+    runs-on: ubuntu-latest
+    container:
+      image: akamai/edgeworkers
+      
+    steps:
+      - name: Setup Akamai Authentication
+        env:
+          EDGERC: ${{ secrets.EDGERC_EDGEKV }}
+        run: |
+          echo "${EDGERC}" > ~/.edgerc
+
+      - name: Remove EdgeKV Items
+        run: |
+          akamai edgekv --section edgekv read item ${{ inputs.network }} ${{ inputs.namespace }} ${{ inputs.group }} "${{ inputs.item }}"

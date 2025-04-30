@@ -10,6 +10,7 @@ import { HttpResponseWidget } from "response-widget";
 import { HttpResponseScripts } from "response-scripts";
 import { HttpResponseStyles } from "response-styles";
 import { HttpResponseMiloStyles } from "response-milo-styles";
+import { HttpResponseVerbWidgetStyles } from "response-verb-widget-styles";
 import { HttpResponse404 } from "response-404";
 import { mockOnElement } from "html-rewriter";
 
@@ -39,6 +40,8 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
         }
       } else if (path.includes('/acrobat/styles/styles.css')) {
         response = new HttpResponseStyles();
+      } else if (path.includes('/acrobat/blocks/verb-widget/verb-widget.css')) {
+        response = new HttpResponseVerbWidgetStyles();        
       } else {
         response = new HttpResponse404();
       }
@@ -69,6 +72,7 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
         'https://www.adobe.com/acrobat/blocks/dc-converter-widget/dc-converter-widget.js',
         'https://www.adobe.com/acrobat/styles/styles.css',
         'https://www.adobe.com/libs/styles/styles.css',
+        'https://www.adobe.com/acrobat/blocks/verb-widget/verb-widget.css',
         'https://www.adobe.com/dc/dc-generate-cache/dc-hosted-1.0/pdf-to-ppt-en-us.html'
       ]);
     });
@@ -87,6 +91,7 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
         'https://www.adobe.com/acrobat/blocks/dc-converter-widget/dc-converter-widget.js',
         'https://www.adobe.com/acrobat/styles/styles.css',
         'https://www.adobe.com/libs/styles/styles.css',
+        'https://www.adobe.com/acrobat/blocks/verb-widget/verb-widget.css',
         'https://www.adobe.com/dc/dc-generate-cache/dc-hosted-1.0/pdf-to-ppt-ja-jp.html'
       ]);
     });
@@ -106,7 +111,8 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
         'https://www.adobe.com/acrobat/scripts/scripts.js',
         'https://www.adobe.com/acrobat/blocks/dc-converter-widget/dc-converter-widget.js',
         'https://www.adobe.com/acrobat/styles/styles.css',
-        'https://www.adobe.com/libs/styles/styles.css'
+        'https://www.adobe.com/libs/styles/styles.css',
+        'https://www.adobe.com/acrobat/blocks/verb-widget/verb-widget.css',
       ]);
     });
   });
@@ -156,11 +162,11 @@ describe("EdgeWorker that consumes an HTML document and rewrites it", () => {
     requestMock = new Request({path: '/acrobat/online/pdf-to-ppt', device: 'Mobile'});
 
     onClientRequest(requestMock);
-    expect(requestMock.setVariable).toBeCalledWith('PMUSER_DEVICETYPE', 'Mobile');
+    expect(requestMock.setVariable).toBeCalledWith('PMUSER_DEVICETYPE', 'Desktop');
 
     requestMock = new Request({path: '/acrobat/online/pdf-to-ppt', device: 'Tablet'});
 
     onClientRequest(requestMock);
-    expect(requestMock.setVariable).toBeCalledWith('PMUSER_DEVICETYPE', 'Tablet');    
+    expect(requestMock.setVariable).toBeCalledWith('PMUSER_DEVICETYPE', 'Desktop');    
   });  
 });

@@ -3,6 +3,7 @@
   "host": "www.adobe.com",
   "previewHost": "main--dc--adobecom.aem.page",
   "liveHost": "main--dc--adobecom.aem.live",
+  "trustedHosts": ["milo.adobe.com", "main--milo--adobecom.hlx.page"],
   "plugins": [
     {
       "id": "path",

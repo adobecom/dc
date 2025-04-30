@@ -1,0 +1,80 @@
+name: Prerender - Create N prerenders - Stage
+
+on:
+  workflow_dispatch:
+    inputs:
+      url_or_gist:
+        description: 'URL to prerender or GitHub Gist ID containing URLs (one per line)'
+        required: true
+        type: string
+      layout:
+        description: 'Layout to prerender (For URL input only)'
+        required: true
+        type: choice
+        options:
+          - desktop
+          - mobile
+      network:
+        description: 'Network to write to'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      namespace:
+        description: 'Namespace to write to'
+        required: true
+        type: choice
+        options:
+          - stage
+          - prod
+      group:
+        description: 'Group to write to'
+        required: true
+        type: string
+        default: 'frictionless'
+
+jobs:
+  create-prerender:
+    runs-on: [self-hosted, Linux, X64]
+      
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tools/prerender/prerender-gist.js
+            tools/prerender/prerender.js
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Setup Akamai Authentication
+        env:
+          EDGERC: ${{ secrets.EDGERC_EDGEKV }}
+        run: |
+          echo "${EDGERC}" > ~/.edgerc
+
+      - name: Process URLs
+        run: |
+          if [[ "${{ inputs.url_or_gist }}" =~ ^[0-9a-f]{32}$ ]]; then
+            # If input looks like a gist ID, use prerender-gist.js
+            node tools/prerender/prerender-gist.js "${{ inputs.url_or_gist }}" "${{ inputs.network }}" "${{ inputs.namespace }}" "${{ inputs.group }}"
+          else
+            # Otherwise treat as a single URL
+            node tools/prerender/prerender.js "${{ inputs.url_or_gist }}" --layout ${{ inputs.layout }} --network ${{ inputs.network }} --namespace ${{ inputs.namespace }} --group ${{ inputs.group }} --edgekv
+          fi
+        env:
+          USER_AGENT_SUFFIX: ${{ secrets.USER_AGENT_SUFFIX }}
+
+      - name: Cleanup Akamai credentials
+        if: always()
+        run: rm -f ~/.edgerc

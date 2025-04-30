@@ -5,13 +5,14 @@ import { WritableStream } from 'streams';
 import { createResponse } from 'create-response';
 import { httpRequest } from 'http-request';
 //import { logger } from 'log';
+import { EdgeKV } from './edgekv.js';
 import localeMap from './utils/locales.js';
 import verbMap from './utils/verbs.js';
 import contentSecurityPolicy from './utils/csp/index.js';
 
 export async function responseProvider(request) {
   const path = request.path.split('/');
-  const first = path.splice(1, 1);
+  const first = path[1];
   const locale = localeMap[first];
   const last = path.splice(-1)[0].split('.')[0];
   const verb = verbMap[last] || last;
@@ -116,6 +117,7 @@ export async function responseProvider(request) {
   };
 
   const scriptHashes = [];
+  let prerenderTop = 0;
 
   const inlineScripts = async (unityWorkflow, mobileWidget, scripts, dcConverter) => {
     // Inline dc-converter-widget.js and scripts.js. Remove modular definition and import.
@@ -137,6 +139,32 @@ export async function responseProvider(request) {
     const hash64 = btoa(String.fromCharCode(...new Uint8Array(hash)));
     scriptHashes.push(`'sha256-${hash64}'`);
 
+    const headers = request.getHeaders();
+    const ua = headers["user-agent"][0];
+    const isMobile = /android|iphone|ipod|blackberry|windows phone/i.test(ua);
+    const isIPadOS = ua.includes('Mac') && ua.includes('Version/') && !/iphone|ipod/i.test(ua);
+    const isTablet = /ipad|android(?!.*mobile)/i.test(ua);    
+    if (unityWorkflow && !(isTablet || isIPadOS)) {
+      const group = 'frictionless' + (first === 'acrobat' ? '' : `_${first}`);
+      const edgeKv = new EdgeKV({namespace: isProd? 'prod' : 'stage', group});
+      let prerenderHtml = '<!-- init -->';
+      try {
+        const item = last + (isMobile ? '_mobile' : '_desktop');
+        const prerenderJson = await edgeKv.getJson({ item, default_value: {html: '', top: 0} });
+        prerenderHtml = prerenderJson.html;
+        prerenderTop = prerenderJson.top;
+        if (prerenderHtml) {
+          prerenderHtml = `<div id="prerender_verb-widget">${prerenderHtml}</div>`;
+        }
+      } catch (e) {
+        prerenderHtml = `<!-- ${e.toString()} -->`;
+      }
+
+      rewriter.onElement('body', el => {
+        el.prepend(prerenderHtml);
+      });
+    }
+
     // Remove external script reference
     rewriter.onElement('script[src="/acrobat/scripts/scripts.js"]', el => {
       el.replaceWith('');
@@ -148,10 +176,14 @@ export async function responseProvider(request) {
     });
   };
 
-  const inlineStyles = (dcStyles, miloStyles) => {
+  const inlineStyles = (dcStyles, miloStyles, verbWidgetStyles, unityWorkflow, prerenderTop) => {
     rewriter.onElement('head', el => {
-      el.append(`<style id="inline-milo-styles">${miloStyles}</style>`)
-      el.append(`<style id="inline-dc-styles">${dcStyles}</style>`)
+      el.append(`<style id="inline-milo-styles">${miloStyles}</style>`);
+      el.append(`<style id="inline-dc-styles">${dcStyles}</style>`);
+      if (unityWorkflow) {
+        el.append(`<style id="inline-verb-widget-styles">${verbWidgetStyles}</style>`);
+        el.append(`<style>#prerender_verb-widget { position: absolute; top: ${prerenderTop}; left: 0; width: 100%; z-index: -1; pointer-events: auto; }</style></head>`);
+      }
     });
   };
 
@@ -161,17 +193,19 @@ export async function responseProvider(request) {
       scripts,
       dcConverter,
       dcStyles,
-      miloStyles
+      miloStyles,
+      verbWidgetStyles
     ] = await Promise.all([
       fetchFrictionlessPageAndInlineSnippet(),
       fetchResource('/acrobat/scripts/scripts.js'),
       fetchResource('/acrobat/blocks/dc-converter-widget/dc-converter-widget.js'),
       fetchResource('/acrobat/styles/styles.css'),
       fetchResource('/libs/styles/styles.css'),
+      fetchResource('/acrobat/blocks/verb-widget/verb-widget.css')
     ]);
 
     await inlineScripts(unityWorkflow, mobileWidget, scripts, dcConverter);
-    inlineStyles(dcStyles, miloStyles);
+    inlineStyles(dcStyles, miloStyles, verbWidgetStyles, unityWorkflow, prerenderTop);
 
     const csp = contentSecurityPolicy(isProd, scriptHashes);
     const acrobat = isProd ? 'https://acrobat.adobe.com' : 'https://stage.acrobat.adobe.com';
@@ -221,10 +255,16 @@ export async function responseProvider(request) {
 }
 
 export function onClientRequest (request) {
+  const headers = request.getHeaders();
+  const ua = headers["user-agent"][0];
+  const isMobile = /android|iphone|ipod|blackberry|windows phone/i.test(ua);
+  const isIPadOS = ua.includes('Mac') && ua.includes('Version/') && !/iphone|ipod/i.test(ua);
+  const isTablet = /ipad|android(?!.*mobile)/i.test(ua);
+
   request.setVariable('PMUSER_DEVICETYPE', 'Desktop');
-  if (request.device.isMobile) {
+  if (isMobile) {
     request.setVariable('PMUSER_DEVICETYPE', 'Mobile');
-  } else if (request.device.isTablet) {
+  } else if (isIPadOS || isTablet) {
     request.setVariable('PMUSER_DEVICETYPE', 'Tablet');
   }
   request.cacheKey.includeVariable('PMUSER_DEVICETYPE');
