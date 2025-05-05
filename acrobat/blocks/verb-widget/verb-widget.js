@@ -1026,7 +1026,7 @@ export default async function init(element) {
     const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
 
     const { event, data } = e.detail || {};
-    const canSendDataToSplunk = e.detail?.sendToSplunk || true;
+    const canSendDataToSplunk = e.detail?.sendToSplunk ?? true;
 
     if (!event) return;
     const metadata = mergeData({ ...data, userAttempts });
