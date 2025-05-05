@@ -360,7 +360,7 @@ function initCommentsFieldset(fieldset) {
   const textarea = createTag('textarea', {
     class: 'rnr-comments',
     name: 'comments',
-    'aria-label': window.mph['rnr-comments-label'] || '',
+    'aria-label': window.mph['rnr-comments-placeholder'] || '',
     cols: 40,
     maxLength: metadata.commentsMaxLength,
     placeholder: window.mph['rnr-comments-placeholder'] || '',
