@@ -934,7 +934,7 @@ export default async function init(element) {
       handleAnalyticsEvent('job:multi-file-uploading', metadata, false, canSendDataToSplunk);
     }
     setCookie('UTS_Uploading', Date.now(), cookieExp);
-    registerTabCloseEvent({ ...data, userAttempts: attempts });
+    registerTabCloseEvent({ ...data, userAttempts: attempts, workflowStep: 'uploading' });
   }
 
   function handleUploadedEvent(data, attempts, cookieExp, canSendDataToSplunk) {
@@ -1038,14 +1038,14 @@ export default async function init(element) {
     const analyticsMap = {
       change: () => {
         handleAnalyticsEvent('choose-file:open', metadata, true, canSendDataToSplunk);
-        registerTabCloseEvent(metadata);
+        registerTabCloseEvent({ ...metadata, workflowStep: 'preuploading' });
       },
       drop: () => {
         ['files-dropped', 'entry:clicked', 'discover:clicked'].forEach((analyticsEvent) => {
           handleAnalyticsEvent(analyticsEvent, metadata, true, canSendDataToSplunk);
         });
         setDraggingClass(widget, false);
-        registerTabCloseEvent(metadata);
+        registerTabCloseEvent({ ...metadata, workflowStep: 'preuploading' });
       },
       cancel: () => {
         handleAnalyticsEvent('job:cancel', metadata, true, canSendDataToSplunk);
