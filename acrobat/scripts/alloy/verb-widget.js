@@ -73,7 +73,7 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
 
 function createPayloadForSplunk(metaData) {
   const {
-    verb, eventName, noOfFiles, uploadTime, name, type, size, count, workflowStep, uploadType, userAttempts, errorData, chunkUploadAttempt, chunkNumber, assetId, maxRetryCount
+    verb, eventName, noOfFiles, uploadTime, type, size, count, workflowStep, uploadType, userAttempts, errorData, chunkUploadAttempt, chunkNumber, assetId, maxRetryCount
   } = metaData;
 
   return {
@@ -84,7 +84,7 @@ function createPayloadForSplunk(metaData) {
       ...(uploadTime && { uploadTime }),
       ...(uploadType && { uploadType })
     },
-    content: { name, type, size, count, fileType: type, totalSize: size,
+    content: { type, size, count, fileType: type, totalSize: size,
       ...(workflowStep && { workflowStep }),
       ...(noOfFiles && { no_of_files: noOfFiles }),
       ...(chunkUploadAttempt && { chunkUploadAttempt }),
