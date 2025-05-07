@@ -3,7 +3,7 @@
   --rnr-tooltip-text-color: #fff;
   --rnr-tooltip-transition-time: 0.3s;
   --rnr-tooltip-z-index: 50;
-  --rnr-comments-textarea-height: 60px;
+  --rnr-comments-textarea-height: 76px;
   --rnr-comments-footer-height: 25px;
   --rnr-fieldset-height: calc(
     var(--rnr-comments-textarea-height) + var(--rnr-comments-footer-height)
@@ -118,6 +118,13 @@
   box-sizing: border-box;
   resize: none;
   overflow: auto;
+}
+
+.rnr-comments-label {
+  font-style: italic;
+  color: var(--color-gray-600);
+  padding: 0 8px;
+  display: block;
 }
 
 .rnr-comments:focus ~ .rnr-comments-footer > .rnr-comments-submit,

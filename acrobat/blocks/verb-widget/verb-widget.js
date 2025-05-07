@@ -436,6 +436,7 @@ function handleExit(event, verb, userObj, unloadFlag) {
   window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, userObj, getSplunkEndpoint(), true);
   event.preventDefault();
   event.returnValue = true;
+  window.removeEventListener('beforeunload', handleExit);
 }
 
 function isMobileDevice() {
@@ -917,6 +918,12 @@ export default async function init(element) {
     document.cookie = `${name}=${value};domain=.adobe.com;path=/;expires=${expires}`;
   }
 
+  function registerTabCloseEvent(event_data) {
+    window.addEventListener('beforeunload', (windowEvent) => {
+      handleExit(windowEvent, VERB, event_data, false);
+    });
+  }
+
   function handleUploadingEvent(data, attempts, cookieExp, canSendDataToSplunk) {
     prefetchTarget();
     const metadata = mergeData({ ...data, userAttempts: attempts });
@@ -925,9 +932,7 @@ export default async function init(element) {
       handleAnalyticsEvent('job:multi-file-uploading', metadata, false, canSendDataToSplunk);
     }
     setCookie('UTS_Uploading', Date.now(), cookieExp);
-    window.addEventListener('beforeunload', (windowEvent) => {
-      handleExit(windowEvent, VERB, { ...data, userAttempts: attempts }, false);
-    });
+    registerTabCloseEvent({ ...data, userAttempts: attempts, workflowStep: 'uploading' });
   }
 
   function handleUploadedEvent(data, attempts, cookieExp, canSendDataToSplunk) {
@@ -1024,19 +1029,21 @@ export default async function init(element) {
     const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
 
     const { event, data } = e.detail || {};
-    const canSendDataToSplunk = e.detail?.sendToSplunk || true;
+    const canSendDataToSplunk = e.detail?.sendToSplunk ?? true;
 
     if (!event) return;
     const metadata = mergeData({ ...data, userAttempts });
     const analyticsMap = {
       change: () => {
         handleAnalyticsEvent('choose-file:open', metadata, true, canSendDataToSplunk);
+        registerTabCloseEvent({ ...metadata, workflowStep: 'preuploading' });
       },
       drop: () => {
         ['files-dropped', 'entry:clicked', 'discover:clicked'].forEach((analyticsEvent) => {
           handleAnalyticsEvent(analyticsEvent, metadata, true, canSendDataToSplunk);
         });
         setDraggingClass(widget, false);
+        registerTabCloseEvent({ ...metadata, workflowStep: 'preuploading' });
       },
       cancel: () => {
         handleAnalyticsEvent('job:cancel', metadata, true, canSendDataToSplunk);
