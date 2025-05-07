@@ -430,12 +430,13 @@ function getDemoEndpoint() {
 }
 
 let exitFlag;
-let tabClosureSent, isUploading;
+let tabClosureSent;
+let isUploading;
 function handleExit(event, verb, userObj, unloadFlag, workflowStep) {
   if (exitFlag || tabClosureSent || (isUploading && workflowStep === 'preuploading')) { return; }
   tabClosureSent = true;
   window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
-  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, {...userObj, workflowStep }, getSplunkEndpoint(), true);
+  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, { ...userObj, workflowStep }, getSplunkEndpoint(), true);
   event.preventDefault();
   event.returnValue = true;
 }
@@ -921,9 +922,9 @@ export default async function init(element) {
     document.cookie = `${name}=${value};domain=.adobe.com;path=/;expires=${expires}`;
   }
 
-  function registerTabCloseEvent(event_data, workflowStep) {
+  function registerTabCloseEvent(eventData, workflowStep) {
     window.addEventListener('beforeunload', (windowEvent) => {
-      handleExit(windowEvent, VERB, event_data, false, workflowStep);
+      handleExit(windowEvent, VERB, eventData, false, workflowStep);
     });
   }
 
@@ -1059,8 +1060,8 @@ export default async function init(element) {
         handleAnalyticsEvent('job:redirect-success', metadata, false, canSendDataToSplunk);
       },
       chunk_uploaded: () => {
-        if (canSendDataToSplunk)  window.analytics.sendAnalyticsToSplunk('job:chunk-uploaded', VERB, metadata, getSplunkEndpoint());
-      }
+        if (canSendDataToSplunk) window.analytics.sendAnalyticsToSplunk('job:chunk-uploaded', VERB, metadata, getSplunkEndpoint());
+      },
     };
 
     if (analyticsMap[event]) {
