@@ -237,7 +237,7 @@
 }
 
 .verb-wrapper {
-  max-width: calc(1200px - (var(--verb-wrapper-padding-x) * 2));
+  max-width: calc(1200px - ((var(--verb-wrapper-padding-x) * 2) + var(--verb-wrapper-border-width) * 2));
   padding: var(--verb-wrapper-padding-y) var(--verb-wrapper-padding-x);
   border: var(--verb-wrapper-border-width) dashed var(--consonant-color-gray-300);
   border-radius: var(--consonant-radius-xl);
