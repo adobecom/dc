@@ -1120,6 +1120,7 @@ export default async function init(element) {
       error_max_quota_exceeded: 'error:max_quota_exceeded',
       error_no_storage_provision: 'error:no_storage_provision',
       error_duplicate_asset: 'error:duplicate_asset',
+      warn_chunk_upload: 'warn:verb_upload_warn_chunk_upload',
     };
 
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
