@@ -56,7 +56,7 @@
   --verb-wrapper-padding-y: var(--consonant-spacing-s);
   --verb-wrapper-padding-x: var(--consonant-spacing-s);
   --verb-wrapper-border-width: 3px;
-  --verb-info-icon-margin: 0 10px 0 4px;
+  --verb-info-icon-margin: 8px 10px 0 4px;
   --verb-info-icon-size-width: 18px;
   --verb-info-icon-size-height: 18px;
   --verb-cta-margin-bottom: var(--consonant-spacing-s);
@@ -183,9 +183,13 @@
 
 .info-icon {
   display: flex;
+  margin: var(--verb-info-icon-margin);
+}
+
+.info-icon svg {
+  display: block;
   width: var(--verb-info-icon-size-width);
   height: var(--verb-info-icon-size-height);
-  margin: var(--verb-info-icon-margin);
 }
 
 .verb-footer {
