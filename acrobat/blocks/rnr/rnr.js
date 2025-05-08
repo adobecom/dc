@@ -357,13 +357,19 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
 }
 
 function initCommentsFieldset(fieldset) {
+  const labelText = window.mph['rnr-comments-placeholder'] || '';
+  const label = createTag('label', {
+    class: 'rnr-comments-label',
+    for: 'rnr-comments-textarea',
+  }, labelText);
+
   const textarea = createTag('textarea', {
+    id: 'rnr-comments-textarea',
     class: 'rnr-comments',
     name: 'comments',
-    'aria-label': window.mph['rnr-comments-label'] || '',
+    'aria-label': labelText,
     cols: 40,
     maxLength: metadata.commentsMaxLength,
-    placeholder: window.mph['rnr-comments-placeholder'] || '',
   });
   if (!metadata.interactive) textarea.setAttribute('disabled', 'disabled');
 
@@ -395,7 +401,7 @@ function initCommentsFieldset(fieldset) {
     else submitTag.setAttribute('disabled', 'disabled');
   });
 
-  fieldset.append(textarea, footerContainer);
+  fieldset.append(label, textarea, footerContainer);
 }
 
 function initSummary(container) {
