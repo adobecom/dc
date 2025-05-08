@@ -437,6 +437,7 @@ function handleExit(event, verb, userObj, unloadFlag, workflowStep) {
   tabClosureSent = true;
   window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
   window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, { ...userObj, workflowStep }, getSplunkEndpoint(), true);
+  if (!isUploading) return;
   event.preventDefault();
   event.returnValue = true;
 }
