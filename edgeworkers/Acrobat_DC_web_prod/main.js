@@ -218,23 +218,24 @@ export async function responseProvider(request) {
         '<https://use.typekit.net>;rel="preconnect"',
         `</libs/deps/imslib.min.js>;rel="preload";as="script"`,
     ];
-    if (!(mobileWidget && request.device.isMobile)) {
-      if (unityWorkflow) {
-        headerLink = [...headerLink,
-          `</unitylibs/core/workflow/workflow.js>;rel="preload";as="script";crossorigin="anonymous"`,
-          `</unitylibs/scripts/utils.js>;rel="preload";as="script";crossorigin="anonymous"`,
-          `</unitylibs/core/workflow/workflow-acrobat/action-binder.js>;rel="preload";as="script";crossorigin="anonymous"`,
-          `</acrobat/blocks/unity/unity.js>;rel="preload";as="script";crossorigin="anonymous"`,
-          `</acrobat/blocks/unity/unity.css>;rel="preload";as="style"`,
-        ];
-      } else {
-        headerLink = [...headerLink,
-          `<${acrobat}>;rel="preconnect"`,
-          `<${pdfnow}>;rel="preconnect"`,
-          `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.js>;rel="preload";as="script"`,
-          `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.css>;rel="preload";as="style"`,
-        ];
-      }
+    if (unityWorkflow) {
+      headerLink = [...headerLink,
+        `</acrobat/blocks/unity/unity.js>;rel="preload";as="script";crossorigin="anonymous"`,
+        `</acrobat/blocks/unity/unity.css>;rel="preload";as="style"`,
+        `</acrobat/blocks/verb-widget/verb-widget.js>;rel="preload";as="script";crossorigin="anonymous"`,
+        `</acrobat/blocks/verb-widget/verb-widget.css>;rel="preload";as="style"`,
+        `</acrobat/scripts/utils.js>;rel="preload";as="script";crossorigin="anonymous"`,
+        `</libs/utils/utils.js>;rel="preload";as="script";crossorigin="anonymous"`,
+        `</libs/features/placeholders.js>;rel="preload";as="script";crossorigin="anonymous"`,
+        `<${first === 'acrobat' ? '' : `/${first}`}/dc-shared/placeholders.json>;rel="preload";as="fetch";crossorigin="anonymous"`,
+      ];
+    } else if (!(mobileWidget && request.device.isMobile)) {
+      headerLink = [...headerLink,
+        `<${acrobat}>;rel="preconnect"`,
+        `<${pdfnow}>;rel="preconnect"`,
+        `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.js>;rel="preload";as="script"`,
+        `<${acrobat}/dc-core/${dcCoreVersion}/dc-core.css>;rel="preload";as="style"`,
+      ];
     }
     headerLink = headerLink.join();
 
