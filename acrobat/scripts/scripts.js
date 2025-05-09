@@ -332,6 +332,8 @@ const CONFIG = {
       'milo.adobe.com': 'milo-stage.corp.adobe.com',
       'news.adobe.com': 'news.stage.adobe.com',
     },
+    '.graybox.adobe.com': { 'www.adobe.com': 'origin' },
+    '.business-graybox.adobe.com': { 'business.adobe.com': 'origin' },
   },
   jarvis: {
     id: 'DocumentCloudWeb1',
