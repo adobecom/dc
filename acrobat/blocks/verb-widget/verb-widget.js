@@ -929,6 +929,7 @@ export default async function init(element) {
 
   function handleUploadingEvent(data, attempts, cookieExp, canSendDataToSplunk) {
     isUploading = true;
+    exitFlag = false;
     prefetchTarget();
     const metadata = mergeData({ ...data, userAttempts: attempts });
     handleAnalyticsEvent('job:uploading', metadata, false, canSendDataToSplunk);
@@ -1050,6 +1051,7 @@ export default async function init(element) {
         registerTabCloseEvent(metadata, 'preuploading');
       },
       cancel: () => {
+        exitFlag = true;
         handleAnalyticsEvent('job:cancel', metadata, true, canSendDataToSplunk);
       },
       uploading: () => handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
@@ -1126,6 +1128,7 @@ export default async function init(element) {
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
 
     if (key) {
+      exitFlag = true;
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
       if (canSendDataToSplunk) {
