@@ -1040,10 +1040,12 @@ export default async function init(element) {
     const metadata = mergeData({ ...data, userAttempts });
     const analyticsMap = {
       change: () => {
+        exitFlag = false;
         handleAnalyticsEvent('choose-file:open', metadata, true, canSendDataToSplunk);
         registerTabCloseEvent(metadata, 'preuploading');
       },
       drop: () => {
+        exitFlag = false;
         ['files-dropped', 'entry:clicked', 'discover:clicked'].forEach((analyticsEvent) => {
           handleAnalyticsEvent(analyticsEvent, metadata, true, canSendDataToSplunk);
         });
