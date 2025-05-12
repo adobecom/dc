@@ -797,7 +797,13 @@ export default async function init(element) {
   const legal = createTag('p', { class: 'verb-legal' }, `${window.mph['verb-widget-legal']} `);
   const legalTwo = createTag('p', { class: 'verb-legal verb-legal-two' }, `${window.mph['verb-widget-legal-2']} `);
   const iconSecurity = createTag('div', { class: 'security-icon' });
-  const infoIcon = createTag('div', { class: 'info-icon milo-tooltip top', tabindex: '0', 'data-tooltip': `${window.mph['verb-widget-tool-tip']}` });
+  const infoIcon = createTag('div', {
+    class: 'info-icon milo-tooltip top',
+    tabindex: '0',
+    role: 'button',
+    'aria-label': window.mph['verb-widget-tool-tip'] || 'Files security information',
+    'data-tooltip': `${window.mph['verb-widget-tool-tip']}`,
+  });
   const securityIconSvg = await createSvgElement('SECURITY_ICON');
   const infoIconSvg = await createSvgElement('INFO_ICON');
   if (securityIconSvg) {
@@ -877,6 +883,15 @@ export default async function init(element) {
     iconSecurity.remove(iconSecurity);
     footer.prepend(infoIcon);
   }
+
+  // Add keyboard event handler for info icon
+  infoIcon.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      // Trigger the tooltip display (the tooltip is managed by Milo)
+      infoIcon.click();
+    }
+  });
 
   async function checkSignedInUser() {
     if (!window.adobeIMS?.isSignedInUser?.()) return;
