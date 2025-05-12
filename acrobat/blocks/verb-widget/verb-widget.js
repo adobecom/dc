@@ -43,6 +43,9 @@ const exhLimitCookieMap = {
   'rotate-pages': 'or_p_c',
   createpdf: 'cr_p_c',
   'ocr-pdf': 'ocr_p_c',
+  'combine-pdf': '???',
+  'merge-pdf': '???',
+  'protect-pdf': '',
 };
 
 const appEnvCookieMap = {
@@ -92,6 +95,24 @@ export const LIMITS = {
       'message/rfc822',
       'text/plain',
     ],
+    maxNumFiles: 1,
+  },
+  'combine-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '100 MB', // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 100,
+  },
+  'rotate-pages': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '100 MB', // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 100,
+  },
+  'protect-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '100 MB', // 100 MB
+    acceptedFiles: ['application/pdf'],
     maxNumFiles: 1,
   },
   'crop-pages': {
