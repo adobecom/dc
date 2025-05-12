@@ -884,15 +884,6 @@ export default async function init(element) {
     footer.prepend(infoIcon);
   }
 
-  // Add keyboard event handler for info icon
-  infoIcon.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      // Trigger the tooltip display (the tooltip is managed by Milo)
-      infoIcon.click();
-    }
-  });
-
   async function checkSignedInUser() {
     if (!window.adobeIMS?.isSignedInUser?.()) return;
 
