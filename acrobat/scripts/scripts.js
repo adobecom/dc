@@ -536,46 +536,9 @@ replaceDotMedia(document);
     threeInOne();
   }
 
-  // Tooltip keyboard accessibility implementation for WCAG 1.4.13 Content on Hover or Focus
-  const initTooltips = () => {
-    const showTooltip = (tooltip) => {
-      tooltip.classList.remove('hide-tooltip');
-    };
-    const addListener = (element, event, handler, options = {}) => {
-      element.addEventListener(event, handler, options);
-    };
-    const hideTooltip = (tooltip) => {
-      tooltip.classList.add('hide-tooltip');
-      tooltip.classList.remove('tooltip-active');
-      const resetHideClass = () => showTooltip(tooltip);
-      addListener(tooltip, 'mouseleave', resetHideClass, { once: true });
-      addListener(tooltip, 'blur', resetHideClass, { once: true });
-    };
-    document.querySelectorAll('.milo-tooltip:not([data-a11y-initialized])').forEach((tooltip) => {
-      tooltip.setAttribute('data-a11y-initialized', 'true');
-      addListener(tooltip, 'focus', () => showTooltip(tooltip));
-      addListener(tooltip, 'mouseenter', () => showTooltip(tooltip));
-      addListener(tooltip, 'keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          showTooltip(tooltip);
-          tooltip.classList.toggle('tooltip-active');
-        }
-        if (e.key === 'Escape' && (tooltip.classList.contains('tooltip-active')
-            || getComputedStyle(tooltip, ':before').display === 'block')) {
-          e.preventDefault();
-          hideTooltip(tooltip);
-        }
-      });
-    });
-    if (!document.documentElement.dataset.escapeInitialized) {
-      document.documentElement.dataset.escapeInitialized = 'true';
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          document.querySelectorAll('.milo-tooltip').forEach(hideTooltip);
-        }
-      });
-    }
-  };
-  initTooltips();
+  // Import tooltip accessibility implementation for WCAG 1.4.13 and 4.1.2
+  if (document.querySelectorAll('.milo-tooltip').length > 0) {
+    const { default: initTooltips } = await import('./tooltips.js');
+    initTooltips();
+  }
 }());
