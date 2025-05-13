@@ -535,4 +535,10 @@ replaceDotMedia(document);
     const { default: threeInOne } = await import('./threeInOne.js');
     threeInOne();
   }
+
+  // Import tooltip accessibility implementation for WCAG 1.4.13 and 4.1.2
+  if (document.querySelectorAll('.milo-tooltip').length > 0) {
+    const { default: initTooltips } = await import('./tooltips.js');
+    initTooltips();
+  }
 }());
