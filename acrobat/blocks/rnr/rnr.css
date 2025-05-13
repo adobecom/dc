@@ -135,7 +135,7 @@
 }
 
 .rnr-comments-character-counter {
-  color: var(--color-gray-400);
+  color: #767676;
   font-size: 14px;
   font-variant-numeric: tabular-nums;
 }
