@@ -339,7 +339,7 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
     });
 
     star.addEventListener('keydown', (ev) => {
-      if (!['ArrowLeft', 'ArrowRight', 'Enter'].includes(ev.code)) return;
+      if (!['ArrowLeft', 'ArrowRight', 'Enter', 'Escape'].includes(ev.code)) return;
       ev.preventDefault();
       if (ev.code === 'ArrowLeft' && ev.target.value > 1) {
         stars[ev.target.value - 2].focus();
@@ -349,6 +349,9 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
       }
       if (ev.code === 'Enter') {
         ev.target.click();
+      }
+      if (ev.code === 'Escape') {
+        star.classList.remove('is-hovering', 'has-keyboard-focus');
       }
     });
   });
@@ -434,7 +437,7 @@ function initControls(element) {
   const summaryContainer = createTag('div', { class: 'rnr-summary-container ' });
   const thankYou = createTag(
     'div',
-    { class: 'rnr-thank-you' },
+    { class: 'rnr-thank-you', 'aria-live': 'assertive' },
     window.mph['rnr-thank-you-label'] || '',
   );
 

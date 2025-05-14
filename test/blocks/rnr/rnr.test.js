@@ -173,6 +173,17 @@ describe('rnr - Ratings and reviews', () => {
     expect(stars[1].getAttribute('aria-checked')).to.equal('true');
   });
 
+  it('should dismiss tooltip when pressing Escape key', async () => {
+    const ratingFieldsetElement = await waitForElement('.rnr-rating-fieldset');
+    const stars = ratingFieldsetElement.querySelectorAll('input');
+    stars[0].focus();
+    expect(stars[0].classList.contains('has-keyboard-focus')).to.be.true;
+    await sendKeys({ press: 'Escape' });
+    expect(stars[0].classList.contains('is-hovering')).to.be.false;
+    expect(stars[0].classList.contains('has-keyboard-focus')).to.be.false;
+    expect(document.activeElement).to.equal(stars[0]);
+  });
+
   it('should reset stars active state on blur with no selection', async () => {
     const ratingFieldsetElement = await waitForElement('.rnr-rating-fieldset');
     const stars = ratingFieldsetElement.querySelectorAll('input');
