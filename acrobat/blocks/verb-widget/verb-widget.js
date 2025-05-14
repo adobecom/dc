@@ -94,6 +94,24 @@ export const LIMITS = {
     ],
     maxNumFiles: 1,
   },
+  'combine-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '100 MB', // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 100,
+  },
+  'rotate-pages': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '100 MB', // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 100,
+  },
+  'protect-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '100 MB', // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
   'crop-pages': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
