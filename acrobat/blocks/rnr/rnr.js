@@ -115,7 +115,7 @@ const getImsToken = async (operation) => {
     }
     return token;
   } catch (error) {
-    window.lana?.log(`RnR: Cannot ${operation} for verb '${metadata.verb}'`);
+    window.lana.log(`RnR: Cannot ${operation} for verb '${metadata.verb}'`);
     return null;
   }
 };
@@ -200,7 +200,7 @@ async function loadRnrData() {
 
     if (!response.ok) {
       if (response.status === 401) {
-        window.lana?.log(`RnR: Authentication failed for verb '${metadata.verb}': Token was rejected (401 Unauthorized)`);
+        window.lana.log(`RnR: Authentication failed for verb '${metadata.verb}': Token was rejected (401 Unauthorized)`);
         return;
       }
       const res = await response.json();
@@ -220,7 +220,7 @@ async function loadRnrData() {
 
     setJsonLdProductInfo();
   } catch (error) {
-    window.lana?.log(`RnR: Could not load review data for verb '${metadata.verb}': ${error?.message}`);
+    window.lana.log(`RnR: Could not load review data for verb '${metadata.verb}': ${error?.message}`);
   }
 }
 
@@ -253,14 +253,14 @@ async function postReview(data) {
 
     if (!response.ok) {
       if (response.status === 401) {
-        window.lana?.log(`RnR: Authentication failed for verb '${metadata.verb}': Token was rejected (401 Unauthorized)`);
+        window.lana.log(`RnR: Authentication failed for verb '${metadata.verb}': Token was rejected (401 Unauthorized)`);
         return;
       }
       const res = await response.json();
       throw new Error(`Error ${response.status}: ${res.message}`);
     }
   } catch (error) {
-    window.lana?.log(`RnR: Could not post review for verb '${metadata.verb}': ${error?.message}`);
+    window.lana.log(`RnR: Could not post review for verb '${metadata.verb}': ${error?.message}`);
   }
 }
 
@@ -495,7 +495,7 @@ function initControls(element) {
     };
 
     if (!data.rating) {
-      window.lana?.log(`RnR: Invalid rating ${formData.get('rating')}`);
+      window.lana.log(`RnR: Invalid rating ${formData.get('rating')}`);
       return;
     }
 
@@ -555,7 +555,7 @@ export default async function init(element) {
   initData();
   // Get verb from meta
   if (!metadata.verb) {
-    window.lana?.log('RnR: Verb not configured for the rnr widget');
+    window.lana.log('RnR: Verb not configured for the rnr widget');
   }
   preloadIcons();
   await loadPlaceholders('rnr');
