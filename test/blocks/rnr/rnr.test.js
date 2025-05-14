@@ -184,6 +184,21 @@ describe('rnr - Ratings and reviews', () => {
     expect(document.activeElement).to.equal(stars[0]);
   });
 
+  it('should dismiss tooltip when pressing Escape key while hovering', async () => {
+    const ratingFieldsetElement = await waitForElement('.rnr-rating-fieldset');
+    const stars = ratingFieldsetElement.querySelectorAll('input');
+    const star = stars[2];
+
+    // Simulate mouse hover
+    star.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+    await new Promise((resolve) => { setTimeout(resolve, 150); });
+    expect(star.classList.contains('is-hovering')).to.be.true;
+
+    // Press Escape while hovering
+    await sendKeys({ press: 'Escape' });
+    expect(star.classList.contains('is-hovering')).to.be.false;
+  });
+
   it('should reset stars active state on blur with no selection', async () => {
     const ratingFieldsetElement = await waitForElement('.rnr-rating-fieldset');
     const stars = ratingFieldsetElement.querySelectorAll('input');

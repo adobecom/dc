@@ -300,6 +300,14 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
     fieldset.setAttribute('data-is-mouse-down', true);
   });
 
+  const handleEscapeKey = (ev) => {
+    if (ev.code !== 'Escape') return;
+    stars.forEach((star) => {
+      star.classList.remove('is-hovering');
+    });
+  };
+  document.addEventListener('keydown', handleEscapeKey);
+
   // #endregion
 
   // #region Individual input event handlers for selection, focus and hover
