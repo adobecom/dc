@@ -43,9 +43,6 @@ const exhLimitCookieMap = {
   'rotate-pages': 'or_p_c',
   createpdf: 'cr_p_c',
   'ocr-pdf': 'ocr_p_c',
-  'combine-pdf': '???',
-  'merge-pdf': '???',
-  'protect-pdf': '',
 };
 
 const appEnvCookieMap = {
