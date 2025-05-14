@@ -99,6 +99,7 @@ export const LIMITS = {
     maxFileSizeFriendly: '100 MB', // 100 MB
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 100,
+    multipleFiles: true,
   },
   'rotate-pages': {
     maxFileSize: 104857600, // 100 MB
