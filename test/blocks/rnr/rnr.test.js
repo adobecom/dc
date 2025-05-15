@@ -246,6 +246,32 @@ describe('rnr - Ratings and reviews', () => {
     expect(stars[1].getAttribute('aria-checked')).to.equal('true');
   });
 
+  it('should dismiss tooltip when pressing Escape key', async () => {
+    const ratingFieldsetElement = await waitForElement('.rnr-rating-fieldset');
+    const stars = ratingFieldsetElement.querySelectorAll('input');
+    stars[0].focus();
+    expect(stars[0].classList.contains('has-keyboard-focus')).to.be.true;
+    await sendKeys({ press: 'Escape' });
+    expect(stars[0].classList.contains('is-hovering')).to.be.false;
+    expect(stars[0].classList.contains('has-keyboard-focus')).to.be.false;
+    expect(document.activeElement).to.equal(stars[0]);
+  });
+
+  it('should dismiss tooltip when pressing Escape key while hovering', async () => {
+    const ratingFieldsetElement = await waitForElement('.rnr-rating-fieldset');
+    const stars = ratingFieldsetElement.querySelectorAll('input');
+    const star = stars[2];
+
+    // Simulate mouse hover
+    star.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+    await new Promise((resolve) => { setTimeout(resolve, 150); });
+    expect(star.classList.contains('is-hovering')).to.be.true;
+
+    // Press Escape while hovering
+    await sendKeys({ press: 'Escape' });
+    expect(star.classList.contains('is-hovering')).to.be.false;
+  });
+
   it('should reset stars active state on blur with no selection', async () => {
     const ratingFieldsetElement = await waitForElement('.rnr-rating-fieldset');
     const stars = ratingFieldsetElement.querySelectorAll('input');
