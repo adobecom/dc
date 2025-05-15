@@ -1200,11 +1200,13 @@ export default async function init(element) {
       error_file_too_large: 'error:TooLargeFile',
       error_max_page_count: 'error:max_page_count',
       error_min_page_count: 'error:min_page_count',
+      error_max_num_files: 'error:max_num_files',
       error_generic: 'error',
       error_max_quota_exceeded: 'error:max_quota_exceeded',
       error_no_storage_provision: 'error:no_storage_provision',
       error_duplicate_asset: 'error:duplicate_asset',
       warn_chunk_upload: 'warn:verb_upload_warn_chunk_upload',
+      error_file_same_type: 'error:file_same_type'
     };
 
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
@@ -1213,14 +1215,14 @@ export default async function init(element) {
       exitFlag = true;
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
-      if (canSendDataToSplunk) {
-        window.analytics.sendAnalyticsToSplunk(
-          event,
-          VERB,
-          { ...metadata, errorData },
-          getSplunkEndpoint(),
-        );
-      }
+    }
+    if (canSendDataToSplunk) {
+      window.analytics.sendAnalyticsToSplunk(
+        key,
+        VERB,
+        { ...metadata, errorData },
+        getSplunkEndpoint(),
+      );
     }
   });
 
