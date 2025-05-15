@@ -22,6 +22,12 @@ const ASSET_TYPE = 'ADOBE_COM';
 const RNR_API_URL = isProd ? 'https://rnr.adobe.io/v1' : 'https://rnr-stage.adobe.io/v1';
 const RNR_API_KEY = 'dc-general';
 
+// Errors, Analytics & Logging
+const lanaOptions = {
+  sampleRate: 100,
+  tags: 'DC_Milo, RnR Block',
+};
+
 // #endregion
 
 // #region Snapshot
@@ -105,6 +111,40 @@ function extractMetadata(options) {
 
 // #endregion
 
+// #region IMS Helpers
+
+const getImsToken = async (operation) => {
+  try {
+    const token = window.adobeIMS.getAccessToken()?.token;
+    if (!token) {
+      throw new Error(`Cannot ${operation} token is missing`);
+    }
+    return token;
+  } catch (error) {
+    window.lana.log(
+      `RnR: ${error.message} for verb ${metadata.verb}`,
+      lanaOptions,
+    );
+    return null;
+  }
+};
+
+const waitForIms = (timeout = 1000) => new Promise((resolve) => {
+  if (window.adobeIMS) {
+    resolve(true);
+    return;
+  }
+  setTimeout(() => resolve(!!window.adobeIMS), timeout);
+});
+
+const getAndValidateImsToken = async (operation) => {
+  await waitForIms();
+  const token = await getImsToken(operation);
+  return token;
+};
+
+// #endregion
+
 // #region Data
 
 let rnrData = null;
@@ -153,10 +193,13 @@ function setJsonLdProductInfo() {
 
 async function loadRnrData() {
   try {
+    const token = await getAndValidateImsToken('load review data');
+    if (!token) return;
+
     const headers = {
       Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
       'x-api-key': RNR_API_KEY,
-      Authorization: window.adobeIMS.getAccessToken()?.token,
+      Authorization: token,
     };
 
     const response = await fetch(
@@ -166,9 +209,8 @@ async function loadRnrData() {
 
     if (!response.ok) {
       const res = await response.json();
-      throw new Error(res.message);
+      throw new Error(`Error ${response.status}: ${res.message}`);
     }
-
     const result = await response.json();
     if (!result) throw new Error(`Received empty ratings data for asset '${metadata.verb}'.`);
     const { overallRating, ratingHistogram } = result;
@@ -183,12 +225,18 @@ async function loadRnrData() {
 
     setJsonLdProductInfo();
   } catch (error) {
-    window.lana?.log(`Could not load review data: ${error?.message}`);
+    window.lana.log(
+      `RnR: Could not load review data for verb '${metadata.verb}': ${error?.message}`,
+      lanaOptions,
+    );
   }
 }
 
 async function postReview(data) {
   try {
+    const token = await getAndValidateImsToken('post review');
+    if (!token) return;
+
     // Get locale
     const languageFromPath = window.location.pathname.split('/')[1];
     const locale = localeMap[languageFromPath] || 'en-us';
@@ -198,24 +246,28 @@ async function postReview(data) {
       assetId: metadata.verb,
       rating: data.rating,
       text: data.comments,
-      authorName: window.adobeIMS.getUserProfile?.call()?.name || 'Anonymous',
+      authorName: window.adobeIMS?.getUserProfile?.call()?.name || 'Anonymous',
       assetMetadata: { locale },
     });
+
     const headers = {
       Accept: 'application/vnd.adobe-review.review-data-v1+json',
       'Content-Type': 'application/vnd.adobe-review.review-request-v1+json',
       'x-api-key': RNR_API_KEY,
-      Authorization: window.adobeIMS.getAccessToken()?.token,
+      Authorization: token,
     };
 
     const response = await fetch(`${RNR_API_URL}/reviews`, { method: 'POST', body, headers });
 
-    if (response.ok) return;
-
-    const res = await response.json();
-    throw new Error(res.message);
+    if (!response.ok) {
+      const res = await response.json();
+      throw new Error(`Error ${response.status}: ${res.message}`);
+    }
   } catch (error) {
-    window.lana?.log(`Could not post review: ${error?.message}`);
+    window.lana.log(
+      `RnR: Could not post review for verb '${metadata.verb}': ${error?.message}`,
+      lanaOptions,
+    );
   }
 }
 
@@ -450,7 +502,7 @@ function initControls(element) {
     };
 
     if (!data.rating) {
-      window.lana?.log(`Invalid rating ${formData.get('rating')}`);
+      window.lana.log(`RnR: Invalid rating ${formData.get('rating')}`);
       return;
     }
 
@@ -510,7 +562,7 @@ export default async function init(element) {
   initData();
   // Get verb from meta
   if (!metadata.verb) {
-    window.lana?.log('Verb not configured for the rnr widget');
+    window.lana.log('RnR: Verb not configured for the rnr widget');
   }
   preloadIcons();
   await loadPlaceholders('rnr');

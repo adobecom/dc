@@ -332,6 +332,8 @@ const CONFIG = {
       'milo.adobe.com': 'milo-stage.corp.adobe.com',
       'news.adobe.com': 'news.stage.adobe.com',
     },
+    '.graybox.adobe.com': { 'www.adobe.com': 'origin' },
+    '.business-graybox.adobe.com': { 'business.adobe.com': 'origin' },
   },
   jarvis: {
     id: 'DocumentCloudWeb1',
@@ -528,5 +530,17 @@ replaceDotMedia(document);
   if (document.querySelectorAll('a[class*="geo-pn"]').length > 0 || document.querySelectorAll('a[href*="geo"]').length > 0) {
     const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
     geoPhoneNumber();
+  }
+
+  const threeInOneTag = document.querySelector('meta[name="mas-ff-3in1"]');
+  if (threeInOneTag?.content === 'off' && document.querySelectorAll('a[data-wcs-osi]').length > 0) {
+    const { default: threeInOne } = await import('./threeInOne.js');
+    threeInOne();
+  }
+
+  // Import tooltip accessibility implementation for WCAG 1.4.13 and 4.1.2
+  if (document.querySelectorAll('.milo-tooltip').length > 0) {
+    const { default: initTooltips } = await import('./tooltips.js');
+    initTooltips();
   }
 }());

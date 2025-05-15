@@ -104,9 +104,9 @@
     --consonant-logo-m-img-height: 40px;
   }
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 1200px) {
     --verb-widget-min-height: auto;
-    --verb-widget-padding: 40px 96px;
+    --verb-widget-padding: 32px 96px;
     --verb-wrapper-min-height: 475px;
     --verb-widget-image-width: 200px;
     --verb-wrapper-padding-x: 96px;
@@ -241,7 +241,7 @@
 }
 
 .verb-wrapper {
-  max-width: calc(1200px - ((var(--verb-wrapper-padding-x) * 2) + var(--verb-wrapper-border-width) * 2));
+  max-width: calc(1008px - ((var(--verb-wrapper-padding-x) * 2) + var(--verb-wrapper-border-width) * 2));
   padding: var(--verb-wrapper-padding-y) var(--verb-wrapper-padding-x);
   border: var(--verb-wrapper-border-width) dashed var(--consonant-color-gray-300);
   border-radius: var(--consonant-radius-xl);
@@ -432,8 +432,6 @@ html[dir="rtl"] .verb-cta .upload-icon {
 
 .verb-mobile-cta {
   display: inline-flex;
-  top: 324px;
-  left: 40px;
   padding: 12px 24px;
   border-radius: 100px;
   background: #1473e6;
@@ -446,6 +444,7 @@ html[dir="rtl"] .verb-cta .upload-icon {
   text-decoration: none;
   white-space: pre-wrap;
   text-align: center;
+  margin-bottom: var(--consonant-spacing-s);
 }
 
 .verb-mobile-cta:hover,

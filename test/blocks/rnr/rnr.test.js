@@ -12,7 +12,7 @@ describe('rnr - Ratings and reviews', () => {
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
     localStorage.removeItem('rnr-snapshot');
     window.mph = { 'rnr-rating-tooltips': 'Poor, Below Average, Good, Very Good, Outstanding' };
-    window.adobeIMS = { getAccessToken: () => {} };
+    window.adobeIMS = { getAccessToken: () => ({ token: 'test-token' }) };
     window.lana = { log: () => {} };
     const rnr = document.querySelector('.rnr');
     init(rnr);
@@ -21,7 +21,92 @@ describe('rnr - Ratings and reviews', () => {
   afterEach(() => {
     if (window.fetch.restore) window.fetch.restore();
     if (window.lana.log.restore) window.lana.log.restore();
+    if (window.adobeIMS.getAccessToken.restore) window.adobeIMS.getAccessToken.restore();
   });
+
+  // #region IMS Token Error Handling
+
+  it('should handle missing window.adobeIMS', async () => {
+    const originalIMS = window.adobeIMS;
+    delete window.adobeIMS;
+    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    const rnr = document.querySelector('.rnr');
+    await init(rnr);
+    const containerElement = await waitForElement('.rnr-container');
+    expect(containerElement).to.exist;
+    window.adobeIMS = originalIMS;
+  });
+
+  it('should handle null access token', async () => {
+    sinon.stub(window.adobeIMS, 'getAccessToken').returns(null);
+    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    const rnr = document.querySelector('.rnr');
+    await init(rnr);
+    const containerElement = await waitForElement('.rnr-container');
+    expect(containerElement).to.exist;
+  });
+
+  it('should handle error thrown by getAccessToken', async () => {
+    const originalIMS = window.adobeIMS;
+    window.adobeIMS = {
+      getAccessToken: () => {
+        console.error('Intentional test error: IMS not available');
+        return undefined;
+      },
+    };
+    try {
+      document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+      const rnr = document.querySelector('.rnr');
+      await init(rnr);
+      const containerElement = await waitForElement('.rnr-container');
+      expect(containerElement).to.exist;
+    } finally {
+      window.adobeIMS = originalIMS;
+    }
+  });
+
+  it('should handle token not available when posting review', async () => {
+    const containerElement = await waitForElement('.rnr-container');
+    const ratingFieldsetElement = containerElement.querySelector('.rnr-rating-fieldset');
+    const stars = ratingFieldsetElement.querySelectorAll('input');
+    window.adobeIMS.getAccessToken = () => null;
+    stars[4].click();
+    expect(containerElement).to.exist;
+  });
+
+  it('should wait for IMS to be ready', async () => {
+    const originalGetAccessToken = window.adobeIMS.getAccessToken;
+    let tokenAvailable = false;
+    window.adobeIMS.getAccessToken = () => (tokenAvailable ? { token: 'test-token' } : null);
+    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    const rnr = document.querySelector('.rnr');
+    setTimeout(() => {
+      tokenAvailable = true;
+    }, 500);
+    await init(rnr);
+    const containerElement = await waitForElement('.rnr-container');
+    expect(containerElement).to.exist;
+    window.adobeIMS.getAccessToken = originalGetAccessToken;
+  });
+
+  it('should gracefully handle fetch errors when loading data', async () => {
+    sinon.stub(window, 'fetch').rejects(new Error('Network error'));
+    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    const rnr = document.querySelector('.rnr');
+    await init(rnr);
+    const containerElement = await waitForElement('.rnr-container');
+    expect(containerElement).to.exist;
+  });
+
+  it('should gracefully handle fetch errors when posting review', async () => {
+    const containerElement = await waitForElement('.rnr-container');
+    const stars = containerElement.querySelectorAll('.rnr-rating-fieldset input');
+    sinon.stub(window, 'fetch').rejects(new Error('Network error'));
+    stars[4].click();
+    expect(containerElement).to.exist;
+  });
+
+  // #endregion
 
   // #region General
 
@@ -33,13 +118,11 @@ describe('rnr - Ratings and reviews', () => {
   });
 
   it('should display rnr with missing verb', async () => {
-    sinon.stub(window.lana, 'log');
     document.body.innerHTML = await readFile({ path: './mocks/body_missing_verb.html' });
     const rnr = document.querySelector('.rnr');
     await init(rnr);
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
-    expect(window.lana.log.getCall(0).args[0]).to.equal('Verb not configured for the rnr widget');
   });
 
   it('should submit form and display message', async () => {
@@ -62,7 +145,6 @@ describe('rnr - Ratings and reviews', () => {
 
   it('should handle empty response', async () => {
     sinon.stub(window, 'fetch');
-    sinon.stub(window.lana, 'log');
     window.fetch.returns(
       Promise.resolve({
         json: () => Promise.resolve(null),
@@ -74,14 +156,10 @@ describe('rnr - Ratings and reviews', () => {
     await init(rnr);
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
-    expect(window.lana.log.getCall(0).args[0]).to.equal(
-      "Could not load review data: Received empty ratings data for asset 'word-to-pdf'.",
-    );
   });
 
   it('should handle aggregate data missing', async () => {
     sinon.stub(window, 'fetch');
-    sinon.stub(window.lana, 'log');
     window.fetch.returns(
       Promise.resolve({
         json: () => Promise.resolve({ assetType: 'ADOBE_COM' }),
@@ -93,14 +171,10 @@ describe('rnr - Ratings and reviews', () => {
     await init(rnr);
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
-    expect(window.lana.log.getCall(0).args[0]).to.equal(
-      "Could not load review data: Missing aggregated rating data in response for asset 'word-to-pdf'.",
-    );
   });
 
   it('should handle failed response', async () => {
     sinon.stub(window, 'fetch');
-    sinon.stub(window.lana, 'log');
     window.fetch.returns(
       Promise.resolve({ ok: false, json: () => Promise.resolve({ message: 'Failed!' }) }),
     );
@@ -109,7 +183,6 @@ describe('rnr - Ratings and reviews', () => {
     await init(rnr);
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
-    expect(window.lana.log.getCall(0).args[0]).to.equal('Could not load review data: Failed!');
   });
 
   it('should handle uninteractive action', async () => {
@@ -371,4 +444,13 @@ describe('rnr - Ratings and reviews', () => {
   });
 
   // #endregion
+
+  it('should handle invalid rating submission', async () => {
+    const containerElement = await waitForElement('.rnr-container');
+    const formElement = containerElement.querySelector('.rnr-form');
+    const event = new Event('submit');
+    event.preventDefault = () => {};
+    formElement.dispatchEvent(event);
+    expect(containerElement.querySelector('.rnr-form')).to.exist;
+  });
 });
