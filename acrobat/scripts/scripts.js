@@ -533,7 +533,7 @@ replaceDotMedia(document);
   }
 
   const threeInOneTag = document.querySelector('meta[name="mas-ff-3in1"]');
-  if (threeInOneTag.content === 'off' && document.querySelectorAll('a[data-wcs-osi]').length > 0) {
+  if (threeInOneTag?.content === 'off' && document.querySelectorAll('a[data-wcs-osi]').length > 0) {
     const { default: threeInOne } = await import('./threeInOne.js');
     threeInOne();
   }
