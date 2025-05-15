@@ -22,6 +22,12 @@ const ASSET_TYPE = 'ADOBE_COM';
 const RNR_API_URL = isProd ? 'https://rnr.adobe.io/v1' : 'https://rnr-stage.adobe.io/v1';
 const RNR_API_KEY = 'dc-general';
 
+// Errors, Analytics & Logging
+const lanaOptions = {
+  sampleRate: 100,
+  tags: 'DC_Milo, RnR Block',
+};
+
 // #endregion
 
 // #region Snapshot
@@ -109,23 +115,26 @@ function extractMetadata(options) {
 
 const getImsToken = async (operation) => {
   try {
-    const token = window.adobeIMS?.getAccessToken()?.token;
+    const token = window.adobeIMS.getAccessToken()?.token;
     if (!token) {
-      throw new Error(`Cannot ${operation} for verb '${metadata.verb}'`);
+      throw new Error(`Cannot ${operation} token is missing`);
     }
     return token;
   } catch (error) {
-    window.lana.log(`RnR: Cannot ${operation} for verb '${metadata.verb}'`);
+    window.lana.log(
+      `RnR: ${error.message} for verb ${metadata.verb}`,
+      lanaOptions,
+    );
     return null;
   }
 };
 
 const waitForIms = (timeout = 1000) => new Promise((resolve) => {
-  if (window.adobeIMS?.getAccessToken()?.token) {
+  if (window.adobeIMS) {
     resolve(true);
     return;
   }
-  setTimeout(() => resolve(!!window.adobeIMS?.getAccessToken()?.token), timeout);
+  setTimeout(() => resolve(!!window.adobeIMS), timeout);
 });
 
 const getAndValidateImsToken = async (operation) => {
@@ -199,10 +208,6 @@ async function loadRnrData() {
     );
 
     if (!response.ok) {
-      if (response.status === 401) {
-        window.lana.log(`RnR: Authentication failed for verb '${metadata.verb}': Token was rejected (401 Unauthorized)`);
-        return;
-      }
       const res = await response.json();
       throw new Error(`Error ${response.status}: ${res.message}`);
     }
@@ -220,7 +225,10 @@ async function loadRnrData() {
 
     setJsonLdProductInfo();
   } catch (error) {
-    window.lana.log(`RnR: Could not load review data for verb '${metadata.verb}': ${error?.message}`);
+    window.lana.log(
+      `RnR: Could not load review data for verb '${metadata.verb}': ${error?.message}`,
+      lanaOptions,
+    );
   }
 }
 
@@ -252,15 +260,14 @@ async function postReview(data) {
     const response = await fetch(`${RNR_API_URL}/reviews`, { method: 'POST', body, headers });
 
     if (!response.ok) {
-      if (response.status === 401) {
-        window.lana.log(`RnR: Authentication failed for verb '${metadata.verb}': Token was rejected (401 Unauthorized)`);
-        return;
-      }
       const res = await response.json();
       throw new Error(`Error ${response.status}: ${res.message}`);
     }
   } catch (error) {
-    window.lana.log(`RnR: Could not post review for verb '${metadata.verb}': ${error?.message}`);
+    window.lana.log(
+      `RnR: Could not post review for verb '${metadata.verb}': ${error?.message}`,
+      lanaOptions,
+    );
   }
 }
 
