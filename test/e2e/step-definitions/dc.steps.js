@@ -6,6 +6,7 @@ import { PdfToExcelPage } from "../page-objects/pdftoexcel.page";
 import { PdfToJpgPage } from "../page-objects/pdftojpg.page";
 import { WordToPdfPage } from "../page-objects/wordtopdf.page";
 import { JpgToPdfPage } from "../page-objects/jpgtopdf.page";
+import { PngToPdfPage } from "../page-objects/pngtopdf.page";
 import { ExcelToPdfPage } from "../page-objects/exceltopdf.page";
 import { PptToPdfPage } from "../page-objects/ppttopdf.page";
 import { ConvertPdfPage } from "../page-objects/convertpdf.page";
@@ -34,6 +35,8 @@ const fs = require("fs");
 const YAML = require('js-yaml');
 import { getComparator } from 'playwright-core/lib/utils';
 
+let initialUrl = 'about://';
+
 Then(/^I have a new browser context$/, async function () {
   PW.context = await PW.browser.newContext(PW.contextOptions);
 });
@@ -46,6 +49,7 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
     "pdf-to-jpg": PdfToJpgPage,
     "word-to-pdf": WordToPdfPage,
     "jpg-to-pdf": JpgToPdfPage,
+    "png-to-pdf": PngToPdfPage,
     "excel-to-pdf": ExcelToPdfPage,
     "ppt-to-pdf": PptToPdfPage,
     "convert-pdf": ConvertPdfPage,
@@ -67,6 +71,11 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
   this.page = new pageClass();
 
   await this.page.open();
+  initialUrl = await this.page.native.url();
+});
+
+Then(/^I go back to the initial page$/, async function () {
+  await this.page.native.goto(initialUrl);
 });
 
 Then(/^I go to the DC page '([^\"]*)'$/, async function (pageUrl) {
@@ -860,4 +869,45 @@ Then(/^I should see the "Your Documents" folder$/, async function () {
 Then(/^I should see the save button$/, async function () {
   this.context(UnityPage);
   await expect(this.page.dcWebContinueButton).toBeVisible({timeout: 20000});
+});
+
+Then(/^I click the convert button in DC Web$/, async function () {
+  this.context(UnityPage);
+  await this.page.dcWebWidgetConvertButton.click({timeout: 20000});
+});
+
+Then(/^I download the converted file in DC Web$/, { timeout: 200000 }, async function () {
+  this.context(UnityPage);
+
+  // Prepare waiting for the download event
+  const downloadPromise = this.page.native.waitForEvent("download");
+
+  await this.page.dcWebWidgetDownloadButton.click({timeout: 60000});
+
+  // Behavior diff:
+  // Playwright downloads the file to a temp dir with a UUID file name.
+  // Chrome downloads to Downloads dir with the new extension of
+  // the original file name.
+  const download = await downloadPromise;
+  console.log("Downloaded file: " + (await download.path()));
+
+  let convertedName = await this.page.dcWebFilenameHeader.getAttribute("title");
+
+  let saveAsName = path.resolve(
+    require("os").homedir(),
+    "Downloads",
+    convertedName
+  );
+  await download.saveAs(saveAsName);
+  console.log(`Saved as ${saveAsName}`);
+});
+
+Then(/^I should see the upsell in DC Web$/, async function () {
+  this.context(UnityPage);
+  await expect(this.page.dcWebWidgetUpsell).toBeVisible({timeout: 20000});
+});
+
+Then(/^I should see the file is ready in DC Web$/, async function () {
+  this.context(UnityPage);
+  await expect(this.page.dcWebWidgetFileReady).toBeVisible({timeout: 20000});
 });
