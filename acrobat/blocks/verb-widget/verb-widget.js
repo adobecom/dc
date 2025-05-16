@@ -65,6 +65,70 @@ export const LIMITS = {
     maxNumFiles: 1,
     level: 0,
   },
+  'ocr-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 1,
+  },
+  'chat-pdf-student': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: [
+      'application/msword',
+      'application/xml',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/x-tika-ooxml',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/x-tika-msworks-spreadsheet',
+      'application/vnd.adobe.form.fillsign',
+      'application/illustrator',
+      'application/rtf',
+      'application/x-indesign',
+      'image/jpeg',
+      'image/png',
+      'image/bmp',
+      'image/gif',
+      'image/vnd.adobe.photoshop',
+      'image/tiff',
+      'message/rfc822',
+      'text/plain',
+    ],
+    maxNumFiles: 100,
+    multipleFiles: true,
+  },
+  'chat-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: [
+      'application/msword',
+      'application/xml',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/x-tika-ooxml',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/x-tika-msworks-spreadsheet',
+      'application/vnd.adobe.form.fillsign',
+      'application/illustrator',
+      'application/rtf',
+      'application/x-indesign',
+      'image/jpeg',
+      'image/png',
+      'image/bmp',
+      'image/gif',
+      'image/vnd.adobe.photoshop',
+      'image/tiff',
+      'message/rfc822',
+      'text/plain',
+    ],
+    maxNumFiles: 100,
+    multipleFiles: true,
+  },
   'split-pdf': {
     maxFileSize: 104857600, // 1 GB
     maxFileSizeFriendly: '1 GB',
@@ -92,6 +156,25 @@ export const LIMITS = {
       'message/rfc822',
       'text/plain',
     ],
+    maxNumFiles: 1,
+  },
+  'combine-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '100 MB', // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 100,
+    multipleFiles: true,
+  },
+  'rotate-pages': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '100 MB', // 100 MB
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 100,
+  },
+  'protect-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '100 MB', // 100 MB
+    acceptedFiles: ['application/pdf'],
     maxNumFiles: 1,
   },
   'crop-pages': {
@@ -220,7 +303,6 @@ export const LIMITS = {
       'image/tiff',
       'message/rfc822',
       'text/plain',
-      'image/vnd.adobe.photoshop',
       'application/postscript',
       'text/xml',
       'application/octet-stream',
@@ -1118,11 +1200,13 @@ export default async function init(element) {
       error_file_too_large: 'error:TooLargeFile',
       error_max_page_count: 'error:max_page_count',
       error_min_page_count: 'error:min_page_count',
+      error_max_num_files: 'error:max_num_files',
       error_generic: 'error',
       error_max_quota_exceeded: 'error:max_quota_exceeded',
       error_no_storage_provision: 'error:no_storage_provision',
       error_duplicate_asset: 'error:duplicate_asset',
       warn_chunk_upload: 'warn:verb_upload_warn_chunk_upload',
+      error_file_same_type: 'error:file_same_type'
     };
 
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
@@ -1131,14 +1215,14 @@ export default async function init(element) {
       exitFlag = true;
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
-      if (canSendDataToSplunk) {
-        window.analytics.sendAnalyticsToSplunk(
-          event,
-          VERB,
-          { ...metadata, errorData },
-          getSplunkEndpoint(),
-        );
-      }
+    }
+    if (canSendDataToSplunk) {
+      window.analytics.sendAnalyticsToSplunk(
+        key,
+        VERB,
+        { ...metadata, errorData },
+        getSplunkEndpoint(),
+      );
     }
   });
 
