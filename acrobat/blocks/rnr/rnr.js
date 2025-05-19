@@ -497,7 +497,7 @@ function initControls(element) {
   const summaryContainer = createTag('div', { class: 'rnr-summary-container ' });
   const thankYou = createTag(
     'div',
-    { class: 'rnr-thank-you', 'aria-live': 'assertive' },
+    { class: 'rnr-thank-you', role: 'alert' },
     window.mph['rnr-thank-you-label'] || '',
   );
 
