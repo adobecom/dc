@@ -518,6 +518,11 @@ function getDemoEndpoint() {
   return (getEnv() === 'prod') ? `https://acrobat.adobe.com/${demoPath}` : `https://stage.acrobat.adobe.com/${demoPath}`;
 }
 
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 let exitFlag;
 let tabClosureSent;
 let isUploading;
@@ -589,11 +594,6 @@ async function loadGoogleLogin() {
 
   const { default: initGoogleLogin } = await import(`${miloLibs}/features/google-login.js`);
   initGoogleLogin(loadIms, getMetadata, loadScript, getConfig);
-}
-
-function getCookie(name) {
-  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-  return match ? decodeURIComponent(match[1]) : null;
 }
 
 function uploadedTime() {
@@ -1209,7 +1209,7 @@ export default async function init(element) {
       error_no_storage_provision: 'error:no_storage_provision',
       error_duplicate_asset: 'error:duplicate_asset',
       warn_chunk_upload: 'warn:verb_upload_warn_chunk_upload',
-      error_file_same_type: 'error:file_same_type'
+      error_file_same_type: 'error:file_same_type',
     };
 
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
