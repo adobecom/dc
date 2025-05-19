@@ -524,8 +524,11 @@ let isUploading;
 function handleExit(event, verb, userObj, unloadFlag, workflowStep) {
   if (exitFlag || tabClosureSent || (isUploading && workflowStep === 'preuploading')) { return; }
   tabClosureSent = true;
+  const uploadingStartTime = parseInt(getCookie('UTS_Uploading'), 10);
+  const tabClosureTime = Date.now();
+  const duration = uploadingStartTime ? ((tabClosureTime - uploadingStartTime) / 1000).toFixed(1) : 'N/A';
   window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
-  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, { ...userObj, workflowStep }, getSplunkEndpoint(), true);
+  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, { ...userObj, workflowStep, uploadTime: duration }, getSplunkEndpoint(), true);
   if (!isUploading) return;
   event.preventDefault();
   event.returnValue = true;
