@@ -75,6 +75,7 @@ export const LIMITS = {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: [
+      'application/pdf',
       'application/msword',
       'application/xml',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -105,6 +106,7 @@ export const LIMITS = {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: [
+      'application/pdf',
       'application/msword',
       'application/xml',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -129,6 +131,7 @@ export const LIMITS = {
     ],
     maxNumFiles: 100,
     multipleFiles: true,
+    uploadType: 'multifile-only',
   },
   'split-pdf': {
     maxFileSize: 104857600, // 1 GB
