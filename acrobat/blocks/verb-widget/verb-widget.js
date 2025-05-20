@@ -75,6 +75,7 @@ export const LIMITS = {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: [
+      'application/pdf',
       'application/msword',
       'application/xml',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -99,11 +100,13 @@ export const LIMITS = {
     ],
     maxNumFiles: 100,
     multipleFiles: true,
+    uploadType: 'multifile-only',
   },
   'chat-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: [
+      'application/pdf',
       'application/msword',
       'application/xml',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -128,6 +131,7 @@ export const LIMITS = {
     ],
     maxNumFiles: 100,
     multipleFiles: true,
+    uploadType: 'multifile-only',
   },
   'split-pdf': {
     maxFileSize: 104857600, // 1 GB
@@ -164,6 +168,7 @@ export const LIMITS = {
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 100,
     multipleFiles: true,
+    uploadType: 'multifile-only',
   },
   'rotate-pages': {
     maxFileSize: 104857600, // 100 MB
@@ -246,13 +251,6 @@ export const LIMITS = {
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 1,
     mobileApp: true,
-  },
-  'merge-pdf': {
-    // multifile-only or single-hybrid
-    uploadType: 'multifile-only',
-    multipleFiles: true,
-    maxFileSize: 104857600, // 100 MB
-    maxFileSizeFriendly: '100 MB',
   },
   'pdf-to-word': {
     maxFileSize: 262144000, // 250 MB
