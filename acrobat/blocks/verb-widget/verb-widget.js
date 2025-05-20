@@ -946,6 +946,9 @@ export default async function init(element) {
   } else if (VERB.indexOf('chat-pdf') > -1) {
     const demoBtnWrapper = createTag('div', { class: 'demo-button-wrapper' });
     widgetDemoButton = createTag('a', { href: getDemoEndpoint(), class: 'verb-cta demo-cta', tabindex: 0 }, window.mph['verb-widget-cta-demo']);
+    widgetDemoButton.addEventListener('click', () => {
+      window.analytics.verbAnalytics('Try with a demo file', VERB, { userAttempts });
+    });
     demoBtnWrapper.append(widgetButton, widgetDemoButton);
     widgetLeft.insertBefore(widgetCopy, errorState);
     // widgetLeft.insertBefore(widgetButton, errorState);
