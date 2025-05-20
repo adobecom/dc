@@ -28,9 +28,12 @@ export default async function threeInOne() {
       element.setAttribute('data-checkout-workflow-step', 'email');
       if (offerMap[offerId]) {
         element.href = `${commerceOrigin}${offerMap[offerId]}`;
+        const clone = element.cloneNode(true);
+        setTimeout(() => {
+          clone.href = `${commerceOrigin}${offerMap[offerId]}`;
+        }, 1500);
+        element.parentElement.replaceChild(clone, element);
       }
-      const clone = element.cloneNode(true);
-      element.replaceWith(clone);
     }
   });
 }
