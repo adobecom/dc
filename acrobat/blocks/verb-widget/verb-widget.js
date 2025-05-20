@@ -1135,8 +1135,9 @@ export default async function init(element) {
         registerTabCloseEvent(metadata, 'preuploading');
       },
       cancel: () => {
-        exitFlag = true;
+        if (exitFlag) return;
         handleAnalyticsEvent('job:cancel', metadata, true, canSendDataToSplunk);
+        exitFlag = true;
       },
       uploading: () => handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
       uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
