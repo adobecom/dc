@@ -1185,7 +1185,7 @@ export default async function init(element) {
   element.addEventListener('unity:show-error-toast', (e) => {
     const errorCode = e.detail?.code;
     const errorInfo = e.detail?.info;
-    const metadata = e.detail?.metadata;
+    const metadata = e.detail?.metaData;
     const errorData = e.detail?.errorData;
     const canSendDataToSplunk = e.detail?.sendToSplunk || true;
 
