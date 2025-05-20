@@ -1209,6 +1209,11 @@ export default async function init(element) {
       error_duplicate_asset: 'error:duplicate_asset',
       warn_chunk_upload: 'warn:verb_upload_warn_chunk_upload',
       error_file_same_type: 'error:file_same_type',
+      error_fetch_redirect_url: 'error:fetch_redirect_url',
+      error_finalize_asset: 'error:finalize_asset',
+      error_verify_page_count: 'error:verify_page_count',
+      error_chunk_upload: 'error:chunk_upload',
+      error_create_asset: 'error:create_asset',
     };
 
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
