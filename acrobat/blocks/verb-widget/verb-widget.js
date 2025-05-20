@@ -1207,6 +1207,7 @@ export default async function init(element) {
       error_verify_page_count: 'error:verify_page_count',
       error_chunk_upload: 'error:chunk_upload',
       error_create_asset: 'error:create_asset',
+      error_fetching_access_token: 'error:fetching_access_token',
     };
 
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
