@@ -1184,7 +1184,13 @@ export default async function init(element) {
   };
 
   element.addEventListener('unity:show-error-toast', (e) => {
-    const { code: errorCode, info: errorInfo, metaData: metadata, errorData, sendToSplunk: canSendDataToSplunk = true } = e.detail || {};
+    const {
+      code: errorCode,
+      info: errorInfo,
+      metaData: metadata,
+      errorData,
+      sendToSplunk: canSendDataToSplunk = true,
+    } = e.detail || {};
     if (!errorCode) return;
     handleError(e.detail, true, lanaOptions);
     if (errorCode.includes('cookie_not_set')) return;
