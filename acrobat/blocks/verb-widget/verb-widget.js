@@ -1184,18 +1184,10 @@ export default async function init(element) {
   };
 
   element.addEventListener('unity:show-error-toast', (e) => {
-    const errorCode = e.detail?.code;
-    const errorInfo = e.detail?.info;
-    const metadata = e.detail?.metaData;
-    const errorData = e.detail?.errorData;
-    const canSendDataToSplunk = e.detail?.sendToSplunk || true;
-
+    const { code: errorCode, info: errorInfo, metaData: metadata, errorData, sendToSplunk: canSendDataToSplunk = true } = e.detail || {};
     if (!errorCode) return;
-
     handleError(e.detail, true, lanaOptions);
-
     if (errorCode.includes('cookie_not_set')) return;
-
     const errorAnalyticsMap = {
       error_only_accept_one_file: 'error_only_accept_one_file',
       error_unsupported_type: 'error:UnsupportedFile',
