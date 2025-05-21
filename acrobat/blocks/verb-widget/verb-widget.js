@@ -957,16 +957,19 @@ export default async function init(element) {
     widgetLeft.insertBefore(button, errorState);
   }
 
-  legalTwo.innerHTML = legalTwo.textContent.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}">${window.mph['verb-widget-terms-of-use']}</a>`).replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}">${window.mph['verb-widget-privacy-policy']}</a>`);
+  if (!(LIMITS[VERB].mobileApp && isMobile)) {
+    legalTwo.innerHTML = legalTwo.textContent.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}">${window.mph['verb-widget-terms-of-use']}</a>`).replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}">${window.mph['verb-widget-privacy-policy']}</a>`);
 
-  legalWrapper.append(legal, legalTwo);
-  footer.append(iconSecurity, legalWrapper, infoIcon);
-  element.append(widget, footer);
-  if (isMobile && !isTablet) {
-    widgetImage.after(widgetImage);
-    iconSecurity.remove(iconSecurity);
-    footer.prepend(infoIcon);
+    legalWrapper.append(legal, legalTwo);
+    footer.append(iconSecurity, legalWrapper, infoIcon);
+
+    if (isMobile && !isTablet) {
+      widgetImage.after(widgetImage);
+      iconSecurity.remove(iconSecurity);
+      footer.prepend(infoIcon);
+    }
   }
+  element.append(widget, footer);
 
   async function checkSignedInUser() {
     if (!window.adobeIMS?.isSignedInUser?.()) return;
