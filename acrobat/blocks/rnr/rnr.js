@@ -532,8 +532,9 @@ function initControls(element) {
   // Show comments
   const showComments = () => {
     form.insertBefore(commentsFieldset, null);
-    const textarea = commentsFieldset.querySelector('textarea');
-    textarea.focus();
+    // MWPW-173777
+    // const textarea = commentsFieldset.querySelector('textarea');
+    // textarea.focus();
   };
 
   // Init rating
