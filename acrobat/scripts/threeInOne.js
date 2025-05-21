@@ -16,6 +16,15 @@ const offerMap = {
   xxgyCsZk7zx3WAfpZMqiE6IMtvvu0CP4JJeIey_UtYo: '/store/commitment?items%5B0%5D%5Bid%5D=7FD7DFC9269A4AFB9BF24B8C53547DA7&cli=doc_cloud&ctx=fp&co=US&lang=en',
 };
 
+document.addEventListener('mas:resolved', (e) => {
+  const comCheck = setInterval(() => {
+    if (e.target.isCheckoutLink) {
+      clearInterval(comCheck);
+      e.target.classList.add('threeInOneReady');
+    }
+  }, 100);
+});
+
 export default async function threeInOne() {
   const offers = document.querySelectorAll('[data-wcs-osi]');
 
@@ -29,9 +38,12 @@ export default async function threeInOne() {
       if (offerMap[offerId]) {
         element.href = `${commerceOrigin}${offerMap[offerId]}`;
         const clone = element.cloneNode(true);
-        setTimeout(() => {
-          clone.href = `${commerceOrigin}${offerMap[offerId]}`;
-        }, 1500);
+        const comReady = setInterval(() => {
+          if (clone.classList.contains('threeInOneReady')) {
+            clearInterval(comReady);
+            clone.href = `${commerceOrigin}${offerMap[offerId]}`;
+          }
+        }, 100);
         element.parentElement.replaceChild(clone, element);
       }
     }
