@@ -1219,7 +1219,6 @@ export default async function init(element) {
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
 
     if (key) {
-      exitFlag = true;
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
     }
@@ -1231,6 +1230,7 @@ export default async function init(element) {
         getSplunkEndpoint(),
       );
     }
+    exitFlag = true;
   });
 
   window.addEventListener('pageshow', (event) => {
