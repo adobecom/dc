@@ -69,7 +69,8 @@ export const LIMITS = {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['application/pdf'],
-    maxNumFiles: 1,
+    maxNumFiles: 100,
+    multipleFiles: true,
   },
   'chat-pdf-student': {
     maxFileSize: 104857600, // 100 MB
