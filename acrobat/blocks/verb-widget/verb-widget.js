@@ -1073,8 +1073,9 @@ export default async function init(element) {
         registerTabCloseEvent(metadata, 'preuploading');
       },
       cancel: () => {
-        exitFlag = true;
+        if (exitFlag) return;
         handleAnalyticsEvent('job:cancel', metadata, true, canSendDataToSplunk);
+        exitFlag = true;
       },
       uploading: () => handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
       uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
@@ -1121,18 +1122,16 @@ export default async function init(element) {
   };
 
   element.addEventListener('unity:show-error-toast', (e) => {
-    const errorCode = e.detail?.code;
-    const errorInfo = e.detail?.info;
-    const metadata = e.detail?.metadata;
-    const errorData = e.detail?.errorData;
-    const canSendDataToSplunk = e.detail?.sendToSplunk || true;
-
+    const {
+      code: errorCode,
+      info: errorInfo,
+      metaData: metadata,
+      errorData,
+      sendToSplunk: canSendDataToSplunk = true,
+    } = e.detail || {};
     if (!errorCode) return;
-
     handleError(e.detail, true, lanaOptions);
-
     if (errorCode.includes('cookie_not_set')) return;
-
     const errorAnalyticsMap = {
       error_only_accept_one_file: 'error_only_accept_one_file',
       error_unsupported_type: 'error:UnsupportedFile',
@@ -1147,12 +1146,17 @@ export default async function init(element) {
       error_duplicate_asset: 'error:duplicate_asset',
       warn_chunk_upload: 'warn:verb_upload_warn_chunk_upload',
       error_file_same_type: 'error:file_same_type',
+      error_fetch_redirect_url: 'error:fetch_redirect_url',
+      error_finalize_asset: 'error:finalize_asset',
+      error_verify_page_count: 'error:verify_page_count',
+      error_chunk_upload: 'error:chunk_upload',
+      error_create_asset: 'error:create_asset',
+      error_fetching_access_token: 'error:fetching_access_token',
     };
 
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
 
     if (key) {
-      exitFlag = true;
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
     }
@@ -1164,6 +1168,7 @@ export default async function init(element) {
         getSplunkEndpoint(),
       );
     }
+    exitFlag = true;
   });
 
   window.addEventListener('pageshow', (event) => {
