@@ -352,6 +352,14 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
     fieldset.setAttribute('data-is-mouse-down', true);
   });
 
+  const handleEscapeKey = (ev) => {
+    if (ev.code !== 'Escape') return;
+    stars.forEach((star) => {
+      star.classList.remove('is-hovering');
+    });
+  };
+  document.addEventListener('keydown', handleEscapeKey);
+
   // #endregion
 
   // #region Individual input event handlers for selection, focus and hover
@@ -391,7 +399,7 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
     });
 
     star.addEventListener('keydown', (ev) => {
-      if (!['ArrowLeft', 'ArrowRight', 'Enter'].includes(ev.code)) return;
+      if (!['ArrowLeft', 'ArrowRight', 'Enter', 'Escape'].includes(ev.code)) return;
       ev.preventDefault();
       if (ev.code === 'ArrowLeft' && ev.target.value > 1) {
         stars[ev.target.value - 2].focus();
@@ -401,6 +409,9 @@ function initRatingFielset(fieldset, rnrForm, showComments) {
       }
       if (ev.code === 'Enter') {
         ev.target.click();
+      }
+      if (ev.code === 'Escape') {
+        star.classList.remove('is-hovering', 'has-keyboard-focus');
       }
     });
   });
@@ -486,7 +497,7 @@ function initControls(element) {
   const summaryContainer = createTag('div', { class: 'rnr-summary-container ' });
   const thankYou = createTag(
     'div',
-    { class: 'rnr-thank-you' },
+    { class: 'rnr-thank-you', role: 'alert' },
     window.mph['rnr-thank-you-label'] || '',
   );
 
@@ -521,8 +532,9 @@ function initControls(element) {
   // Show comments
   const showComments = () => {
     form.insertBefore(commentsFieldset, null);
-    const textarea = commentsFieldset.querySelector('textarea');
-    textarea.focus();
+    // MWPW-173777
+    // const textarea = commentsFieldset.querySelector('textarea');
+    // textarea.focus();
   };
 
   // Init rating

@@ -38,6 +38,11 @@ export class UnityPage extends classes(DcGnavPage, VerbWidgetSection, CaaSSectio
       dcWebSplitPageButton: 'button#split-1',
       dcWebSplitPageTooltip: 'div[role="tooltip"][data-test-id="Begin file 2"]',
       dcWebYourDocuments: 'nav[data-testid="asset-list-title"]',
+      dcWebFilenameHeader: 'div[class*="FilenameHeader__name___"]',
+      dcWebWidgetDownloadButton: 'button[class*="Download__downloadButton"]',
+      dcWebWidgetConvertButton: 'button[data-testid="ls-footer-primary-convert-button"]',
+      dcWebWidgetUpsell: 'div.verb-upsell-active',
+      dcWebWidgetFileReady: 'h1[class*="ReadyText__heading___"]',
     });
   }
 

@@ -90,6 +90,8 @@
   --padding-total-height: calc(var(--consonant-spacing-m) + (var(--consonant-spacing-s) * 2));
   --total-height: calc(100vh - (var(--header-height) + var(--padding-total-height) + var(--border-total-height)));
   --verb-wrapper-min-height: calc(100vh - (var(--header-height) + var(--padding-total-height) + var(--border-total-height)));
+  --verb-wrapper-width: 1008px;
+  --verb-wrapper-max-width: calc(var(--verb-wrapper-width) - ((var(--verb-wrapper-padding-x) * 2) + var(--verb-wrapper-border-width) * 2));
 
   @media screen and (min-width: 768px) {
     --verb-widget-min-height: 360px;
@@ -119,6 +121,10 @@
 
     /* Heading type XXL */
     --consonant-heading-xxl-size: 44px;
+  }
+
+  @media screen and (min-width: 1392px) {
+    --verb-wrapper-width: 1200px;
   }
 
 }
@@ -241,7 +247,7 @@
 }
 
 .verb-wrapper {
-  max-width: calc(1008px - ((var(--verb-wrapper-padding-x) * 2) + var(--verb-wrapper-border-width) * 2));
+  max-width: var(--verb-wrapper-max-width);
   padding: var(--verb-wrapper-padding-y) var(--verb-wrapper-padding-x);
   border: var(--verb-wrapper-border-width) dashed var(--consonant-color-gray-300);
   border-radius: var(--consonant-radius-xl);
@@ -636,5 +642,5 @@ html[dir="rtl"] .verb-cta .upload-icon {
 }
 
 .verb-widget .mobile.milo-tooltip.top::before {
-  transform: translateX(-20%) translateY(-100%) !important;
+  transform: translateX(-7%) translateY(-100%) !important;
 }

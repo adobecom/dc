@@ -65,6 +65,67 @@ export const LIMITS = {
     maxNumFiles: 1,
     level: 0,
   },
+  'ocr-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: ['application/pdf'],
+    maxNumFiles: 100,
+    multipleFiles: true,
+  },
+  'chat-pdf-student': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: [
+      'application/pdf',
+      'application/msword',
+      'application/xml',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/x-tika-ooxml',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/x-tika-msworks-spreadsheet',
+      'application/vnd.adobe.form.fillsign',
+      'application/rtf',
+      'message/rfc822',
+      'text/plain',
+    ],
+    maxNumFiles: 100,
+    multipleFiles: true,
+    uploadType: 'multifile-only',
+  },
+  'chat-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: [
+      'application/pdf',
+      'application/msword',
+      'application/xml',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/x-tika-ooxml',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/x-tika-msworks-spreadsheet',
+      'application/vnd.adobe.form.fillsign',
+      'application/illustrator',
+      'application/rtf',
+      'application/x-indesign',
+      'image/jpeg',
+      'image/png',
+      'image/bmp',
+      'image/gif',
+      'image/vnd.adobe.photoshop',
+      'image/tiff',
+      'message/rfc822',
+      'text/plain',
+    ],
+    maxNumFiles: 100,
+    multipleFiles: true,
+    uploadType: 'multifile-only',
+  },
   'split-pdf': {
     maxFileSize: 104857600, // 1 GB
     maxFileSizeFriendly: '1 GB',
@@ -100,12 +161,14 @@ export const LIMITS = {
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 100,
     multipleFiles: true,
+    uploadType: 'multifile-only',
   },
   'rotate-pages': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB', // 100 MB
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 100,
+    multipleFiles: true,
   },
   'protect-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -182,13 +245,6 @@ export const LIMITS = {
     maxNumFiles: 1,
     mobileApp: true,
   },
-  'merge-pdf': {
-    // multifile-only or single-hybrid
-    uploadType: 'multifile-only',
-    multipleFiles: true,
-    maxFileSize: 104857600, // 100 MB
-    maxFileSizeFriendly: '100 MB',
-  },
   'pdf-to-word': {
     maxFileSize: 262144000, // 250 MB
     maxFileSizeFriendly: '250 MB',
@@ -239,7 +295,6 @@ export const LIMITS = {
       'image/tiff',
       'message/rfc822',
       'text/plain',
-      'image/vnd.adobe.photoshop',
       'application/postscript',
       'text/xml',
       'application/octet-stream',
@@ -884,6 +939,9 @@ export default async function init(element) {
   } else if (VERB.indexOf('chat-pdf') > -1) {
     const demoBtnWrapper = createTag('div', { class: 'demo-button-wrapper' });
     widgetDemoButton = createTag('a', { href: getDemoEndpoint(), class: 'verb-cta demo-cta', tabindex: 0 }, window.mph['verb-widget-cta-demo']);
+    widgetDemoButton.addEventListener('click', () => {
+      window.analytics.verbAnalytics('Try with a demo file', VERB, { userAttempts });
+    });
     demoBtnWrapper.append(widgetButton, widgetDemoButton);
     widgetLeft.insertBefore(widgetCopy, errorState);
     // widgetLeft.insertBefore(widgetButton, errorState);
@@ -895,16 +953,19 @@ export default async function init(element) {
     widgetLeft.insertBefore(button, errorState);
   }
 
-  legalTwo.innerHTML = legalTwo.textContent.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}">${window.mph['verb-widget-terms-of-use']}</a>`).replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}">${window.mph['verb-widget-privacy-policy']}</a>`);
+  if (!(LIMITS[VERB].mobileApp && isMobile)) {
+    legalTwo.innerHTML = legalTwo.textContent.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}">${window.mph['verb-widget-terms-of-use']}</a>`).replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}">${window.mph['verb-widget-privacy-policy']}</a>`);
 
-  legalWrapper.append(legal, legalTwo);
-  footer.append(iconSecurity, legalWrapper, infoIcon);
-  element.append(widget, footer);
-  if (isMobile && !isTablet) {
-    widgetImage.after(widgetImage);
-    iconSecurity.remove(iconSecurity);
-    footer.prepend(infoIcon);
+    legalWrapper.append(legal, legalTwo);
+    footer.append(iconSecurity, legalWrapper, infoIcon);
+
+    if (isMobile && !isTablet) {
+      widgetImage.after(widgetImage);
+      iconSecurity.remove(iconSecurity);
+      footer.prepend(infoIcon);
+    }
   }
+  element.append(widget, footer);
 
   async function checkSignedInUser() {
     if (!window.adobeIMS?.isSignedInUser?.()) return;
