@@ -1022,6 +1022,7 @@ export default async function init(element) {
   }
 
   function handleUploadedEvent(data, attempts, cookieExp, canSendDataToSplunk) {
+    exitFlag = true;
     setTimeout(() => {
       window.dispatchEvent(redirectReady);
       window.lana?.log(
@@ -1036,7 +1037,6 @@ export default async function init(element) {
     if (LIMITS[VERB]?.multipleFiles) {
       handleAnalyticsEvent('job:multi-file-uploaded', metadata, false, canSendDataToSplunk);
     }
-    exitFlag = true;
     setUser();
     incrementVerbKey(`${VERB}_attempts`);
   }
