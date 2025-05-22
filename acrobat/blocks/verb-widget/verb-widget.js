@@ -455,14 +455,22 @@ function getDemoEndpoint() {
   return (getEnv() === 'prod') ? `https://acrobat.adobe.com/${demoPath}` : `https://stage.acrobat.adobe.com/${demoPath}`;
 }
 
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 let exitFlag;
 let tabClosureSent;
 let isUploading;
 function handleExit(event, verb, userObj, unloadFlag, workflowStep) {
   if (exitFlag || tabClosureSent || (isUploading && workflowStep === 'preuploading')) { return; }
   tabClosureSent = true;
+  const uploadingStartTime = parseInt(getCookie('UTS_Uploading'), 10);
+  const tabClosureTime = Date.now();
+  const duration = uploadingStartTime ? ((tabClosureTime - uploadingStartTime) / 1000).toFixed(1) : 'N/A';
   window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
-  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, { ...userObj, workflowStep }, getSplunkEndpoint(), true);
+  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, { ...userObj, workflowStep, uploadTime: duration }, getSplunkEndpoint(), true);
   if (!isUploading) return;
   event.preventDefault();
   event.returnValue = true;
@@ -523,11 +531,6 @@ async function loadGoogleLogin() {
 
   const { default: initGoogleLogin } = await import(`${miloLibs}/features/google-login.js`);
   initGoogleLogin(loadIms, getMetadata, loadScript, getConfig);
-}
-
-function getCookie(name) {
-  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-  return match ? decodeURIComponent(match[1]) : null;
 }
 
 function uploadedTime() {
@@ -958,6 +961,7 @@ export default async function init(element) {
   }
 
   function handleUploadedEvent(data, attempts, cookieExp, canSendDataToSplunk) {
+    exitFlag = true;
     setTimeout(() => {
       window.dispatchEvent(redirectReady);
       window.lana?.log(
@@ -972,7 +976,6 @@ export default async function init(element) {
     if (LIMITS[VERB]?.multipleFiles) {
       handleAnalyticsEvent('job:multi-file-uploaded', metadata, false, canSendDataToSplunk);
     }
-    exitFlag = true;
     setUser();
     incrementVerbKey(`${VERB}_attempts`);
   }
@@ -1070,8 +1073,9 @@ export default async function init(element) {
         registerTabCloseEvent(metadata, 'preuploading');
       },
       cancel: () => {
-        exitFlag = true;
+        if (exitFlag) return;
         handleAnalyticsEvent('job:cancel', metadata, true, canSendDataToSplunk);
+        exitFlag = true;
       },
       uploading: () => handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
       uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
@@ -1118,18 +1122,16 @@ export default async function init(element) {
   };
 
   element.addEventListener('unity:show-error-toast', (e) => {
-    const errorCode = e.detail?.code;
-    const errorInfo = e.detail?.info;
-    const metadata = e.detail?.metadata;
-    const errorData = e.detail?.errorData;
-    const canSendDataToSplunk = e.detail?.sendToSplunk || true;
-
+    const {
+      code: errorCode,
+      info: errorInfo,
+      metaData: metadata,
+      errorData,
+      sendToSplunk: canSendDataToSplunk = true,
+    } = e.detail || {};
     if (!errorCode) return;
-
     handleError(e.detail, true, lanaOptions);
-
     if (errorCode.includes('cookie_not_set')) return;
-
     const errorAnalyticsMap = {
       error_only_accept_one_file: 'error_only_accept_one_file',
       error_unsupported_type: 'error:UnsupportedFile',
@@ -1137,28 +1139,36 @@ export default async function init(element) {
       error_file_too_large: 'error:TooLargeFile',
       error_max_page_count: 'error:max_page_count',
       error_min_page_count: 'error:min_page_count',
+      error_max_num_files: 'error:max_num_files',
       error_generic: 'error',
       error_max_quota_exceeded: 'error:max_quota_exceeded',
       error_no_storage_provision: 'error:no_storage_provision',
       error_duplicate_asset: 'error:duplicate_asset',
       warn_chunk_upload: 'warn:verb_upload_warn_chunk_upload',
+      error_file_same_type: 'error:file_same_type',
+      error_fetch_redirect_url: 'error:fetch_redirect_url',
+      error_finalize_asset: 'error:finalize_asset',
+      error_verify_page_count: 'error:verify_page_count',
+      error_chunk_upload: 'error:chunk_upload',
+      error_create_asset: 'error:create_asset',
+      error_fetching_access_token: 'error:fetching_access_token',
     };
 
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
 
     if (key) {
-      exitFlag = true;
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
-      if (canSendDataToSplunk) {
-        window.analytics.sendAnalyticsToSplunk(
-          event,
-          VERB,
-          { ...metadata, errorData },
-          getSplunkEndpoint(),
-        );
-      }
     }
+    if (canSendDataToSplunk) {
+      window.analytics.sendAnalyticsToSplunk(
+        key,
+        VERB,
+        { ...metadata, errorData },
+        getSplunkEndpoint(),
+      );
+    }
+    exitFlag = true;
   });
 
   window.addEventListener('pageshow', (event) => {
