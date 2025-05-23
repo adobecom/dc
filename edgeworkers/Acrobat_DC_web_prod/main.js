@@ -154,7 +154,7 @@ export async function responseProvider(request) {
       const edgeKv = new EdgeKV({namespace: isProd? 'prod' : 'stage', group});
       let prerenderHtml = '<!-- init -->';
       try {
-        const item = last + (isMobile ? '_mobile' : '_desktop');
+        const item = last + ((isMobile || isIPadOS || isTablet) ? '_mobile' : '_desktop');
         const prerenderJson = await edgeKv.getJson({ item, default_value: {html: '', top: 0} });
         prerenderHtml = prerenderJson.html;
         prerenderTop = prerenderJson.top;
