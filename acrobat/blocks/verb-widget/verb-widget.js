@@ -999,7 +999,7 @@ export default async function init(element) {
   }
 
   function setCookie(name, value, expires) {
-    document.cookie = `${name}=${value};domain=.adobe.com;path=/;expires=${expires}`;
+    document.cookie = `${name}=${value};path=/;expires=${expires}`;
   }
 
   function registerTabCloseEvent(eventData, workflowStep) {
