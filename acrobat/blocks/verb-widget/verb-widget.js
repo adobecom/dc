@@ -1112,7 +1112,7 @@ export default async function init(element) {
   });
 
   element.addEventListener('unity:track-analytics', (e) => {
-    const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
+    const cookieExp = new Date(Date.now() + 30 * 60 * 1000).toUTCString();
 
     const { event, data } = e.detail || {};
     const canSendDataToSplunk = e.detail?.sendToSplunk ?? true;
