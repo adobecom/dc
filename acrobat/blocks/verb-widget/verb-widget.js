@@ -169,6 +169,7 @@ export const LIMITS = {
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 100,
     multipleFiles: true,
+    uploadType: 'multifile-only',
   },
   'protect-pdf': {
     maxFileSize: 104857600, // 100 MB
