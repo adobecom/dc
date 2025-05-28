@@ -644,3 +644,12 @@ html[dir="rtl"] .verb-cta .upload-icon {
 .verb-widget .mobile.milo-tooltip.top::before {
   transform: translateX(-7%) translateY(-100%) !important;
 }
+
+head:has(link[rel="product-name"][href$="/home.html"]) + body p {
+  color: blue;
+}
+
+/* Test for Sign a PDF and H1 LCP  */
+head:has(meta[name="product-name"][content="Sign a PDF"]) + body .verb-heading {
+  font-size: 55px;
+}
