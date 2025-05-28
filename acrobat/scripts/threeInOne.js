@@ -13,7 +13,7 @@ const offerMap = {
   WJLr3TF4T4qyJIGZTsDf9KPbTfxA7qAgStpaF2IgYao: '/store/commitment?items%5B0%5D%5Bid%5D=AB8E1250740CB06218C53E6745F81005&cli=doc_cloud&ctx=fp&co=US&lang=en',
   '8Lr09qx_PHqAJUwvUNiof4FFFEKjsR1TTbvBUncV2b0': '/store/email?items%5B0%5D%5Bid%5D=4B43CE3C95D80F8C0FE83F6C13E05003&items%5B0%5D%5Bq%5D=2&cli=doc_cloud&ctx=fp&co=US&lang=en',
   ZfP6XPHxvTFnOS_Hd4q9taPkKHinmf6PCozeJEmzqNI: '/store/email?items%5B0%5D%5Bid%5D=04AEF9E2711373902B3235D295DADF70&items%5B0%5D%5Bq%5D=5&cli=doc_cloud&ctx=fp&co=US&lang=en&ss=recommendation&rrItems%5B0%5D%5Bid%5D=04AEF9E2711373902B3235D295DADF70&rrItems%5B0%5D%5Bq%5D=5',
-  xxgyCsZk7zx3WAfpZMqiE6IMtvvu0CP4JJeIey_UtYo: '/store/commitment?items%5B0%5D%5Bid%5D=7FD7DFC9269A4AFB9BF24B8C53547DA7&cli=doc_cloud&ctx=fp&co=US&lang=en',
+  'OQ1oCm1tZG35Gj7LCrkGeOOdUMfVlC7xx-7ml-CTWIE': '/store/commitment?items%5B0%5D%5Bid%5D=7FD7DFC9269A4AFB9BF24B8C53547DA7&cli=doc_cloud&ctx=fp&co=US&lang=en',
 };
 
 document.addEventListener('mas:resolved', (e) => {
