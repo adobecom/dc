@@ -109,6 +109,13 @@
     head:has(meta[name="product-name"][content="Sign a PDF"]) + body .verb-heading {
       font-size: 55px;
     }
+
+    head:has(meta[name="product-name"][content="Sign a PDF"]) + body .how-to-media {
+      width: 200px;
+
+    }
+
+    
   }
 
   @media screen and (min-width: 1200px) {
