@@ -1000,7 +1000,7 @@ export default async function init(element) {
   }
 
   function setCookie(name, value, expires) {
-    document.cookie = `${name}=${value};domain=.adobe.com;path=/;expires=${expires}`;
+    document.cookie = `${name}=${value};path=/;expires=${expires}`;
   }
 
   function registerTabCloseEvent(eventData, workflowStep) {
@@ -1113,7 +1113,7 @@ export default async function init(element) {
   });
 
   element.addEventListener('unity:track-analytics', (e) => {
-    const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
+    const cookieExp = new Date(Date.now() + 30 * 60 * 1000).toUTCString();
 
     const { event, data } = e.detail || {};
     const canSendDataToSplunk = e.detail?.sendToSplunk ?? true;

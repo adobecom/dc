@@ -327,8 +327,7 @@ describe('rnr - Ratings and reviews', () => {
     await sendKeys({ press: 'Enter' });
     const commentsFieldsetElement = containerElement.querySelector('.rnr-comments-fieldset');
     expect(commentsFieldsetElement).to.exist;
-    const textareaElement = commentsFieldsetElement.querySelector('textarea');
-    expect(document.activeElement).to.equal(textareaElement);
+    expect(document.activeElement).to.equal(stars[2]);
   });
 
   it('should focus comments textarea when focusing the footer', async () => {
@@ -351,6 +350,7 @@ describe('rnr - Ratings and reviews', () => {
     const stars = ratingFieldsetElement.querySelectorAll('input');
     stars[2].focus();
     await sendKeys({ press: 'Enter' });
+    await sendKeys({ press: 'Tab' }); // Move focus to textarea
     await sendKeys({ press: 'a' });
     await sendKeys({ press: 'a' });
     await sendKeys({ press: 'a' });
@@ -367,6 +367,7 @@ describe('rnr - Ratings and reviews', () => {
     stars[2].focus();
     await sendKeys({ press: 'Enter' });
     expect(stars[2].getAttribute('aria-checked')).to.equal('true');
+    await sendKeys({ press: 'Tab' });
     await sendKeys({ press: 'a' });
     await sendKeys({ press: 'a' });
     await sendKeys({ press: 'a' });
@@ -382,6 +383,7 @@ describe('rnr - Ratings and reviews', () => {
     const stars = ratingFieldsetElement.querySelectorAll('input');
     stars[2].focus();
     await sendKeys({ press: 'Enter' });
+    await sendKeys({ press: 'Tab' });
     const submitElement = containerElement.querySelector('.rnr-comments-submit');
     expect(submitElement).to.exist;
     expect(submitElement.getAttribute('disabled')).to.equal('disabled');
