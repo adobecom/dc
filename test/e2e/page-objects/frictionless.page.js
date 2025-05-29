@@ -20,6 +20,7 @@ export class FrictionlessPage extends classes(DcGnavPage, PdfWidgetSection, CaaS
       reviewCommentField: '.hlx-Review-commentFields textarea',
       reviewCommentSubmit: '.hlx-Review-commentFields input[type="submit"]',
       reviewInputField: 'fieldset.hlx-Review-ratingFields input',
+      reviewVoteCount: '.rnr-summary-votes',
       signUp: '[href*="https://auth.services.adobe.com"][href*="signup"]',
       extensionModal: '#chromeext, #edgeext',
       closeExtensionModal: '#chromeext .dialog-close, #edgeext .dialog-close',

@@ -289,6 +289,13 @@ Then(/^I should see the review stats$/, async function () {
   await expect(this.page.reviewStats).toBeVisible({timeout: 5000});
 });
 
+Then(/^I should see the review vote count$/, async function () {
+  this.context(FrictionlessPage);
+  await expect(this.page.reviewVoteCount).toBeVisible({timeout: 5000});
+  const voteCount = await this.page.reviewVoteCount.textContent();
+  expect(parseInt(voteCount)).toBeGreaterThan(0);
+});
+
 Then(/^I should see the review submit response$/, async function () {
   this.context(FrictionlessPage);
   await expect(this.page.reviewSubmitResponse).toBeVisible({timeout: 5000});
@@ -588,7 +595,7 @@ Then(/^I should see that the prices match on checkout from the (.*) merch card(?
 });
 
 Then(/^I scroll to the "([^"]*)" header$/, async function (header) {
-  const xpath = `//*[self::h1 or self::h2 or self::h3][text()="${header}"]`;
+  let xpath = `//*[self::h1 or self::h2 or self::h3][starts-with(text(),'${header}')]`;
   await this.page.native.locator(xpath).waitFor({timeout: 5000});
   await this.page.native.evaluate((xpath) => {
     const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
