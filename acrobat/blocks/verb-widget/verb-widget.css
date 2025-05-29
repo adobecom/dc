@@ -104,6 +104,18 @@
     --verb-info-icon-margin: 0 0 0 var(--consonant-spacing-xs);
     --consonant-logo-m-img-width: 41.5px;
     --consonant-logo-m-img-height: 40px;
+
+    /* Test for Sign a PDF and H1 LCP  */
+    head:has(meta[name="product-name"][content="Sign a PDF"]) + body .verb-heading {
+      font-size: 55px;
+    }
+
+    head:has(meta[name="product-name"][content="Sign a PDF"]) + body .how-to-media {
+      width: 200px;
+
+    }
+
+    
   }
 
   @media screen and (min-width: 1200px) {
