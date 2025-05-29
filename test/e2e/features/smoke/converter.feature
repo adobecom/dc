@@ -47,6 +47,7 @@ Feature: Frictionless Converter Block
   Given I go to the .ing site
    Then I scroll to the "More resources" header
    Then I should see the CaaS block cards
-   Then I should see the review stats
-   Then I upload the file "test-files/test.pdf"
-   Then I should see the upload completed
+   Then I should see the review vote count
+   Then I choose the file "test-files/test.pdf" to upload
+   Then I wait for 5 seconds
+   Then I should see the address bar contains "acrobat.adobe.com"

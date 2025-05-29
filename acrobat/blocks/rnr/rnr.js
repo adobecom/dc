@@ -497,7 +497,7 @@ function initControls(element) {
   const summaryContainer = createTag('div', { class: 'rnr-summary-container ' });
   const thankYou = createTag(
     'div',
-    { class: 'rnr-thank-you', 'aria-live': 'assertive' },
+    { class: 'rnr-thank-you', role: 'alert' },
     window.mph['rnr-thank-you-label'] || '',
   );
 
@@ -532,8 +532,9 @@ function initControls(element) {
   // Show comments
   const showComments = () => {
     form.insertBefore(commentsFieldset, null);
-    const textarea = commentsFieldset.querySelector('textarea');
-    textarea.focus();
+    // MWPW-173777
+    // const textarea = commentsFieldset.querySelector('textarea');
+    // textarea.focus();
   };
 
   // Init rating

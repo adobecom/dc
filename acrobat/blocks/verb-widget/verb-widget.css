@@ -93,7 +93,7 @@
   --verb-wrapper-width: 1008px;
   --verb-wrapper-max-width: calc(var(--verb-wrapper-width) - ((var(--verb-wrapper-padding-x) * 2) + var(--verb-wrapper-border-width) * 2));
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 835px) {
     --verb-widget-min-height: 360px;
     --verb-wrapper-min-height: auto;
     --verb-widget-padding: 32px 40px;
@@ -642,5 +642,5 @@ html[dir="rtl"] .verb-cta .upload-icon {
 }
 
 .verb-widget .mobile.milo-tooltip.top::before {
-  transform: translateX(-20%) translateY(-100%) !important;
+  transform: translateX(-7%) translateY(-100%) !important;
 }

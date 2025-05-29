@@ -69,12 +69,14 @@ export const LIMITS = {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['application/pdf'],
-    maxNumFiles: 1,
+    maxNumFiles: 100,
+    multipleFiles: true,
   },
   'chat-pdf-student': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: [
+      'application/pdf',
       'application/msword',
       'application/xml',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -85,25 +87,19 @@ export const LIMITS = {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       'application/x-tika-msworks-spreadsheet',
       'application/vnd.adobe.form.fillsign',
-      'application/illustrator',
       'application/rtf',
-      'application/x-indesign',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/gif',
-      'image/vnd.adobe.photoshop',
-      'image/tiff',
       'message/rfc822',
       'text/plain',
     ],
     maxNumFiles: 100,
     multipleFiles: true,
+    uploadType: 'multifile-only',
   },
   'chat-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: [
+      'application/pdf',
       'application/msword',
       'application/xml',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -128,6 +124,7 @@ export const LIMITS = {
     ],
     maxNumFiles: 100,
     multipleFiles: true,
+    uploadType: 'multifile-only',
   },
   'split-pdf': {
     maxFileSize: 104857600, // 1 GB
@@ -164,12 +161,15 @@ export const LIMITS = {
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 100,
     multipleFiles: true,
+    uploadType: 'multifile-only',
   },
   'rotate-pages': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB', // 100 MB
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 100,
+    multipleFiles: true,
+    uploadType: 'multifile-only',
   },
   'protect-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -245,13 +245,6 @@ export const LIMITS = {
     acceptedFiles: ['application/pdf'],
     maxNumFiles: 1,
     mobileApp: true,
-  },
-  'merge-pdf': {
-    // multifile-only or single-hybrid
-    uploadType: 'multifile-only',
-    multipleFiles: true,
-    maxFileSize: 104857600, // 100 MB
-    maxFileSizeFriendly: '100 MB',
   },
   'pdf-to-word': {
     maxFileSize: 262144000, // 250 MB
@@ -518,14 +511,22 @@ function getDemoEndpoint() {
   return (getEnv() === 'prod') ? `https://acrobat.adobe.com/${demoPath}` : `https://stage.acrobat.adobe.com/${demoPath}`;
 }
 
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 let exitFlag;
 let tabClosureSent;
 let isUploading;
 function handleExit(event, verb, userObj, unloadFlag, workflowStep) {
   if (exitFlag || tabClosureSent || (isUploading && workflowStep === 'preuploading')) { return; }
   tabClosureSent = true;
+  const uploadingStartTime = parseInt(getCookie('UTS_Uploading'), 10);
+  const tabClosureTime = Date.now();
+  const duration = uploadingStartTime ? ((tabClosureTime - uploadingStartTime) / 1000).toFixed(1) : 'N/A';
   window.analytics.verbAnalytics('job:browser-tab-closure', verb, userObj, unloadFlag);
-  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, { ...userObj, workflowStep }, getSplunkEndpoint(), true);
+  window.analytics.sendAnalyticsToSplunk('job:browser-tab-closure', verb, { ...userObj, workflowStep, uploadTime: duration }, getSplunkEndpoint(), true);
   if (!isUploading) return;
   event.preventDefault();
   event.returnValue = true;
@@ -586,11 +587,6 @@ async function loadGoogleLogin() {
 
   const { default: initGoogleLogin } = await import(`${miloLibs}/features/google-login.js`);
   initGoogleLogin(loadIms, getMetadata, loadScript, getConfig);
-}
-
-function getCookie(name) {
-  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-  return match ? decodeURIComponent(match[1]) : null;
 }
 
 function uploadedTime() {
@@ -944,6 +940,9 @@ export default async function init(element) {
   } else if (VERB.indexOf('chat-pdf') > -1) {
     const demoBtnWrapper = createTag('div', { class: 'demo-button-wrapper' });
     widgetDemoButton = createTag('a', { href: getDemoEndpoint(), class: 'verb-cta demo-cta', tabindex: 0 }, window.mph['verb-widget-cta-demo']);
+    widgetDemoButton.addEventListener('click', () => {
+      window.analytics.verbAnalytics('Try with a demo file', VERB, { userAttempts });
+    });
     demoBtnWrapper.append(widgetButton, widgetDemoButton);
     widgetLeft.insertBefore(widgetCopy, errorState);
     // widgetLeft.insertBefore(widgetButton, errorState);
@@ -955,16 +954,19 @@ export default async function init(element) {
     widgetLeft.insertBefore(button, errorState);
   }
 
-  legalTwo.innerHTML = legalTwo.textContent.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}">${window.mph['verb-widget-terms-of-use']}</a>`).replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}">${window.mph['verb-widget-privacy-policy']}</a>`);
+  if (!(LIMITS[VERB].mobileApp && isMobile)) {
+    legalTwo.innerHTML = legalTwo.textContent.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}">${window.mph['verb-widget-terms-of-use']}</a>`).replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}">${window.mph['verb-widget-privacy-policy']}</a>`);
 
-  legalWrapper.append(legal, legalTwo);
-  footer.append(iconSecurity, legalWrapper, infoIcon);
-  element.append(widget, footer);
-  if (isMobile && !isTablet) {
-    widgetImage.after(widgetImage);
-    iconSecurity.remove(iconSecurity);
-    footer.prepend(infoIcon);
+    legalWrapper.append(legal, legalTwo);
+    footer.append(iconSecurity, legalWrapper, infoIcon);
+
+    if (isMobile && !isTablet) {
+      widgetImage.after(widgetImage);
+      iconSecurity.remove(iconSecurity);
+      footer.prepend(infoIcon);
+    }
   }
+  element.append(widget, footer);
 
   async function checkSignedInUser() {
     if (!window.adobeIMS?.isSignedInUser?.()) return;
@@ -998,7 +1000,7 @@ export default async function init(element) {
   }
 
   function setCookie(name, value, expires) {
-    document.cookie = `${name}=${value};domain=.adobe.com;path=/;expires=${expires}`;
+    document.cookie = `${name}=${value};path=/;expires=${expires}`;
   }
 
   function registerTabCloseEvent(eventData, workflowStep) {
@@ -1021,6 +1023,7 @@ export default async function init(element) {
   }
 
   function handleUploadedEvent(data, attempts, cookieExp, canSendDataToSplunk) {
+    exitFlag = true;
     setTimeout(() => {
       window.dispatchEvent(redirectReady);
       window.lana?.log(
@@ -1035,7 +1038,6 @@ export default async function init(element) {
     if (LIMITS[VERB]?.multipleFiles) {
       handleAnalyticsEvent('job:multi-file-uploaded', metadata, false, canSendDataToSplunk);
     }
-    exitFlag = true;
     setUser();
     incrementVerbKey(`${VERB}_attempts`);
   }
@@ -1111,7 +1113,7 @@ export default async function init(element) {
   });
 
   element.addEventListener('unity:track-analytics', (e) => {
-    const cookieExp = new Date(Date.now() + 90 * 1000).toUTCString();
+    const cookieExp = new Date(Date.now() + 30 * 60 * 1000).toUTCString();
 
     const { event, data } = e.detail || {};
     const canSendDataToSplunk = e.detail?.sendToSplunk ?? true;
@@ -1133,8 +1135,9 @@ export default async function init(element) {
         registerTabCloseEvent(metadata, 'preuploading');
       },
       cancel: () => {
-        exitFlag = true;
+        if (exitFlag) return;
         handleAnalyticsEvent('job:cancel', metadata, true, canSendDataToSplunk);
+        exitFlag = true;
       },
       uploading: () => handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
       uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
@@ -1181,18 +1184,16 @@ export default async function init(element) {
   };
 
   element.addEventListener('unity:show-error-toast', (e) => {
-    const errorCode = e.detail?.code;
-    const errorInfo = e.detail?.info;
-    const metadata = e.detail?.metadata;
-    const errorData = e.detail?.errorData;
-    const canSendDataToSplunk = e.detail?.sendToSplunk || true;
-
+    const {
+      code: errorCode,
+      info: errorInfo,
+      metaData: metadata,
+      errorData,
+      sendToSplunk: canSendDataToSplunk = true,
+    } = e.detail || {};
     if (!errorCode) return;
-
     handleError(e.detail, true, lanaOptions);
-
     if (errorCode.includes('cookie_not_set')) return;
-
     const errorAnalyticsMap = {
       error_only_accept_one_file: 'error_only_accept_one_file',
       error_unsupported_type: 'error:UnsupportedFile',
@@ -1206,13 +1207,18 @@ export default async function init(element) {
       error_no_storage_provision: 'error:no_storage_provision',
       error_duplicate_asset: 'error:duplicate_asset',
       warn_chunk_upload: 'warn:verb_upload_warn_chunk_upload',
-      error_file_same_type: 'error:file_same_type'
+      error_file_same_type: 'error:file_same_type',
+      error_fetch_redirect_url: 'error:fetch_redirect_url',
+      error_finalize_asset: 'error:finalize_asset',
+      error_verify_page_count: 'error:verify_page_count',
+      error_chunk_upload: 'error:chunk_upload',
+      error_create_asset: 'error:create_asset',
+      error_fetching_access_token: 'error:fetching_access_token',
     };
 
     const key = Object.keys(errorAnalyticsMap).find((k) => errorCode?.includes(k));
 
     if (key) {
-      exitFlag = true;
       const event = errorAnalyticsMap[key];
       window.analytics.verbAnalytics(event, VERB, event === 'error' ? { errorInfo } : {});
     }
@@ -1224,6 +1230,7 @@ export default async function init(element) {
         getSplunkEndpoint(),
       );
     }
+    exitFlag = true;
   });
 
   window.addEventListener('pageshow', (event) => {
