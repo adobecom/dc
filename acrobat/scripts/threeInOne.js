@@ -1,4 +1,4 @@
-const commerceOrigin = ['www.adobe.com', 'main--dc--adobecom.aem.live'].includes(window.location.hostname) ? 'https://commerce.adobe.com' : 'https://commerce-stg.adobe.com';
+const commerceOrigin = 'https://commerce.adobe.com';
 const offerMap = {
   'vQmS1H18A6_kPd0tYBgKnp-TQIF0GbT6p8SH8rWcLMs': '/store/commitment?items%5B0%5D%5Bid%5D=7C30A05FE0EC0BA92566737E720C4692&cli=doc_cloud&ctx=fp&co=US&lang=en',
   'ZZQMV2cU-SWQoDxuznonUFMRdxSyTr4J3fB77YBNakY': '/store/commitment?items%5B0%5D%5Bid%5D=1DCDA0FEA46DFD40623D9648765528D3&cli=doc_cloud&ctx=fp&co=US&lang=en',
