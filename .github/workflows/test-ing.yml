@@ -3,6 +3,7 @@ name: Test .ing sites
 on:
   schedule:
     - cron:  '0 14 * * *'
+  workflow_dispatch:
 
 jobs:
   run-tests:
@@ -49,5 +50,5 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: reports
+          name: reports-${{ strategy.job-index }}
           path: reports/         
