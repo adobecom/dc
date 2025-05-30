@@ -45,7 +45,7 @@ async function getPrice(el) {
   await waitForPlaceholderResolved(el);
   const major = el.querySelector('.price-integer')?.textContent;
   const minor = el.querySelector('.price-decimals')?.textContent;
-  const price = parseFloat(`${major}.${minor}`);
+  const price = parseFloat(`${major.replace(',', '')}.${minor}`);
   return price;
 }
 function parseMetadata(metadata) {
@@ -79,11 +79,12 @@ async function cloneAndUpdatePrice(aiPriceEl, acrobatPriceEl) {
   const acrobatPrice = await getPrice(acrobatPriceEl);
   if (acrobatPriceEl.dataset.template === 'optical') aiPrice /= 12;
   const bundlePrice = (acrobatPrice + aiPrice).toFixed(2);
-  const major = bundlePrice.split('.')[0];
+  const major = parseInt(bundlePrice.split('.')[0]).toLocaleString();
   const minor = bundlePrice.split('.')[1];
   setTimeout(() => {
     bundlePriceEl.querySelector('.price-integer').textContent = major;
-    bundlePriceEl.querySelector('.price-decimals').textContent = minor;
+    const minorEl = bundlePriceEl.querySelector('.price-decimals');
+    if (minorEl.textContent) minorEl.textContent = minor;
   }, 100);
 }
 function getKey(fragmentPath, defaultKey, obj) {
