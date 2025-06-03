@@ -35,9 +35,6 @@ export default async function threeInOne() {
       element.removeAttribute('data-modal');
       element.removeAttribute('data-modal-id');
       if (offerMap[offerId]) {
-        const step = offerMap[offerId].match(/\/store\/([^?]+)/)[1];
-        element.setAttribute('data-checkout-workflow-step', step);
-
         const href = new URL(element.href);
         const lang = href.searchParams.get('lang');
         const co = href.searchParams.get('co');
