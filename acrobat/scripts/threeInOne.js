@@ -35,16 +35,14 @@ export default async function threeInOne() {
       element.removeAttribute('data-modal');
       element.removeAttribute('data-modal-id');
       if (offerMap[offerId]) {
-        const href = new URL(element.href);
-        const lang = href.searchParams.get('lang') ?? 'en';
-        const co = href.searchParams.get('co') ?? 'US';
-        const newHref = `${commerceOrigin}${offerMap[offerId]}&lang=${lang}&co=${co}`;
-        element.href = newHref;
-
         const clone = element.cloneNode(true);
         const comReady = setInterval(() => {
           if (clone.classList.contains('threeInOneReady')) {
             clearInterval(comReady);
+            const href = new URL(element.href);
+            const lang = href.searchParams.get('lang') ?? 'en';
+            const co = href.searchParams.get('co') ?? 'US';
+            const newHref = `${commerceOrigin}${offerMap[offerId]}&lang=${lang}&co=${co}`;
             clone.href = newHref;
           }
         }, 100);
