@@ -34,18 +34,21 @@ export default async function threeInOne() {
     if (offerId && modalType === 'crm') {
       element.removeAttribute('data-modal');
       element.removeAttribute('data-modal-id');
-      element.setAttribute('data-checkout-workflow-step', 'email');
       if (offerMap[offerId]) {
-        const lang = document.querySelector('html').getAttribute('lang');
-        const link = new URL(offerMap[offerId], commerceOrigin);
-        link.searchParams.set('co', lang.split('-')[1]);
-        link.searchParams.set('lang', lang.split('-')[0]);
-        element.href = link;
+        const step = offerMap[offerId].match(/\/store\/([^?]+)/)[1];
+        element.setAttribute('data-checkout-workflow-step', step);
+
+        const href = new URL(element.href);
+        const lang = href.searchParams.get('lang');
+        const co = href.searchParams.get('co');
+        const newHref = `${commerceOrigin}${offerMap[offerId]}?lang=${lang}&co=${co}`;
+        element.href = newHref;
+
         const clone = element.cloneNode(true);
         const comReady = setInterval(() => {
           if (clone.classList.contains('threeInOneReady')) {
             clearInterval(comReady);
-            clone.href = link;
+            clone.href = newHref;
           }
         }, 100);
         element.parentElement.replaceChild(clone, element);
