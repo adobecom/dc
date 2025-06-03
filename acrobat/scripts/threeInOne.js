@@ -36,9 +36,9 @@ export default async function threeInOne() {
       element.removeAttribute('data-modal-id');
       if (offerMap[offerId]) {
         const href = new URL(element.href);
-        const lang = href.searchParams.get('lang');
-        const co = href.searchParams.get('co');
-        const newHref = `${commerceOrigin}${offerMap[offerId]}?lang=${lang}&co=${co}`;
+        const lang = href.searchParams.get('lang') ?? 'en';
+        const co = href.searchParams.get('co') ?? 'US';
+        const newHref = `${commerceOrigin}${offerMap[offerId]}&lang=${lang}&co=${co}`;
         element.href = newHref;
 
         const clone = element.cloneNode(true);
