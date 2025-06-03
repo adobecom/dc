@@ -39,7 +39,7 @@ export default async function threeInOne() {
         const comReady = setInterval(() => {
           if (clone.classList.contains('threeInOneReady')) {
             clearInterval(comReady);
-            const href = new URL(element.href);
+            const href = new URL(clone.href);
             const lang = href.searchParams.get('lang') ?? 'en';
             const co = href.searchParams.get('co') ?? 'US';
             const newHref = `${commerceOrigin}${offerMap[offerId]}&lang=${lang}&co=${co}`;
