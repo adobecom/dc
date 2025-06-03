@@ -1,0 +1,1328 @@
+{
+    "total": 329,
+    "offset": 0,
+    "limit": 329,
+    "data": [
+        {
+            "key": "30-days-free",
+            "value": "30 days free"
+        },
+        {
+            "key": "acrobat",
+            "value": "Acrobat"
+        },
+        {
+            "key": "acrobat-export-pdf",
+            "value": "Acrobat Export PDF"
+        },
+        {
+            "key": "acrobat-pdf-pack",
+            "value": "Acrobat PDF Pack"
+        },
+        {
+            "key": "acrobat-pro",
+            "value": "Acrobat Pro"
+        },
+        {
+            "key": "acrobat-pro-2020",
+            "value": "Acrobat Pro 2020"
+        },
+        {
+            "key": "acrobat-reader",
+            "value": "Acrobat Reader"
+        },
+        {
+            "key": "acrobat-sign",
+            "value": "Acrobat Sign"
+        },
+        {
+            "key": "acrobat-standard",
+            "value": "Acrobat Standard"
+        },
+        {
+            "key": "acrobat-standard-2020",
+            "value": "Acrobat Standard 2020"
+        },
+        {
+            "key": "add",
+            "value": "Add"
+        },
+        {
+            "key": "add-to-cart",
+            "value": "Add to cart"
+        },
+        {
+            "key": "adobe-acrobat",
+            "value": "Adobe Acrobat"
+        },
+        {
+            "key": "adobe-acrobat-img",
+            "value": "/dc-shared/assets/images/frictionless/mWEB-widget-images/fillsign.svg"
+        },
+        {
+            "key": "adobe-acrobat-detail-logo",
+            "value": ""
+        },
+        {
+            "key": "adobe-acrobat-pro",
+            "value": "Adobe Acrobat Pro"
+        },
+        {
+            "key": "all-apps",
+            "value": "All Apps"
+        },
+        {
+            "key": "annual",
+            "value": "Annual"
+        },
+        {
+            "key": "annual-paid-monthly",
+            "value": "Annual, billed monthly"
+        },
+        {
+            "key": "annual-paid-monthly-plan",
+            "value": "annual, billed monthly plan"
+        },
+        {
+            "key": "annual-paid-monthly-plan-cap",
+            "value": "Annual, billed monthly plan"
+        },
+        {
+            "key": "annual-plan",
+            "value": "Annual plan"
+        },
+        {
+            "key": "annual-plan-prepaid",
+            "value": "Annual plan, prepaid"
+        },
+        {
+            "key": "best-value",
+            "value": "Best value"
+        },
+        {
+            "key": "billed-monthly",
+            "value": "Billed monthly."
+        },
+        {
+            "key": "business",
+            "value": "Business"
+        },
+        {
+            "key": "buy-now",
+            "value": "Buy now"
+        },
+        {
+            "key": "cancel-anytime",
+            "value": "Cancel anytime."
+        },
+        {
+            "key": "cart",
+            "value": "Cart"
+        },
+        {
+            "key": "cc-all-apps",
+            "value": "Adobe Creative Cloud All Apps"
+        },
+        {
+            "key": "change-language",
+            "value": "Change language"
+        },
+        {
+            "key": "change-region",
+            "value": "Choose your region"
+        },
+        {
+            "key": "change-region-description",
+            "value": "Selecting a region changes the language and/or content on Adobe.com."
+        },
+        {
+            "key": "choose-a-payment-plan",
+            "value": "Choose a payment plan"
+        },
+        {
+            "key": "choose-a-storage-option",
+            "value": "Choose a storage option"
+        },
+        {
+            "key": "clear-all",
+            "value": "Clear all"
+        },
+        {
+            "key": "close",
+            "value": "Close"
+        },
+        {
+            "key": "dc-widget",
+            "value": "3.1.0_2.4.1"
+        },
+        {
+            "key": "desktop",
+            "value": "Desktop"
+        },
+        {
+            "key": "desktop-mobile",
+            "value": "Desktop + mobile"
+        },
+        {
+            "key": "desktop-mobile-web",
+            "value": "Desktop + mobile + web"
+        },
+        {
+            "key": "desktop-tablet",
+            "value": "Desktop + tablet"
+        },
+        {
+            "key": "desktop-tablet-web",
+            "value": "Desktop + tablet + web"
+        },
+        {
+            "key": "digital-editions",
+            "value": "Digital Editions"
+        },
+        {
+            "key": "download",
+            "value": "Download"
+        },
+        {
+            "key": "download-for-free",
+            "value": "Download for free"
+        },
+        {
+            "key": "download-now",
+            "value": "Download now"
+        },
+        {
+            "key": "error-refresh",
+            "value": "Something went wrong. Please refresh."
+        },
+        {
+            "key": "error-try-later",
+            "value": "Something went wrong. Please try again later."
+        },
+        {
+            "key": "exclusive-price",
+            "value": "Exclusive Price"
+        },
+        {
+            "key": "features",
+            "value": "Features"
+        },
+        {
+            "key": "fill-sign",
+            "value": "Fill & Sign"
+        },
+        {
+            "key": "firefly",
+            "value": "Firefly"
+        },
+        {
+            "key": "free-download",
+            "value": "Free download"
+        },
+        {
+            "key": "free-trial",
+            "value": "Free trial"
+        },
+        {
+            "key": "frequently-asked-questions",
+            "value": "Frequently Asked Questions"
+        },
+        {
+            "key": "generative-ai",
+            "value": "generative AI"
+        },
+        {
+            "key": "get-fonts",
+            "value": "Get fonts"
+        },
+        {
+            "key": "get-free-app",
+            "value": "Get free app"
+        },
+        {
+            "key": "get-offer",
+            "value": "Get offer"
+        },
+        {
+            "key": "get-offers",
+            "value": "Get offers"
+        },
+        {
+            "key": "get-started",
+            "value": "Get started"
+        },
+        {
+            "key": "includes",
+            "value": "Includes"
+        },
+        {
+            "key": "includes-tax",
+            "value": "Includes tax"
+        },
+        {
+            "key": "individuals",
+            "value": "Individuals"
+        },
+        {
+            "key": "industries",
+            "value": "Industries"
+        },
+        {
+            "key": "intro-abm",
+            "value": "Intro ABM"
+        },
+        {
+            "key": "intro-m2m",
+            "value": "Intro M2M"
+        },
+        {
+            "key": "intro-puf",
+            "value": "Intro PUF"
+        },
+        {
+            "key": "invalid-date",
+            "value": "Invalid date format"
+        },
+        {
+            "key": "items",
+            "value": "Items"
+        },
+        {
+            "key": "learn-more",
+            "value": "Learn more"
+        },
+        {
+            "key": "learn-support",
+            "value": "Learn & Support"
+        },
+        {
+            "key": "license-added",
+            "value": "License added"
+        },
+        {
+            "key": "licenses-added",
+            "value": "Licenses added"
+        },
+        {
+            "key": "licensing-information",
+            "value": "Licensing Information"
+        },
+        {
+            "key": "limited-time-offer",
+            "value": "Limited-time offer"
+        },
+        {
+            "key": "limited-time-weekly-offer",
+            "value": "Limited-time weekly offer"
+        },
+        {
+            "key": "load-more",
+            "value": "Load more articles"
+        },
+        {
+            "key": "long-tax-excl-label",
+            "value": "exclusive of VAT"
+        },
+        {
+            "key": "long-tax-incl-label",
+            "value": "inclusive of VAT"
+        },
+        {
+            "key": "membership-cancellation-terms",
+            "value": "Membership and Cancellation Terms"
+        },
+        {
+            "key": "membership-plans-all-caps",
+            "value": "MEMBERSHIP PLANS"
+        },
+        {
+            "key": "mobile",
+            "value": "Mobile"
+        },
+        {
+            "key": "mobile-tablet",
+            "value": "Mobile + tablet"
+        },
+        {
+            "key": "mobile-web",
+            "value": "Mobile + web"
+        },
+        {
+            "key": "month-abbreviation",
+            "value": "Month abbreviation"
+        },
+        {
+            "key": "monthly",
+            "value": "Monthly"
+        },
+        {
+            "key": "monthly-plan",
+            "value": "Monthly Plan"
+        },
+        {
+            "key": "most-popular",
+            "value": "Most popular"
+        },
+        {
+            "key": "new_entry",
+            "value": "New Entry For Testing"
+        },
+        {
+            "key": "no-charge-until-trial-ends",
+            "value": "No charge until trial ends"
+        },
+        {
+            "key": "no-credit-card-required",
+            "value": "No credit card required."
+        },
+        {
+            "key": "no-matches",
+            "value": "Sorry, no matching results"
+        },
+        {
+            "key": "no-results",
+            "value": "No articles found"
+        },
+        {
+            "key": "not-yet-calculated",
+            "value": "Not yet calculated"
+        },
+        {
+            "key": "now-available-commercial",
+            "value": "Now available for commercial use."
+        },
+        {
+            "key": "often-purchased-together",
+            "value": "Often purchased together"
+        },
+        {
+            "key": "paid-annually",
+            "value": "Paid annually"
+        },
+        {
+            "key": "paid-monthly",
+            "value": "Paid monthly"
+        },
+        {
+            "key": "pay-monthly",
+            "value": "Pay monthly"
+        },
+        {
+            "key": "payment",
+            "value": "Payment"
+        },
+        {
+            "key": "per-device",
+            "value": "Per device"
+        },
+        {
+            "key": "per-device-vat-excluded",
+            "value": "Per device VAT excluded"
+        },
+        {
+            "key": "per-license",
+            "value": "per license"
+        },
+        {
+            "key": "per-license-vat-excluded",
+            "value": "Per license VAT excluded"
+        },
+        {
+            "key": "per-user",
+            "value": "Per user"
+        },
+        {
+            "key": "per-user-vat-excluded",
+            "value": "Per user VAT excluded"
+        },
+        {
+            "key": "percentage-discount-acrobat-pro",
+            "value": "30%"
+        },
+        {
+            "key": "percentage-discount-acrobat-standard",
+            "value": "40%"
+        },
+        {
+            "key": "percentage-discount-cci",
+            "value": "30%"
+        },
+        {
+            "key": "percentage-discount-intro-cci-one-year",
+            "value": "49%"
+        },
+        {
+            "key": "percentage-discount-intro-cci-three-months",
+            "value": "20%"
+        },
+        {
+            "key": "percentage-discount-intro-ccpp",
+            "value": "30%"
+        },
+        {
+            "key": "percentage-discount-intro-cct",
+            "value": "30%"
+        },
+        {
+            "key": "percentage-discount-ste",
+            "value": "66%"
+        },
+        {
+            "key": "percentage-discount-gen-ai-ste",
+            "value": "60%"
+        },
+        {
+            "key": "phone-b2b-localnav",
+            "value": "800-915-9459"
+        },
+        {
+            "key": "phone-business",
+            "value": "800-915-9430"
+        },
+        {
+            "key": "phone-enterprise",
+            "value": "800-685-4192"
+        },
+        {
+            "key": "pick-a-subscription",
+            "value": "Pick a subscription"
+        },
+        {
+            "key": "plans-starting-at",
+            "value": "Plans starting at"
+        },
+        {
+            "key": "plus-add",
+            "value": "+ Add"
+        },
+        {
+            "key": "plus-tax",
+            "value": "Plus tax"
+        },
+        {
+            "key": "popular-plan",
+            "value": "Popular plan"
+        },
+        {
+            "key": "popularity",
+            "value": "Popularity"
+        },
+        {
+            "key": "portfolio",
+            "value": "Portfolio"
+        },
+        {
+            "key": "powered-by-adobe-firefly",
+            "value": "Powered by Adobe Firefly."
+        },
+        {
+            "key": "powerful-features",
+            "value": "Powerful features make a difference."
+        },
+        {
+            "key": "prepaid",
+            "value": "Prepaid"
+        },
+        {
+            "key": "products",
+            "value": "Products"
+        },
+        {
+            "key": "questions-we-have-answers",
+            "value": "Questions? We have answers."
+        },
+        {
+            "key": "real-time-customer-data-platform",
+            "value": "Real-time Customer Data Platform"
+        },
+        {
+            "key": "recommended-for-you",
+            "value": "Recommended for you"
+        },
+        {
+            "key": "request-consultation",
+            "value": "Request consultation"
+        },
+        {
+            "key": "reset",
+            "value": "Reset"
+        },
+        {
+            "key": "results",
+            "value": "Results"
+        },
+        {
+            "key": "save-now",
+            "value": "Save now"
+        },
+        {
+            "key": "search",
+            "value": "Search"
+        },
+        {
+            "key": "search-all-products",
+            "value": "Search all products"
+        },
+        {
+            "key": "secure-transaction",
+            "value": "Secure transaction"
+        },
+        {
+            "key": "secure-transaction-tooltip",
+            "value": "Secure transaction tooltip"
+        },
+        {
+            "key": "see-all-the-new-features",
+            "value": "See all the new features"
+        },
+        {
+            "key": "see-details",
+            "value": "See details"
+        },
+        {
+            "key": "see-more",
+            "value": "See more"
+        },
+        {
+            "key": "see-offer-terms",
+            "value": "See offer terms"
+        },
+        {
+            "key": "see-offers",
+            "value": "See offers"
+        },
+        {
+            "key": "see-plan-pricing-details",
+            "value": "See plan & pricing details"
+        },
+        {
+            "key": "see-plans-for",
+            "value": "See plans for"
+        },
+        {
+            "key": "see-terms",
+            "value": "See terms"
+        },
+        {
+            "key": "see-what-new-can-do",
+            "value": "See what new can do."
+        },
+        {
+            "key": "see-whats-included",
+            "value": "See what's included"
+        },
+        {
+            "key": "select-number-of-licenses",
+            "value": "Select number of licenses"
+        },
+        {
+            "key": "select-your-plans",
+            "value": "Select your plans"
+        },
+        {
+            "key": "seo-title-country",
+            "value": "| Adobe Acrobat"
+        },
+        {
+            "key": "share-facebook",
+            "value": "Share post on Facebook"
+        },
+        {
+            "key": "share-linkedin",
+            "value": "Share post on LinkedIn"
+        },
+        {
+            "key": "share-twitter",
+            "value": "Share post on Twitter"
+        },
+        {
+            "key": "show-more",
+            "value": "Show more"
+        },
+        {
+            "key": "showing-articles-for",
+            "value": "Showing articles for"
+        },
+        {
+            "key": "sign-in-to-download",
+            "value": "Sign in to download"
+        },
+        {
+            "key": "single-app",
+            "value": "Single App"
+        },
+        {
+            "key": "small-and-medium-business",
+            "value": "Small and medium business"
+        },
+        {
+            "key": "small-business",
+            "value": "Small business"
+        },
+        {
+            "key": "small-tax-excl-label",
+            "value": ""
+        },
+        {
+            "key": "small-tax-incl-label",
+            "value": ""
+        },
+        {
+            "key": "social",
+            "value": "Follow me on"
+        },
+        {
+            "key": "sort",
+            "value": "Sort"
+        },
+        {
+            "key": "spark",
+            "value": "Adobe Express"
+        },
+        {
+            "key": "special-offers",
+            "value": "Special offers"
+        },
+        {
+            "key": "start-free-trial",
+            "value": "Start free trial"
+        },
+        {
+            "key": "starting-at",
+            "value": "Starting at"
+        },
+        {
+            "key": "storage",
+            "value": "Storage"
+        },
+        {
+            "key": "students-and-teachers",
+            "value": "Students and Teachers"
+        },
+        {
+            "key": "students-and-teachers-lowercase",
+            "value": "students and teachers"
+        },
+        {
+            "key": "subscription-options",
+            "value": "Subscription options"
+        },
+        {
+            "key": "subtotal",
+            "value": "Subtotal"
+        },
+        {
+            "key": "suggestions",
+            "value": "Suggestions"
+        },
+        {
+            "key": "target",
+            "value": "Target"
+        },
+        {
+            "key": "tax",
+            "value": "Tax"
+        },
+        {
+            "key": "teams",
+            "value": "Teams"
+        },
+        {
+            "key": "technical-communication-suite",
+            "value": "Technical Communication Suite"
+        },
+        {
+            "key": "technical-specifications",
+            "value": "Technical Specifications"
+        },
+        {
+            "key": "terms-of-use",
+            "value": "Terms of Use"
+        },
+        {
+            "key": "text-based-editing",
+            "value": "Text-Based Editing"
+        },
+        {
+            "key": "text-to-template",
+            "value": "Text to Template"
+        },
+        {
+            "key": "text-to-vector-graphic",
+            "value": "Text to Vector Graphic"
+        },
+        {
+            "key": "total",
+            "value": "Total"
+        },
+        {
+            "key": "try-adobe-firefly",
+            "value": "Try Adobe Firefly"
+        },
+        {
+            "key": "try-for-free",
+            "value": "Try for free"
+        },
+        {
+            "key": "try-again",
+            "value": "Try again"
+        },
+        {
+            "key": "try-more-features",
+            "value": "Try more features"
+        },
+        {
+            "key": "type",
+            "value": "Type"
+        },
+        {
+            "key": "types",
+            "value": "Types"
+        },
+        {
+            "key": "upgrade",
+            "value": "Upgrade"
+        },
+        {
+            "key": "upgrade-cc-all-apps-plan",
+            "value": "Upgrade to the Creative Cloud All Apps plan to get 20+ apps including"
+        },
+        {
+            "key": "upgrade-now",
+            "value": "Upgrade now"
+        },
+        {
+            "key": "use-cases",
+            "value": "Use Cases"
+        },
+        {
+            "key": "user-help",
+            "value": "Please try again selecting fewer filters or clearing all selections."
+        },
+        {
+            "key": "vat-excluded",
+            "value": "VAT excluded"
+        },
+        {
+            "key": "vat-included",
+            "value": "VAT included"
+        },
+        {
+            "key": "view-all-features",
+            "value": "View all features"
+        },
+        {
+            "key": "view-plans-pricing",
+            "value": "View plans and pricing"
+        },
+        {
+            "key": "web",
+            "value": "Web"
+        },
+        {
+            "key": "xml-documentation-experience-manager",
+            "value": "XML Documentation for Adobe Experience Manager"
+        },
+        {
+            "key": "year-abbreviation",
+            "value": "Year Abbreviation"
+        },
+        {
+            "key": "you-may-also-like",
+            "value": "You May Also Like"
+        },
+        {
+            "key": "zero-value-price",
+            "value": "US$0.00/mo."
+        },
+        {
+            "key": "verb-widget-sendforsignature-description",
+            "value": "Drag and drop a document, then request e-signatures by sending it to others for signing."
+        },
+        {
+            "key": "verb-widget-sendforsignature-mobile-description",
+            "value": "Select a document, then send it to others to request e-signatures."
+        },
+        {
+            "key": "verb-widget-sendforsignature-apple",
+            "value": "https://apps.apple.com/us/app/adobe-acrobat-sign/id481082197"
+        },
+        {
+            "key": "verb-widget-sendforsignature-google",
+            "value": "https://play.google.com/store/apps/details?id=com.adobe.echosign"
+        },
+        {
+            "key": "verb-widget-extract-pages-description",
+            "value": "Drag and drop a PDF file, then extract pages from it."
+        },
+        {
+            "key": "verb-widget-extract-pages-mobile-description",
+            "value": "Select a PDF file, then extract pages from it."
+        },
+        {
+            "key": "verb-widget-reorder-pages-description",
+            "value": "Drag and drop a PDF to reorder or rearrange the pages."
+        },
+        {
+            "key": "verb-widget-reorder-pages-mobile-description",
+            "value": "Select a PDF to reorder or rearrange the pages."
+        },
+        {
+            "key": "verb-widget-insert-pdf-description",
+            "value": "Drag and drop a PDF file, then insert pages."
+        },
+        {
+            "key": "verb-widget-insert-pdf-mobile-description",
+            "value": "Select a PDF, then insert pages."
+        },
+        {
+            "key": "verb-widget-createpdf-description",
+            "value": "Drag and drop a PDF, Microsoft Word, Excel, PowerPoint, or image file to use our PDF converter."
+        },
+        {
+            "key": "verb-widget-createpdf-mobile-description",
+            "value": "Convert a PDF, Microsoft Word, Excel, PowerPoint, or image file"
+        },
+        {
+            "key": "verb-widget-delete-pages-description",
+            "value": "Drag and drop a file, then remove pages from your PDF."
+        },
+        {
+            "key": "verb-widget-delete-pages-mobile-description",
+            "value": "Select a file, then remove pages from your PDF."
+        },
+        {
+            "key": "verb-widget-excel-to-pdf-description",
+            "value": "Drag and drop a Microsoft Excel file (XLSX or XLS) to use our Excel to PDF converter."
+        },
+        {
+            "key": "verb-widget-excel-to-pdf-mobile-description",
+            "value": "Select a Microsoft Excel file to use our Excel to PDF converter."
+        },
+        {
+            "key": "verb-widget-jpg-to-pdf-description",
+            "value": "Drag and drop an image file (JPG, PNG, BMP, and more) to use our PDF converter."
+        },
+        {
+            "key": "verb-widget-jpg-to-pdf-mobile-description",
+            "value": "Select an image file (JPG, PNG, BMP, and more) to use our PDF converter."
+        },
+        {
+            "key": "verb-widget-pdf-to-excel-description",
+            "value": "Drag and drop a PDF file to use our PDF to Microsoft Excel converter."
+        },
+        {
+            "key": "verb-widget-pdf-to-excel-mobile-description",
+            "value": "Select a PDF file to use our PDF to Microsoft Excel converter."
+        },
+        {
+            "key": "verb-widget-pdf-to-image-description",
+            "value": "Drag and drop a PDF, then convert to JPG, PNG or TIFF file formats."
+        },
+        {
+            "key": "verb-widget-pdf-to-image-mobile-description",
+            "value": "Select a PDF, then convert to JPG, PNG, or TIFF file formats."
+        },
+        {
+            "key": "verb-widget-pdf-to-ppt-description",
+            "value": "Drag and drop a PDF file to use our PDF to Microsoft PowerPoint (PPT) converter."
+        },
+        {
+            "key": "verb-widget-pdf-to-ppt-mobile-description",
+            "value": "Select a PDF file to use our PDF to Microsoft PowerPoint (PPT) converter."
+        },
+        {
+            "key": "verb-widget-pdf-to-word-description",
+            "value": "Drag and drop a PDF file to use our PDF to Microsoft Word converter."
+        },
+        {
+            "key": "verb-widget-pdf-to-word-mobile-description",
+            "value": "Select a PDF file to use our PDF to Microsoft Word converter."
+        },
+        {
+            "key": "verb-widget-png-to-pdf-description",
+            "value": "Drag and drop a PNG image file to use our PDF converter."
+        },
+        {
+            "key": "verb-widget-png-to-pdf-mobile-description",
+            "value": "Select a PNG image file to use our PDF converter."
+        },
+        {
+            "key": "verb-widget-ppt-to-pdf-description",
+            "value": "Drag and drop a Microsoft PowerPoint file (PPTX or PPT) to convert to PDF."
+        },
+        {
+            "key": "verb-widget-ppt-to-pdf-mobile-description",
+            "value": "Select a Microsoft PowerPoint file (PPTX or PPT) to convert to PDF."
+        },
+        {
+            "key": "verb-widget-crop-pages-description",
+            "value": "Drag and drop a PDF, then crop it to change the PDF page size."
+        },
+        {
+            "key": "verb-widget-crop-pages-mobile-description",
+            "value": "Crop pages on desktop with a 7-day free trial of Acrobat Pro."
+        },
+        {
+            "key": "verb-widget-add-comment-description",
+            "value": "Make changes fast with the free online PDF editor in Acrobat. Edit text, add comments, and fill and sign documents with secure, easy to use tools."
+        },
+        {
+            "key": "verb-widget-add-comment-mobile-description",
+            "value": "Make changes fast with the free online PDF editor in Acrobat. Edit text, add comments, and fill and sign documents with secure, easy to use tools."
+        },
+        {
+            "key": "verb-widget-add-comment-apple",
+            "value": "https://apps.apple.com/us/app/adobe-acrobat-reader-edit-pdf/id469337564"
+        },
+        {
+            "key": "verb-widget-add-comment-google",
+            "value": "https://play.google.com/store/apps/details?id=com.adobe.reader"
+        },
+        {
+            "key": "verb-widget-chat-pdf-description",
+            "value": "Get trusted document insights by asking questions with Acrobat AI Assistant."
+        },
+        {
+            "key": "verb-widget-chat-pdf-mobile-description",
+            "value": "Save time and get answers from your documents with Acrobat AI Assistant."
+        },
+        {
+            "key": "verb-widget-chat-pdf-sub-description",
+            "value": "Drag and drop one or more PDF, DOCX, PPTX, TXT, or RTF files."
+        },
+        {
+            "key": "verb-widget-combine-pdf-description",
+            "value": "Drag and drop PDFs to merge them into one file with our PDF combiner."
+        },
+        {
+            "key": "verb-widget-combine-pdf-mobile-description",
+            "value": "Select PDFs to merge them into one file with our PDF combiner."
+        },
+        {
+            "key": "verb-widget-number-pages-description",
+            "value": "Drag and drop a PDF to add page numbers."
+        },
+        {
+            "key": "verb-widget-number-pages-mobile-description",
+            "value": "Number pages on desktop with a free trial of Acrobat Pro DC."
+        },
+        {
+            "key": "verb-widget-number-pages-description",
+            "value": "Drag and drop a PDF, then add a password to protect your file."
+        },
+        {
+            "key": "verb-widget-number-pages-mobile-description",
+            "value": "Select a PDF file, then add a password to protect your file."
+        },
+        {
+            "key": "verb-widget-ocr-pdf-description",
+            "value": "Drag and drop a PDF file to recognize text in it using OCR technology, creating a searchable PDF."
+        },
+        {
+            "key": "verb-widget-ocr-pdf-mobile-description",
+            "value": "Select a PDF to recognize text in it using OCR technology."
+        },
+        {
+            "key": "verb-widget-protect-pdf-description",
+            "value": "Drag and drop a PDF, then add a password to protect your file."
+        },
+        {
+            "key": "verb-widget-protect-pdf-mobile-description",
+            "value": "Select a PDF file, then add a password to protect your file."
+        },
+        {
+            "key": "verb-widget-rotate-pages-description",
+            "value": "Drag and drop one or more PDFs, then rotate pages with our PDF rotator."
+        },
+        {
+            "key": "verb-widget-rotate-pages-mobile-description",
+            "value": "Select one or more PDFs, then rotate pages with our PDF rotator."
+        },
+        {
+            "key": "verb-widget-combine-pdf-description",
+            "value": "Drag and drop PDFs to merge them into one file with our PDF combiner."
+        },
+        {
+            "key": "verb-widget-combine-pdf-mobile-description",
+            "value": "Select PDFs to merge them into one file with our PDF combiner."
+        },
+        {
+            "key": "verb-widget-split-pdf-description",
+            "value": "Drag and drop a PDF, then separate it into multiple files with our PDF splitter."
+        },
+        {
+            "key": "verb-widget-split-pdf-mobile-description",
+            "value": "Select a PDF, then separate it into multiple files with our PDF splitter."
+        },
+        {
+            "key": "verb-widget-chat-pdf-student-description",
+            "value": "Get answers fast, generate summaries, and level up your schoolwork with Acrobat AI Assistant."
+        },
+        {
+            "key": "verb-widget-chat-pdf-student-mobile-description",
+            "value": "Get answers fast, generate summaries, and level up your schoolwork with Acrobat AI Assistant."
+        },
+        {
+            "key": "verb-widget-chat-pdf-student-sub-description",
+            "value": "Drag and drop one or more PDF, DOCX, PPTX, TXT, or RTF files."
+        },
+        {
+            "key": "verb-widget-compress-pdf-description",
+            "value": "Drag and drop a PDF to reduce file size with our PDF compressor."
+        },
+        {
+            "key": "verb-widget-compress-pdf-mobile-description",
+            "value": "Drag and drop a PDF to reduce file size with our PDF compressor."
+        },
+        {
+            "key": "verb-widget-fillsign-description",
+            "value": "Drag and drop a PDF to use Acrobat as a PDF form filler."
+        },
+        {
+            "key": "verb-widget-fillsign-mobile-description",
+            "value": "Complete a form and add your signature."
+        },
+        {
+            "key": "verb-widget-fillsign-apple",
+            "value": "https://apps.apple.com/us/app/adobe-acrobat-sign/id481082197"
+        },
+        {
+            "key": "verb-widget-fillsign-google",
+            "value": "https://play.google.com/store/apps/details?id=com.adobe.echosign"
+        },
+        {
+            "key": "verb-widget-cta",
+            "value": "Select a file"
+        },
+        {
+            "key": "verb-widget-cta-multifile-only",
+            "value": "Select files"
+        },
+        {
+            "key": "verb-widget-cta-mobile",
+            "value": "Get app"
+        },
+        {
+            "key": "verb-widget-cta-mobile-start-trial",
+            "value": "Start free trial"
+        },
+        {
+            "key": "verb-widget-cta-demo",
+            "value": "Try with a demo file"
+        },
+        {
+            "key": "verb-widget-legal",
+            "value": "Your file will be securely handled by Adobe servers and deleted unless you sign in to save it."
+        },
+        {
+            "key": "verb-widget-legal-2",
+            "value": "By using this service, you agree to the Adobe Terms of Use and Privacy Policy."
+        },
+        {
+            "key": "verb-widget-tool-tip",
+            "value": "Files are secured using HTTPS w/TLS 1.2 and stored using AES-256 encryption"
+        },
+        {
+            "key": "verb-widget-terms-of-use",
+            "value": "Terms of Use"
+        },
+        {
+            "key": "verb-widget-privacy-policy",
+            "value": "Privacy Policy"
+        },
+        {
+            "key": "verb-widget-and",
+            "value": "and"
+        },
+        {
+            "key": "verb-widget-upsell-headline",
+            "value": "Convert a file with a free account"
+        },
+        {
+            "key": "verb-widget-upsell-headline-compress-pdf",
+            "value": "Compress a PDF with a free account"
+        },
+        {
+            "key": "verb-widget-upsell-headline-nopayment",
+            "value": "— no credit card needed"
+        },
+        {
+            "key": "verb-widget-upsell-bullets-heading",
+            "value": "Sign in or create a free account to:"
+        },
+        {
+            "key": "verb-widget-upsell-bullets",
+            "value": "Try 25+ PDF and e-signing tools\nFill in, sign, or add comments to PDFs\nAccess and share files from anywhere\nGet 2GB of free storage"
+        },
+        {
+            "key": "verb-widget-word-to-pdf-description",
+            "value": "Drag and drop a Microsoft Word document (DOCX or DOC) to convert to PDF."
+        },
+        {
+            "key": "verb-widget-word-to-pdf-mobile-description",
+            "value": "Select a Microsoft Word document (DOCX or DOC) to convert to PDF."
+        },
+        {
+            "key": "rnr-title",
+            "value": "Rate your experience"
+        },
+        {
+            "key": "rnr-rating-verb",
+            "value": "vote, votes"
+        },
+        {
+            "key": "rnr-rating-noun",
+            "value": "star, stars"
+        },
+        {
+            "key": "rnr-comments-placeholder",
+            "value": "Please give your feedback"
+        },
+        {
+            "key": "rnr-comments-label",
+            "value": "Review feedback"
+        },
+        {
+            "key": "rnr-submit-label",
+            "value": "Send"
+        },
+        {
+            "key": "rnr-thank-you-label",
+            "value": "Thank you for your feedback!"
+        },
+        {
+            "key": "rnr-rating-tooltips",
+            "value": "Poor, Below Average, Good, Very Good, Outstanding"
+        },
+        {
+            "key": "susi-default-redirect",
+            "value": "https://acrobat.adobe.com/link/home/"
+        },
+        {
+            "key": "acrobat-exit-modal-title",
+            "value": "Before you go, get the free mobile app."
+        },
+        {
+            "key": "acrobat-exit-modal-cta-url",
+            "value": "/acrobat/mobile-app.html"
+        },
+        {
+            "key": "acrobat-exit-modal-cta-label",
+            "value": "Download app"
+        },
+        {
+            "key": "SIGN",
+            "value": "Acrobat Sign"
+        },
+        {
+            "key": "ACROBAT",
+            "value": "Acrobat"
+        },
+        {
+            "key": "PDF_PACK",
+            "value": "Acrobat PDF Pack"
+        },
+        {
+            "key": "EXPORT_PDF",
+            "value": "Acrobat Export PDF"
+        },
+        {
+            "key": "INDIVIDUAL",
+            "value": "Individuals"
+        },
+        {
+            "key": "TEAM",
+            "value": "Business"
+        },
+        {
+            "key": "BUSINESS",
+            "value": "Business"
+        },
+        {
+            "key": "STUDENTS",
+            "value": "Students and teachers"
+        },
+        {
+            "key": "EDU",
+            "value": "Students and teachers"
+        },
+        {
+            "key": "CC_ALL_APPS",
+            "value": "Creative Cloud All Apps"
+        },
+        {
+            "key": "FIREFLY",
+            "value": "Firefly"
+        },
+        {
+            "key": "creative-cloud-pro",
+            "value": "Creative Cloud All Apps"
+        },
+        {
+            "key": "cc-pro",
+            "value": "All Apps"
+        },
+        {
+            "key": "creative-cloud-pro-teams",
+            "value": "Creative Cloud All Apps for teams"
+        },
+        {
+            "key": "cc-pro-teams",
+            "value": "All Apps for teams"
+        },
+        {
+            "key": "creative-cloud-pro-ste",
+            "value": "Creative Cloud All Apps for students and teachers"
+        },
+        {
+            "key": "cc-pro-ste",
+            "value": "All Apps for students and teachers"
+        },
+        {
+            "key": "creative-cloud-pro-plus",
+            "value": "Creative Cloud Pro Plus"
+        },
+        {
+            "key": "creative-cloud-standard",
+            "value": "Creative Cloud Standard"
+        },
+        {
+            "key": "number-gen-credits-cc-pro",
+            "value": "1,000"
+        },
+        {
+            "key": "number-gen-credits-cc-pro-plus",
+            "value": "3,000"
+        },
+        {
+            "key": "number-gen-credits-cc-standard",
+            "value": "25"
+        },
+        {
+            "key": "number-gen-credits-cc-enterprise",
+            "value": "1,200"
+        },
+        {
+            "key": "number-gen-credits-single-app",
+            "value": "500"
+        },
+        {
+            "key": "number-gen-credits-ff-standard",
+            "value": "2,000"
+        },
+        {
+            "key": "number-gen-credits-ff-pro",
+            "value": "7,000"
+        },
+        {
+            "key": "number-gen-credits-ff-premium",
+            "value": "50,000"
+        }
+    ],
+    "columns": [
+        "key",
+        "value"
+    ],
+    ":type": "sheet"
+}
