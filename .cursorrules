@@ -1,0 +1,140 @@
+# Adobe Document Cloud (DC) x Milo Project Context Rules
+
+## Project Overview
+This is the Adobe Document Cloud website project built on the Milo framework and AEM/Helix platform. It's a content-driven website with custom blocks, scripts, and styles for Adobe's document services.
+
+## Project Structure
+- `/acrobat/` - Main application code
+  - `/blocks/` - Custom AEM blocks (components)
+  - `/scripts/` - JavaScript utilities and functionality
+  - `/styles/` - CSS styles and design system
+  - `/img/` - Image assets
+- `/test/` - Test files (Web Test Runner and Jest)
+- `/edgeworkers/` - Akamai EdgeWorkers code
+- `/tools/` - Build and utility scripts
+- `helix-query.yaml` - AEM/Helix content queries
+- `helix-sitemap.yaml` - Site structure configuration
+
+## Technology Stack
+- **Framework**: Milo (Adobe's web framework)
+- **Platform**: AEM/Helix (Adobe Experience Manager)
+- **Testing**: Web Test Runner + Jest
+- **Linting**: ESLint (Airbnb config) + Stylelint
+- **Build**: Node.js with npm scripts
+- **Edge Computing**: Akamai EdgeWorkers
+
+## Development Guidelines
+
+### Code Style
+- Follow Airbnb JavaScript style guide (configured in .eslintrc.js)
+- Use modern ES6+ JavaScript features
+- Prefer functional programming patterns
+- Use semantic HTML and accessible markup
+- Follow BEM methodology for CSS class naming
+
+### Block Development
+- Each block should be self-contained in `/acrobat/blocks/[block-name]/`
+- Include both JavaScript (.js) and CSS (.css) files
+- Follow Milo block conventions and APIs
+- Ensure blocks are responsive and accessible
+
+### Testing Requirements
+- Write unit tests for all JavaScript functions
+- Use Web Test Runner for DOM-based tests
+- Use Jest for pure JavaScript unit tests
+- Maintain test coverage above 80%
+- Include integration tests for complex workflows
+
+### Performance Considerations
+- Optimize for Core Web Vitals (LCP, FID, CLS)
+- Use lazy loading for images and non-critical resources
+- Minimize JavaScript bundle size
+- Follow progressive enhancement principles
+
+### Accessibility Standards
+- Follow WCAG 2.1 AA guidelines
+- Ensure keyboard navigation works properly
+- Include proper ARIA labels and roles
+- Test with screen readers
+- Maintain proper color contrast ratios
+
+## File Naming Conventions
+- Use kebab-case for file and directory names
+- Block names should match their directory names
+- CSS classes should follow BEM: `.block__element--modifier`
+- JavaScript files should be descriptive and lowercase
+
+## Common Patterns
+
+### Block Structure
+```javascript
+// Standard block export pattern
+export default function blockName(block) {
+  // Block initialization logic
+  return block;
+}
+```
+
+### CSS Organization
+- Use CSS custom properties for theming
+- Follow mobile-first responsive design
+- Group related styles together
+- Use logical properties when possible
+
+### Testing Patterns
+- Mock external dependencies
+- Test user interactions and edge cases
+- Use descriptive test names
+- Group related tests in describe blocks
+
+## Build and Deployment
+- Use `npm run test` before committing
+- Run `npm run lint` to check code style
+- Use `aem up` for local development
+- EdgeWorkers code is deployed separately
+
+## Dependencies
+- Avoid adding unnecessary dependencies
+- Prefer native web APIs over libraries
+- Keep bundle size minimal
+- Update dependencies regularly for security
+
+## Content Management
+- Content is managed through AEM authoring
+- Use semantic markup for content structure
+- Ensure content is crawlable and SEO-friendly
+- Support multiple languages and locales
+
+## Browser Support
+- Support modern browsers (last 2 versions)
+- Provide graceful degradation for older browsers
+- Test on mobile devices and tablets
+- Ensure cross-browser compatibility
+
+## Security Considerations
+- Sanitize user inputs
+- Use Content Security Policy (CSP)
+- Avoid inline scripts and styles
+- Follow OWASP security guidelines
+
+## When Working on This Project
+1. Always run tests before making changes
+2. Check browser console for errors
+3. Validate HTML and CSS
+4. Test accessibility features
+5. Verify mobile responsiveness
+6. Check performance impact
+7. Update documentation as needed
+
+## Jira Integration Workflow
+- When the Jira MCP is asked to fix an issue, always checkout a new branch named after the Jira issue key (e.g., `DC-123` for issue DC-123)
+- Branch naming should follow the pattern: `{JIRA_KEY}` or `{JIRA_KEY}-{brief-description}` if additional context is needed
+- Ensure the branch is created from the latest main/master branch before starting work
+
+## Helpful Commands
+- `npm run test` - Run all tests
+- `npm run wtr:watch` - Watch mode for Web Test Runner
+- `npm run jest:watch` - Watch mode for Jest
+- `npm run lint` - Check code style
+- `aem up` - Start local development server
+- `npm run int` - Run integration tests 
