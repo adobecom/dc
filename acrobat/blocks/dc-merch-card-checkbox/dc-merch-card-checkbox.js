@@ -79,7 +79,7 @@ async function cloneAndUpdatePrice(aiPriceEl, acrobatPriceEl) {
   const acrobatPrice = await getPrice(acrobatPriceEl);
   if (acrobatPriceEl.dataset.template === 'optical') aiPrice /= 12;
   const bundlePrice = (acrobatPrice + aiPrice).toFixed(2);
-  const major = parseInt(bundlePrice.split('.')[0],10).toLocaleString();
+  const major = parseInt(bundlePrice.split('.')[0], 10).toLocaleString();
   const minor = bundlePrice.split('.')[1];
   setTimeout(() => {
     bundlePriceEl.querySelector('.price-integer').textContent = major;
