@@ -3,14 +3,13 @@
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-let miloUtils;
-(async () => {
-  miloUtils = await import(`${miloLibs}/utils/utils.js`);
-})();
 
-const {
-  createTag, getConfig, loadBlock, getMetadata, loadIms, loadScript,
-} = miloUtils || {};
+let createTag;
+let getConfig;
+let loadBlock;
+let getMetadata;
+let loadIms;
+let loadScript;
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -792,6 +791,10 @@ window.addEventListener('analyticsLoad', async ({ detail }) => {
 });
 
 export default async function init(element) {
+  ({
+    createTag, getConfig, loadBlock, getMetadata, loadIms, loadScript,
+  } = await import(`${miloLibs}/utils/utils.js`));
+
   if (isOldBrowser()) {
     window.location.href = EOLBrowserPage;
     return;
