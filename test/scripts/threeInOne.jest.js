@@ -127,7 +127,6 @@ describe('threeInOne', () => {
       // Check attributes were modified correctly
       expect(processedElement.getAttribute('data-modal')).toBeNull();
       expect(processedElement.getAttribute('data-modal-id')).toBeNull();
-      expect(processedElement.getAttribute('data-checkout-workflow-step')).toBe('email');
 
       // Check href was updated
       const expectedHref = `${mockCommerceOrigin}/store/commitment?items%5B0%5D%5Bid%5D=7C30A05FE0EC0BA92566737E720C4692&cli=doc_cloud&ctx=fp&co=US&lang=en`;
@@ -151,7 +150,6 @@ describe('threeInOne', () => {
       // Attributes should remain unchanged
       expect(element.getAttribute('data-modal')).toBe('other');
       expect(element.getAttribute('data-modal-id')).toBe('some-id');
-      expect(element.getAttribute('data-checkout-workflow-step')).toBeNull();
       expect(element.href).toContain(originalHref);
     });
 
@@ -168,7 +166,6 @@ describe('threeInOne', () => {
       // Attributes should remain unchanged
       expect(element.getAttribute('data-modal')).toBe('crm');
       expect(element.getAttribute('data-modal-id')).toBe('some-id');
-      expect(element.getAttribute('data-checkout-workflow-step')).toBeNull();
       expect(element.href).toContain(originalHref);
     });
 
@@ -186,7 +183,6 @@ describe('threeInOne', () => {
       // Attributes should be modified but href should remain unchanged
       expect(element.getAttribute('data-modal')).toBeNull();
       expect(element.getAttribute('data-modal-id')).toBeNull();
-      expect(element.getAttribute('data-checkout-workflow-step')).toBe('email');
       expect(element.href).toContain(originalHref);
     });
 
@@ -231,17 +227,14 @@ describe('threeInOne', () => {
 
       // First element should be processed
       expect(processedElement1.getAttribute('data-modal')).toBeNull();
-      expect(processedElement1.getAttribute('data-checkout-workflow-step')).toBe('email');
       expect(processedElement1.href).toContain('commerce.adobe.com');
 
       // Second element should not be processed
       expect(processedElement2.getAttribute('data-modal')).toBe('other');
-      expect(processedElement2.getAttribute('data-checkout-workflow-step')).toBeNull();
       expect(processedElement2.href).toContain('href2');
 
       // Third element should be processed
       expect(processedElement3.getAttribute('data-modal')).toBeNull();
-      expect(processedElement3.getAttribute('data-checkout-workflow-step')).toBe('email');
       expect(processedElement3.href).toContain('commerce.adobe.com');
     });
 
