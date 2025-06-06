@@ -20,21 +20,21 @@ By participating in this project, you agree to abide by the [Adobe Code of Condu
 **Important:** When working on a Jira issue, you must create and checkout a branch named after the Jira issue.
 
 #### Format
-- **Format:** `MWPW-{issue-number}-{brief-description}`
-- **Example:** `MWPW-12345-fix-prompt-card-accessibility`
-- **Example:** `MWPW-67890-add-copy-toast-feature`
+- **Format:** `MWPW-{issue-number}
+- **Example:** `MWPW-12345`
+- **Example:** `MWPW-67890`
 
 #### Steps
 1. **Before starting work on any Jira issue:**
    ```bash
-   git checkout -b MWPW-12345-brief-description
+   git checkout -b MWPW-12345
    ```
 
 2. **Make your changes on the feature branch**
 
 3. **Push your branch:**
    ```bash
-   git push origin MWPW-12345-brief-description
+   git push origin MWPW-12345
    ```
 
 4. **Create a pull request from your branch to `main`**
