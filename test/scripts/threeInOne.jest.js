@@ -107,6 +107,19 @@ describe('threeInOne', () => {
       mockElement.setAttribute('data-modal-id', 'some-id');
       mockElement.href = 'original-href';
 
+      // Mock cloneNode to properly copy attributes
+      const originalCloneNode = mockElement.cloneNode;
+      mockElement.cloneNode = jest.fn().mockImplementation((deep) => {
+        const clone = originalCloneNode.call(mockElement, deep);
+        // Ensure the clone has a proper classList with contains method
+        const mockContains = jest.fn().mockReturnValue(true);
+        clone.classList = {
+          contains: mockContains,
+          add: jest.fn(),
+        };
+        return clone;
+      });
+
       await threeInOne();
 
       const processedElement = mockParent.querySelector('a');
@@ -119,6 +132,9 @@ describe('threeInOne', () => {
       // Check href was updated
       const expectedHref = `${mockCommerceOrigin}/store/commitment?items%5B0%5D%5Bid%5D=7C30A05FE0EC0BA92566737E720C4692&cli=doc_cloud&ctx=fp&co=US&lang=en`;
       expect(processedElement.href).toBe(expectedHref);
+
+      // Restore original cloneNode
+      mockElement.cloneNode = originalCloneNode;
     });
 
     it('should not process elements without data-modal="crm"', async () => {
@@ -242,6 +258,10 @@ describe('threeInOne', () => {
         contains: mockContains,
         add: jest.fn(),
       };
+      // Copy attributes from original element to clone
+      Array.from(mockElement.attributes).forEach((attr) => {
+        mockClone.setAttribute(attr.name, attr.value);
+      });
       mockElement.cloneNode = jest.fn().mockReturnValue(mockClone);
 
       await threeInOne();
