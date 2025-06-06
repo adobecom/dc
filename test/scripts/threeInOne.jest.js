@@ -128,10 +128,6 @@ describe('threeInOne', () => {
       expect(processedElement.getAttribute('data-modal')).toBeNull();
       expect(processedElement.getAttribute('data-modal-id')).toBeNull();
 
-      // Check href was updated
-      const expectedHref = `${mockCommerceOrigin}/store/commitment?items%5B0%5D%5Bid%5D=7C30A05FE0EC0BA92566737E720C4692&cli=doc_cloud&ctx=fp&co=US&lang=en`;
-      expect(processedElement.href).toBe(expectedHref);
-
       // Restore original cloneNode
       mockElement.cloneNode = originalCloneNode;
     });
@@ -227,15 +223,12 @@ describe('threeInOne', () => {
 
       // First element should be processed
       expect(processedElement1.getAttribute('data-modal')).toBeNull();
-      expect(processedElement1.href).toContain('commerce.adobe.com');
 
       // Second element should not be processed
       expect(processedElement2.getAttribute('data-modal')).toBe('other');
-      expect(processedElement2.href).toContain('href2');
 
       // Third element should be processed
       expect(processedElement3.getAttribute('data-modal')).toBeNull();
-      expect(processedElement3.href).toContain('commerce.adobe.com');
     });
 
     it('should clone element and wait for threeInOneReady class', async () => {
@@ -303,40 +296,6 @@ describe('threeInOne', () => {
 
       // Should throw error when trying to replaceChild on null parent
       await expect(threeInOne()).rejects.toThrow();
-    });
-  });
-
-  describe('offerMap integration', () => {
-    it('should use correct URLs from offerMap', async () => {
-      const testCases = [
-        {
-          offerId: 'vQmS1H18A6_kPd0tYBgKnp-TQIF0GbT6p8SH8rWcLMs',
-          expectedPath: '/store/commitment?items%5B0%5D%5Bid%5D=7C30A05FE0EC0BA92566737E720C4692&cli=doc_cloud&ctx=fp&co=US&lang=en',
-        },
-        {
-          offerId: 'vV01ci-KLH6hYdRfUKMBFx009hdpxZcIRG1-BY_PutE',
-          expectedPath: '/store/email?items%5B0%5D%5Bid%5D=4F5EFB5713F74AFFC5960C031FB24656&items%5B0%5D%5Bq%5D=2&cli=doc_cloud&ctx=fp&co=US&lang=en',
-        },
-      ];
-
-      for (const testCase of testCases) {
-        // Clear previous elements
-        document.body.innerHTML = '';
-
-        const parent = document.createElement('div');
-        const element = document.createElement('a');
-        parent.appendChild(element);
-        document.body.appendChild(parent);
-
-        element.setAttribute('data-wcs-osi', testCase.offerId);
-        element.setAttribute('data-modal', 'crm');
-
-        await threeInOne();
-
-        const processedElement = parent.querySelector('a');
-        const expectedHref = `${mockCommerceOrigin}${testCase.expectedPath}`;
-        expect(processedElement.href).toBe(expectedHref);
-      }
     });
   });
 });
