@@ -101,7 +101,8 @@
       "^http://localhost:6456/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
       "^/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
       "^https://main--milo--tsayadobe\\.hlx\\.live/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
-      "^https://main--milo--tsayadobe\\.hlx\\.page/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1"
+      "^https://main--milo--tsayadobe\\.hlx\\.page/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
+      "^https://main--unity--adobecom.hlx.live/unitylibs/(.*)$": "<rootDir>/test/mocks/unitylibs/$1"
     }
   }
 }

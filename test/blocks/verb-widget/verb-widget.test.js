@@ -2,54 +2,36 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
-import { delay, waitForElement } from '../../helpers/waitfor.js';
+import { delay } from '../../helpers/waitfor.js';
+import { getConfig, setConfig } from 'https://main--milo--adobecom.hlx.live/libs/utils/utils.js';
 
 const { default: init } = await import(
   '../../../acrobat/blocks/verb-widget/verb-widget.js'
 );
 
-const uploadFile = (input, file) => {
-  const changeEvent = new Event('change');
-  Object.defineProperty(changeEvent, 'target', { writable: false, value: { files: [file] } });
-  input.dispatchEvent(changeEvent);
-};
-
 describe('verb-widget block', () => {
   let xhr;
+  let placeholders;
 
   beforeEach(async () => {
     sinon.stub(window, 'fetch');
     window.fetch.callsFake((x) => {
-      if (x === 'https://pdfnow-dev.adobe.io/status') {
-        return Promise.resolve({ ok: false });
+      if (x.endsWith('.svg')) {
+        return window.fetch.wrappedMethod.call(window, x);
       }
-      return Promise.resolve({
-        json: () => Promise.resolve({
-          access_token: '123',
-          discovery: {
-            resources: {
-              jobs: { status: { uri: 'https://pdfnow-dev.adobe.io/status' } },
-              assets: {
-                upload: { uri: 'https://pdfnow-dev.adobe.io/upload' },
-                download_uri: { uri: 'https://pdfnow-dev.adobe.io/download' },
-                createpdf: { uri: 'https://pdfnow-dev.adobe.io/createpdf' },
-              },
-            },
-          },
-        }),
-        ok: true,
-      });
+      return Promise.resolve();
     });
-    window.mph = {
-      'verb-widget-description-compress-pdf': 'Description of Compress-PDF',
-      'verb-widget-error-unsupported': 'Unsupported',
-      'verb-widget-error-empty': 'Empty file',
-      'verb-widget-error-multi': 'Over the limit',
-    };
+    const placeholdersText = await readFile({ path: './mocks/placeholders.json' });
+    placeholders = JSON.parse(placeholdersText);
+
+    window.mph = {};
+    placeholders.data.forEach((item) => {
+      window.mph[item.key] = item.value;
+    });
     xhr = sinon.useFakeXMLHttpRequest();
     document.head.innerHTML = await readFile({ path: './mocks/head.html' });
-    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-    delete window.localStorage.limit;
+    document.body.innerHTML = await readFile({ path: './mocks/body-sign-pdf.html' });
+    window.adobeIMS = { isSignedInUser: () => false };
   });
 
   afterEach(() => {
@@ -57,139 +39,268 @@ describe('verb-widget block', () => {
     sinon.restore();
   });
 
-  it.skip('reach limit', async () => {
-    window.localStorage.limit = 2;
-
-    const block = document.body.querySelector('.acom-widget');
+  it('init verb-widget', async () => {
+    const conf = getConfig();
+    setConfig({ ...conf, locale: { prefix: '' } });
+    const block = document.body.querySelector('.verb-widget');
     await init(block);
-
-    const input = document.querySelector('input');
-    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
-
-    uploadFile(input, file);
-
-    expect(document.querySelector('.upsell')).to.exist;
+    expect(document.querySelector('.verb-widget .acrobat-icon svg')).to.exist;
+    expect(document.querySelector('.verb-widget .verb-image svg')).to.exist;
+    expect(document.querySelector('.verb-widget .security-icon svg')).to.exist;
+    expect(document.querySelector('.verb-widget .info-icon svg')).to.exist;
   });
 
-  it.skip('upload invalid file', async () => {
-    const block = document.querySelector('.verb-widget');
+  it('signed in', async () => {
+    window.adobeIMS = {
+      isSignedInUser: () => true,
+      getAccountType: () => 'type1',
+    };
+    const conf = getConfig();
+    setConfig({ ...conf, locale: { prefix: '' } });
+    const block = document.body.querySelector('.verb-widget');
     await init(block);
 
-    const input = document.querySelector('input');
-    const file = new File(['hello'], 'hello.txt', { type: 'text/plain' });
+    expect(block.classList.contains('upsell')).to.be.false;
+    expect(block.classList.contains('signed-in')).to.be.true;
 
-    uploadFile(input, file);
-
-    const error = document.querySelector('.verb-error');
-    expect(error.textContent).to.eq('Unsupported ');
+    expect(document.querySelector('.verb-widget .acrobat-icon svg')).to.exist;
+    expect(document.querySelector('.verb-widget .verb-image svg')).to.exist;
   });
 
-  it.skip('upload an empty file', async () => {
-    const block = document.querySelector('.verb-widget');
+  it('show error toast', async () => {
+    window.analytics = {
+      verbAnalytics: sinon.spy(),
+      sendAnalyticsToSplunk: sinon.spy(),
+    };
+    window.lana = { log: sinon.spy() };
+
+    const conf = getConfig();
+    setConfig({ ...conf, locale: { prefix: '' } });
+    const block = document.body.querySelector('.verb-widget');
     await init(block);
+    await delay(100);
 
-    const input = document.querySelector('input');
-    const file = new File([''], 'hello.pdf', { type: 'application/pdf' });
-
-    uploadFile(input, file);
-
-    await delay(1000);
-
-    const error = document.querySelector('.verb-error');
-    expect(error.textContent).to.eq('Empty file ');
-  });
-
-  it.skip('dismiss an error', async () => {
-    const block = document.querySelector('.verb-widget');
-    await init(block);
-
-    const input = document.querySelector('input');
-    const file = new File([''], 'hello.pdf', { type: 'application/pdf' });
-
-    uploadFile(input, file);
-
-    await delay(1000);
-
-    const errorBtn = document.querySelector('.verb-errorBtn');
-    errorBtn.click();
-    const error = document.querySelector('.verb-error');
-    expect(error).to.not.be.exist;
-  });
-
-  it.skip('cancel upload', async () => {
-    sinon.stub(window, 'alert').callsFake(() => {});
-
-    const block = document.querySelector('.acom-widget');
-    await init(block);
-
-    const input = document.querySelector('input');
-    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
-
-    uploadFile(input, file);
-
-    await delay(1000);
-
-    document.querySelector('.widget-cancel').click();
-
-    const upload = await waitForElement('#file-upload');
-    expect(upload).to.be.exist;
-  });
-
-  it.skip('SSRF check', async () => {
-    window.fetch.restore();
-    sinon.stub(window, 'fetch');
-    window.fetch.returns(Promise.resolve({
-      json: () => Promise.resolve({
-        access_token: '123',
-        discovery: { resources: { assets: { upload: { uri: 'https://example.com/upload' } } } },
-      }),
-      ok: true,
+    block.dispatchEvent(new CustomEvent('unity:show-error-toast', {
+      detail: {
+        code: 'error_only_accept_one_file',
+        info: 'Test error info',
+        metaData: 'metadata',
+        errorData: 'errorData',
+        sendToSplunk: true,
+        message: 'Test error message',
+      },
     }));
-    sinon.stub(window, 'alert').callsFake(() => {});
 
-    const block = document.querySelector('.acom-widget');
-    await init(block);
+    expect(window.analytics.verbAnalytics.called).to.be.true;
+    expect(window.analytics.sendAnalyticsToSplunk.called).to.be.true;
 
-    const input = document.querySelector('input');
-    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-
-    uploadFile(input, file);
-
-    await delay(500);
-
-    expect(alert.getCall(0).args[0]).to.eq('An error occurred during the upload process. Please try again.');
+    expect(window.lana.log.called).to.be.true;
   });
 
-  it.skip('upload PNG and fail at job status', async () => {
-    sinon.stub(window, 'alert').callsFake(() => {});
-
-    const requests = [];
-
-    xhr.onCreate = (x) => {
-      requests.push(x);
+  it('track analytics', async () => {
+    window.analytics = {
+      verbAnalytics: sinon.spy(),
+      sendAnalyticsToSplunk: sinon.spy(),
     };
 
-    const block = document.body.querySelector('.acom-widget');
+    const conf = getConfig();
+    setConfig({ ...conf, locale: { prefix: '' } });
+    const block = document.body.querySelector('.verb-widget');
+    await init(block);
+    await delay(100);
+
+    block.dispatchEvent(new CustomEvent('unity:track-analytics', {
+      detail: {
+        event: 'change',
+        data: {},
+        sendToSplunk: true,
+      },
+    }));
+
+    block.dispatchEvent(new CustomEvent('unity:track-analytics', {
+      detail: {
+        event: 'drop',
+        data: {},
+        sendToSplunk: false,
+      },
+    }));
+
+    block.dispatchEvent(new CustomEvent('unity:track-analytics', {
+      detail: {
+        event: 'cancel',
+        data: {},
+        sendToSplunk: false,
+      },
+    }));
+
+    block.dispatchEvent(new CustomEvent('unity:track-analytics', {
+      detail: {
+        event: 'uploading',
+        data: {},
+        sendToSplunk: false,
+      },
+    }));
+
+    block.dispatchEvent(new CustomEvent('unity:track-analytics', {
+      detail: {
+        event: 'uploaded',
+        data: {},
+        sendToSplunk: false,
+      },
+    }));
+
+    block.dispatchEvent(new CustomEvent('unity:track-analytics', {
+      detail: {
+        event: 'redirectUrl',
+        data: {},
+        sendToSplunk: false,
+      },
+    }));
+
+    block.dispatchEvent(new CustomEvent('unity:track-analytics', {
+      detail: {
+        event: 'chunk_uploaded',
+        data: {},
+        sendToSplunk: false,
+      },
+    }));
+
+    expect(window.analytics.verbAnalytics.called).to.be.true;
+    expect(window.analytics.sendAnalyticsToSplunk.called).to.be.true;
+
+    const verbAnalyticsCalls = window.analytics.verbAnalytics.getCalls();
+    expect(verbAnalyticsCalls.length).to.be.greaterThan(0);
+
+    expect(() => {
+      block.dispatchEvent(new CustomEvent('unity:track-analytics', {
+        detail: { event: 'unknown', data: {} },
+      }));
+    }).to.not.throw();
+  });
+
+  it('upload button clicked', async () => {
+    window.analytics = { verbAnalytics: sinon.spy() };
+
+    const conf = getConfig();
+    setConfig({ ...conf, locale: { prefix: '' } });
+    const block = document.body.querySelector('.verb-widget');
+    await init(block);
+    const button = block.querySelector('button');
+    await delay(100);
+
+    button.click();
+
+    expect(window.analytics.verbAnalytics.callCount).to.equal(5);
+
+    const expectedEvents = [
+      'filepicker:shown',
+      'dropzone:choose-file-clicked',
+      'files-selected',
+      'entry:clicked',
+      'discover:clicked',
+    ];
+
+    expectedEvents.forEach((eventName, index) => {
+      expect(window.analytics.verbAnalytics.getCall(index).args[0]).to.equal(eventName);
+    });
+  });
+
+  it('upload button changed', async () => {
+    const conf = getConfig();
+    setConfig({ ...conf, locale: { prefix: '' } });
+    const block = document.body.querySelector('.verb-widget');
+    await init(block);
+    const button = block.querySelector('input');
+    await delay(100);
+    const changeEvent = new Event('change');
+    Object.defineProperty(changeEvent, 'target', {
+      writable: false,
+      value: { files: [new File(['hello'], 'hello.pdf', { type: 'application/pdf' })] },
+    });
+
+    expect(() => {
+      button.dispatchEvent(changeEvent);
+    }).to.not.throw();
+
+    expect(button).to.exist;
+    expect(button.tagName.toLowerCase()).to.equal('input');
+  });
+
+  it('drop zone dragover', async () => {
+    const conf = getConfig();
+    setConfig({ ...conf, locale: { prefix: '' } });
+    const block = document.body.querySelector('.verb-widget');
     await init(block);
 
-    const input = document.querySelector('input');
-    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+    expect(block.classList.contains('dragging')).to.be.false;
+    const eventOver = new Event('dragover');
+    Object.defineProperty(eventOver, 'target', {
+      writable: false,
+      value: { files: [new File(['hello'], 'hello.pdf', { type: 'application/pdf' })] },
+    });
+    block.dispatchEvent(eventOver);
 
-    uploadFile(input, file);
+    const eventLeave = new Event('dragleave');
+    block.dispatchEvent(eventLeave);
 
-    await delay(500);
+    expect(block.classList.contains('dragging')).to.be.false;
+  });
 
-    requests[0].respond(
-      201,
-      { 'Content-Type': 'application/json' },
-      JSON.stringify({
-        uri: 'https://www.example.com/product',
-        job_uri: 'https://www.example.com/job_uri',
-      }),
-    );
+  it('drop zone drop', async () => {
+    const conf = getConfig();
+    setConfig({ ...conf, locale: { prefix: '' } });
+    const block = document.body.querySelector('.verb-widget');
+    await init(block);
 
-    await delay(500);
+    const event = new Event('drop');
+    const mockFiles = [
+      new File(['hello'], 'hello.pdf', { type: 'application/pdf' }),
+      new File(['world'], 'world.pdf', { type: 'application/pdf' }),
+    ];
+    Object.defineProperty(event, 'dataTransfer', {
+      writable: false,
+      value: { files: mockFiles },
+    });
 
-    expect(alert.getCall(0).args[0]).to.eq('Failed to create PDF');
+    expect(() => {
+      block.dispatchEvent(event);
+    }).to.not.throw();
+
+    expect(block).to.exist;
+    expect(block.classList.contains('verb-widget')).to.be.true;
+  });
+
+  it('before unload', async () => {
+    const conf = getConfig();
+    setConfig({ ...conf, locale: { prefix: '' } });
+    const block = document.body.querySelector('.verb-widget');
+    await init(block);
+    await delay(100);
+
+    const input = block.querySelector('input');
+    const changeEvent = new Event('change');
+    Object.defineProperty(changeEvent, 'target', { writable: false, value: { files: [new File(['hello'], 'hello.pdf', { type: 'application/pdf' })] } });
+    input.dispatchEvent(changeEvent);
+    await delay(100);
+
+    const event = new Event('beforeunload');
+    Object.defineProperty(event, 'returnValue', {
+      value: '',
+      writable: true,
+    });
+    window.dispatchEvent(event);
+  });
+
+  it('page show', async () => {
+    const conf = getConfig();
+    setConfig({ ...conf, locale: { prefix: '' } });
+    const block = document.body.querySelector('.verb-widget');
+    await init(block);
+    await delay(100);
+    const normalEvent = new Event('pageshow');
+    Object.defineProperty(normalEvent, 'persisted', {
+      value: false,
+      writable: false,
+    });
   });
 });
