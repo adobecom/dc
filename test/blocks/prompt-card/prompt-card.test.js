@@ -35,6 +35,16 @@ describe('prompt-card block', () => {
     expect(document.querySelector('.prompt-copy-btn')).to.be.exist;
   });
 
+  it('copy button has accessible name containing visible label', async () => {
+    const copyBtn = document.querySelector('.prompt-copy-btn');
+    const ariaLabel = copyBtn.getAttribute('aria-label');
+    const visibleText = copyBtn.textContent;
+
+    // WCAG 2.5.3: Label in Name - accessible name should contain visible label
+    expect(ariaLabel).to.include(visibleText);
+    expect(ariaLabel).to.equal('Copy: Summarize this document in 3 sentences.');
+  });
+
   it('copies the prompt when copy button is clicked', async () => {
     const toast = document.querySelector('.prompt-toast');
     if (toast) {
