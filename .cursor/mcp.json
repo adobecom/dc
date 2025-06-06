@@ -2,9 +2,9 @@
   "mcpServers": {
     "acom-accessibility-server": {
       "command": "node",
-      "args": ["/Users/blainegunn/Sites/MCPs/acom-accessibility-server/src/mcp-server.js"],
+      "args": ["/absolute_path/acom-accessibility-server/src/mcp-server.js"],
       "env": {
-        "BLOCKS_PATH": "/Users/blainegunn/Sites/MILO/dc/acrobat/blocks"
+        "BLOCKS_PATH": "/absolute_path/dc/acrobat/blocks"
       }
     }
   }
