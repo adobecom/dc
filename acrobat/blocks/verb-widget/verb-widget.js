@@ -987,7 +987,7 @@ export default async function init(element) {
       button.accept = [...LIMITS[VERB].acceptedFiles, ...LIMITS[VERB].signedInAcceptedFiles];
     }
 
-    if (accountType !== 'type1' && LIMITS[VERB].typeOneLanding) redDir(VERB);
+    if (accountType !== 'type1' && !LIMITS[VERB].typeOneLanding) redDir(VERB);
   }
 
   function handleAnalyticsEvent(
