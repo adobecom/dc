@@ -996,7 +996,7 @@ export default async function init(element) {
     }
 
     if (accountType !== 'type1') redDir(VERB);
-    if (accountType = 'type1' && !LIMITS[VERB].typeOneLanding) redDir(VERB);
+    if (accountType == 'type1' && !LIMITS[VERB].typeOneLanding) redDir(VERB);
   }
 
   function handleAnalyticsEvent(
