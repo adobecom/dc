@@ -1,74 +1,169 @@
-# Contributing to Project Helix
+# Contributing to DC x Milo
 
-This project (like almost all of Project Helix) is an Open Development project and welcomes contributions from everyone who finds it useful or lacking.
+Thank you for your interest in contributing to the DC x Milo project! This document provides guidelines for contributing to ensure a smooth collaboration process.
 
-## Code Of Conduct
+## Table of Contents
+- [Code of Conduct](#code-of-conduct)
+- [Jira Workflow](#jira-workflow)
+- [Development Workflow](#development-workflow)
+- [Coding Standards](#coding-standards)
+- [Testing](#testing)
+- [Pull Request Guidelines](#pull-request-guidelines)
 
-This project adheres to the Adobe [code of conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to cstaub at adobe dot com.
+## Code of Conduct
 
-## Contributor License Agreement
+By participating in this project, you agree to abide by the [Adobe Code of Conduct](CODE_OF_CONDUCT.md).
 
-All third-party contributions to this project must be accompanied by a signed contributor license. This gives Adobe permission to redistribute your contributions as part of the project. [Sign our CLA](http://opensource.adobe.com/cla.html)! You only need to submit an Adobe CLA one time, so if you have submitted one previously, you are good to go!
+## Jira Workflow
 
-## Things to Keep in Mind
+### Branch Naming Convention
+**Important:** When working on a Jira issue, you must create and checkout a branch named after the Jira issue.
 
-This project uses a **commit then review** process, which means that for approved maintainers, changes can be merged immediately, but will be reviewed by others.
+#### Format
+- **Format:** `MWPW-{issue-number}
+- **Example:** `MWPW-12345`
+- **Example:** `MWPW-67890`
 
-For other contributors, a maintainer of the project has to approve the pull request.
+#### Steps
+1. **Before starting work on any Jira issue:**
+   ```bash
+   git checkout -b MWPW-12345
+   ```
 
-# Before You Contribute
+2. **Make your changes on the feature branch**
 
-* Check that there is an existing issue in GitHub issues
-* Check if there are other pull requests that might overlap or conflict with your intended contribution
+3. **Push your branch:**
+   ```bash
+   git push origin MWPW-12345
+   ```
 
-# How to Contribute
+4. **Create a pull request from your branch to `main`**
 
-1. Fork the repository
-2. Make some changes on a branch on your fork
-3. Create a pull request from your branch
+### Jira Issue Linking
+- Always link your pull request to the corresponding Jira issue
+- Use the format: `Resolves: [MWPW-XXXXXX](https://jira.corp.adobe.com/browse/MWPW-XXXXXX)`
+- Update the Jira issue status as you progress through development
 
-In your pull request, outline::
+## Development Workflow
 
-* What the changes intend
-* How they change the existing code
-* If (and what) they breaks
-* Start the pull request with the GitHub issue ID, e.g. #123
+### Setup
+1. Install the [AEM CLI](https://github.com/adobe/helix-cli): `sudo npm install -g @adobe/aem-cli`
+2. Clone the repository and navigate to the project folder
+3. Run `aem up` to start the development server (opens browser at `http://localhost:3000`)
+4. Start coding in your favorite editor
 
-Lastly, please follow the [pull request template](.github/pull_request_template.md) when submitting a pull request!
+### Branch Management
+- `main` branch is the stable branch
+- All development work should be done on feature branches
+- Feature branches should be created from the latest `main`
+- Branch names must follow the Jira naming convention (see above)
 
-Each commit message that is not part of a pull request:
+### Commit Messages
+- Write clear, concise commit messages
+- Reference the Jira issue in your commits: `MWPW-12345: Fix accessibility issues in prompt card`
+- Use present tense: "Add feature" not "Added feature"
 
-* Should contain the issue ID like `#123`
-* Can contain the tag `[trivial]` for trivial changes that don't relate to an issue
+## Coding Standards
 
+### JavaScript/ES6+
+- Follow the existing ESLint configuration (`.eslintrc.js`)
+- Use ES6+ features where appropriate
+- Prefer `const` and `let` over `var`
+- Use template literals for string interpolation
 
+### CSS
+- Follow the Stylelint configuration (`.stylelintrc.json`)
+- Use meaningful class names
+- Follow BEM methodology where applicable
 
-## Coding Styleguides
+### Accessibility
+- Ensure all interactive elements are keyboard accessible
+- Provide appropriate ARIA labels and roles
+- Test with screen readers when possible
+- Follow WCAG 2.1 AA guidelines
 
-We enforce a coding styleguide using `eslint`. As part of your build, run `npm run lint` to check if your code is conforming to the style guide. We do the same for every PR in our CI, so PRs will get rejected if they don't follow the style guide.
+### File Organization
+- Keep files small and focused
+- Use descriptive file and folder names
+- Follow the existing project structure
 
-You can fix some of the issues automatically by running `npx eslint . --fix`.
+## Testing
 
-## Commit Message Format
-
-This project uses a structured commit changelog format that should be used for every commit. Use `npm run commit` instead of your usual `git commit` to generate commit messages using a wizard.
-
+### Running Tests
 ```bash
-# either add all changed files
-$ git add -A
-# or selectively add files
-$ git add package.json
-# then commit using the wizard
-$ npm run commit
+# Run all tests
+npm run test
+
+# Run Web Test Runner unit tests
+npm run wtr
+
+# Run Jest unit tests
+npm run jest
+
+# Debug Web Test Runner tests
+npm run wtr:watch
+
+# Debug Jest unit tests
+npm run jest:watch
 ```
 
-# How Contributions get Reviewed
+### Test Requirements
+- Write unit tests for new functionality
+- Ensure existing tests pass
+- Maintain or improve code coverage
+- Test accessibility features
 
-One of the maintainers will look at the pull request within one week. Feedback on the pull request will be given in writing, in GitHub.
+### E2E Testing
+For E2E tests, see [README](./test/e2e/README.md) in `/test/e2e`
 
-# Release Management
+## Pull Request Guidelines
 
-The project's committers will release to the [Adobe organization on npmjs.org](https://www.npmjs.com/org/adobe).
-Please contact the [Adobe Open Source Advisory Board](https://git.corp.adobe.com/OpenSourceAdvisoryBoard/discuss/issues) to get access to the npmjs organization.
+### Before Creating a PR
+1. ✅ Ensure you're working on a properly named Jira branch
+2. ✅ All tests pass locally
+3. ✅ Code follows the project's coding standards
+4. ✅ Changes are properly tested
+5. ✅ Documentation is updated if needed
 
-The release process is fully automated using `semantic-release`, increasing the version numbers, etc. based on the contents of the commit messages found.
+### PR Requirements
+- **Title:** Should clearly describe what the PR does
+- **Description:** Use the provided PR template
+- **Jira Link:** Always link to the corresponding Jira issue
+- **Test URLs:** Provide URLs where changes can be tested
+- **Reviewers:** Request review from appropriate team members
+
+### PR Template
+Make sure to fill out all sections of the PR template:
+- Description of changes
+- Related Jira issue link
+- Test URLs (both main and feature branch)
+
+### Review Process
+- All PRs require at least one review
+- Address reviewer feedback promptly
+- Keep PR discussions focused and constructive
+- Ensure CI/CD checks pass
+
+## Getting Help
+
+- **Jira Issues:** For questions about specific Jira tickets, comment on the ticket
+- **Technical Questions:** Reach out to the development team
+- **Process Questions:** Contact the project maintainers
+
+---
+
+## Summary of Key Rules
+
+🚨 **CRITICAL:** Always create a branch named after your Jira issue before starting work:
+```bash
+git checkout -b MWPW-{issue-number}-{brief-description}
+```
+
+✅ **Remember to:**
+- Link PRs to Jira issues
+- Follow coding standards
+- Write/update tests
+- Provide test URLs
+- Use meaningful commit messages
+
+Thank you for contributing to DC x Milo! 🎉
