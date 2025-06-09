@@ -58,6 +58,7 @@ export const LIMITS = {
     maxNumFiles: 1,
     multipleFiles: false,
     mobileApp: true,
+    typeOneLanding: true,
   },
   'number-pages': {
     maxFileSize: 104857600, // 100 MB
@@ -219,6 +220,7 @@ export const LIMITS = {
       'text/plain',
     ],
     multipleFiles: true,
+    typeOneLanding: true,
   },
   'delete-pages': {
     maxFileSize: 104857600, // 100 MB
@@ -985,7 +987,7 @@ export default async function init(element) {
       button.accept = [...LIMITS[VERB].acceptedFiles, ...LIMITS[VERB].signedInAcceptedFiles];
     }
 
-    if (accountType !== 'type1') redDir(VERB);
+    if (accountType !== 'type1' && LIMITS[VERB].typeOneLanding) redDir(VERB);
   }
 
   function handleAnalyticsEvent(
