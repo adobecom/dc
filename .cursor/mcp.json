@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "acom-accessibility-server": {
+      "command": "node",
+      "args": ["/absolute_path/acom-accessibility-server/src/mcp-server.js"],
+      "env": {
+        "BLOCKS_PATH": "/absolute_path/dc/acrobat/blocks"
+      }
+    }
+  }
+} 

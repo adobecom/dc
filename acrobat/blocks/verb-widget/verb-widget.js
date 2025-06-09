@@ -3,9 +3,13 @@
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-const {
-  createTag, getConfig, loadBlock, getMetadata, loadIms, loadScript,
-} = await import(`${miloLibs}/utils/utils.js`);
+
+let createTag;
+let getConfig;
+let loadBlock;
+let getMetadata;
+let loadIms;
+let loadScript;
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -58,6 +62,7 @@ export const LIMITS = {
     maxNumFiles: 1,
     multipleFiles: false,
     mobileApp: true,
+    typeOneLanding: true,
   },
   'number-pages': {
     maxFileSize: 104857600, // 100 MB
@@ -219,6 +224,7 @@ export const LIMITS = {
       'text/plain',
     ],
     multipleFiles: true,
+    typeOneLanding: true,
   },
   'delete-pages': {
     maxFileSize: 104857600, // 100 MB
@@ -787,6 +793,10 @@ window.addEventListener('analyticsLoad', async ({ detail }) => {
 });
 
 export default async function init(element) {
+  ({
+    createTag, getConfig, loadBlock, getMetadata, loadIms, loadScript,
+  } = await import(`${miloLibs}/utils/utils.js`));
+
   if (isOldBrowser()) {
     window.location.href = EOLBrowserPage;
     return;
@@ -986,6 +996,7 @@ export default async function init(element) {
     }
 
     if (accountType !== 'type1') redDir(VERB);
+    if (accountType == 'type1' && !LIMITS[VERB].typeOneLanding) redDir(VERB);
   }
 
   function handleAnalyticsEvent(
