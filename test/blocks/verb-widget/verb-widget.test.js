@@ -68,10 +68,6 @@ describe('verb-widget block', () => {
   });
 
   it('show error toast', async () => {
-    window.analytics = {
-      verbAnalytics: sinon.spy(),
-      sendAnalyticsToSplunk: sinon.spy(),
-    };
     window.lana = { log: sinon.spy() };
 
     const conf = getConfig();
@@ -79,6 +75,11 @@ describe('verb-widget block', () => {
     const block = document.body.querySelector('.verb-widget');
     await init(block);
     await delay(100);
+
+    window.analytics = {
+      verbAnalytics: sinon.spy(),
+      sendAnalyticsToSplunk: sinon.spy(),
+    };
 
     block.dispatchEvent(new CustomEvent('unity:show-error-toast', {
       detail: {
@@ -98,16 +99,16 @@ describe('verb-widget block', () => {
   });
 
   it('track analytics', async () => {
-    window.analytics = {
-      verbAnalytics: sinon.spy(),
-      sendAnalyticsToSplunk: sinon.spy(),
-    };
-
     const conf = getConfig();
     setConfig({ ...conf, locale: { prefix: '' } });
     const block = document.body.querySelector('.verb-widget');
     await init(block);
     await delay(100);
+
+    window.analytics = {
+      verbAnalytics: sinon.spy(),
+      sendAnalyticsToSplunk: sinon.spy(),
+    };
 
     block.dispatchEvent(new CustomEvent('unity:track-analytics', {
       detail: {
@@ -179,14 +180,14 @@ describe('verb-widget block', () => {
   });
 
   it('upload button clicked', async () => {
-    window.analytics = { verbAnalytics: sinon.spy() };
-
     const conf = getConfig();
     setConfig({ ...conf, locale: { prefix: '' } });
     const block = document.body.querySelector('.verb-widget');
     await init(block);
     const button = block.querySelector('button');
     await delay(100);
+
+    window.analytics = { verbAnalytics: sinon.spy() };
 
     button.click();
 
