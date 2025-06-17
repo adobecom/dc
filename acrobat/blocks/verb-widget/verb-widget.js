@@ -58,7 +58,7 @@ export const LIMITS = {
   fillsign: {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB', // 100 MB
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     multipleFiles: false,
     mobileApp: true,
@@ -66,36 +66,21 @@ export const LIMITS = {
   },
   'number-pages': {
     maxFileSize: 104857600, // 100 MB
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     level: 0,
   },
   'ocr-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 100,
     multipleFiles: true,
   },
   'chat-pdf-student': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
-    acceptedFiles: [
-      'application/pdf',
-      'application/msword',
-      'application/xml',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/x-tika-ooxml',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/x-tika-msworks-spreadsheet',
-      'application/vnd.adobe.form.fillsign',
-      'application/rtf',
-      'message/rfc822',
-      'text/plain',
-    ],
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt'],
     maxNumFiles: 100,
     multipleFiles: true,
     uploadType: 'multifile-only',
@@ -103,30 +88,7 @@ export const LIMITS = {
   'chat-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
-    acceptedFiles: [
-      'application/pdf',
-      'application/msword',
-      'application/xml',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/x-tika-ooxml',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/x-tika-msworks-spreadsheet',
-      'application/vnd.adobe.form.fillsign',
-      'application/illustrator',
-      'application/rtf',
-      'application/x-indesign',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/gif',
-      'image/vnd.adobe.photoshop',
-      'image/tiff',
-      'message/rfc822',
-      'text/plain',
-    ],
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     maxNumFiles: 100,
     multipleFiles: true,
     uploadType: 'multifile-only',
@@ -134,36 +96,14 @@ export const LIMITS = {
   'split-pdf': {
     maxFileSize: 104857600, // 1 GB
     maxFileSizeFriendly: '1 GB',
-    acceptedFiles: ['application/pdf'],
-    signedInAcceptedFiles: [
-      'application/msword',
-      'application/xml',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/x-tika-ooxml',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/x-tika-msworks-spreadsheet',
-      'application/vnd.adobe.form.fillsign',
-      'application/illustrator',
-      'application/rtf',
-      'application/x-indesign',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/gif',
-      'image/vnd.adobe.photoshop',
-      'image/tiff',
-      'message/rfc822',
-      'text/plain',
-    ],
+    acceptedFiles: ['.pdf'],
+    signedInAcceptedFiles: ['.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     maxNumFiles: 1,
   },
   'combine-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB', // 100 MB
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 100,
     multipleFiles: true,
     uploadType: 'multifile-only',
@@ -171,7 +111,7 @@ export const LIMITS = {
   'rotate-pages': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB', // 100 MB
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 100,
     multipleFiles: true,
     uploadType: 'multifile-only',
@@ -179,280 +119,114 @@ export const LIMITS = {
   'protect-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB', // 100 MB
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
   },
   'crop-pages': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     level: 0,
   },
   'add-comment': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     mobileApp: true,
   },
   'compress-pdf': {
     maxFileSize: 2147483648,
     maxFileSizeFriendly: '2 GB',
-    acceptedFiles: [
-      'application/pdf',
-      'application/msword',
-      'application/xml',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/x-tika-ooxml',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/x-tika-msworks-spreadsheet',
-      'application/vnd.adobe.form.fillsign',
-      'application/illustrator',
-      'application/rtf',
-      'application/x-indesign',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/gif',
-      'image/vnd.adobe.photoshop',
-      'image/tiff',
-      'message/rfc822',
-      'text/plain',
-    ],
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     multipleFiles: true,
     typeOneLanding: true,
   },
   'delete-pages': {
     maxFileSize: 104857600, // 100 MB
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
   },
   'insert-pdf': {
     maxFileSize: 104857600, // 100 MB
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
   },
   'extract-pages': {
     maxFileSize: 104857600, // 100 MB
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
   },
   'reorder-pages': {
     maxFileSize: 104857600, // 100 MB
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
   },
   sendforsignature: {
     maxFileSize: 5242880, // 5 MB
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     mobileApp: true,
   },
   'pdf-to-word': {
     maxFileSize: 262144000, // 250 MB
     maxFileSizeFriendly: '250 MB',
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     multipleFiles: true,
   },
   'pdf-to-excel': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     multipleFiles: true,
   },
   'pdf-to-image': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     multipleFiles: true,
   },
   'pdf-to-ppt': {
     maxFileSize: 262144000, // 250 MB
     maxFileSizeFriendly: '250 MB',
-    acceptedFiles: ['application/pdf'],
+    acceptedFiles: ['.pdf'],
     multipleFiles: true,
   },
   createpdf: {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
-    acceptedFiles: [
-      'application/pdf',
-      'application/msword',
-      'application/xml',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/x-tika-ooxml',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/x-tika-msworks-spreadsheet',
-      'application/vnd.adobe.form.fillsign',
-      'application/illustrator',
-      'application/rtf',
-      'application/x-indesign',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/gif',
-      'image/vnd.adobe.photoshop',
-      'image/tiff',
-      'message/rfc822',
-      'text/plain',
-      'application/postscript',
-      'text/xml',
-      'application/octet-stream',
-      '.indd,application/x-indesign',
-      '.form,application/x-form',
-    ],
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     multipleFiles: true,
   },
   'word-to-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
-    acceptedFiles: [
-      'application/pdf',
-      'application/msword',
-      'application/xml',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/x-tika-ooxml',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/x-tika-msworks-spreadsheet',
-      'application/vnd.adobe.form.fillsign',
-      'application/illustrator',
-      'application/rtf',
-      'application/x-indesign',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/gif',
-      'image/vnd.adobe.photoshop',
-      'image/tiff',
-      'message/rfc822',
-      'text/plain',
-    ],
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     multipleFiles: true,
   },
   'jpg-to-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
-    acceptedFiles: [
-      'application/pdf',
-      'application/msword',
-      'application/xml',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/x-tika-ooxml',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/x-tika-msworks-spreadsheet',
-      'application/vnd.adobe.form.fillsign',
-      'application/illustrator',
-      'application/rtf',
-      'application/x-indesign',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/gif',
-      'image/vnd.adobe.photoshop',
-      'image/tiff',
-      'message/rfc822',
-      'text/plain',
-    ],
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     multipleFiles: true,
   },
   'png-to-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
-    acceptedFiles: [
-      'application/pdf',
-      'application/msword',
-      'application/xml',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/x-tika-ooxml',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/x-tika-msworks-spreadsheet',
-      'application/vnd.adobe.form.fillsign',
-      'application/illustrator',
-      'application/rtf',
-      'application/x-indesign',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/gif',
-      'image/vnd.adobe.photoshop',
-      'image/tiff',
-      'message/rfc822',
-      'text/plain',
-    ],
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     multipleFiles: true,
   },
   'excel-to-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
-    acceptedFiles: [
-      'application/pdf',
-      'application/msword',
-      'application/xml',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/x-tika-ooxml',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/x-tika-msworks-spreadsheet',
-      'application/vnd.adobe.form.fillsign',
-      'application/illustrator',
-      'application/rtf',
-      'application/x-indesign',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/gif',
-      'image/vnd.adobe.photoshop',
-      'image/tiff',
-      'message/rfc822',
-      'text/plain',
-    ],
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     multipleFiles: true,
   },
   'ppt-to-pdf': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '100 MB',
-    acceptedFiles: [
-      'application/pdf',
-      'application/msword',
-      'application/xml',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/x-tika-ooxml',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/x-tika-msworks-spreadsheet',
-      'application/vnd.adobe.form.fillsign',
-      'application/illustrator',
-      'application/rtf',
-      'application/x-indesign',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/gif',
-      'image/vnd.adobe.photoshop',
-      'image/tiff',
-      'message/rfc822',
-      'text/plain',
-    ],
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     multipleFiles: true,
   },
 };
@@ -802,14 +576,38 @@ export default async function init(element) {
     return;
   }
 
-  // Remove the prerender element when it's in the viewport
-  const observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) {
-      document.querySelector('#prerender_verb-widget')?.remove();
-      observer.disconnect();
-    }
-  });
-  observer.observe(element);
+  const prerenderElement = document.querySelector('#prerender_verb-widget');
+  if (prerenderElement && window.PerformanceObserver) {
+    Promise.race([
+      new Promise((resolve) => {
+        try {
+          const lcpObserver = new PerformanceObserver((entries) => {
+            if (entries.getEntries().length > 0) {
+              prerenderElement.remove();
+              lcpObserver.disconnect();
+              resolve();
+            }
+          });
+          lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+        } catch (error) {
+          prerenderElement.remove();
+          resolve();
+        }
+      }),
+      // Fallback timeout - remove after 3 seconds if LCP not detected
+      new Promise((resolve) => {
+        setTimeout(() => {
+          prerenderElement.remove();
+          resolve();
+        }, 3000);
+      }),
+    ]);
+  } else if (prerenderElement) {
+    // Fallback for browsers without PerformanceObserver support
+    setTimeout(() => {
+      prerenderElement.remove();
+    }, 3000);
+  }
 
   const isMobile = isMobileDevice();
   const isTablet = isTabletDevice();
@@ -996,7 +794,7 @@ export default async function init(element) {
     }
 
     if (accountType !== 'type1') redDir(VERB);
-    if (accountType == 'type1' && !LIMITS[VERB].typeOneLanding) redDir(VERB);
+    if (accountType === 'type1' && !LIMITS[VERB].typeOneLanding) redDir(VERB);
   }
 
   function handleAnalyticsEvent(
