@@ -621,7 +621,7 @@ export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
-  if (children.length > 2 ) {
+  if (children.length > 2) {
     widgetSubHeading = createTag('p', { class: 'verb-copy' }, children[1].textContent);
     widgetMobSubHeading = createTag('p', { class: 'verb-copy' }, children[2].textContent);
   }
