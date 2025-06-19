@@ -609,6 +609,8 @@ export default async function init(element) {
     }, 3000);
   }
 
+  let widgetSubHeading;
+  let widgetMobSubHeading;
   const isMobile = isMobileDevice();
   const isTablet = isTabletDevice();
 
@@ -619,6 +621,10 @@ export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
+  if (children.length > 2) {
+    widgetSubHeading = createTag('p', { class: 'verb-copy' }, children[1].textContent);
+    widgetMobSubHeading = createTag('p', { class: 'verb-copy' }, children[2].textContent);
+  }
   let noOfFiles = null;
   let openFilePicker = true;
   const userAttempts = getVerbKey(`${VERB}_attempts`);
@@ -646,8 +652,8 @@ export default async function init(element) {
     widgetIcon.appendChild(widgetIconSvg);
   }
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Adobe Acrobat');
-  const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
-  const widgetMobCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
+  const widgetCopy = widgetSubHeading || createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
+  const widgetMobCopy = widgetMobSubHeading || createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
   const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 });
   const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, getCTA(VERB));
   widgetButton.append(widgetButtonLabel);
