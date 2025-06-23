@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/adobecom/dc#readme",
   "devDependencies": {
-    "@amwp/platform-ui-automation": "^0.0.7",
+    "@amwp/platform-ui-automation": "^0.0.8",
     "@amwp/platform-ui-lib-adobe": "^0.0.10",
     "@babel/core": "7.23.2",
     "@babel/eslint-parser": "7.22.15",
@@ -76,7 +76,7 @@
     "async": "^3.2.5",
     "bowser": "^2.11.0",
     "jest-fetch-mock": "^3.0.3",
-    "playwright": "^1.51.1",
+    "playwright": "^1.53.1",
     "ws": "^8.18.0",
     "yargs": "^17.7.2"
   },
