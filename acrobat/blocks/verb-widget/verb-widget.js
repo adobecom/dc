@@ -69,6 +69,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     level: 0,
+    typeOneLanding: true,
   },
   'ocr-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -99,6 +100,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     signedInAcceptedFiles: ['.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     maxNumFiles: 1,
+    typeOneLanding: true,
   },
   'combine-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -128,6 +130,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     level: 0,
+    typeOneLanding: true,
   },
   'add-comment': {
     maxFileSize: 104857600, // 100 MB
@@ -135,6 +138,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     mobileApp: true,
+    typeOneLanding: true,
   },
   'compress-pdf': {
     maxFileSize: 2147483648,
