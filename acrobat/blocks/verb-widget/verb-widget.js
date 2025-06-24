@@ -69,6 +69,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     level: 0,
+    typeOneLanding: true,
   },
   'ocr-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -99,6 +100,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     signedInAcceptedFiles: ['.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     maxNumFiles: 1,
+    typeOneLanding: true,
   },
   'combine-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -128,6 +130,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     level: 0,
+    typeOneLanding: true,
   },
   'add-comment': {
     maxFileSize: 104857600, // 100 MB
@@ -135,6 +138,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     mobileApp: true,
+    typeOneLanding: true,
   },
   'compress-pdf': {
     maxFileSize: 2147483648,
@@ -619,6 +623,12 @@ export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
+  let widgetSubHeading = window.mph[`verb-widget-${VERB}-description`];
+  let widgetMobSubHeading = window.mph[`verb-widget-${VERB}-mobile-description`];
+  if (children.length > 2) {
+    widgetSubHeading = children[1].textContent;
+    widgetMobSubHeading = children[2].textContent;
+  }
   let noOfFiles = null;
   let openFilePicker = true;
   const userAttempts = getVerbKey(`${VERB}_attempts`);
@@ -646,8 +656,8 @@ export default async function init(element) {
     widgetIcon.appendChild(widgetIconSvg);
   }
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Adobe Acrobat');
-  const widgetCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
-  const widgetMobCopy = createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
+  const widgetCopy = createTag('p', { class: 'verb-copy' }, widgetSubHeading);
+  const widgetMobCopy = createTag('p', { class: 'verb-copy' }, widgetMobSubHeading);
   const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 });
   const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, getCTA(VERB));
   widgetButton.append(widgetButtonLabel);
@@ -745,7 +755,7 @@ export default async function init(element) {
       widgetLeft.insertBefore(widgetButton, errorState);
       widgetLeft.insertBefore(button, errorState);
     }
-  } else if (VERB.indexOf('chat-pdf') > -1) {
+  } else if (VERB.indexOf('chat-pdf') > -1 && window.mph['verb-widget-cta-demo']) {
     const demoBtnWrapper = createTag('div', { class: 'demo-button-wrapper' });
     widgetDemoButton = createTag('a', { href: getDemoEndpoint(), class: 'verb-cta demo-cta', tabindex: 0 }, window.mph['verb-widget-cta-demo']);
     widgetDemoButton.addEventListener('click', () => {
