@@ -35,7 +35,7 @@ jobs:
 
       - name: Trigger Jenkins Job
         run: |
-          curl -X POST 'https://dc.ci.corp.adobe.com/job/DC%20Release%20-%20Run%20Nala/buildWithParameters?token=${{ secrets.JNK_JOB_TOKEN }}&branch=stage' \
+          curl -X POST 'https://dcx.ci.corp.adobe.com/job/DC%20Release%20-%20Run%20Nala/buildWithParameters?token=${{ secrets.JNK_JOB_TOKEN }}&branch=stage' \
               -u '${{ secrets.JNK_USER }}:${{ secrets.JNK_API_TOKEN }}'
 
   run-prod-tests:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Trigger Jenkins Job
         run: |
-          curl -X POST 'https://dc.ci.corp.adobe.com/job/DC%20Release%20-%20Run%20Nala/buildWithParameters?token=${{ secrets.JNK_JOB_TOKEN }}&branch=main' \
+          curl -X POST 'https://dcx.ci.corp.adobe.com/job/DC%20Release%20-%20Run%20Nala/buildWithParameters?token=${{ secrets.JNK_JOB_TOKEN }}&branch=main' \
               -u '${{ secrets.JNK_USER }}:${{ secrets.JNK_API_TOKEN }}'
 
   run-prod-tests-gha:
