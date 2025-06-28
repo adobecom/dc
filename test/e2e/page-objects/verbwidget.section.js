@@ -6,7 +6,8 @@ export class VerbWidgetSection extends Section {
   constructor() {
     super();
     this.buildProps({
-      selectButton: '.verb-cta',
+      selectButton: '.verb-cta:not(.demo-cta)',
+      demoButton: '.verb-cta.demo-cta',
       fileUploadInput: '#file-upload',
       dropZone: '#drop-zone',
     })
