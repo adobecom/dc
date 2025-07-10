@@ -847,7 +847,7 @@ export default async function init(element) {
       window.dispatchEvent(redirectReady);
       window.lana?.log(
         'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
-        { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+        { sampleRate: 5, tags: 'DC_Milo,Project Unity (DC)' },
       );
     }, 3000);
     setCookie('UTS_Uploaded', Date.now(), cookieExp);
