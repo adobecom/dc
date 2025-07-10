@@ -10,8 +10,8 @@ const URL_PULL = `https://api.github.com/repos/${OWNER}/${REPO}/pulls`;
 const FILES = ['dev.js', 'stage.js', 'prod.js']
 const nodeVersion = process.version.split('.')[0].replace('v', '');
 
-if(nodeVersion < 18){
-  console.log("Please use Node version 18 or newer");
+if(nodeVersion < 20){
+  console.log("Please use Node version 20 or newer");
   process.exit(1);
 }
 
