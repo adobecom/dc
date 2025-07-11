@@ -1079,7 +1079,7 @@ export default async function init(element) {
       const labelElement = createTag('label', {
         for: 'file-upload',
         class: 'verb-cta verb-cta-solo',
-        tabindex: 0
+        tabindex: 0,
       });
 
       labelElement.innerHTML = verbCtaClone.innerHTML;
