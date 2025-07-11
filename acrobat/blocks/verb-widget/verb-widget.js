@@ -1097,7 +1097,6 @@ export default async function init(element) {
         });
       });
     });
-    
   }
 
   function runWhenDocumentIsReady(callback) {
