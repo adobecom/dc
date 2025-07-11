@@ -1074,7 +1074,7 @@ export default async function init(element) {
     const uploadLinkContains = document.querySelectorAll('a[href*="#upload"]');
 
     uploadLinkContains.forEach((link) => {
-      let verbCtaClone = document.querySelector('.verb-cta').cloneNode(true);
+      const verbCtaClone = document.querySelector('.verb-cta').cloneNode(true);
 
       const labelElement = createTag('label', {
         for: 'file-upload',
