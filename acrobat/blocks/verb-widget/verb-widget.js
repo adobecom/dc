@@ -1082,7 +1082,7 @@ export default async function init(element) {
         tabindex: 0
       });
 
-      labelElement.innerHTML = verbCtaClone.innerHTML;      
+      labelElement.innerHTML = verbCtaClone.innerHTML;
       link.closest('div').append(labelElement);
       link.remove()
       labelElement.addEventListener('click', (data) => {
