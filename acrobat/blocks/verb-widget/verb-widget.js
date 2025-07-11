@@ -896,7 +896,7 @@ export default async function init(element) {
     if (openFilePicker === true) { button.click(); }
   });
 
-  button.addEventListener('click', (data) => {    
+  button.addEventListener('click', (data) => {
     [
       'filepicker:shown',
       'dropzone:choose-file-clicked',
