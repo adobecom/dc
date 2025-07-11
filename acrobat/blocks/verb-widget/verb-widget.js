@@ -1071,7 +1071,7 @@ export default async function init(element) {
   });
 
   function soloUpload() {
-    const uploadLinkContains = document.querySelectorAll ('a[href*="#upload"]');
+    const uploadLinkContains = document.querySelectorAll('a[href*="#upload"]');
 
     uploadLinkContains.forEach((link) => {
       let verbCtaClone = document.querySelector('.verb-cta').cloneNode(true);
