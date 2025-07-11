@@ -1084,7 +1084,7 @@ export default async function init(element) {
 
       labelElement.innerHTML = verbCtaClone.innerHTML;
       link.closest('div').append(labelElement);
-      link.remove()
+      link.remove();
       labelElement.addEventListener('click', (data) => {
         [
           'filepicker:shown',
