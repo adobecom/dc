@@ -97,7 +97,6 @@ Feature: Frictionless Converter Block
       | Verb              | File                |
       | request-signature | test-files/test.pdf |
 
-
   @smoke @unity @l2a @choosefile
   Scenario Outline: L2a Verb - Upload
     Given I go to the <Verb> page
@@ -155,3 +154,34 @@ Feature: Frictionless Converter Block
       | Verb              | File                 |
       | ppt-to-pdf        | test-files/test.pptx |
 
+  @smoke @unity @l2c @choosefile
+  Scenario Outline: L2a Verb - Upload
+    Given I go to the <Verb> page
+     Then I choose the file "<File>" to upload
+     Then I wait for 5 seconds
+     Then I should see the address bar contains "acrobat.adobe.com"
+
+  @password-protect-pdf
+  Examples:
+      | Verb                 | File                |
+      | password-protect-pdf | test-files/test.pdf |
+
+  @rotate-pdf
+  Examples:
+      | Verb              | File                |
+      | rotate-pdf        | test-files/test.pdf |
+
+  @merge-pdf
+  Examples:
+      | Verb              | File                |
+      | merge-pdf         | test-files/test.pdf |
+
+  @ocr-pdf
+  Examples:
+      | Verb              | File                |
+      | ocr-pdf           | test-files/test.pdf |
+
+  @ai-chat-pdf
+  Examples:
+      | Verb              | File                |
+      | ai-chat-pdf       | test-files/test.pdf |
