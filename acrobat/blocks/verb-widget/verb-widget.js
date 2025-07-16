@@ -94,6 +94,14 @@ export const LIMITS = {
     multipleFiles: true,
     uploadType: 'multifile-only',
   },
+  'summary-generator': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
+    maxNumFiles: 100,
+    multipleFiles: true,
+    uploadType: 'multifile-only',
+  },
   'split-pdf': {
     maxFileSize: 104857600, // 1 GB
     maxFileSizeFriendly: '1 GB',
@@ -904,6 +912,7 @@ export default async function init(element) {
     const { target: { files } } = data;
     if (!files) return;
     noOfFiles = files.length;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   button.addEventListener('cancel', () => {
@@ -1060,6 +1069,36 @@ export default async function init(element) {
       window.location.reload();
     }
   });
+
+  function soloUpload() {
+    const uploadLinkContains = document.querySelectorAll('a[href*="#upload"]');
+
+    uploadLinkContains.forEach((link) => {
+      const verbCtaClone = document.querySelector('.verb-cta').cloneNode(true);
+
+      const labelElement = createTag('label', {
+        for: 'file-upload',
+        class: 'verb-cta verb-cta-solo',
+        tabindex: 0,
+      });
+
+      labelElement.innerHTML = verbCtaClone.innerHTML;
+      link.closest('div').append(labelElement);
+      link.remove();
+      labelElement.addEventListener('click', (data) => {
+        [
+          'filepicker:shown',
+          'cta:choose-file-clicked',
+          'files-selected',
+          'entry:clicked',
+          'discover:clicked',
+        ].forEach((analyticsEvent) => {
+          window.analytics.verbAnalytics(analyticsEvent, VERB, { ...data, userAttempts });
+        });
+      });
+    });
+  }
+
   function runWhenDocumentIsReady(callback) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', callback);
@@ -1068,6 +1107,7 @@ export default async function init(element) {
     }
   }
   runWhenDocumentIsReady(() => {
+    soloUpload();
     window.dispatchEvent(new CustomEvent('analyticsLoad', {
       detail: {
         verb: VERB,
