@@ -1088,7 +1088,7 @@ export default async function init(element) {
       labelElement.addEventListener('click', (data) => {
         [
           'filepicker:shown',
-          'dropzone:choose-file-solo-clicked',
+          'cta:choose-file-clicked',
           'files-selected',
           'entry:clicked',
           'discover:clicked',
