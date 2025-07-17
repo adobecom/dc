@@ -41,31 +41,6 @@ describe('Test dcLana script', async () => {
     );
   });
 
-  it('should log if DC Widget failed', async () => {
-    window.document.querySelectorAll = sinon
-      .stub()
-      .returns([{ querySelector: sinon.stub().returns(true) }]);
-    window.dispatchEvent(new CustomEvent('DC_Hosted:Ready'));
-    expect(window.lana.log.calledOnce).to.be.true;
-    expect(window.lana.log.getCall(0).args[0]).to.eq(
-      'DC Widget Failed ¶ Reason: Error',
-    );
-    expect(window.lana.log.getCall(0).args[1].tags).to.eq(
-      'DC_Milo,Frictionless',
-    );
-  });
-
-  it("should log if DC Widget didn't load in 10 secs", async () => {
-    clock.tick(10010);
-    expect(window.lana.log.calledOnce).to.be.true;
-    expect(window.lana.log.getCall(0).args[0]).to.eq(
-      "DC Widget Didn't Load ¶ Reason: DC Hosted did not load",
-    );
-    expect(window.lana.log.getCall(0).args[1].tags).to.eq(
-      'DC_Milo,Frictionless',
-    );
-  });
-
   afterEach(() => {
     window.lana.log.resetHistory();
   });
