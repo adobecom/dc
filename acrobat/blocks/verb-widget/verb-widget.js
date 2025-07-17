@@ -134,7 +134,6 @@ export const LIMITS = {
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
-    mobileApp: true,
     neverRedirect: true,
   },
   'compress-pdf': {
