@@ -134,8 +134,6 @@ export const LIMITS = {
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
-    mobileApp: true,
-    neverRedirect: true,
   },
   'compress-pdf': {
     maxFileSize: 2147483648,
@@ -800,7 +798,6 @@ export default async function init(element) {
       button.accept = [...LIMITS[VERB].acceptedFiles, ...LIMITS[VERB].signedInAcceptedFiles];
     }
 
-    if (accountType && LIMITS[VERB].neverRedirect) return;
     if (accountType !== 'type1') redDir(VERB);
     if (accountType === 'type1' && !LIMITS[VERB].typeOneLanding) redDir(VERB);
   }
