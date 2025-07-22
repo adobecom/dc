@@ -69,6 +69,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     level: 0,
+    typeOneLanding: true,
   },
   'ocr-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -93,12 +94,21 @@ export const LIMITS = {
     multipleFiles: true,
     uploadType: 'multifile-only',
   },
+  'summarize-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
+    maxNumFiles: 100,
+    multipleFiles: true,
+    uploadType: 'multifile-only',
+  },
   'split-pdf': {
     maxFileSize: 104857600, // 1 GB
     maxFileSizeFriendly: '1 GB',
     acceptedFiles: ['.pdf'],
     signedInAcceptedFiles: ['.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     maxNumFiles: 1,
+    typeOneLanding: true,
   },
   'combine-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -128,6 +138,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
     level: 0,
+    typeOneLanding: true,
   },
   'add-comment': {
     maxFileSize: 104857600, // 100 MB
@@ -609,8 +620,6 @@ export default async function init(element) {
     }, 3000);
   }
 
-  let widgetSubHeading;
-  let widgetMobSubHeading;
   const isMobile = isMobileDevice();
   const isTablet = isTabletDevice();
 
@@ -621,9 +630,11 @@ export default async function init(element) {
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
   const widgetHeading = createTag('h1', { class: 'verb-heading' }, children[0].textContent);
-  if (children.length > 2 ) {
-    widgetSubHeading = createTag('p', { class: 'verb-copy' }, children[1].textContent);
-    widgetMobSubHeading = createTag('p', { class: 'verb-copy' }, children[2].textContent);
+  let widgetSubHeading = window.mph[`verb-widget-${VERB}-description`];
+  let widgetMobSubHeading = window.mph[`verb-widget-${VERB}-mobile-description`];
+  if (children.length > 2) {
+    widgetSubHeading = children[1].textContent;
+    widgetMobSubHeading = children[2].textContent;
   }
   let noOfFiles = null;
   let openFilePicker = true;
@@ -652,8 +663,8 @@ export default async function init(element) {
     widgetIcon.appendChild(widgetIconSvg);
   }
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Adobe Acrobat');
-  const widgetCopy = widgetSubHeading || createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-description`]);
-  const widgetMobCopy = widgetMobSubHeading || createTag('p', { class: 'verb-copy' }, window.mph[`verb-widget-${VERB}-mobile-description`]);
+  const widgetCopy = createTag('p', { class: 'verb-copy' }, widgetSubHeading);
+  const widgetMobCopy = createTag('p', { class: 'verb-copy' }, widgetMobSubHeading);
   const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 });
   const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, getCTA(VERB));
   widgetButton.append(widgetButtonLabel);
@@ -751,7 +762,7 @@ export default async function init(element) {
       widgetLeft.insertBefore(widgetButton, errorState);
       widgetLeft.insertBefore(button, errorState);
     }
-  } else if (VERB.indexOf('chat-pdf') > -1) {
+  } else if (VERB.indexOf('chat-pdf') > -1 && window.mph['verb-widget-cta-demo']) {
     const demoBtnWrapper = createTag('div', { class: 'demo-button-wrapper' });
     widgetDemoButton = createTag('a', { href: getDemoEndpoint(), class: 'verb-cta demo-cta', tabindex: 0 }, window.mph['verb-widget-cta-demo']);
     widgetDemoButton.addEventListener('click', () => {
@@ -844,7 +855,7 @@ export default async function init(element) {
       window.dispatchEvent(redirectReady);
       window.lana?.log(
         'Adobe Analytics done callback failed to trigger, 3 second timeout dispatched event.',
-        { sampleRate: 100, tags: 'DC_Milo,Project Unity (DC)' },
+        { sampleRate: 5, tags: 'DC_Milo,Project Unity (DC)' },
       );
     }, 3000);
     setCookie('UTS_Uploaded', Date.now(), cookieExp);
@@ -901,6 +912,7 @@ export default async function init(element) {
     const { target: { files } } = data;
     if (!files) return;
     noOfFiles = files.length;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   button.addEventListener('cancel', () => {
@@ -1057,6 +1069,36 @@ export default async function init(element) {
       window.location.reload();
     }
   });
+
+  function soloUpload() {
+    const uploadLinkContains = document.querySelectorAll('a[href*="#upload"]');
+
+    uploadLinkContains.forEach((link) => {
+      const verbCtaClone = document.querySelector('.verb-cta').cloneNode(true);
+
+      const labelElement = createTag('label', {
+        for: 'file-upload',
+        class: 'verb-cta verb-cta-solo',
+        tabindex: 0,
+      });
+
+      labelElement.innerHTML = verbCtaClone.innerHTML;
+      link.closest('div').append(labelElement);
+      link.remove();
+      labelElement.addEventListener('click', (data) => {
+        [
+          'filepicker:shown',
+          'cta:choose-file-clicked',
+          'files-selected',
+          'entry:clicked',
+          'discover:clicked',
+        ].forEach((analyticsEvent) => {
+          window.analytics.verbAnalytics(analyticsEvent, VERB, { ...data, userAttempts });
+        });
+      });
+    });
+  }
+
   function runWhenDocumentIsReady(callback) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', callback);
@@ -1065,6 +1107,7 @@ export default async function init(element) {
     }
   }
   runWhenDocumentIsReady(() => {
+    soloUpload();
     window.dispatchEvent(new CustomEvent('analyticsLoad', {
       detail: {
         verb: VERB,
