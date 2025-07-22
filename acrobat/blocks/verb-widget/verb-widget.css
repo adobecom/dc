@@ -330,6 +330,11 @@
   margin-bottom: var(--verb-cta-margin-bottom);
 }
 
+.verb-cta-solo {
+  display: inline-flex;
+  padding: 9px 18px 10px;
+}
+
 .verb-cta .upload-icon {
   display: flex;
   align-items: center;
