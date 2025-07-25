@@ -26,6 +26,7 @@ import { PasswordProtectPdfPage } from "../page-objects/passwordprotectpdf.page"
 import { AddPdfPageNumbersPage } from "../page-objects/addpdfpagenumbers.page";
 import { OcrPdfPage } from "../page-objects/ocrpdf.page";
 import { AiChatPdfPage } from "../page-objects/aichatpdf.page";
+import { AiSummaryGeneratorPage } from "../page-objects/aisummarygenerator.page";
 import { FrictionlessPage } from "../page-objects/frictionless.page";
 import { UnityPage } from "../page-objects/unity.page";
 import { DCPage } from "../page-objects/dc.page";
@@ -70,7 +71,8 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
     "password-protect-pdf": PasswordProtectPdfPage,
     "add-pdf-page-numbers": AddPdfPageNumbersPage,
     "ocr-pdf": OcrPdfPage,
-    "ai-chat-pdf": AiChatPdfPage
+    "ai-chat-pdf": AiChatPdfPage,
+    "ai-summary-generator": AiSummaryGeneratorPage
   }[verb];
   this.page = new pageClass();
 
