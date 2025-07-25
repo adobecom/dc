@@ -185,3 +185,8 @@ Feature: Frictionless Converter Block
   Examples:
       | Verb              | File                |
       | ai-chat-pdf       | test-files/test.pdf |
+
+  @ai-summary-generator
+  Examples:
+      | Verb                 | File                |
+      | ai-summary-generator | test-files/test.pdf |      
