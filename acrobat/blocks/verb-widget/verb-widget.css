@@ -333,6 +333,9 @@
 .verb-cta-solo {
   display: inline-flex;
   padding: 9px 18px 10px;
+  min-width: auto;
+  font-size: 17px;
+  padding-inline-end: 18px !important;
 }
 
 .verb-cta .upload-icon {
