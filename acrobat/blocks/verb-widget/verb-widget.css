@@ -338,6 +338,12 @@
   padding-inline-end: 18px !important;
 }
 
+@media screen and (max-width: 600px) {
+  .verb-cta-solo {
+    inline-size: auto !important;
+  }
+}
+
 .verb-cta .upload-icon {
   display: flex;
   align-items: center;
