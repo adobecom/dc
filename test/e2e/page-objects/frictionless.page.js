@@ -24,7 +24,6 @@ export class FrictionlessPage extends classes(DcGnavPage, PdfWidgetSection, CaaS
       signUp: '[href*="https://auth.services.adobe.com"][href*="signup"]',
       extensionModal: '#chromeext, #edgeext',
       closeExtensionModal: '#chromeext .dialog-close, #edgeext .dialog-close',
-      eventwrapperOnload: '.eventwrapper.onload',
       previewDescription: 'div[class*="previewDescription"]',
     });
   }

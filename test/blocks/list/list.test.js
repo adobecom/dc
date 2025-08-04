@@ -8,8 +8,6 @@ describe('block list', () => {
   });
   it('should contain expected block names', () => {
     expect(blocks).to.contain('dc-converter-widget');
-    expect(blocks).to.contain('eventwrapper');
-    expect(blocks).to.contain('personalization');
     expect(blocks).to.contain('verb-subfooters');
   });
   it('should have correct number of elements', () => {
