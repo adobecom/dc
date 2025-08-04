@@ -333,6 +333,15 @@
 .verb-cta-solo {
   display: inline-flex;
   padding: 9px 18px 10px;
+  min-width: auto;
+  font-size: 17px;
+  padding-inline-end: 18px !important;
+}
+
+@media screen and (max-width: 600px) {
+  .verb-cta-solo {
+    inline-size: auto !important;
+  }
 }
 
 .verb-cta .upload-icon {

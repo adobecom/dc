@@ -85,6 +85,7 @@ export const LIMITS = {
     maxNumFiles: 100,
     multipleFiles: true,
     uploadType: 'multifile-only',
+    subCopy: true,
   },
   'chat-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -93,6 +94,7 @@ export const LIMITS = {
     maxNumFiles: 100,
     multipleFiles: true,
     uploadType: 'multifile-only',
+    subCopy: true,
   },
   'summarize-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -101,6 +103,7 @@ export const LIMITS = {
     maxNumFiles: 100,
     multipleFiles: true,
     uploadType: 'multifile-only',
+    subCopy: true,
   },
   'split-pdf': {
     maxFileSize: 104857600, // 1 GB
@@ -674,7 +677,7 @@ export default async function init(element) {
     widgetButton.prepend(uploadIconSvg);
   }
 
-  if (VERB.indexOf('chat-pdf') > -1) {
+  if (LIMITS[VERB].subCopy) {
     widgetSubCopy = createTag('p', { class: 'verb-copy verb-sub-copy' }, window.mph[`verb-widget-${VERB}-sub-description`]);
     widgetCopy.append(widgetSubCopy);
   }
@@ -1080,6 +1083,7 @@ export default async function init(element) {
         for: 'file-upload',
         class: 'verb-cta verb-cta-solo',
         tabindex: 0,
+        'daa-ll': verbCtaClone.textContent,
       });
 
       labelElement.innerHTML = verbCtaClone.innerHTML;
