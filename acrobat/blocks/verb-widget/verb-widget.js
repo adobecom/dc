@@ -696,7 +696,7 @@ export default async function init(element) {
   const verbImageSvg = await createSvgElement(verbIconName);
   if (verbImageSvg) {
     verbImageSvg.classList.add('icon-verb-image');
-    verbImageSvg.setAttribute('alt', window.mph[`verb-widget-${VERB}-alt`]);
+    verbImageSvg.setAttribute('alt', window.mph[`verb-widget-${VERB}-alt`] || VERB);
     widgetImage.appendChild(verbImageSvg);
   }
 
