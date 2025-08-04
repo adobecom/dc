@@ -661,6 +661,7 @@ export default async function init(element) {
   const widgetHeader = createTag('div', { class: 'verb-header' });
   const widgetIcon = createTag('div', { class: 'acrobat-icon' });
   const widgetIconSvg = await createSvgElement('WIDGET_ICON');
+  const verbCTA = getCTA(VERB);
   if (widgetIconSvg) {
     widgetIconSvg.classList.add('icon-verb');
     widgetIcon.appendChild(widgetIconSvg);
@@ -668,8 +669,8 @@ export default async function init(element) {
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Adobe Acrobat');
   const widgetCopy = createTag('p', { class: 'verb-copy' }, widgetSubHeading);
   const widgetMobCopy = createTag('p', { class: 'verb-copy' }, widgetMobSubHeading);
-  const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0 });
-  const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, getCTA(VERB));
+  const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0, 'aria-label': verbCTA });
+  const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, verbCTA);
   widgetButton.append(widgetButtonLabel);
   const uploadIconSvg = await createSvgElement('UPLOAD_ICON');
   if (uploadIconSvg) {
@@ -695,6 +696,7 @@ export default async function init(element) {
   const verbImageSvg = await createSvgElement(verbIconName);
   if (verbImageSvg) {
     verbImageSvg.classList.add('icon-verb-image');
+    verbImageSvg.setAttribute('alt', window.mph[`verb-widget-${VERB}-alt`]);
     widgetImage.appendChild(verbImageSvg);
   }
 
@@ -1084,6 +1086,7 @@ export default async function init(element) {
         class: 'verb-cta verb-cta-solo',
         tabindex: 0,
         'daa-ll': verbCtaClone.textContent,
+        'aria-label': `${verbCtaClone.textContent}`,
       });
 
       labelElement.innerHTML = verbCtaClone.innerHTML;
