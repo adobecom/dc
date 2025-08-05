@@ -10,6 +10,7 @@ let loadBlock;
 let getMetadata;
 let loadIms;
 let loadScript;
+let soloClicked;
 
 const fallBack = 'https://www.adobe.com/go/acrobat-overview';
 const EOLBrowserPage = 'https://acrobat.adobe.com/home/index-browser-eol.html';
@@ -900,6 +901,10 @@ export default async function init(element) {
   });
 
   button.addEventListener('click', (data) => {
+    if (soloClicked) {
+      soloClicked = false;
+      return;
+    }
     [
       'filepicker:shown',
       'dropzone:choose-file-clicked',
@@ -1090,6 +1095,7 @@ export default async function init(element) {
       link.closest('div').append(labelElement);
       link.remove();
       labelElement.addEventListener('click', (data) => {
+        soloClicked = true;
         [
           'filepicker:shown',
           'cta:choose-file-clicked',
