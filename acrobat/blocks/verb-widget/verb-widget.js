@@ -815,6 +815,8 @@ export default async function init(element) {
 
     const mobileCta = document.querySelector('.verb-mobile-cta');
     if (VERB === 'add-comment' && mobileCta) {
+      openFilePicker = true;
+      widget.classList.remove('mobile-app');
       widgetLeft.removeChild(mobileCta);
       widgetLeft.insertBefore(widgetButton, errorState);
       widgetLeft.insertBefore(button, errorState);
