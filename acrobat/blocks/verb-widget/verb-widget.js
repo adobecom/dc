@@ -1096,6 +1096,10 @@ export default async function init(element) {
 
       labelElement.innerHTML = verbCtaClone.innerHTML;
       link.closest('div').append(labelElement);
+      const notification = link.closest('.notification');
+      if (notification && (isMobile || isTablet)) {
+        notification.style.display = 'none';
+      }
       link.remove();
       labelElement.addEventListener('click', (data) => {
         soloClicked = true;
