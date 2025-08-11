@@ -23,7 +23,6 @@ export class UnityPage extends classes(DcGnavPage, VerbWidgetSection, CaaSSectio
       signUp: '[href*="https://auth.services.adobe.com"][href*="signup"]',
       extensionModal: '#chromeext, #edgeext',
       closeExtensionModal: '#chromeext .dialog-close, #edgeext .dialog-close',
-      eventwrapperOnload: '.eventwrapper.onload',
       previewDescription: 'div[class*="previewDescription"]',
       verbErrorText: '.verb-errorText:visible',
       widgetCompressButton: '*[data-testid="ls-footer-primary-compress-button"]',
