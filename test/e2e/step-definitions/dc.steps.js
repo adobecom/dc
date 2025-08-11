@@ -248,14 +248,6 @@ Then(/^I should see the default how-to$/, async function () {
   await expect(this.page.howToDefault).toBeVisible();
 });
 
-Then(/^I should (|not )see  onload$/, async function (neg) {
-  if (neg) {
-    await expect(this.page.Onload).not.toBeVisible();
-  } else {
-    await expect(this.page.Onload).toBeVisible();
-  }
-});
-
 Then(/^I should see upsell$/, async function () {
   await expect(this.page.upsellWall).toHaveCount(1, { timeout: 10000 });
 });
