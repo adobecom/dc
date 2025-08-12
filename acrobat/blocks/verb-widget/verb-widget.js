@@ -101,9 +101,7 @@ export const LIMITS = {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
-    maxNumFiles: 100,
-    multipleFiles: true,
-    uploadType: 'multifile-only',
+    maxNumFiles: 1,
     subCopy: true,
   },
   'split-pdf': {
