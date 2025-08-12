@@ -218,26 +218,12 @@ div.how-to {
   margin-right: 28px;
 }
 
-.eventwrapper .how-to-heading {
-  padding-top: 60px;
-}
-
 .how-to-image.how-to-image-large {
   margin-left: 28px;
 }
 
 .section .how-to > ol {
   margin-right: 28px;
-}
-
-@media (max-width: 1200px) {
-  .eventwrapper .how-to > .foreground {
-    padding-top: 80px !important;
-  }
-
-  .eventwrapper .how-to-heading {
-    padding-top: 52px;
-  }
 }
 
 /* Moblie HowTo */
@@ -248,19 +234,6 @@ div.how-to {
     "heading"
     "list" !important;
     grid-template-columns: 1fr !important;
-  }
-
-  /* Moblie HowTo word-to-pdf US ONLY */
-  [data-path="/dc-shared/fragments/frictionless-personalization-xfs/word-to-pdf-xfs/how-to/default"] .how-to.large-image {
-    grid-template-areas:
-    "heading"
-    "list"
-    "image" !important;
-  }
-
-  .eventwrapper .how-to-heading {
-    padding-top: 44px;
-    margin-right: 0;
   }
 
   .how-to-image.how-to-image-large {
@@ -414,17 +387,6 @@ div.how-to ol li::before{
 /* CLS */
 .dc-converter-widget {
   /* min-height: 0 !important; */
-  -webkit-transition: min-height 1s;
-  -moz-transition: min-height 1s;
-  -ms-transition: min-height 1s;
-  -o-transition: min-height 1s;
-  transition: min-height 1s;
-
-  /* overflow: hidden; */
-}
-
-.eventwrapper.onload {
-  min-height: 0 !important;
   -webkit-transition: min-height 1s;
   -moz-transition: min-height 1s;
   -ms-transition: min-height 1s;

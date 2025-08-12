@@ -19,7 +19,6 @@
 
 import createConverterWidgetBlock from './rules/dcConverterWidget.js';
 import createBreadcrumbsBlocks from './rules/breadcrumbs.js';
-import createEventWrapperBlocks from './rules/eventWrapper.js';
 import createVerbFooter from './rules/verbFooter.js';
 import createReviewBlocks from './rules/review.js';
 import createMetadata from './rules/metaData.js';
@@ -54,7 +53,6 @@ export default {
     */
     createBreadcrumbsBlocks(main, document);
     createConverterWidgetBlock(main, document, url);
-    createEventWrapperBlocks(main, document, url);
     createReviewBlocks(main, document);
     createVerbFooter(main, document);
     createMetadata(main, document);
