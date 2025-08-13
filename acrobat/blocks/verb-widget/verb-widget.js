@@ -751,7 +751,7 @@ export default async function init(element) {
     if (LIMITS[VERB].level === 0) {
       openFilePicker = false;
       widget.classList.add('trial');
-      const widgetMobileFreeTrial = createTag('a', { class: 'verb-mobile-cta vverb-cta-all', href: getPricingLink() }, window.mph['verb-widget-cta-mobile-start-trial']);
+      const widgetMobileFreeTrial = createTag('a', { class: 'verb-mobile-cta verb-cta-all', href: getPricingLink() }, window.mph['verb-widget-cta-mobile-start-trial']);
       widgetLeft.insertBefore(widgetMobileFreeTrial, errorState);
     } else if (LIMITS[VERB].mobileApp) {
       openFilePicker = false;
