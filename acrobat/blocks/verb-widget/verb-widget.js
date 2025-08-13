@@ -670,7 +670,7 @@ export default async function init(element) {
   const widgetCopy = createTag('p', { class: 'verb-copy' }, widgetSubHeading);
   const widgetMobCopy = createTag('p', { class: 'verb-copy' }, widgetMobSubHeading);
   const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta verb-cta-all', tabindex: 0, 'aria-label': verbCTA });
-  const widgetButtonLabel = createTag('span', { class: 'verb-cta-alllabel' }, verbCTA);
+  const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, verbCTA);
   widgetButton.append(widgetButtonLabel);
   const uploadIconSvg = await createSvgElement('UPLOAD_ICON');
   if (uploadIconSvg) {
@@ -751,7 +751,7 @@ export default async function init(element) {
     if (LIMITS[VERB].level === 0) {
       openFilePicker = false;
       widget.classList.add('trial');
-      const widgetMobileFreeTrial = createTag('a', { class: 'verb-mobile-cta verb-cta-all', href: getPricingLink() }, window.mph['verb-widget-cta-mobile-start-trial']);
+      const widgetMobileFreeTrial = createTag('a', { class: 'verb-mobile-cta vverb-cta-all', href: getPricingLink() }, window.mph['verb-widget-cta-mobile-start-trial']);
       widgetLeft.insertBefore(widgetMobileFreeTrial, errorState);
     } else if (LIMITS[VERB].mobileApp) {
       openFilePicker = false;
@@ -1096,7 +1096,7 @@ export default async function init(element) {
 
       const labelElement = createTag('label', {
         for: 'file-upload',
-        class: 'verb-cta verb-cta-allsolo',
+        class: 'verb-cta verb-cta-solo',
         tabindex: 0,
         'daa-ll': verbCtaClone.textContent,
         'aria-label': `${verbCtaClone.textContent}`,
