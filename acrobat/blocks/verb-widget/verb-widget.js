@@ -147,7 +147,6 @@ export const LIMITS = {
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
-    mobileApp: true,
     neverRedirect: true,
   },
   'compress-pdf': {
@@ -809,15 +808,6 @@ export default async function init(element) {
       accountType = window.adobeIMS.getAccountType();
     } catch {
       accountType = (await window.adobeIMS.getProfile()).account_type;
-    }
-
-    const mobileCta = document.querySelector('.verb-mobile-cta');
-    if (VERB === 'add-comment' && mobileCta) {
-      openFilePicker = true;
-      widget.classList.remove('mobile-app');
-      widgetLeft.removeChild(mobileCta);
-      widgetLeft.insertBefore(widgetButton, errorState);
-      widgetLeft.insertBefore(button, errorState);
     }
 
     if (LIMITS[VERB].signedInAcceptedFiles) {
