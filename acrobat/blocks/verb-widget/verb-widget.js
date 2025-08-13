@@ -669,7 +669,7 @@ export default async function init(element) {
   const widgetTitle = createTag('div', { class: 'verb-title' }, 'Adobe Acrobat');
   const widgetCopy = createTag('p', { class: 'verb-copy' }, widgetSubHeading);
   const widgetMobCopy = createTag('p', { class: 'verb-copy' }, widgetMobSubHeading);
-  const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta verb-cta-all', tabindex: 0, 'aria-label': verbCTA });
+  const widgetButton = createTag('button', { for: 'file-upload', class: 'verb-cta', tabindex: 0, 'aria-label': verbCTA });
   const widgetButtonLabel = createTag('span', { class: 'verb-cta-label' }, verbCTA);
   widgetButton.append(widgetButtonLabel);
   const uploadIconSvg = await createSvgElement('UPLOAD_ICON');
@@ -751,14 +751,14 @@ export default async function init(element) {
     if (LIMITS[VERB].level === 0) {
       openFilePicker = false;
       widget.classList.add('trial');
-      const widgetMobileFreeTrial = createTag('a', { class: 'verb-mobile-cta verb-cta-all', href: getPricingLink() }, window.mph['verb-widget-cta-mobile-start-trial']);
+      const widgetMobileFreeTrial = createTag('a', { class: 'verb-mobile-cta', href: getPricingLink() }, window.mph['verb-widget-cta-mobile-start-trial']);
       widgetLeft.insertBefore(widgetMobileFreeTrial, errorState);
     } else if (LIMITS[VERB].mobileApp) {
       openFilePicker = false;
       widget.classList.add('mobile-app');
       const storeType = getStoreType();
       const mobileLink = window.mph[`verb-widget-${VERB}-${storeType}`] || window.mph[`verb-widget-${VERB}-apple`];
-      const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta verb-cta-all', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
+      const widgetMobileButton = createTag('a', { class: 'verb-mobile-cta', href: mobileLink }, window.mph['verb-widget-cta-mobile']);
       widgetMobileButton.addEventListener('click', () => {
         window.analytics.verbAnalytics('goto-app:clicked', VERB, { userAttempts });
       });
@@ -1092,7 +1092,9 @@ export default async function init(element) {
     const uploadLinkContains = document.querySelectorAll('a[href*="#upload"]');
 
     uploadLinkContains.forEach((link) => {
-      const verbCtaClone = document.querySelector('.verb-cta-all').cloneNode(true);
+      const verbCtaClone = document.querySelector('.verb-cta')?.cloneNode(true);
+
+      if (!verbCtaClone) return;
 
       const labelElement = createTag('label', {
         for: 'file-upload',
