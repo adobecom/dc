@@ -101,9 +101,7 @@ export const LIMITS = {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
-    maxNumFiles: 100,
-    multipleFiles: true,
-    uploadType: 'multifile-only',
+    maxNumFiles: 1,
     subCopy: true,
   },
   'split-pdf': {
@@ -149,6 +147,7 @@ export const LIMITS = {
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
+    mobileApp: true,
     neverRedirect: true,
   },
   'compress-pdf': {
@@ -812,6 +811,15 @@ export default async function init(element) {
       accountType = (await window.adobeIMS.getProfile()).account_type;
     }
 
+    const mobileCta = document.querySelector('.verb-mobile-cta');
+    if (VERB === 'add-comment' && mobileCta) {
+      openFilePicker = true;
+      widget.classList.remove('mobile-app');
+      widgetLeft.removeChild(mobileCta);
+      widgetLeft.insertBefore(widgetButton, errorState);
+      widgetLeft.insertBefore(button, errorState);
+    }
+
     if (LIMITS[VERB].signedInAcceptedFiles) {
       button.accept = [...LIMITS[VERB].acceptedFiles, ...LIMITS[VERB].signedInAcceptedFiles];
     }
@@ -1096,6 +1104,10 @@ export default async function init(element) {
 
       labelElement.innerHTML = verbCtaClone.innerHTML;
       link.closest('div').append(labelElement);
+      const notification = link.closest('.notification');
+      if (notification && (isMobile || isTablet)) {
+        notification.style.display = 'none';
+      }
       link.remove();
       labelElement.addEventListener('click', (data) => {
         soloClicked = true;
