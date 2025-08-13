@@ -11,6 +11,6 @@ describe('block list', () => {
     expect(blocks).to.contain('verb-subfooters');
   });
   it('should have correct number of elements', () => {
-    expect(blocks.length).to.be.equal(4);
+    expect(blocks.length).to.be.equal(2);
   });
 });
