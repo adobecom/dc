@@ -147,8 +147,7 @@ export const LIMITS = {
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
-    mobileApp: true,
-    typeOneLanding: true,
+    neverRedirect: true,
   },
   'compress-pdf': {
     maxFileSize: 2147483648,
@@ -1082,7 +1081,9 @@ export default async function init(element) {
     const uploadLinkContains = document.querySelectorAll('a[href*="#upload"]');
 
     uploadLinkContains.forEach((link) => {
-      const verbCtaClone = document.querySelector('.verb-cta').cloneNode(true);
+      const verbCtaClone = document.querySelector('.verb-cta')?.cloneNode(true);
+
+      if (!verbCtaClone) return;
 
       const labelElement = createTag('label', {
         for: 'file-upload',
