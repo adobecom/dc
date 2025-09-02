@@ -95,7 +95,7 @@ function getKey(fragmentPath, defaultKey, obj) {
   return defaultKey;
 }
 function getAIPriceEl(card) {
-  return card.querySelector(`${CALLOUT_SELECTOR} [is="inline-price"]`);
+  return card.querySelector(`${CALLOUT_SELECTOR} [is="inline-price"]`) || card.querySelector('[slot="addon"] [is="inline-price"]');
 }
 function sendCheckboxAnalytics(fragAudience, cardPlanType, checked) {
   const msg = `${fragAudience}-${cardPlanType}-checkbox-${checked ? 'checked' : 'unchecked'}`;
