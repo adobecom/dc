@@ -25,6 +25,7 @@ function getOsi(el) {
 function waitForPlaceholderResolved(el) {
   // eslint-disable-next-line compat/compat
   return new Promise((resolve) => {
+    if (!el) return;
     if (el.classList.contains('placeholder-resolved')) {
       resolve();
     } else {
