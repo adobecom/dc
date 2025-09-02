@@ -147,7 +147,8 @@ export const LIMITS = {
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
-    neverRedirect: true,
+    typeOneLanding: true,
+    // neverRedirect: true,
   },
   'compress-pdf': {
     maxFileSize: 2147483648,
