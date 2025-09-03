@@ -95,7 +95,7 @@ function getKey(fragmentPath, defaultKey, obj) {
   return defaultKey;
 }
 function getAIPriceEl(card) {
-  return card.querySelector(`${CALLOUT_SELECTOR} [is="inline-price"]`);
+  return card.querySelector(`${CALLOUT_SELECTOR} [is="inline-price"], [slot="addon"] [is="inline-price"]`);
 }
 function sendCheckboxAnalytics(fragAudience, cardPlanType, checked) {
   const msg = `${fragAudience}-${cardPlanType}-checkbox-${checked ? 'checked' : 'unchecked'}`;
@@ -115,7 +115,9 @@ function sendCheckboxAnalytics(fragAudience, cardPlanType, checked) {
     data: { _adobe_corpnew: { digitalData: { primaryEvent: { eventInfo: { eventName: msg } } } } },
   });
 }
-async function addCheckbox({ card, md, fragAudience, cardPlanType }) {
+function addCheckbox({ card, md, fragAudience, cardPlanType }) {
+  const priceEl = getAIPriceEl(card);
+  if (!priceEl) return false;
   const cardTitle = card.querySelector('h3')?.textContent.trim().toLowerCase().split(' ').join('-');
   const cardId = `${fragAudience}-${cardPlanType}-${cardTitle}`;
   card.dataset.aiAdded = false;
@@ -134,7 +136,6 @@ async function addCheckbox({ card, md, fragAudience, cardPlanType }) {
       <span class="ai-checkbox-subtitle">${description}</span>
     </label>`,
   );
-  const priceEl = getAIPriceEl(card);
   const pricePlaceholder = checkboxContainer.querySelector('.price-placeholder');
   pricePlaceholder.replaceWith(priceEl);
   const checkbox = checkboxContainer.querySelector('input');
@@ -145,6 +146,7 @@ async function addCheckbox({ card, md, fragAudience, cardPlanType }) {
   });
 
   callout?.replaceWith(checkboxContainer);
+  return true;
 }
 function addReaderPrice(md, priceEl, readerPriceEl) {
   readerPriceEl.innerHTML = `
@@ -256,9 +258,11 @@ function processCard(card, md) {
   const fragPath = fragContainer.dataset.path;
   const fragAudience = getKey(fragPath, 'individuals', md);
   const cardPlanType = getKey(fragPath, 'abm', md[fragAudience]);
-  addCheckbox({ card, md, fragAudience, cardPlanType });
-  addPrices({ card, md });
-  addButtons({ card, md, fragAudience, cardPlanType });
+  const success = addCheckbox({ card, md, fragAudience, cardPlanType });
+  if (success) {
+    addPrices({ card, md });
+    addButtons({ card, md, fragAudience, cardPlanType });
+  }
 }
 export default async function init(el) {
   const md = parseMetadata(getMetadata(el));
