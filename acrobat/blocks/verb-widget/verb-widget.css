@@ -115,7 +115,7 @@
 
     }
 
-    
+
   }
 
   @media screen and (min-width: 1200px) {
@@ -444,6 +444,7 @@ html[dir="rtl"] .verb-cta .upload-icon {
   line-height: var(--consonant-heading-xxl-lh);
   margin-block-start: var(--spacing-s);
   margin-block-end: var(--spacing-xs);
+  word-break: break-all;
 }
 
 .verb-header {
