@@ -444,7 +444,7 @@ html[dir="rtl"] .verb-cta .upload-icon {
   line-height: var(--consonant-heading-xxl-lh);
   margin-block-start: var(--spacing-s);
   margin-block-end: var(--spacing-xs);
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .verb-header {
