@@ -87,6 +87,7 @@ export const LIMITS = {
     multipleFiles: true,
     uploadType: 'multifile-only',
     subCopy: true,
+    genAI: true,
   },
   'chat-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -96,6 +97,7 @@ export const LIMITS = {
     multipleFiles: true,
     uploadType: 'multifile-only',
     subCopy: true,
+    genAI: true,
   },
   'summarize-pdf': {
     maxFileSize: 104857600, // 100 MB
@@ -103,6 +105,7 @@ export const LIMITS = {
     acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
     maxNumFiles: 1,
     subCopy: true,
+    genAI: true,
   },
   'split-pdf': {
     maxFileSize: 104857600, // 1 GB
@@ -147,7 +150,8 @@ export const LIMITS = {
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['.pdf'],
     maxNumFiles: 1,
-    neverRedirect: true,
+    typeOneLanding: true,
+    // neverRedirect: true,
   },
   'compress-pdf': {
     maxFileSize: 2147483648,
@@ -628,6 +632,7 @@ export default async function init(element) {
   const { locale } = getConfig();
   const ppURL = window.mph['verb-widget-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
   const touURL = window.mph['verb-widget-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
+  const genAIurl = window.mph['verb-widget-genai-terms-url'] || `https://www.adobe.com${locale.prefix}/legal/licenses-terms/adobe-gen-ai-user-guidelines.html`;
 
   const children = element.querySelectorAll(':scope > div');
   const VERB = element.classList[1];
@@ -784,7 +789,18 @@ export default async function init(element) {
   }
 
   if (!(LIMITS[VERB].mobileApp && isMobile)) {
-    legalTwo.innerHTML = legalTwo.textContent.replace(window.mph['verb-widget-terms-of-use'], `<a class="verb-legal-url" target="_blank" href="${touURL}">${window.mph['verb-widget-terms-of-use']}</a>`).replace(window.mph['verb-widget-privacy-policy'], `<a class="verb-legal-url" target="_blank" href="${ppURL}">${window.mph['verb-widget-privacy-policy']}</a>`);
+    const createLegalLink = (text, url) => `<a class="verb-legal-url" target="_blank" href="${url}">${text}</a>`;
+
+    const legalLinks = [
+      ['verb-widget-terms-of-use', touURL],
+      ['verb-widget-privacy-policy', ppURL],
+      ...(LIMITS[VERB].genAI ? [['verb-widget-genai-guidelines', genAIurl]] : []),
+    ];
+
+    legalTwo.innerHTML = legalLinks.reduce((html, [key, url]) => {
+      const text = window.mph[key];
+      return text ? html.replace(text, createLegalLink(text, url)) : html;
+    }, (LIMITS[VERB].genAI && window.mph['verb-widget-legal-2-ai']) || legalTwo.textContent);
 
     legalWrapper.append(legal, legalTwo);
     footer.append(iconSecurity, legalWrapper, infoIcon);

@@ -228,7 +228,7 @@ const locales = {
   sg: { ietf: 'en-SG', tk: 'pps7abe.css' },
   th_en: { ietf: 'en-TH', tk: 'pps7abe.css' },
   in_hi: { ietf: 'hi-IN', tk: 'aaa8deh.css' },
-  th_th: { ietf: 'th-TH', tk: 'aaz7dvd.css' },
+  th_th: { ietf: 'th-TH', tk: 'lqo2bst.css' },
   cn: { ietf: 'zh-CN', tk: 'puu3xkp' },
   hk_zh: { ietf: 'zh-HK', tk: 'jay0ecd' },
   tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
@@ -530,12 +530,6 @@ replaceDotMedia(document);
   if (document.querySelectorAll('a[class*="geo-pn"]').length > 0 || document.querySelectorAll('a[href*="geo"]').length > 0) {
     const { default: geoPhoneNumber } = await import('./geo-phoneNumber.js');
     geoPhoneNumber();
-  }
-
-  const threeInOneTag = document.querySelector('meta[name="mas-ff-3in1"]');
-  if (threeInOneTag?.content === 'off' && document.querySelectorAll('a[data-wcs-osi]').length > 0) {
-    const { default: threeInOne } = await import('./threeInOne.js');
-    threeInOne();
   }
 
   // Import tooltip accessibility implementation for WCAG 1.4.13 and 4.1.2

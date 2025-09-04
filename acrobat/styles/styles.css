@@ -844,3 +844,7 @@ a[href*="susi"] {
   pointer-events: none;
   cursor: default;
 }
+
+.how-to .how-to-heading {
+  word-break: break-all;
+}

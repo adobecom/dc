@@ -127,7 +127,6 @@ export async function responseProvider(request) {
       .replace('await import(\'./dcLana.js\')', 'await import(\'/acrobat/scripts/dcLana.js\')')
       .replace('await import(\'./susiAuthHandler.js\')', 'await import(\'/acrobat/scripts/susiAuthHandler.js\')')
       .replace('await import(\'./geo-phoneNumber.js\')', 'await import(\'/acrobat/scripts/geo-phoneNumber.js\')')
-      .replace('await import(\'./threeInOne.js\')', 'await import(\'/acrobat/scripts/threeInOne.js\')')
       .replace('await import(\'./tooltips.js\')', 'await import(\'/acrobat/scripts/tooltips.js\')')
       .replace('await import(\'./imageReplacer.js\')', 'await import(\'/acrobat/scripts/imageReplacer.js\')');
 
