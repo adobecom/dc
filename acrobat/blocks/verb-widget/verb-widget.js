@@ -204,6 +204,12 @@ export const LIMITS = {
     acceptedFiles: ['.pdf'],
     multipleFiles: true,
   },
+  'pdf-to-png': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '100 MB',
+    acceptedFiles: ['.pdf'],
+    multipleFiles: true,
+  },
   'pdf-to-ppt': {
     maxFileSize: 262144000, // 250 MB
     maxFileSizeFriendly: '250 MB',
