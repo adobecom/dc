@@ -186,7 +186,7 @@
 }
 
 @media (max-width: 599px) {
-  .prompt-card.dc1052 .prompt-blade {
+  .section.prompt-cards-dc1052 .prompt-card .prompt-blade {
     max-width: 100%;
   }
 }
