@@ -306,8 +306,18 @@ function redDir(verb) {
   window.location.href = redDirLink(verb);
 }
 
-function getSplunkEndpoint() {
+let splunkEndpointOverride;
+
+function getDefaultSplunkEndpoint() {
   return (getEnv() === 'prod') ? 'https://unity.adobe.io/api/v1/log' : 'https://unity-stage.adobe.io/api/v1/log';
+}
+
+function getSplunkEndpoint() {
+  return splunkEndpointOverride || getDefaultSplunkEndpoint();
+}
+
+function setSplunkEndpoint(endpoint) {
+  splunkEndpointOverride = endpoint || getDefaultSplunkEndpoint();
 }
 
 function getDemoEndpoint() {
@@ -975,6 +985,7 @@ export default async function init(element) {
 
     const { event, data } = e.detail || {};
     const canSendDataToSplunk = e.detail?.sendToSplunk ?? true;
+    if (e.detail && 'logEndPoint' in e.detail) setSplunkEndpoint(e.detail.logEndPoint);
 
     if (!event) return;
     const metadata = mergeData({ ...data, userAttempts });
@@ -1049,6 +1060,7 @@ export default async function init(element) {
       errorData,
       sendToSplunk: canSendDataToSplunk = true,
     } = e.detail || {};
+    if (e.detail && 'logEndPoint' in e.detail) setSplunkEndpoint(e.detail.logEndPoint);
     if (!errorCode) return;
     handleError(e.detail, true, lanaOptions);
     if (errorCode.includes('cookie_not_set')) return;
