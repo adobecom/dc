@@ -1017,6 +1017,9 @@ export default async function init(element) {
       chunk_uploaded: () => {
         if (canSendDataToSplunk) window.analytics.sendAnalyticsToSplunk('job:chunk-uploaded', VERB, metadata, getSplunkEndpoint());
       },
+      pageConfigUpdated: () => {
+        if (canSendDataToSplunk) window.analytics.sendAnalyticsToSplunk('job:pageConfigUpdated', VERB, metadata, getSplunkEndpoint());
+      }
     };
 
     if (analyticsMap[event]) {
