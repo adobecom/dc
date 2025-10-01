@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable compat/compat */
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
+import { PingService, USER_TYPE } from '../../scripts/ping.js';
 
 const miloLibs = setLibs('/libs');
 
@@ -1141,8 +1142,50 @@ export default async function init(element) {
       callback();
     }
   }
+
+  function getLocale() {
+    const currLocale = getConfig().locale?.prefix.replace('/', '');
+    return currLocale || 'en-us';
+  }
+
+  // Initialize ping service
+  const initializePingService = async () => {
+    try {
+      const isSignedIn = window.adobeIMS?.isSignedInUser() || false;
+      const userType = isSignedIn ? USER_TYPE.SIGNEDIN : USER_TYPE.ANON;
+      const userId = isSignedIn ? (window.adobeIMS.getUserProfile()?.userId || '') : '';
+      
+      const pingService = new PingService({
+        locale: getLocale(),
+        config: {
+          serverEnv: getEnv(),
+          appName: 'adobe_com',
+          appVersion: '1.0',
+          appReferrer: ''
+        },
+        userId: userId,
+        isSignedIn: isSignedIn,
+        userType: userType,
+        subscriptionType: 'unspecified'
+      });
+
+      const pingConfig = {
+        appPath: 'unity-frictionless',
+        schema: {}
+      };
+      await pingService.sendPingEvent(pingConfig);
+    } catch (error) {
+      window.lana?.log(
+        `Error Code: Unknown, Status: 'Unknown', Message: Failed to send ping: ${error.message}`,
+        lanaOptions,
+      );
+    }
+  };
+
   runWhenDocumentIsReady(() => {
     soloUpload();
+    // Initialize ping service when page loads
+    initializePingService();
     window.dispatchEvent(new CustomEvent('analyticsLoad', {
       detail: {
         verb: VERB,

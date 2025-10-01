@@ -44,6 +44,8 @@ export function getEnv() {
   if (['www.adobe.com', 'sign.ing', 'edit.ing'].includes(hostname)) return 'prod';
   if (
     [
+      'ping--dc--adobecom.aem.page',
+      'ping--dc--adobecom.aem.live',
       'stage--dc--adobecom.hlx.page',
       'main--dc--adobecom.hlx.page',
       'stage--dc--adobecom.hlx.live',
