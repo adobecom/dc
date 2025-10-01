@@ -1141,8 +1141,52 @@ export default async function init(element) {
       callback();
     }
   }
+
+  function getLocale() {
+    const currLocale = getConfig().locale?.prefix.replace('/', '');
+    return currLocale || 'en-us';
+  }
+
+  // Initialize ping service
+  const initializePingService = async () => {
+    try {
+      const { PingService, USER_TYPE } = await import('../../scripts/ping.js');
+
+      const isSignedIn = window.adobeIMS?.isSignedInUser() || false;
+      const userType = isSignedIn ? USER_TYPE.SIGNEDIN : USER_TYPE.ANON;
+      const userId = isSignedIn ? ((await window.adobeIMS?.getProfile())?.userId || '') : '';
+
+      const pingService = new PingService({
+        locale: getLocale(),
+        config: {
+          serverEnv: getEnv(),
+          appName: 'adobe_com',
+          appVersion: '1.0',
+          appReferrer: '',
+        },
+        userId,
+        isSignedIn,
+        userType,
+        subscriptionType: 'unspecified',
+      });
+
+      const pingConfig = {
+        appPath: 'unity-dc-frictionless',
+        schema: {},
+      };
+      await pingService.sendPingEvent(pingConfig);
+    } catch (error) {
+      window.lana?.log(
+        `Error Code: Unknown, Status: 'Unknown', Message: Failed to send ping: ${error.message}`,
+        lanaOptions,
+      );
+    }
+  };
+
   runWhenDocumentIsReady(() => {
     soloUpload();
+    // Initialize ping service when page loads
+    initializePingService();
     window.dispatchEvent(new CustomEvent('analyticsLoad', {
       detail: {
         verb: VERB,
