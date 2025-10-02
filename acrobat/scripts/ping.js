@@ -30,7 +30,7 @@ export const getCookie = (cookieName) => {
   return value;
 };
 
-export const  = (key, value, attrs = {}) => {
+export const setCookie = (key, value, attrs = {}) => {
   let cookieString = `${key}=${value}`;
   if (attrs.domain) {
       cookieString += `; domain=${attrs.domain}`;
