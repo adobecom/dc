@@ -279,7 +279,7 @@ export class PingService {
           setCookie(
               key, dateString,
               {
-                  domain: '.adobe.com',
+                  domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
                   path: '/',
                   expires: this.getExpirationInUTC(31),
                   samesite: 'None',
@@ -296,7 +296,7 @@ export class PingService {
               setCookie(
                   key, dateString,
                   {
-                      domain: '.adobe.com',
+                      domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
                       path: '/',
                       maxAge: -86400,
                       samesite: 'None',
@@ -308,7 +308,7 @@ export class PingService {
           setCookie(
               key, dateString,
               {
-                  domain: '.adobe.com',
+                  domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
                   path: '/',
                   maxAge: -86400,
                   samesite: 'None',
