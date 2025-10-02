@@ -30,7 +30,7 @@ export const getCookie = (cookieName) => {
   return value;
 };
 
-export const setCookie = (key, value, attrs = {}) => {
+export const  = (key, value, attrs = {}) => {
   let cookieString = `${key}=${value}`;
   if (attrs.domain) {
       cookieString += `; domain=${attrs.domain}`;
@@ -279,7 +279,7 @@ export class PingService {
           setCookie(
               key, dateString,
               {
-                  domain: '.adobe.com',
+                  domain: window.location.host.endsWith('.adobe.com') ? 'domain=adobe.com' : '',
                   path: '/',
                   expires: this.getExpirationInUTC(31),
                   samesite: 'None',
