@@ -37,23 +37,10 @@
     },
     {
       "containerId": "tools",
-      "id": "localize",
-      "title": "Localize",
-      "environments": [
-        "edit"
-      ],
-      "url": "https://main--milo--adobecom.hlx.page/tools/loc/index.html?project=dc--adobecom",
-      "passReferrer": true,
-      "passConfig": true,
-      "excludePaths": [ "/**" ],
-      "includePaths": [ "**/:x**" ]
-    },
-    {
-      "containerId": "tools",
       "id": "localize-2",
       "title": "Localize (V2)",
       "environments": [ "edit" ],
-      "url": "https://main--dc--adobecom.hlx.page/tools/loc?milolibs=locui",
+      "url": "https://main--dc--adobecom.aem.page/tools/loc?milolibs=locui",
       "passReferrer": true,
       "passConfig": true,
       "includePaths": [ "**.xlsx**" ]
@@ -63,7 +50,7 @@
       "id": "floodgate",
       "title": "Floodgate",
       "environments": [ "edit" ],
-      "url": "https://main--dc--adobecom.hlx.page/tools/floodgate?milolibs=floodgateui",
+      "url": "https://main--dc--adobecom.aem.page/tools/floodgate?milolibs=floodgateui",
       "passReferrer": true,
       "passConfig": true,
       "includePaths": [ "**.xlsx**" ]
@@ -181,7 +168,7 @@
       "id": "bulk",
       "title": "Bulk operations",
       "environments": [ "edit", "dev", "preview", "live" ],
-      "url": "https://main--dc--adobecom.hlx.page/tools/bulk-publish"
+      "url": "https://main--dc--adobecom.aem.page/tools/bulk-publish"
     },
     {
       "containerId": "tools",
