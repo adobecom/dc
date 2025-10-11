@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
-/*************************************************************************
+/** ***********************************************************************
 * ADOBE CONFIDENTIAL
 * ___________________
 *
-*  Copyright 2022 Adobe
+*  Copyright 2025 Adobe
 *  All Rights Reserved.
 *
 * NOTICE:  All information contained herein is, and remains
@@ -14,16 +14,16 @@
 * Dissemination of this information or reproduction of this material
 * is strictly forbidden unless prior written permission is obtained
 * from Adobe.
-**************************************************************************/
+************************************************************************* */
 
 /* eslint no-underscore-dangle: 0, class-methods-use-this: 0, max-len: 0 */
 
 // Utility functions
 export const getCookie = (cookieName) => {
   const cookies = window.document.cookie ? window.document.cookie.split('; ') : [];
-  const item = cookies.find(cookie => cookie.trim().startsWith(`${cookieName}=`));
+  const item = cookies.find((cookie) => cookie.trim().startsWith(`${cookieName}=`));
   if (!item) {
-      return null;
+    return null;
   }
   const [, ...others] = item.split('=');
   const value = others.join('=');
@@ -33,43 +33,40 @@ export const getCookie = (cookieName) => {
 export const setCookie = (key, value, attrs = {}) => {
   let cookieString = `${key}=${value}`;
   if (attrs.domain) {
-      cookieString += `; domain=${attrs.domain}`;
+    cookieString += `; domain=${attrs.domain}`;
   }
   if (attrs.path) {
-      cookieString += `; path=${attrs.path}`;
+    cookieString += `; path=${attrs.path}`;
   }
   if (attrs.expires) {
-      cookieString += `; expires=${attrs.expires}`;
+    cookieString += `; expires=${attrs.expires}`;
   }
   if (attrs.maxAge) {
-      cookieString += `; max-age=${attrs.maxAge}`;
+    cookieString += `; max-age=${attrs.maxAge}`;
   }
   if (attrs.secure) {
-      cookieString += '; secure';
+    cookieString += '; secure';
   }
   if (attrs.samesite) {
-      cookieString += `; samesite=${attrs.samesite}`;
+    cookieString += `; samesite=${attrs.samesite}`;
   }
   window.document.cookie = cookieString;
 };
 
-
-
 const getTrackingURL = (env) => {
   if (env && env !== 'prod') {
-      return 'https://acroipm2.stage.adobe.com/acrobat-web';
-  } else {
-      return 'https://acroipm2.adobe.com/acrobat-web';
+    return 'https://acroipm2.stage.adobe.com/acrobat-web';
   }
+  return 'https://acroipm2.adobe.com/acrobat-web';
 };
 
 export const polynomialHash = (str, base = 31, mod = 2 ** 32) => {
   if (!str) {
-      return str;
+    return str;
   }
   let hashValue = 0;
   for (let i = 0; i < str.length; i++) {
-      hashValue = (hashValue * base + str.charCodeAt(i)) % mod;
+    hashValue = (hashValue * base + str.charCodeAt(i)) % mod;
   }
   return hashValue;
 };
@@ -101,12 +98,42 @@ const DEFAULT_PING_SCHEMA = {
 
 export class PingService {
   constructor(options = {}) {
-      this.locale = options.locale;
-      this.config = options.config;
-      this.userId = options.userId;
-      this.isSignedIn = options.isSignedIn || false;
-      this.userType = options.userType;
-      this.subscriptionType = options.subscriptionType;
+    this.locale = options.locale;
+    this.config = options.config;
+    this.userId = options.userId;
+    this.isSignedIn = options.isSignedIn || false;
+    this.userType = options.userType;
+    this.subscriptionType = options.subscriptionType;
+  }
+
+  async getCountryFromGeoService() {
+    try {
+      const geoResponse = await fetch('https://geo2.adobe.com/json/');
+      if (!geoResponse.ok) {
+        return null;
+      }
+      const geoData = await geoResponse.json();
+      return geoData?.country?.toLowerCase() || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  /**
+   * Deletes all mmac cookies
+   */
+  deleteAllMmacCookies() {
+    const cookies = window.document.cookie ? window.document.cookie.split('; ') : [];
+    const mmacCookies = cookies.filter((cookie) => cookie.trim().startsWith('mmac'));
+
+    mmacCookies.forEach((cookie) => {
+      const cookieName = cookie.split('=')[0];
+      const domain = window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '';
+
+      // Delete cookie by setting expiry to the past
+      const cookieString = `${cookieName}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT${domain ? `; domain=${domain}` : ''}`;
+      window.document.cookie = cookieString;
+    });
   }
 
   /**
@@ -118,12 +145,12 @@ export class PingService {
    * @returns {boolean} - Returns true if more than one month has passed since the last fetch date; otherwise, false.
    */
   isMonthPassedForMAUTracking(lastFetchDate, currentMonth, currentYear) {
-      const lastFetch = new Date(lastFetchDate);
-      const lastFetchMonth = lastFetch.getMonth();
-      const lastFetchYear = lastFetch.getFullYear();
+    const lastFetch = new Date(lastFetchDate);
+    const lastFetchMonth = lastFetch.getMonth();
+    const lastFetchYear = lastFetch.getFullYear();
 
-      // Check if current date is after the last fetch and a month has passed
-      return currentYear > lastFetchYear || (currentYear === lastFetchYear && currentMonth > lastFetchMonth);
+    // Check if current date is after the last fetch and a month has passed
+    return currentYear > lastFetchYear || (currentYear === lastFetchYear && currentMonth > lastFetchMonth);
   }
 
   /**
@@ -134,38 +161,36 @@ export class PingService {
    * @returns {boolean} - Returns true if the configuration is valid; otherwise, false.
    */
   isValidAppPingConfig(pingConfig) {
-      // Check if pingConfig is provided
-      if (!pingConfig) {
-          return false;
-      }
+    // Check if pingConfig is provided
+    if (!pingConfig) {
+      return false;
+    }
 
-      // Check if 'appPath' is present and is a non-empty string
-      if (!pingConfig.appPath || typeof pingConfig.appPath !== 'string' || pingConfig.appPath.trim() === '') {
-          return false;
-      }
+    // Check if 'appPath' is present and is a non-empty string
+    if (!pingConfig.appPath || typeof pingConfig.appPath !== 'string' || pingConfig.appPath.trim() === '') {
+      return false;
+    }
 
-      // If all checks pass, return true
-      return true;
+    // If all checks pass, return true
+    return true;
   }
 
   async getCookieKey(pingType, appPath) {
-      let key = 'mmac';
+    let key = 'mmac';
 
-      if (pingType === PING_TYPE.MACHINE) {
-          key += '_machine';
-      } else if (pingType === PING_TYPE.SIGNEDIN) {
-          if (this.userId) {
-              key += `_${await polynomialHash(this.userId)}`;
-          }
+    if (pingType === PING_TYPE.MACHINE) {
+      key += '_machine';
+    } else if (pingType === PING_TYPE.SIGNEDIN) {
+      if (this.userId) {
+        key += `_${await polynomialHash(this.userId)}`;
       }
+    }
 
-      if (appPath) {
-          key += `_${appPath}`;
-      }
-      return key;
+    if (appPath) {
+      key += `_${appPath}`;
+    }
+    return key;
   }
-
-
 
   /**
    * Checks if the ping has been made for the current month based on ping Type & App.
@@ -174,21 +199,21 @@ export class PingService {
    * @returns {Promise<boolean>} - Returns a promise which will resolve true if no ping has been made for the current month, or if more than a month has passed since the last ping; otherwise, resolves false.
    */
   async isPingCurrentMonth(pingType, appPath) {
-      const currentDate = new Date();
-      const currentMonth = currentDate.getMonth();
-      const currentYear = currentDate.getFullYear();
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
 
-      const key = await this.getCookieKey(pingType, appPath);
+    const key = await this.getCookieKey(pingType, appPath);
 
-      // Get the stored value from cookies
-      const storedValue = getCookie(key);
+    // Get the stored value from cookies
+    const storedValue = getCookie(key);
 
-      const isMonthPassedForMAUTracking = this.isMonthPassedForMAUTracking(storedValue || '', currentMonth, currentYear);
+    const isMonthPassedForMAUTracking = this.isMonthPassedForMAUTracking(storedValue || '', currentMonth, currentYear);
 
-      const notPingCurrentMonth = !storedValue || isMonthPassedForMAUTracking;
-      
-      // Note: Ping tracking for dc_web - logging removed
-      return !notPingCurrentMonth;
+    const notPingCurrentMonth = !storedValue || isMonthPassedForMAUTracking;
+
+    // Note: Ping tracking for dc_web - logging removed
+    return !notPingCurrentMonth;
   }
 
   /**
@@ -200,53 +225,53 @@ export class PingService {
    * @returns {string} - The constructed URL as a string, with the ping configuration included as path segments.
    */
   createPingURL(pingConfig) {
-      const baseURL = getTrackingURL(this.config?.serverEnv);
+    const baseURL = getTrackingURL(this.config?.serverEnv);
 
-      const url = new URL(baseURL);
+    const url = new URL(baseURL);
 
-      if (pingConfig.pingType === PING_TYPE.MACHINE) {
-          url.pathname += '/machine';
-      } else if (pingConfig.pingType === PING_TYPE.SIGNEDIN) {
-          url.pathname += '/signedin';
+    if (pingConfig.pingType === PING_TYPE.MACHINE) {
+      url.pathname += '/machine';
+    } else if (pingConfig.pingType === PING_TYPE.SIGNEDIN) {
+      url.pathname += '/signedin';
+    }
+
+    if (pingConfig.appPath) {
+      url.pathname += `/${encodeURIComponent(pingConfig.appPath)}`;
+    } else {
+      url.pathname += '/overall';
+    }
+
+    const pingSchema = DEFAULT_PING_SCHEMA;
+
+    // Iterate over the schema object
+    const pathSegments = Object.keys(pingSchema).map((key) => {
+      let value = pingConfig.schema[key] || pingSchema[key] || this.config?.[key];
+
+      if (!value) {
+        switch (key) {
+          case 'appIdentifier':
+            value = this.config?.appName || 'unspecified';
+            break;
+          case 'locale':
+            value = this.locale || 'unspecified';
+            break;
+          case 'userType':
+            value = this.userType || (!this.isSignedIn ? USER_TYPE.ANON : 'unspecified');
+            break;
+          case 'subscriptionType':
+            value = this.subscriptionType || (!this.isSignedIn ? 'Free' : 'unspecified');
+            break;
+          default:
+            value = 'unspecified';
+        }
       }
+      return `/${encodeURIComponent(value)}`;
+    });
 
-      if (pingConfig.appPath) {
-          url.pathname += `/${encodeURIComponent(pingConfig.appPath)}`;
-      } else {
-          url.pathname += '/overall';
-      }
+    url.pathname += pathSegments.join('');
+    url.pathname += '/mmac.html';
 
-      const pingSchema = DEFAULT_PING_SCHEMA;
-
-      // Iterate over the schema object
-      const pathSegments = Object.keys(pingSchema).map((key) => {
-          let value = pingConfig.schema[key] || pingSchema[key] || this.config?.[key];
-
-          if (!value) {
-              switch (key) {
-                  case 'appIdentifier':
-                      value = this.config?.appName || 'unspecified';
-                      break;
-                  case 'locale':
-                      value = this.locale || 'unspecified';
-                      break;
-                  case 'userType':
-                      value = this.userType || (!this.isSignedIn ? USER_TYPE.ANON : 'unspecified');
-                      break;
-                  case 'subscriptionType':
-                      value = this.subscriptionType || (!this.isSignedIn ? 'Free' : 'unspecified');
-                      break;
-                  default:
-                      value = 'unspecified';
-              }
-          }
-          return `/${encodeURIComponent(value)}`;
-      });
-
-      url.pathname += pathSegments.join('');
-      url.pathname += '/mmac.html';
-
-      return url.toString();
+    return url.toString();
   }
 
   /**
@@ -256,9 +281,9 @@ export class PingService {
    * @returns {string|undefined} - Returns the expiration date as a UTC string if the input is valid; otherwise, returns undefined.
    */
   getExpirationInUTC = (days) => {
-      if (typeof days !== 'number' || days < 0) return undefined;
-      const expDateUTC = new Date(Date.now() + (days * 24 * 60 * 60 * 1000));
-      return expDateUTC.toUTCString();
+    if (typeof days !== 'number' || days < 0) return undefined;
+    const expDateUTC = new Date(Date.now() + (days * 24 * 60 * 60 * 1000));
+    return expDateUTC.toUTCString();
   };
 
   /**
@@ -271,51 +296,54 @@ export class PingService {
    * @returns {Promise<void>} - An asynchronous function that handles the API response and manages cookie settings for MAU tracking.
    */
   async pingAPICall(url, pingType, appPath) {
-      const key = await this.getCookieKey(pingType, appPath);
-      const currentDate = new Date();
-      const dateString = currentDate.toISOString();
-      
-      try {
-          setCookie(
-              key, dateString,
-              {
-                  domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
-                  path: '/',
-                  expires: this.getExpirationInUTC(31),
-                  samesite: 'None',
-                  secure: true,
-              },
-          );
-          
-          const res = await fetch(url, {
-              method: 'GET',
-              credentials: 'omit'
-          });
-          
-          if (res?.status !== 200) {
-              setCookie(
-                  key, dateString,
-                  {
-                      domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
-                      path: '/',
-                      maxAge: -86400,
-                      samesite: 'None',
-                      secure: true,
-                  },
-              );
-          }
-      } catch (err) {
-          setCookie(
-              key, dateString,
-              {
-                  domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
-                  path: '/',
-                  maxAge: -86400,
-                  samesite: 'None',
-                  secure: true,
-              },
-          );
+    const key = await this.getCookieKey(pingType, appPath);
+    const currentDate = new Date();
+    const dateString = currentDate.toISOString();
+
+    try {
+      setCookie(
+        key,
+        dateString,
+        {
+          domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
+          path: '/',
+          expires: this.getExpirationInUTC(31),
+          samesite: 'None',
+          secure: true,
+        },
+      );
+
+      const res = await fetch(url, {
+        method: 'GET',
+        credentials: 'omit'
+      });
+
+      if (res?.status !== 200) {
+        setCookie(
+          key,
+          dateString,
+          {
+            domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
+            path: '/',
+            maxAge: -86400,
+            samesite: 'None',
+            secure: true,
+          },
+        );
       }
+    } catch (err) {
+      setCookie(
+        key,
+        dateString,
+        {
+          domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
+          path: '/',
+          maxAge: -86400,
+          samesite: 'None',
+          secure: true,
+        },
+      );
+    }
   }
 
   /**
@@ -324,18 +352,18 @@ export class PingService {
    * @param {Object} pingConfig - The configuration object used to generate the ping URL.
    */
   async sendOverallPingEvent(pingConfig) {
-      if (!pingConfig) {
-          return;
-      }
+    if (!pingConfig) {
+      return;
+    }
 
-      if (!await this.isPingCurrentMonth(PING_TYPE.MACHINE)) {
-          const url = this.createPingURL({ ...pingConfig, appPath: undefined, pingType: PING_TYPE.MACHINE });
-          await this.pingAPICall(url, PING_TYPE.MACHINE);
-      }
-      if (this.isSignedIn && this.userId && !await this.isPingCurrentMonth(PING_TYPE.SIGNEDIN)) {
-          const url = this.createPingURL({ ...pingConfig, appPath: undefined, pingType: PING_TYPE.SIGNEDIN });
-          await this.pingAPICall(url, PING_TYPE.SIGNEDIN);
-      }
+    if (!await this.isPingCurrentMonth(PING_TYPE.MACHINE)) {
+      const url = this.createPingURL({ ...pingConfig, appPath: undefined, pingType: PING_TYPE.MACHINE });
+      await this.pingAPICall(url, PING_TYPE.MACHINE);
+    }
+    if (this.isSignedIn && this.userId && !await this.isPingCurrentMonth(PING_TYPE.SIGNEDIN)) {
+      const url = this.createPingURL({ ...pingConfig, appPath: undefined, pingType: PING_TYPE.SIGNEDIN });
+      await this.pingAPICall(url, PING_TYPE.SIGNEDIN);
+    }
   }
 
   /**
@@ -345,22 +373,26 @@ export class PingService {
    * @param {string} [pingConfig.appPath] - The app path for the ping. If provided, a app-specific ping is sent in addition to the overall ping.
    */
   async sendPingEvent(pingConfig) {
-      await this.sendOverallPingEvent(pingConfig);
+    const country = await this.getCountryFromGeoService();
+    if (['gb', 'uk', null].includes(country)) {
+      this.deleteAllMmacCookies();
+      return;
+    }
+    await this.sendOverallPingEvent(pingConfig);
 
-      if (!this.isValidAppPingConfig(pingConfig)) {
-          return;
-      }
+    if (!this.isValidAppPingConfig(pingConfig)) {
+      return;
+    }
 
-      if (!await this.isPingCurrentMonth(PING_TYPE.MACHINE, pingConfig.appPath)) {
-          const url = this.createPingURL({ ...pingConfig, pingType: PING_TYPE.MACHINE });
-          await this.pingAPICall(url, PING_TYPE.MACHINE, pingConfig.appPath);
-      }
-      if (this.isSignedIn && this.userId && !await this.isPingCurrentMonth(PING_TYPE.SIGNEDIN, pingConfig.appPath)) {
-          const url = this.createPingURL({ ...pingConfig, pingType: PING_TYPE.SIGNEDIN });
-          await this.pingAPICall(url, PING_TYPE.SIGNEDIN, pingConfig.appPath);
-      }
+    if (!await this.isPingCurrentMonth(PING_TYPE.MACHINE, pingConfig.appPath)) {
+      const url = this.createPingURL({ ...pingConfig, pingType: PING_TYPE.MACHINE });
+      await this.pingAPICall(url, PING_TYPE.MACHINE, pingConfig.appPath);
+    }
+    if (this.isSignedIn && this.userId && !await this.isPingCurrentMonth(PING_TYPE.SIGNEDIN, pingConfig.appPath)) {
+      const url = this.createPingURL({ ...pingConfig, pingType: PING_TYPE.SIGNEDIN });
+      await this.pingAPICall(url, PING_TYPE.SIGNEDIN, pingConfig.appPath);
+    }
   }
 }
-
 
 export default PingService;

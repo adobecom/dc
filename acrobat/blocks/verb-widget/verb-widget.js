@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable compat/compat */
 import { setLibs, getEnv, isOldBrowser } from '../../scripts/utils.js';
-import { PingService, USER_TYPE } from '../../scripts/ping.js';
 
 const miloLibs = setLibs('/libs');
 
@@ -1151,27 +1150,29 @@ export default async function init(element) {
   // Initialize ping service
   const initializePingService = async () => {
     try {
+      const { PingService, USER_TYPE } = await import('../../scripts/ping.js');
+
       const isSignedIn = window.adobeIMS?.isSignedInUser() || false;
       const userType = isSignedIn ? USER_TYPE.SIGNEDIN : USER_TYPE.ANON;
       const userId = isSignedIn ? (window.adobeIMS.getUserProfile()?.userId || '') : '';
-      
+
       const pingService = new PingService({
         locale: getLocale(),
         config: {
           serverEnv: getEnv(),
           appName: 'adobe_com',
           appVersion: '1.0',
-          appReferrer: ''
+          appReferrer: '',
         },
-        userId: userId,
-        isSignedIn: isSignedIn,
-        userType: userType,
-        subscriptionType: 'unspecified'
+        userId,
+        isSignedIn,
+        userType,
+        subscriptionType: 'unspecified',
       });
 
       const pingConfig = {
-        appPath: 'unity-frictionless',
-        schema: {}
+        appPath: 'unity-dc-frictionless',
+        schema: {},
       };
       await pingService.sendPingEvent(pingConfig);
     } catch (error) {
