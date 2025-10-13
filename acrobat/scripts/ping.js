@@ -3,7 +3,7 @@
 * ADOBE CONFIDENTIAL
 * ___________________
 *
-*  Copyright 2025 Adobe
+*  Copyright 2022 Adobe
 *  All Rights Reserved.
 *
 * NOTICE:  All information contained herein is, and remains
@@ -51,6 +51,14 @@ export const setCookie = (key, value, attrs = {}) => {
     cookieString += `; samesite=${attrs.samesite}`;
   }
   window.document.cookie = cookieString;
+};
+
+export const deleteCookie = (cookieName) => {
+  setCookie(cookieName, '', {
+    domain: window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '',
+    path: '/',
+    maxAge: -86400,
+  });
 };
 
 const getTrackingURL = (env) => {
@@ -128,11 +136,7 @@ export class PingService {
 
     mmacCookies.forEach((cookie) => {
       const cookieName = cookie.split('=')[0];
-      const domain = window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '';
-
-      // Delete cookie by setting expiry to the past
-      const cookieString = `${cookieName}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT${domain ? `; domain=${domain}` : ''}`;
-      window.document.cookie = cookieString;
+      deleteCookie(cookieName);
     });
   }
 
@@ -315,34 +319,14 @@ export class PingService {
 
       const res = await fetch(url, {
         method: 'GET',
-        credentials: 'omit'
+        credentials: 'omit',
       });
 
       if (res?.status !== 200) {
-        setCookie(
-          key,
-          dateString,
-          {
-            domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
-            path: '/',
-            maxAge: -86400,
-            samesite: 'None',
-            secure: true,
-          },
-        );
+        deleteCookie(key);
       }
     } catch (err) {
-      setCookie(
-        key,
-        dateString,
-        {
-          domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
-          path: '/',
-          maxAge: -86400,
-          samesite: 'None',
-          secure: true,
-        },
-      );
+      deleteCookie(key);
     }
   }
 
@@ -379,11 +363,9 @@ export class PingService {
       return;
     }
     await this.sendOverallPingEvent(pingConfig);
-
     if (!this.isValidAppPingConfig(pingConfig)) {
       return;
     }
-
     if (!await this.isPingCurrentMonth(PING_TYPE.MACHINE, pingConfig.appPath)) {
       const url = this.createPingURL({ ...pingConfig, pingType: PING_TYPE.MACHINE });
       await this.pingAPICall(url, PING_TYPE.MACHINE, pingConfig.appPath);
