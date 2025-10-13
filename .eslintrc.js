@@ -94,6 +94,8 @@ module.exports = {
         'chai-friendly/no-unused-expressions': 0,
         'no-plusplus': 0,
         'global-require': 0,
+        'object-curly-newline': 'off',
+        'compat/compat': 'off',
       },
     },
   ],
