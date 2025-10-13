@@ -1149,16 +1149,6 @@ export default async function init(element) {
 
   // Initialize ping service
   const initializePingService = async () => {
-    // Measure from actual page navigation start
-    const pageLoadStartTime = performance.timing?.navigationStart || performance.timeOrigin || 0;
-    const timeSincePageStart = performance.now();
-    const pingServiceStartTime = performance.now();
-    
-    // eslint-disable-next-line no-console
-    console.log('[PING] Starting ping service initialization', {
-      timeSinceNavigationStartMs: timeSincePageStart.toFixed(2),
-    });
-
     try {
       const { PingService, USER_TYPE } = await import('../../scripts/ping.js');
 
@@ -1185,24 +1175,7 @@ export default async function init(element) {
         schema: {},
       };
       await pingService.sendPingEvent(pingConfig);
-
-      const pingServiceTime = performance.now() - pingServiceStartTime;
-      const totalTimeFromNavStart = performance.now();
-      
-      // eslint-disable-next-line no-console
-      console.log('[PING] Ping service completed', {
-        pingServiceTimeMs: pingServiceTime.toFixed(2),
-        totalTimeFromNavigationStartMs: totalTimeFromNavStart.toFixed(2),
-        pageLoadTimeBeforePingMs: (timeSincePageStart).toFixed(2),
-      });
     } catch (error) {
-      const errorTime = performance.now() - pingServiceStartTime;
-      // eslint-disable-next-line no-console
-      console.error('[PING] Ping service failed', {
-        error: error.message,
-        pingServiceTimeMs: errorTime.toFixed(2),
-        totalTimeFromNavigationStartMs: performance.now().toFixed(2),
-      });
       window.lana?.log(
         `Error Code: Unknown, Status: 'Unknown', Message: Failed to send ping: ${error.message}`,
         lanaOptions,
