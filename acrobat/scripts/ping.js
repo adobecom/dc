@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* eslint-disable compat/compat */
 /** ***********************************************************************
 * ADOBE CONFIDENTIAL
 * ___________________
@@ -357,9 +358,30 @@ export class PingService {
    * @param {string} [pingConfig.appPath] - The app path for the ping. If provided, a app-specific ping is sent in addition to the overall ping.
    */
   async sendPingEvent(pingConfig) {
+    const startTime = performance.now();
     const country = await this.getCountryFromGeoService();
+    const geoFetchTime = performance.now() - startTime;
+
+    // eslint-disable-next-line no-console
+    console.log('[PING] Country detected', {
+      country,
+      countryType: typeof country,
+      geoFetchTimeMs: geoFetchTime.toFixed(2),
+      isGBorUK: ['gb', 'uk', null].includes(country),
+    });
+
     if (['gb', 'uk', null].includes(country)) {
+      const deleteStartTime = performance.now();
       this.deleteAllMmacCookies();
+      const deleteEndTime = performance.now();
+
+      // eslint-disable-next-line no-console
+      console.log('[PING] GB/UK/Unknown country detected', {
+        country,
+        geoFetchTimeMs: geoFetchTime.toFixed(2),
+        deleteCookiesTimeMs: (deleteEndTime - deleteStartTime).toFixed(2),
+        totalTimeMs: (deleteEndTime - startTime).toFixed(2),
+      });
       return;
     }
     await this.sendOverallPingEvent(pingConfig);
