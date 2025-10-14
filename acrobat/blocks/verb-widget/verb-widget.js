@@ -1154,7 +1154,7 @@ export default async function init(element) {
 
       const isSignedIn = window.adobeIMS?.isSignedInUser() || false;
       const userType = isSignedIn ? USER_TYPE.SIGNEDIN : USER_TYPE.ANON;
-      const userId = isSignedIn ? ((await window.adobeIMS.getProfile())?.userId || '') : '';
+      const userId = isSignedIn ? ((await window.adobeIMS?.getProfile())?.userId || '') : '';
 
       const pingService = new PingService({
         locale: getLocale(),
