@@ -310,7 +310,7 @@ export class PingService {
         key,
         dateString,
         {
-          domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
+          domain: window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '',
           path: '/',
           expires: this.getExpirationInUTC(31),
           samesite: 'None',
