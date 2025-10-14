@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* eslint-disable compat/compat */
 /** ***********************************************************************
 * ADOBE CONFIDENTIAL
 * ___________________
@@ -73,7 +74,7 @@ export const polynomialHash = (str, base = 31, mod = 2 ** 32) => {
     return str;
   }
   let hashValue = 0;
-  for (let i = 0; i < str.length; i++) {
+  for (let i = 0; i < str.length; i += 1) {
     hashValue = (hashValue * base + str.charCodeAt(i)) % mod;
   }
   return hashValue;
@@ -309,7 +310,7 @@ export class PingService {
         key,
         dateString,
         {
-          domain: window.location.host.endsWith('.adobe.com') ? 'domain=.adobe.com' : '',
+          domain: window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '',
           path: '/',
           expires: this.getExpirationInUTC(31),
           samesite: 'None',
@@ -358,6 +359,7 @@ export class PingService {
    */
   async sendPingEvent(pingConfig) {
     const country = await this.getCountryFromGeoService();
+
     if (['gb', 'uk', null].includes(country)) {
       this.deleteAllMmacCookies();
       return;
