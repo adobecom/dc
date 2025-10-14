@@ -302,7 +302,7 @@ const CONFIG = {
   // geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'business.adobe.com', 'helpx.adobe.com'],
   stageDomainsMap: {
-    '--dc--adobecom.hlx.page': {
+    '--dc--adobecom.(hlx|aem).page': {
       'www.adobe.com': 'www.stage.adobe.com',
       'business.adobe.com': 'business.adobe.com',
       'blog.adobe.com': 'blog.adobe.com',
@@ -312,7 +312,7 @@ const CONFIG = {
       'milo.adobe.com': 'milo.adobe.com',
       'news.adobe.com': 'news.adobe.com',
     },
-    '--dc--adobecom.hlx.live': {
+    '--dc--adobecom.(hlx|aem).live': {
       'www.adobe.com': 'www.adobe.com',
       'business.adobe.com': 'business.adobe.com',
       'blog.adobe.com': 'blog.adobe.com',
