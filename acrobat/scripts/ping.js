@@ -27,8 +27,7 @@ export const getCookie = (cookieName) => {
     return null;
   }
   const [, ...others] = item.split('=');
-  const value = others.join('=');
-  return value;
+  return others.join('=');
 };
 
 export const setCookie = (key, value, attrs = {}) => {
@@ -57,7 +56,7 @@ export const setCookie = (key, value, attrs = {}) => {
 export const deleteCookie = (cookieName) => {
   setCookie(cookieName, '', {
     domain: window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '',
-    path: '/',
+    path: '/acrobat/online',
     maxAge: -86400,
   });
 };
@@ -311,7 +310,7 @@ export class PingService {
         dateString,
         {
           domain: window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '',
-          path: '/',
+          path: '/acrobat/online',
           expires: this.getExpirationInUTC(31),
           samesite: 'None',
           secure: true,
