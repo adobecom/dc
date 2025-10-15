@@ -4,7 +4,7 @@ const { execSync } = require('child_process');
 const { isBranchURLValid } = require('../libs/baseurl.js');
 
 // Dynamically load PROJECT, ORG, BASE_URLS
-let PROJECT, ORG, BASE_URLS, getBranchUrl;
+let PROJECT; let ORG; let BASE_URLS; let getBranchUrl;
 try {
   ({ PROJECT, ORG, BASE_URLS } = require('../libs/config.js'));
   ({ getBranchUrl } = require('../libs/constants.js'));
