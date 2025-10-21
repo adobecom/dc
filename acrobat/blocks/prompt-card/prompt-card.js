@@ -190,3 +190,4 @@ export default async function init(element) {
 
   createBlock(element, cfg);
 }
+
