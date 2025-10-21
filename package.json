@@ -25,7 +25,9 @@
     "ewtest": "jest --testPathPattern=edgeworkers",
     "ewprod2stg": "node ./edgeworkers/scripts/prod2stg.js",
     "ewbuild": "node ./edgeworkers/scripts/build.js",
-    "ewsetbundle": "node ./edgeworkers/scripts/setbundle.js"
+    "ewsetbundle": "node ./edgeworkers/scripts/setbundle.js",
+    "nala": "node nala/utils/nala.run.js",
+    "a11y": "node nala/utils/nala.cli.js a11y"
   },
   "repository": {
     "type": "git",
@@ -40,13 +42,19 @@
   "devDependencies": {
     "@amwp/platform-ui-automation": "^0.0.8",
     "@amwp/platform-ui-lib-adobe": "^0.0.10",
+    "@axe-core/playwright": "4.10.0",
     "@babel/core": "7.23.2",
     "@babel/eslint-parser": "7.22.15",
     "@babel/register": "7.22.15",
     "@esm-bundle/chai": "4.3.4-fix.0",
+    "@playwright/test": "1.56.0",
     "@web/dev-server-import-maps": "^0.2.1",
+    "axe-html-reporter": "2.2.11",
+    "axios": "1.7.5",
     "braces": "^3.0.3",
     "chai": "4.3.6",
+    "chalk": "4.1.2",
+    "commander": "12.1.0",
     "compare-versions": "^6.1.0",
     "eslint": "8.11.0",
     "eslint-config-airbnb-base": "15.0.0",
@@ -59,6 +67,7 @@
     "jest-environment-jsdom": "^29.5.0",
     "koa-proxies": "^0.12.4",
     "microbundle": "^0.15.1",
+    "playwright": "1.56.0",
     "sinon": "13.0.1",
     "stylelint": "14.6.0",
     "stylelint-config-prettier": "9.0.3",
@@ -76,7 +85,6 @@
     "async": "^3.2.5",
     "bowser": "^2.11.0",
     "jest-fetch-mock": "^3.0.3",
-    "playwright": "^1.53.1",
     "ws": "^8.18.0",
     "yargs": "^17.7.2"
   },
