@@ -53,7 +53,7 @@ function createBlock(el, cfg, a11yActionUpdate) {
   const prefix = createTag('div', { class: 'prompt-prefix' });
   const icon = createTag('img', {
     class: 'prompt-icon',
-    alt: 'AI Assistant Icon',
+    alt: 'AI Assistant',
     src: cfg.icon,
     width: 18,
     height: 18,
