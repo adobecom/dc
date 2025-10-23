@@ -18,7 +18,3 @@ CODEOWNERS
 #Test files
 /**/test-files/empty.*
 /**/test-files/bad.*
-
-test-html-results/
-test-results/
-test-a11y-results/
