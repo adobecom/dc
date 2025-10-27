@@ -73,13 +73,14 @@ function eventData(metaData, { appReferrer: referrer, trackingId: tracking }) {
 
 function createPayloadForSplunk(metaData) {
   const {
-    verb, eventName, noOfFiles, uploadTime, type, size, count, workflowStep, uploadType, userAttempts, errorData, chunkUploadAttempt, chunkNumber, assetId, maxRetryCount
+    verb, eventName, noOfFiles, uploadTime, type, size, count, workflowStep, uploadType, userAttempts, errorData, chunkUploadAttempt, chunkNumber, assetId, maxRetryCount, newEndpoint
   } = metaData;
 
   return {
     event: {
       name: eventName,
       category: "acrobat",
+      newEndpoint: newEndpoint,
       subcategory: verb,
       ...(uploadTime && { uploadTime }),
       ...(uploadType && { uploadType })
