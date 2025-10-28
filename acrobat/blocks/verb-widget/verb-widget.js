@@ -321,8 +321,14 @@ function getSplunkEndpoint() {
   return (getEnv() === 'prod') ? 'https://unity.adobe.io/api/v1/log' : 'https://unity-stage.adobe.io/api/v1/log';
 }
 
-function getDemoEndpoint() {
-  return (getEnv() === 'prod') ? `https://acrobat.adobe.com/${demoPath}` : `https://stage.acrobat.adobe.com/${demoPath}`;
+function getDemoEndpoint(verb) {
+  const baseUrl = (getEnv() === 'prod') ? 'https://acrobat.adobe.com' : 'https://stage.acrobat.adobe.com';
+  let demoUrl = `${baseUrl}/${demoPath}`;
+  if (verb === 'pdf-ai') {
+    demoUrl = demoUrl.replace('x_api_client_location=chat_pdf', 'x_api_client_location=chat_pdf_pdf_ai');
+  }
+  
+  return demoUrl;
 }
 
 function getCookie(name) {
@@ -790,7 +796,7 @@ export default async function init(element) {
     }
   } else if ((VERB.indexOf('chat-pdf') > -1 || VERB.indexOf('pdf-ai') > -1) && window.mph['verb-widget-cta-demo']) {
     const demoBtnWrapper = createTag('div', { class: 'demo-button-wrapper' });
-    widgetDemoButton = createTag('a', { href: getDemoEndpoint(), class: 'verb-cta demo-cta', tabindex: 0 }, window.mph['verb-widget-cta-demo']);
+    widgetDemoButton = createTag('a', { href: getDemoEndpoint(VERB), class: 'verb-cta demo-cta', tabindex: 0 }, window.mph['verb-widget-cta-demo']);
     widgetDemoButton.addEventListener('click', () => {
       window.analytics.verbAnalytics('Try with a demo file', VERB, { userAttempts });
     });
