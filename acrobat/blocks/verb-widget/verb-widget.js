@@ -326,7 +326,6 @@ function getDemoEndpoint(verb) {
   if (verb === 'pdf-ai') {
     demoUrl = demoUrl.replace('x_api_client_location=chat_pdf', 'x_api_client_location=chat_pdf_pdf_ai');
   }
-  
   return demoUrl;
 }
 
