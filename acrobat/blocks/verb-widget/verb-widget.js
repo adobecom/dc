@@ -39,7 +39,6 @@ const verbRedirMap = {
   'ocr-pdf': 'ocr',
   'chat-pdf': 'chat',
   'chat-pdf-student': 'study',
-  'pdf-ai': 'pdfai',
 };
 
 const exhLimitCookieMap = {
