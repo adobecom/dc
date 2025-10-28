@@ -39,6 +39,7 @@ const verbRedirMap = {
   'ocr-pdf': 'ocr',
   'chat-pdf': 'chat',
   'chat-pdf-student': 'study',
+  'pdf-ai': 'pdfai',
 };
 
 const exhLimitCookieMap = {
@@ -90,6 +91,16 @@ export const LIMITS = {
     genAI: true,
   },
   'chat-pdf': {
+    maxFileSize: 104857600, // 100 MB
+    maxFileSizeFriendly: '1 MB',
+    acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
+    maxNumFiles: 100,
+    multipleFiles: true,
+    uploadType: 'multifile-only',
+    subCopy: true,
+    genAI: true,
+  },
+  'pdf-ai': {
     maxFileSize: 104857600, // 100 MB
     maxFileSizeFriendly: '1 MB',
     acceptedFiles: ['.pdf', '.doc', '.docx', '.xml', '.ppt', '.pptx', '.xls', '.xlsx', '.rtf', '.txt', '.text', '.ai', '.form', '.bmp', '.gif', '.indd', '.jpeg', '.jpg', '.png', '.psd', '.tif', '.tiff'],
@@ -777,7 +788,7 @@ export default async function init(element) {
       widgetLeft.insertBefore(widgetButton, errorState);
       widgetLeft.insertBefore(button, errorState);
     }
-  } else if (VERB.indexOf('chat-pdf') > -1 && window.mph['verb-widget-cta-demo']) {
+  } else if ((VERB.indexOf('chat-pdf') > -1 || VERB.indexOf('pdf-ai') > -1) && window.mph['verb-widget-cta-demo']) {
     const demoBtnWrapper = createTag('div', { class: 'demo-button-wrapper' });
     widgetDemoButton = createTag('a', { href: getDemoEndpoint(), class: 'verb-cta demo-cta', tabindex: 0 }, window.mph['verb-widget-cta-demo']);
     widgetDemoButton.addEventListener('click', () => {
