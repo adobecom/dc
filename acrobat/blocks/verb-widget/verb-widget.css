@@ -671,3 +671,14 @@ html[dir="rtl"] .verb-cta .upload-icon {
 .verb-widget .mobile.milo-tooltip.top::before {
   transform: translateX(-7%) translateY(-100%) !important;
 }
+
+.verb-widget .milo-tooltip {
+  position: relative;
+  text-decoration: none;
+  border-bottom: none;
+  min-width: 24px;
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  justify-content: center;
+}
