@@ -7,7 +7,7 @@ import { delay, waitForElement } from '../../helpers/waitfor.js';
 const { default: init } = await import(
   '../../../acrobat/blocks/verb-widget/verb-widget.js'
 );
-import { getConfig, setConfig } from 'https://main--milo--adobecom.hlx.live/libs/utils/utils.js';
+import { getConfig, setConfig } from 'https://main--milo--adobecom.aem.live/libs/utils/utils.js';
 
 const USER_AGENTS = {
   iPhone:

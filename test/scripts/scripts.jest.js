@@ -128,22 +128,22 @@ describe.skip('Test scripts', () => {
   describe('Test live hostname with main branch', () => {
     it('uses hlx live libs', async () => {
       delete window.location;
-      window.location = new URL('https://main--dc--adobecom.hlx.live/acrobat/online/word-to-pdf');
+      window.location = new URL('https://main--dc--adobecom.aem.live/acrobat/online/word-to-pdf');
       await require('../../acrobat/scripts/scripts.js');
       await delay(100);
       const config = await getConfig();
-      expect(config.miloLibs).toEqual('https://main--milo--adobecom.hlx.live/libs');
+      expect(config.miloLibs).toEqual('https://main--milo--adobecom.aem.live/libs');
     });
   });
 
   describe('Test live hostname with milo branch', () => {
     it('uses branch hlx live libs', async () => {
       delete window.location;
-      window.location = new URL('https://main--dc--adobecom.hlx.live/acrobat/online/word-to-pdf?milolibs=main--milo--tsayadobe');
+      window.location = new URL('https://main--dc--adobecom.aem.live/acrobat/online/word-to-pdf?milolibs=main--milo--tsayadobe');
       await require('../../acrobat/scripts/scripts.js');
       await delay(100);
       const config = await getConfig();
-      expect(config.miloLibs).toEqual('https://main--milo--tsayadobe.hlx.live/libs');
+      expect(config.miloLibs).toEqual('https://main--milo--tsayadobe.aem.live/libs');
     });
   });
 
