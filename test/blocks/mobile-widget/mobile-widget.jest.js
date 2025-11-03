@@ -94,9 +94,9 @@ describe('dc-converter-widget', () => {
     hostname
     ${'stage--dc--adobecom.hlx.page'}
     ${'main--dc--adobecom.hlx.page'}
-    ${'stage--dc--adobecom.hlx.live'}
+    ${'stage--dc--adobecom.aem.live'}
     ${'www.stage.adobe.com'}
-    ${'main--dc--adobecom.hlx.live'}
+    ${'main--dc--adobecom.aem.live'}
   `('redirects when signed in on stage', async ({ hostname }) => {
     window.browser = {
       ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',

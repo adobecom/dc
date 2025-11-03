@@ -28,8 +28,7 @@ const setLibs = (prodLibs, location = window.location) => {
   const branch = new URLSearchParams(search).get('milolibs') || 'main';
   if (branch === 'main' && hostname === 'www.stage.adobe.com') return '/libs';
   if (branch === 'local') return 'http://localhost:6456/libs';
-  const env = hostname.includes('.aem.') ? 'aem' : 'hlx';
-  return `https://${branch}${branch.includes('--') ? '' : '--milo--adobecom'}.${env}.live/libs`;
+  return `https://${branch}${branch.includes('--') ? '' : '--milo--adobecom'}.aem.live/libs`;
 };
 
 const getLocale = (locales, pathname = window.location.pathname) => {

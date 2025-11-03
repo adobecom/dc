@@ -53,7 +53,7 @@ function createBlock(el, cfg, a11yActionUpdate) {
   const prefix = createTag('div', { class: 'prompt-prefix' });
   const icon = createTag('img', {
     class: 'prompt-icon',
-    alt: 'AI Assistant Icon',
+    alt: 'AI Assistant',
     src: cfg.icon,
     width: 18,
     height: 18,
@@ -62,7 +62,7 @@ function createBlock(el, cfg, a11yActionUpdate) {
   const copy = createTag('div', { class: 'prompt-copy' }, cfg.prompt);
   const prompt = createTag('input', { id: 'prompt', value: cfg.prompt });
   const wrapper = createTag('div', { class: 'prompt-copy-btn-wrapper' });
-  const copyBtn = createTag('span', { class: 'prompt-copy-btn', role: 'button', tabindex: 0, 'aria-label': `${cfg.button} ${cfg.prompt}` }, cfg.button);  wrapper.append(copyBtn);
+  const copyBtn = createTag('span', { class: 'prompt-copy-btn', role: 'button', tabindex: 0, 'aria-label': `${cfg.button} ${cfg.prompt}` }, cfg.button); wrapper.append(copyBtn);
   prefix.appendChild(icon);
   prefix.appendChild(createTag('span', null, cfg.prefix));
   blade.append(prefix, title, copy, prompt, wrapper);
