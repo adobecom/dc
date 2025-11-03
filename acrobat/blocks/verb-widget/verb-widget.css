@@ -663,10 +663,6 @@ html[dir="rtl"] .verb-cta .upload-icon {
   }
 }
 
-.verb-widget .milo-tooltip.top::before {
-  transform: translateX(-80%) translateY(-100%) !important;
-}
-
 .verb-widget .mobile.milo-tooltip.top::before {
   transform: translateX(-7%) translateY(-100%) !important;
 }
@@ -686,6 +682,7 @@ html[dir="rtl"] .verb-cta .upload-icon {
   content: attr(data-tooltip);
   position: absolute;
   top: 50%;
+  transform: translateY(-50%);
   left: 100%;
   margin-left: 7px;
   max-width: 140px;
