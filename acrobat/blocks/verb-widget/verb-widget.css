@@ -663,7 +663,6 @@ html[dir="rtl"] .verb-cta .upload-icon {
   }
 }
 
-
 .verb-widget .milo-tooltip.top::before {
   transform: translateX(-80%) translateY(-100%) !important;
 }
@@ -717,10 +716,6 @@ html[dir="rtl"] .verb-cta .upload-icon {
   z-index: 8;
 }
 
-.verb-widget .milo-tooltip.top::after {
-  margin-left: -8px;
-}
-
 .verb-widget .milo-tooltip.top::before {
   left: calc(50% - 11px);
   transform: translateX(-50%) translateY(-100%);
@@ -755,7 +750,3 @@ html[dir="rtl"] .verb-cta .upload-icon {
   }
 }
 
-.verb-widget .milo-tooltip.hide-tooltip::before,
-.verb-widget .milo-tooltip.hide-tooltip::after {
-  display: none;
-}
