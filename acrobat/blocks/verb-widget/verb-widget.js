@@ -280,6 +280,12 @@ function prefetchTarget() {
   iframe.src = window.prefetchTargetUrl;
   iframe.style.display = 'none';
   document.body.appendChild(iframe);
+  if (window.prefetchBlobUrl) {
+    const blobIframe = document.createElement('iframe');
+    blobIframe.src = window.prefetchBlobUrl;
+    blobIframe.style.display = 'none';
+    document.body.appendChild(blobIframe);
+  }
 }
 
 function prefetchNextPage(url) {
@@ -292,10 +298,18 @@ function prefetchNextPage(url) {
   document.head.appendChild(link);
 }
 
-function initiatePrefetch(url) {
+function initiatePrefetch(url, verb) {
   if (!window.prefetchTargetUrl) {
     prefetchNextPage(url);
     window.prefetchTargetUrl = url;
+    if (verb === 'word-to-pdf') {
+      const ENV = getEnv();
+      const blobUrl = ENV === 'stage' 
+        ? 'https://stage.acrobat.adobe.com/blob/preFetchFakeBlobUri'
+        : 'https://acrobat.adobe.com/blob/preFetchFakeBlobUri';
+      prefetchNextPage(blobUrl);
+      window.prefetchBlobUrl = blobUrl;
+    }
   }
 }
 
@@ -928,6 +942,7 @@ export default async function init(element) {
   window.addEventListener('IMS:Ready', checkSignedInUser);
 
   window.prefetchTargetUrl = null;
+  window.prefetchBlobUrl = null;
 
   element.parentNode.style.display = 'block';
 
@@ -1015,7 +1030,7 @@ export default async function init(element) {
       uploading: () => handleUploadingEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
       uploaded: () => handleUploadedEvent(data, userAttempts, cookieExp, canSendDataToSplunk),
       redirectUrl: () => {
-        if (data) initiatePrefetch(data.redirectUrl);
+        if (data) initiatePrefetch(data.redirectUrl, VERB);
         handleAnalyticsEvent('job:redirect-success', metadata, false, canSendDataToSplunk);
       },
       chunk_uploaded: () => {
