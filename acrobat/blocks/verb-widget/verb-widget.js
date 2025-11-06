@@ -302,14 +302,14 @@ function initiatePrefetch(url, verb) {
   if (!window.prefetchTargetUrl) {
     prefetchNextPage(url);
     window.prefetchTargetUrl = url;
-    if (verb === 'word-to-pdf') {
-      const ENV = getEnv();
-      const blobUrl = ENV === 'stage' 
-        ? 'https://stage.acrobat.adobe.com/blob/preFetchFakeBlobUri'
-        : 'https://acrobat.adobe.com/blob/preFetchFakeBlobUri';
-      prefetchNextPage(blobUrl);
-      window.prefetchBlobUrl = blobUrl;
-    }
+  }  
+  if (verb === 'word-to-pdf' && !window.prefetchBlobUrl) {
+    const ENV = getEnv();
+    const blobUrl = ENV === 'stage' 
+      ? 'https://stage.acrobat.adobe.com/blob/preFetchFakeBlobUri'
+      : 'https://acrobat.adobe.com/blob/preFetchFakeBlobUri';
+    prefetchNextPage(blobUrl);
+    window.prefetchBlobUrl = blobUrl;
   }
 }
 
