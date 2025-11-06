@@ -51,6 +51,7 @@ export function getEnv() {
       'main--dc--adobecom.aem.page',
       'stage--dc--adobecom.aem.live',
       'main--dc--adobecom.aem.live',
+      'mwpw-183510--dc--adobecom.aem.live',
       'www.stage.adobe.com',
     ].includes(hostname)
   ) return 'stage';
