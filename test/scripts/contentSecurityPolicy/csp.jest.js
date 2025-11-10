@@ -28,7 +28,7 @@ describe('Test ContentSecurityPolicy', () => {
     hostname
     ${'www.stage.adobe.com'}
     ${'main--dc--adobecom.hlx.page'}
-    ${'main--dc--adobecom.hlx.live'}
+    ${'main--dc--adobecom.aem.live'}
     ${'stage--dc--adobecom.hlx.page'}
   `('ContentSecurityPolicy for stage', async ({ hostname }) => {
     window.location = new URL(`https://${hostname}/acrobat/online/test`);
