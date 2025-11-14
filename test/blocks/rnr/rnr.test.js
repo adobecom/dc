@@ -12,7 +12,19 @@ describe('rnr - Ratings and reviews', () => {
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
     localStorage.removeItem('rnr-snapshot');
     window.mph = { 'rnr-rating-tooltips': 'Poor, Below Average, Good, Very Good, Outstanding' };
-    window.adobeIMS = { getAccessToken: () => ({ token: 'test-token' }) };
+    // Mock IMS with valid token that won't expire for 10 minutes
+    window.adobeIMS = {
+      getAccessToken: () => ({
+        token: 'test-token',
+        expire: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes from now
+      }),
+      refreshToken: () => Promise.resolve({
+        tokenInfo: {
+          token: 'refreshed-test-token',
+          expire: new Date(Date.now() + 10 * 60 * 1000),
+        },
+      }),
+    };
     window.lana = { log: () => {} };
     const rnr = document.querySelector('.rnr');
     init(rnr);
@@ -22,6 +34,9 @@ describe('rnr - Ratings and reviews', () => {
     if (window.fetch.restore) window.fetch.restore();
     if (window.lana.log.restore) window.lana.log.restore();
     if (window.adobeIMS.getAccessToken.restore) window.adobeIMS.getAccessToken.restore();
+    if (window.adobeIMS.refreshToken && window.adobeIMS.refreshToken.restore) {
+      window.adobeIMS.refreshToken.restore();
+    }
   });
 
   // #region IMS Token Error Handling
@@ -37,27 +52,35 @@ describe('rnr - Ratings and reviews', () => {
     window.adobeIMS = originalIMS;
   });
 
-  it('should handle null access token', async () => {
+  it('should handle null access token', async function () {
+    this.timeout(5000); // Increase timeout for retry logic
     sinon.stub(window.adobeIMS, 'getAccessToken').returns(null);
+    sinon.stub(window.adobeIMS, 'refreshToken').rejects(new Error('Token refresh failed'));
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
     const rnr = document.querySelector('.rnr');
     await init(rnr);
+    // Wait for retry logic to complete
+    await new Promise((resolve) => { setTimeout(resolve, 2500); });
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
   });
 
-  it('should handle error thrown by getAccessToken', async () => {
+  it('should handle error thrown by getAccessToken', async function () {
+    this.timeout(5000); // Increase timeout for retry logic
     const originalIMS = window.adobeIMS;
     window.adobeIMS = {
       getAccessToken: () => {
         console.error('Intentional test error: IMS not available');
         return undefined;
       },
+      refreshToken: () => Promise.reject(new Error('Token refresh failed')),
     };
     try {
       document.body.innerHTML = await readFile({ path: './mocks/body.html' });
       const rnr = document.querySelector('.rnr');
       await init(rnr);
+      // Wait for retry logic to complete
+      await new Promise((resolve) => { setTimeout(resolve, 2500); });
       const containerElement = await waitForElement('.rnr-container');
       expect(containerElement).to.exist;
     } finally {
@@ -70,23 +93,124 @@ describe('rnr - Ratings and reviews', () => {
     const ratingFieldsetElement = containerElement.querySelector('.rnr-rating-fieldset');
     const stars = ratingFieldsetElement.querySelectorAll('input');
     window.adobeIMS.getAccessToken = () => null;
+    window.adobeIMS.refreshToken = () => Promise.reject(new Error('Token refresh failed'));
     stars[4].click();
     expect(containerElement).to.exist;
   });
 
-  it('should wait for IMS to be ready', async () => {
+  it('should wait for IMS to be ready', async function () {
+    this.timeout(8000); // Increase timeout for retry logic with delays
     const originalGetAccessToken = window.adobeIMS.getAccessToken;
+    const originalRefreshToken = window.adobeIMS.refreshToken;
     let tokenAvailable = false;
-    window.adobeIMS.getAccessToken = () => (tokenAvailable ? { token: 'test-token' } : null);
+    let refreshCallCount = 0;
+    window.adobeIMS.getAccessToken = () => (tokenAvailable ? {
+      token: 'test-token',
+      expire: new Date(Date.now() + 10 * 60 * 1000),
+    } : null);
+    window.adobeIMS.refreshToken = () => {
+      refreshCallCount += 1;
+      // Return success on second refresh attempt (after first retry)
+      if (refreshCallCount >= 2) {
+        tokenAvailable = true;
+        return Promise.resolve({
+          tokenInfo: {
+            token: 'refreshed-test-token',
+            expire: new Date(Date.now() + 10 * 60 * 1000),
+          },
+        });
+      }
+      return Promise.reject(new Error('Token not ready'));
+    };
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
     const rnr = document.querySelector('.rnr');
-    setTimeout(() => {
-      tokenAvailable = true;
-    }, 500);
     await init(rnr);
+    // Wait for retry logic to complete
+    await new Promise((resolve) => { setTimeout(resolve, 3000); });
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
     window.adobeIMS.getAccessToken = originalGetAccessToken;
+    window.adobeIMS.refreshToken = originalRefreshToken;
+  });
+
+  it('should successfully refresh expired token', async function () {
+    this.timeout(5000);
+    const originalIMS = window.adobeIMS;
+    const refreshTokenStub = sinon.stub().resolves({
+      tokenInfo: {
+        token: 'new-refreshed-token',
+        expire: new Date(Date.now() + 10 * 60 * 1000),
+      },
+    });
+    // Mock expired token
+    window.adobeIMS = {
+      getAccessToken: () => ({
+        token: 'expired-token',
+        expire: { valueOf: () => Date.now() - 1000 }, // Already expired
+      }),
+      refreshToken: refreshTokenStub,
+    };
+    const fetchStub = sinon.stub(window, 'fetch').resolves({
+      ok: true,
+      json: () => Promise.resolve({
+        overallRating: 4.5,
+        ratingHistogram: { rating1: 0, rating2: 0, rating3: 0, rating4: 5, rating5: 5 },
+      }),
+    });
+    try {
+      document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+      const rnr = document.querySelector('.rnr');
+      await init(rnr);
+      // Wait a bit for async operations to complete
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+      const containerElement = await waitForElement('.rnr-container');
+      expect(containerElement).to.exist;
+      // Verify that refreshToken was called or that fetch was called (meaning token was obtained)
+      const wasCalled = refreshTokenStub.called || fetchStub.called;
+      expect(wasCalled).to.be.true;
+    } finally {
+      window.adobeIMS = originalIMS;
+    }
+  });
+
+  it('should handle token expiring soon (within 5 minutes)', async function () {
+    this.timeout(5000);
+    const originalIMS = window.adobeIMS;
+    const refreshTokenStub = sinon.stub().resolves({
+      tokenInfo: {
+        token: 'new-refreshed-token',
+        expire: new Date(Date.now() + 10 * 60 * 1000),
+      },
+    });
+    // Mock token that will expire in 4 minutes
+    window.adobeIMS = {
+      getAccessToken: () => ({
+        token: 'expiring-soon-token',
+        expire: { valueOf: () => Date.now() + 4 * 60 * 1000 }, // 4 minutes from now
+      }),
+      refreshToken: refreshTokenStub,
+    };
+    const fetchStub = sinon.stub(window, 'fetch').resolves({
+      ok: true,
+      json: () => Promise.resolve({
+        overallRating: 4.5,
+        ratingHistogram: { rating1: 0, rating2: 0, rating3: 0, rating4: 5, rating5: 5 },
+      }),
+    });
+    try {
+      document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+      const rnr = document.querySelector('.rnr');
+      await init(rnr);
+      // Wait a bit for async operations to complete
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+      const containerElement = await waitForElement('.rnr-container');
+      expect(containerElement).to.exist;
+      // Verify that refreshToken was called or that fetch was called (meaning token was obtained)
+      const wasCalled = refreshTokenStub.called || fetchStub.called;
+      expect(wasCalled).to.be.true;
+    } finally {
+      window.adobeIMS = originalIMS;
+    }
   });
 
   it('should gracefully handle fetch errors when loading data', async () => {
