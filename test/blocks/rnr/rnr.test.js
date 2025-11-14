@@ -52,8 +52,7 @@ describe('rnr - Ratings and reviews', () => {
     window.adobeIMS = originalIMS;
   });
 
-  it('should handle null access token', async function () {
-    this.timeout(5000); // Increase timeout for retry logic
+  it('should handle null access token', async () => {
     sinon.stub(window.adobeIMS, 'getAccessToken').returns(null);
     sinon.stub(window.adobeIMS, 'refreshToken').rejects(new Error('Token refresh failed'));
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
@@ -63,10 +62,9 @@ describe('rnr - Ratings and reviews', () => {
     await new Promise((resolve) => { setTimeout(resolve, 2500); });
     const containerElement = await waitForElement('.rnr-container');
     expect(containerElement).to.exist;
-  });
+  }).timeout(5000);
 
-  it('should handle error thrown by getAccessToken', async function () {
-    this.timeout(5000); // Increase timeout for retry logic
+  it('should handle error thrown by getAccessToken', async () => {
     const originalIMS = window.adobeIMS;
     window.adobeIMS = {
       getAccessToken: () => {
@@ -86,7 +84,7 @@ describe('rnr - Ratings and reviews', () => {
     } finally {
       window.adobeIMS = originalIMS;
     }
-  });
+  }).timeout(5000);
 
   it('should handle token not available when posting review', async () => {
     const containerElement = await waitForElement('.rnr-container');
@@ -98,8 +96,7 @@ describe('rnr - Ratings and reviews', () => {
     expect(containerElement).to.exist;
   });
 
-  it('should wait for IMS to be ready', async function () {
-    this.timeout(8000); // Increase timeout for retry logic with delays
+  it('should wait for IMS to be ready', async () => {
     const originalGetAccessToken = window.adobeIMS.getAccessToken;
     const originalRefreshToken = window.adobeIMS.refreshToken;
     let tokenAvailable = false;
@@ -131,10 +128,9 @@ describe('rnr - Ratings and reviews', () => {
     expect(containerElement).to.exist;
     window.adobeIMS.getAccessToken = originalGetAccessToken;
     window.adobeIMS.refreshToken = originalRefreshToken;
-  });
+  }).timeout(8000);
 
-  it('should successfully refresh expired token', async function () {
-    this.timeout(5000);
+  it('should successfully refresh expired token', async () => {
     const originalIMS = window.adobeIMS;
     const refreshTokenStub = sinon.stub().resolves({
       tokenInfo: {
@@ -171,10 +167,9 @@ describe('rnr - Ratings and reviews', () => {
     } finally {
       window.adobeIMS = originalIMS;
     }
-  });
+  }).timeout(5000);
 
-  it('should handle token expiring soon (within 5 minutes)', async function () {
-    this.timeout(5000);
+  it('should handle token expiring soon (within 5 minutes)', async () => {
     const originalIMS = window.adobeIMS;
     const refreshTokenStub = sinon.stub().resolves({
       tokenInfo: {
@@ -211,7 +206,7 @@ describe('rnr - Ratings and reviews', () => {
     } finally {
       window.adobeIMS = originalIMS;
     }
-  });
+  }).timeout(5000);
 
   it('should gracefully handle fetch errors when loading data', async () => {
     sinon.stub(window, 'fetch').rejects(new Error('Network error'));
