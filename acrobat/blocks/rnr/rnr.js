@@ -113,16 +113,48 @@ function extractMetadata(options) {
 
 // #region IMS Helpers
 
-const getImsToken = async (operation) => {
+const getRefreshToken = async () => {
   try {
-    const token = window.adobeIMS.getAccessToken()?.token;
-    if (!token) {
-      throw new Error(`Cannot ${operation} token is missing`);
+    const { tokenInfo } = window.adobeIMS ? await window.adobeIMS.refreshToken() : {};
+    return tokenInfo;
+  } catch (e) {
+    return {
+      token: null,
+      error: e,
+    };
+  }
+};
+
+const attemptTokenRefresh = async () => {
+  const refreshResult = await getRefreshToken();
+  if (!refreshResult.error) {
+    return { token: refreshResult, error: null };
+  }
+  return refreshResult;
+};
+
+const getImsToken = async (operation) => {
+  const RETRY_WAIT = 2000;
+  try {
+    const accessToken = window.adobeIMS?.getAccessToken();
+    if (!accessToken || accessToken?.expire?.valueOf() <= Date.now() + (5 * 60 * 1000)) {
+      const reason = !accessToken ? 'access_token_null' : 'access_token_expired';
+      const firstAttempt = await attemptTokenRefresh();
+      if (!firstAttempt.error) return firstAttempt.token?.token;
+      await new Promise((resolve) => { setTimeout(resolve, RETRY_WAIT); });
+      const retryAttempt = await attemptTokenRefresh();
+      if (!retryAttempt.error) return retryAttempt.token?.token;
+      const errorMsg = `Token refresh failed after retry. refresh_error_${reason}`;
+      window.lana.log(
+        `RnR: Cannot ${operation} - ${errorMsg} for verb ${metadata.verb}`,
+        lanaOptions,
+      );
+      return null;
     }
-    return token;
+    return accessToken?.token;
   } catch (error) {
     window.lana.log(
-      `RnR: ${error.message} for verb ${metadata.verb}`,
+      `RnR: Cannot ${operation} - ${error.message} for verb ${metadata.verb}`,
       lanaOptions,
     );
     return null;
