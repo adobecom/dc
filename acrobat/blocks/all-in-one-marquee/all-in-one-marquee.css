@@ -147,11 +147,11 @@
   position: relative;
   width: 100%;
   max-width: 1000px;
-  max-height: 200px;
-  opacity: 0.5;
+  max-height: 400px;
+  opacity: 1;
   overflow: hidden;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-top: 80px;
+  margin-top: var(--spacing-s);
 }
 
 .media-container.visible {
@@ -343,7 +343,7 @@
   }
 
   .media-container {
-    max-height: 180px;
+    max-height: 300px;
   }
 
   .media-container.visible {
@@ -370,7 +370,7 @@
   }
 
   .media-container {
-    max-height: 220px;
+    max-height: 380px;
   }
 
   .media-container.visible {
@@ -397,7 +397,7 @@
   }
 
   .media-container {
-    max-height: 250px;
+    max-height: 400px;
   }
 
   .media-container.visible {
