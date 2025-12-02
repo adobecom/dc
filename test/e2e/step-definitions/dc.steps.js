@@ -27,6 +27,7 @@ import { AddPdfPageNumbersPage } from "../page-objects/addpdfpagenumbers.page";
 import { OcrPdfPage } from "../page-objects/ocrpdf.page";
 import { AiChatPdfPage } from "../page-objects/aichatpdf.page";
 import { AiSummaryGeneratorPage } from "../page-objects/aisummarygenerator.page";
+import { PdfAiPage } from "../page-objects/pdfai.page";
 import { FrictionlessPage } from "../page-objects/frictionless.page";
 import { UnityPage } from "../page-objects/unity.page";
 import { DCPage } from "../page-objects/dc.page";
@@ -72,7 +73,8 @@ Then(/^I go to the ([^\"]*) page$/, async function (verb) {
     "add-pdf-page-numbers": AddPdfPageNumbersPage,
     "ocr-pdf": OcrPdfPage,
     "ai-chat-pdf": AiChatPdfPage,
-    "ai-summary-generator": AiSummaryGeneratorPage
+    "ai-summary-generator": AiSummaryGeneratorPage,
+    "pdf-ai": PdfAiPage
   }[verb];
   this.page = new pageClass();
 
