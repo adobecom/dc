@@ -56,7 +56,7 @@ export const setCookie = (key, value, attrs = {}) => {
 export const deleteCookie = (cookieName) => {
   setCookie(cookieName, '', {
     domain: window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '',
-    path: '/acrobat/online',
+    path: '/',
     maxAge: -86400,
   });
 };
@@ -310,7 +310,7 @@ export class PingService {
         dateString,
         {
           domain: window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '',
-          path: '/acrobat/online',
+          path: '/',
           expires: this.getExpirationInUTC(31),
           samesite: 'None',
           secure: true,
