@@ -343,6 +343,8 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?learn(\/.*)?/,
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?benefits(\/.*)?/,
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?download(\/.*)?/,
   ],
   imsScope: 'AdobeID,openid,gnav,pps.read,firefly_api,additional_info.roles,read_organizations,account_cluster.read',
 };
