@@ -98,6 +98,7 @@ function getUnityLibs(prodLibs = '/unitylibs') {
   if (!/\.hlx\.|\.aem\.|local|stage/.test(hostname)) return prodLibs;
   // eslint-disable-next-line compat/compat
   const branch = new URLSearchParams(search).get('unitylibs') || 'main';
+  if (!/^[a-zA-Z0-9_-]+$/.test(branch)) throw new Error('Invalid branch name.');
   if (branch === 'main' && hostname === 'www.stage.adobe.com') return prodLibs;
   const env = hostname.includes('.aem.') ? 'aem' : 'hlx';
   return `https://${branch}${branch.includes('--') ? '' : '--unity--adobecom'}.${env}.live/unitylibs`;
