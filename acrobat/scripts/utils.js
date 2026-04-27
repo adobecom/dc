@@ -28,6 +28,7 @@ export const [setLibs, getLibs] = (() => {
         if (!/\.hlx\.|\.aem\.|local|stage/.test(hostname)) return prodLibs;
         // eslint-disable-next-line compat/compat
         const branch = new URLSearchParams(search).get('milolibs') || 'main';
+        if (!/^[a-zA-Z0-9_-]+$/.test(branch)) throw new Error('Invalid branch name.');
         if (branch === 'main' && hostname === 'www.stage.adobe.com') return '/libs';
         if (branch === 'local') return 'http://localhost:6456/libs';
         return `https://${branch}${branch.includes('--') ? '' : '--milo--adobecom'}.aem.live/libs`;
